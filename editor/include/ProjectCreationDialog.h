@@ -29,7 +29,7 @@ private slots:
     void onCreateButtonClicked();
 
 signals:
-    void projectCreationSignal();
+    void projectCreationSignal(const QString &path, const QString &name);
 };
 
 

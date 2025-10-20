@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "ProjectSelectorDialog.h"
+#include "../include/ProjectSelectorDialog.h"
 
 int main(int argc, char *argv[])
 {

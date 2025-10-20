@@ -1,4 +1,4 @@
-#include "ProjectCreationDialog.h"
+#include "../include/ProjectCreationDialog.h"
 #include "ui_ProjectCreationDialog.h"
 #include <QFileDialog>
 #include <filesystem>
@@ -31,10 +31,11 @@ void ProjectCreationDialog::onCancelButtonClicked() {
 void ProjectCreationDialog::onCreateButtonClicked() {
     std::string basePath = ui->ProjectLocationLine->text().toStdString();
     std::string projectName = ui->ProjectNameLine->text().toStdString();
-    if (!ui->ProjectLocationLine->text().isEmpty() || !ui->ProjectNameLine->text().isEmpty()) {
+    if (!ui->ProjectLocationLine->text().isEmpty() && !ui->ProjectNameLine->text().isEmpty()) {
         std::filesystem::path path = basePath + "/" + projectName;
         std::filesystem::create_directory(path);
         this->close();
-        emit projectCreationSignal();
+        emit projectCreationSignal(ui->ProjectLocationLine->text(),
+                                   ui->ProjectNameLine->text());
     }
 }

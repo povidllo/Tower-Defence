@@ -2,8 +2,7 @@
 #define EDITOR_PROJECTSELECTORDIALOG_H
 
 #include <QWidget>
-#include "ProjectEditor.h"
-
+#include "MainWindow.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -28,6 +27,7 @@ private:
 private slots:
     void onNewProjectButtonClicked();
     void onLoadProjectButtonClicked();
+    void startProject(const QString &path, const QString &name);
 };
 
 
