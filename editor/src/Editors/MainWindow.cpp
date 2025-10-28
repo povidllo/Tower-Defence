@@ -6,7 +6,7 @@
 
 MainWindow::MainWindow(std::string path, std::string name, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    project = std::make_shared<ProjectEditor>(path, name);
+    // project = std::make_shared<ProjectEditor>(path, name);
     qDebug() << "created project";
 }
 

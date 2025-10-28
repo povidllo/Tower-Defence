@@ -2,7 +2,6 @@
 #define EDITOR_MAINWINDOW_H
 
 #include <QMainWindow>
-#include "ProjectEditor.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -22,7 +21,7 @@ public:
     ~MainWindow() override;
 
 private:
-    std::shared_ptr<ProjectEditor> project;
+    // std::shared_ptr<ProjectEditor> project;
     Ui::MainWindow *ui;
 };
 

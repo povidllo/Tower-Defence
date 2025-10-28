@@ -9,17 +9,17 @@ set(CMAKE_AUTORCC ON)
 
 add_executable(editor
         src/main.cpp
-        src/ProjectSelectorDialog.cpp
-        include/ProjectSelectorDialog.h
-        src/ProjectSelectorDialog.ui
-        src/ProjectCreationDialog.cpp
-        include/ProjectCreationDialog.h
-        src/ProjectCreationDialog.ui
-        ../Core/ProjectEditor.cpp
-        ../Core/ProjectEditor.h
-        src/MainWindow.cpp
-        include/MainWindow.h
-        src/MainWindow.ui
+        src/Editors/ProjectSelectorDialog.cpp
+        include/Editors/ProjectSelectorDialog.h
+        src/Editors/ProjectSelectorDialog.ui
+        src/Editors/ProjectCreationDialog.cpp
+        include/Editors/ProjectCreationDialog.h
+        src/Editors/ProjectCreationDialog.ui
+        src/Editors/MainWindow.cpp
+        include/Editors/MainWindow.h
+        src/Editors/MainWindow.ui
+        entity/Project.cpp
+        entity/Project.h
 )
 
 target_link_libraries(editor PRIVATE
@@ -28,6 +28,6 @@ target_link_libraries(editor PRIVATE
 
 
 target_include_directories(editor PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/../Core
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/Editors/
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/Entity/
 )

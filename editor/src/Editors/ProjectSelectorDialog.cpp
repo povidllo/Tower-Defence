@@ -1,6 +1,6 @@
-#include "../include/ProjectSelectorDialog.h"
+#include "../../include/Editors/ProjectSelectorDialog.h"
 #include "ui_ProjectSelectorDialog.h"
-#include "../include/ProjectCreationDialog.h"
+#include "../../include/Editors/ProjectCreationDialog.h"
 #include <QFileDialog>
 #include <QMessageBox>
 
