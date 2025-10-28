@@ -1,4 +1,7 @@
 #include "../../include/Editors/ProjectSelectorDialog.h"
+
+#include <iostream>
+
 #include "ui_ProjectSelectorDialog.h"
 #include "../../include/Editors/ProjectCreationDialog.h"
 #include <QFileDialog>
@@ -20,7 +23,7 @@ ProjectSelectorDialog::~ProjectSelectorDialog() {
 void ProjectSelectorDialog::onNewProjectButtonClicked()
 {
     ProjectCreationDialog dlg(this);
-    connect(&dlg, &ProjectCreationDialog::projectCreationSignal, this, &ProjectSelectorDialog::startProject);
+    connect(&dlg, &ProjectCreationDialog::projectCreationSignal, this, &ProjectSelectorDialog::createProject);
 
     dlg.exec();
 }
@@ -34,26 +37,35 @@ void ProjectSelectorDialog::onLoadProjectButtonClicked()
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
     );
 
-    if (directory.isEmpty() || directory == "/") {
-        return;
-    }
-
-    QString projectName = QDir(directory).dirName();
-
     qDebug() << "Selected project folder:" << directory;
-    qDebug() << "Project name:" << projectName;
 
-    startProject(directory, projectName);
+    loadProject(directory);
 }
 
 
 
-void ProjectSelectorDialog::startProject(const QString &path, const QString &name)
+void ProjectSelectorDialog::createProject(const QString &path, const QString &name)
 {
     qDebug() << "Project :" << name << "at" << path;
+    try {
+        const auto mainWindow = new ProjectEditor(path.toStdString(), name.toStdString());
+        mainWindow->show();
+        this->close();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        qDebug() << "Ooops, some mistakes" << path.toStdString();
+    }
 
-    MainWindow *mainWindow = new MainWindow(path.toStdString(), name.toStdString());
-    mainWindow->show();
+}
 
-    this->close();
+void ProjectSelectorDialog::loadProject(const QString &path) {
+    qDebug() << "Project path :" << path;
+    try {
+        const auto mainWindow = new ProjectEditor(path.toStdString());
+        mainWindow->show();
+        this->close();
+    } catch (const std::filesystem::filesystem_error &e) {
+        std::cerr << e.what() << std::endl;
+        qDebug() << "Ooops, some mistakes with file system " << path.toStdString();
+    }
 }
