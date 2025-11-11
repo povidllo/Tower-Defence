@@ -35,7 +35,7 @@ ProjectController::ProjectController(const std::string& path) {
     }
 
     currentProject = std::make_shared<Project>(j);
-
+    loadControls();
 }
 
 ProjectController::ProjectController(const std::string &path, const std::string &name) {
@@ -78,4 +78,14 @@ ProjectController::ProjectController(const std::string &path, const std::string 
         }
         throw;
     }
+
+    loadControls();
+}
+
+std::shared_ptr<TowerController> ProjectController::getTowerController() {
+    return towerController;
+}
+
+void ProjectController::loadControls() {
+    towerController = std::make_shared<TowerController>(this->currentProject);
 }

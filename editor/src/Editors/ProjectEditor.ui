@@ -23,8 +23,38 @@
      <height>30</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen_project"/>
+    <addaction name="actionSave_project"/>
+   </widget>
+   <widget class="QMenu" name="menuEditor">
+    <property name="title">
+     <string>Editor</string>
+    </property>
+    <addaction name="actionTower_editor"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEditor"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen_project">
+   <property name="text">
+    <string>Open project</string>
+   </property>
+  </action>
+  <action name="actionSave_project">
+   <property name="text">
+    <string>Save project</string>
+   </property>
+  </action>
+  <action name="actionTower_editor">
+   <property name="text">
+    <string>Tower editor</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
