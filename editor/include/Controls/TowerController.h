@@ -1,6 +1,8 @@
 #ifndef TOWERDEFENCE_TOWERCONTROLLER_H
 #define TOWERDEFENCE_TOWERCONTROLLER_H
 
+#include <qtmetamacros.h>
+
 #include "Project.h"
 #include "TowerSample.h"
 
@@ -21,8 +23,9 @@ public:
         currentTower = currentProject->getTower(name);
     }
 
+
     void addTower(std::string name) {
-        auto newTower = std::make_shared<TowerSample>(name);
+        const auto newTower = std::make_shared<TowerSample>(name);
         currentTower = newTower;
         currentProject->addTower(newTower);
     }
@@ -38,6 +41,10 @@ public:
 
     bool towerExists(const std::string &name) const {
         return currentProject->existsTower(name);
+    }
+
+    std::shared_ptr<Project> getCurrentProject() const {
+        return currentProject;
     }
 
 private:

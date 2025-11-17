@@ -37,6 +37,26 @@ public:
         return name;
     }
 
+    void setName(const std::string &n) {
+        name = n;
+    }
+
+    [[nodiscard]] double getDamage() const {
+        return damage;
+    }
+
+    void setDamage(double d) {
+        damage = d;
+    }
+
+    [[nodiscard]] double getFireRate() const {
+        return fireRate;
+    }
+
+    void setFireRate(double r) {
+        fireRate = r;
+    }
+
 private:
     std::string name;
     double damage;

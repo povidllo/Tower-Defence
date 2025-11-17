@@ -55,7 +55,7 @@ public:
 
     void setLastSaveDate(std::time_t last_save_date);
 
-    [[nodiscard]] std::unordered_map<std::string, std::shared_ptr<TowerSample> > getTowers() const;
+    [[nodiscard]] std::map<std::string, std::shared_ptr<TowerSample> > getTowers() const;
 
     std::shared_ptr<TowerSample> getTower(std::string &name) const;
 
@@ -70,7 +70,7 @@ private:
     //для будущего
     // std::vector<CampaignTemplate*> campaigns;
     // std::vector<EnemyTemplate*> enemies;
-    std::unordered_map<std::string, std::shared_ptr<TowerSample> > towers;
+    std::map<std::string, std::shared_ptr<TowerSample> > towers;
     // std::vector<AbilityTemplate*> abilities;
     // std::vector<Replay*> replays;
 };

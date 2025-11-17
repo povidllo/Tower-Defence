@@ -24,7 +24,7 @@ void Project::setLastSaveDate(std::time_t last_save_date) {
     lastSaveDate = last_save_date;
 }
 
-std::unordered_map<std::string, std::shared_ptr<TowerSample> > Project::getTowers() const {
+std::map<std::string, std::shared_ptr<TowerSample> > Project::getTowers() const {
     return towers;
 }
 
