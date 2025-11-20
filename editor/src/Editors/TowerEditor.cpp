@@ -3,6 +3,7 @@
 #include <QLineEdit>
 #include <QDoubleSpinBox>
 #include <QCheckBox>
+#include <QMessageBox>
 #include <QTimer>
 
 TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController, QWidget *parent) : QWidget(parent),
@@ -12,6 +13,7 @@ TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController
     connect(ui->addTowerButton, &QPushButton::clicked, this, &TowerEditor::addTower);
     connect(ui->towerList, &QListWidget::itemClicked, this, &TowerEditor::onItemClicked);
     connect(ui->saveButton, &QPushButton::clicked, this, &TowerEditor::onSaveButtonClicked);
+    connect(ui->deleteButton, &QPushButton::clicked, this, &TowerEditor::onDeleteButtonClicked);
 
     updateTowerList();
 }
@@ -63,7 +65,7 @@ void TowerEditor::onItemClicked(const QListWidgetItem *item) {
     fillPropertiesForm(currentTower);
 }
 
-void TowerEditor::onSaveButtonClicked() const {
+void TowerEditor::onSaveButtonClicked() {
     const auto tower = towerController->getCurrentTower();
     if (!tower) return;
 
@@ -79,7 +81,15 @@ void TowerEditor::onSaveButtonClicked() const {
             j[key.toStdString()] = check->isChecked();
         }
     }
-
+    if (tower->getName() != j["name"].get<std::string>()) {
+        if (towerController->towerExists(j["name"].get<std::string>())) {
+            QMessageBox::warning(this,
+                                 "Warning",
+                                 "Tower with this name has already exist",
+                                 QMessageBox::Ok);
+            return;
+        }
+    }
     tower->fromJson(j);
 
     ui->saveButton->setText("Saved");
@@ -93,6 +103,15 @@ void TowerEditor::onSaveButtonClicked() const {
     for (const auto &name: towers) {
         qDebug() << "   tower name: " << name;
     }
+
+    updateTowerList();
+}
+
+void TowerEditor::onDeleteButtonClicked() {
+    const auto tower = towerController->getCurrentTower();
+    if (!tower) return;
+
+    towerController->removeTower(tower->getName());
 
     updateTowerList();
 }

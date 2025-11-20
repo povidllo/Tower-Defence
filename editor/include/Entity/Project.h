@@ -15,33 +15,18 @@ public:
      * @param path          project path
      * @param lastSaveDate  project last save time
      */
-    Project(const std::string &name, const std::string &path, const std::time_t &lastSaveDate) {
-        this->name = name;
-        this->lastSaveDate = lastSaveDate;
-        this->path = path;
-    }
+    Project(const std::string &name, const std::string &path, const std::time_t &lastSaveDate);
 
     /**
      * Constructor for existing project
      *
      * @param j json that describes the project
      */
-    explicit Project(const json &j) {
-        Project::fromJson(j);
-    }
+    explicit Project(const json &j);
 
-    json toJson() const override {
-        return {
-            {"name", name},
-            {"lastSaveDate", lastSaveDate},
-            {"path", path}
-        };
-    }
+    json toJson() const override;
 
-    void fromJson(const json &j) override {
-        name = j.at("name").get<std::string>();
-        lastSaveDate = j.at("lastSaveDate").get<std::time_t>();
-    }
+    void fromJson(const json &j) override;
 
     [[nodiscard]] std::string getName() const;
 
@@ -55,13 +40,7 @@ public:
 
     void setLastSaveDate(std::time_t last_save_date);
 
-    [[nodiscard]] std::map<std::string, std::shared_ptr<TowerSample> > getTowers() const;
-
-    std::shared_ptr<TowerSample> getTower(std::string &name) const;
-
-    void addTower(const std::shared_ptr<TowerSample> &tower);
-
-    bool existsTower(const std::string &name) const;
+    [[nodiscard]] std::vector<std::shared_ptr<TowerSample> > &getTowers();
 
 private:
     std::string name;
@@ -70,7 +49,7 @@ private:
     //для будущего
     // std::vector<CampaignTemplate*> campaigns;
     // std::vector<EnemyTemplate*> enemies;
-    std::map<std::string, std::shared_ptr<TowerSample> > towers;
+    std::vector<std::shared_ptr<TowerSample> > towers;
     // std::vector<AbilityTemplate*> abilities;
     // std::vector<Replay*> replays;
 };

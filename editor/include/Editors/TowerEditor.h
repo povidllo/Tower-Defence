@@ -26,7 +26,9 @@ private slots:
 
     void onItemClicked(const QListWidgetItem *item);
 
-    void onSaveButtonClicked() const;
+    void onSaveButtonClicked();
+
+    void onDeleteButtonClicked();
 
 private:
     void updateTowerList() const;

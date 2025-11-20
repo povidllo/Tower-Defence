@@ -1,5 +1,28 @@
 #include "Project.h"
 
+Project::Project(const std::string &name, const std::string &path, const std::time_t &lastSaveDate) {
+    this->name = name;
+    this->lastSaveDate = lastSaveDate;
+    this->path = path;
+}
+
+Project::Project(const json &j) {
+    Project::fromJson(j);
+}
+
+Project::json Project::toJson() const {
+    return {
+        {"name", name},
+        {"lastSaveDate", lastSaveDate},
+        {"path", path}
+    };
+}
+
+void Project::fromJson(const json &j) {
+    name = j.at("name").get<std::string>();
+    lastSaveDate = j.at("lastSaveDate").get<std::time_t>();
+}
+
 std::string Project::getName() const {
     return name;
 }
@@ -24,19 +47,6 @@ void Project::setLastSaveDate(std::time_t last_save_date) {
     lastSaveDate = last_save_date;
 }
 
-std::map<std::string, std::shared_ptr<TowerSample> > Project::getTowers() const {
+std::vector<std::shared_ptr<TowerSample> > &Project::getTowers() {
     return towers;
-}
-
-std::shared_ptr<TowerSample> Project::getTower(std::string &name) const {
-    return towers.at(name);
-}
-
-void Project::addTower(const std::shared_ptr<TowerSample> &tower) {
-    this->towers[tower->getName()] = tower;
-}
-
-bool Project::existsTower(const std::string &name) const {
-    const auto it = towers.find(name);
-    return it != towers.end();
 }

@@ -3,52 +3,41 @@
 
 #include <qtmetamacros.h>
 
-#include "Project.h"
 #include "TowerSample.h"
+
+
+class ProjectController;
+
 
 class TowerController {
 public:
-    explicit TowerController(const std::shared_ptr<Project> &project) : currentProject(project), currentTower(nullptr) {
+    explicit TowerController(ProjectController *projectController)
+        : projectController(projectController), currentTower(nullptr) {
     }
 
-    void setCurrentTower(std::string name) {
-        currentTower = currentProject->getTower(name);
-    }
+    // explicit TowerController(const std::shared_ptr<ProjectController> &projectController)
+    //     : projectController(std::move(projectController)), currentTower(nullptr) {
+    // }
 
-    std::shared_ptr<TowerSample> getCurrentTower() {
-        return currentTower;
-    }
+    void setCurrentTower(const std::string &name);
 
-    void changeCurrentTower(std::string name) {
-        currentTower = currentProject->getTower(name);
-    }
+    std::shared_ptr<TowerSample> getCurrentTower();
+
+    // void changeCurrentTower(const std::string &name);
 
 
-    void addTower(std::string name) {
-        const auto newTower = std::make_shared<TowerSample>(name);
-        currentTower = newTower;
-        currentProject->addTower(newTower);
-    }
+    void addTower(std::string name);
 
-    std::vector<std::string> getTowerNames() const {
-        auto towers = currentProject->getTowers();
-        std::vector<std::string> names;
-        for (auto &[fst, snd]: towers) {
-            names.push_back(fst);
-        }
-        return names;
-    }
+    bool removeTower(const std::string &name);
 
-    bool towerExists(const std::string &name) const {
-        return currentProject->existsTower(name);
-    }
+    std::vector<std::string> getTowerNames() const;
 
-    std::shared_ptr<Project> getCurrentProject() const {
-        return currentProject;
-    }
+    bool towerExists(const std::string &name) const;
 
 private:
-    std::shared_ptr<Project> currentProject;
+    // std::shared_ptr<Project> currentProject;
+    // std::weak_ptr<ProjectController> projectController;
+    ProjectController *projectController;
     std::shared_ptr<TowerSample> currentTower;
 };
 
