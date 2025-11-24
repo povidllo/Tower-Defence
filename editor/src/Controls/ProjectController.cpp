@@ -7,7 +7,7 @@
 namespace fs = std::filesystem;
 
 
-ProjectController::ProjectController(const std::string& path) {
+ProjectController::ProjectController(const std::string &path) {
     fs::path p(path);
     fs::path jsonFile = p / "Project.json";
     if (!fs::exists(jsonFile)) {
@@ -30,12 +30,12 @@ ProjectController::ProjectController(const std::string& path) {
     nlohmann::json j;
     try {
         inFile >> j;
-    } catch (const nlohmann::json::parse_error& e) {
+    } catch (const nlohmann::json::parse_error &e) {
         throw std::runtime_error(std::string("JSON parse error: ") + e.what());
     }
 
     currentProject = std::make_shared<Project>(j);
-
+    loadControls();
 }
 
 ProjectController::ProjectController(const std::string &path, const std::string &name) {
@@ -57,8 +57,8 @@ ProjectController::ProjectController(const std::string &path, const std::string 
 
         auto now = std::chrono::system_clock::now();
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                      now.time_since_epoch()
-                  ).count();
+            now.time_since_epoch()
+        ).count();
         currentProject = std::make_shared<Project>(name, fullPath.string(), ms);
 
         std::ofstream outFile(jsonProjectFilePath.string());
@@ -71,11 +71,20 @@ ProjectController::ProjectController(const std::string &path, const std::string 
         }
 
         outFile << currentProject->toJson().dump(4);
-
     } catch (...) {
         if (fs::exists(fullPath)) {
             fs::remove_all(fullPath);
         }
         throw;
     }
+
+    loadControls();
+}
+
+std::shared_ptr<TowerController> ProjectController::getTowerController() {
+    return towerController;
+}
+
+void ProjectController::loadControls() {
+    towerController = std::make_shared<TowerController>(this);
 }

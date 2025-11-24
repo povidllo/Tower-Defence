@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "Project.h"
 #include "ProjectController.h"
+#include "TowerEditor.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -30,6 +31,13 @@ private:
     // AbilityEditor* abilityEditor;
 
     Ui::ProjectEditor *ui;
+
+    std::unique_ptr<TowerEditor> towerEditor;
+    void commonSetUp();
+
+
+private slots:
+    void openTowerEditor();
 };
 
 

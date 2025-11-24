@@ -21,6 +21,13 @@ add_executable(editor
         src/Controls/ProjectController.cpp
         include/Controls/ProjectController.h
         include/Utils/BaseController.h
+        src/Entity/TowerSample.cpp
+        include/Entity/TowerSample.h
+        src/Controls/TowerController.cpp
+        include/Controls/TowerController.h
+        src/Editors/TowerEditor.cpp
+        include/Editors/TowerEditor.h
+        src/Editors/TowerEditor.ui
 )
 
 target_link_libraries(editor PRIVATE
