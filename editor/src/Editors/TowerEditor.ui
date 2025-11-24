@@ -105,7 +105,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="chooseTextureButton">
          <property name="text">
           <string>Choose Texture...</string>
          </property>
@@ -123,8 +123,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>467</width>
-          <height>391</height>
+          <width>465</width>
+          <height>383</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="editorLayout">

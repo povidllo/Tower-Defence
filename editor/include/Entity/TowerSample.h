@@ -9,10 +9,10 @@ class TowerSample : protected ISerializable {
 public:
     using json = nlohmann::json;
 
-    TowerSample(const std::string &name, double damage = 0, double fire_rate = 0)
+    TowerSample(const std::string &name)
         : name(name),
-          damage(damage),
-          fireRate(fire_rate) {
+          damage(0),
+          fireRate(0) {
     }
 
     explicit TowerSample(const json &j) {
@@ -24,13 +24,21 @@ public:
             {"name", name},
             {"damage", damage},
             {"fireRate", fireRate},
+            {"towerTexturePath", towerTexturePath},
+            // {"projectileTexturePath", projectileTexturePath},
+            {"x", x},
+            {"y", y}
         };
     }
 
     void fromJson(const json &j) override {
-        name = j.at("name").get<std::string>();
-        damage = j.at("damage").get<double>();
-        fireRate = j.at("fireRate").get<double>();
+        name = j.value("name", name);
+        damage = j.value("damage", 0.0);
+        fireRate = j.value("fireRate", 1.0);
+        towerTexturePath = j.value("towerTexturePath", "");
+        // projectileTexturePath = j.value("projectileTexturePath", "");
+        x = j.value("x", 0.0);
+        y = j.value("y", 0.0);
     }
 
     [[nodiscard]] std::string getName() {
@@ -57,11 +65,22 @@ public:
         fireRate = r;
     }
 
+    void setTowerTexturePath(const std::string &texPath) {
+        towerTexturePath = texPath;
+    }
+
+    std::string getTowerTexturePath() const {
+        return towerTexturePath;
+    }
+
 private:
     std::string name;
     double damage;
     double fireRate;
-    std::vector<std::shared_ptr<TowerSample> > nextUpgrade;
+    // std::vector<std::shared_ptr<TowerSample> > nextUpgrade;
+    std::string towerTexturePath;
+    int x;
+    int y;
 };
 
 

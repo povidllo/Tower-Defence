@@ -63,31 +63,6 @@ public:
         return currentProject->getTowers();
     }
 
-    // void addTower(const std::shared_ptr<TowerSample> &tower) const {
-    //     auto &towers = currentProject->getTowers();
-    //     towers.push_back(tower);
-    // }
-
-    // std::shared_ptr<TowerSample> getTower(const std::string &name) const {
-    //     auto towers = currentProject->getTowers();
-    //     for (auto &tower: towers) {
-    //         if (tower->getName() == name) {
-    //             return tower;
-    //         }
-    //     }
-    //     return nullptr;
-    // }
-
-    // bool existsTower(const std::string &name) const {
-    //     auto towers = currentProject->getTowers();
-    //     for (auto &tower: towers) {
-    //         if (tower->getName() == name) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-
 private:
     std::shared_ptr<Project> currentProject;
     std::shared_ptr<TowerController> towerController;

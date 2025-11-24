@@ -6,7 +6,7 @@ std::shared_ptr<TowerSample> TowerController::getCurrentTower() {
 }
 
 void TowerController::setCurrentTower(const std::string &name) {
-    auto &towers = projectController->getTowers();
+    const auto &towers = projectController->getTowers();
     for (auto &tower: towers) {
         if (tower->getName() == name) {
             currentTower = tower;
@@ -22,7 +22,7 @@ void TowerController::addTower(std::string name) {
     towers.push_back(newTower);
 }
 
-bool TowerController::removeTower(const std::string &name) {
+bool TowerController::removeTower(const std::string &name) const {
     auto &towers = projectController->getTowers();
     for (int i = 0; i < towers.size(); i++) {
         if (towers[i]->getName() == name) {
@@ -34,7 +34,7 @@ bool TowerController::removeTower(const std::string &name) {
 }
 
 std::vector<std::string> TowerController::getTowerNames() const {
-    auto &towers = projectController->getTowers();
+    const auto &towers = projectController->getTowers();
     std::vector<std::string> names;
     for (auto &tower: towers) {
         names.push_back(tower->getName());
@@ -43,8 +43,8 @@ std::vector<std::string> TowerController::getTowerNames() const {
 }
 
 bool TowerController::towerExists(const std::string &name) const {
-    auto &towers = projectController->getTowers();
-    for (auto &tower: towers) {
+    const auto &towers = projectController->getTowers();
+    for (const auto &tower: towers) {
         if (tower->getName() == name) {
             return true;
         }

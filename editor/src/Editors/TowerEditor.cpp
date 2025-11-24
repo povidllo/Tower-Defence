@@ -3,6 +3,7 @@
 #include <QLineEdit>
 #include <QDoubleSpinBox>
 #include <QCheckBox>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QTimer>
 
@@ -14,23 +15,13 @@ TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController
     connect(ui->towerList, &QListWidget::itemClicked, this, &TowerEditor::onItemClicked);
     connect(ui->saveButton, &QPushButton::clicked, this, &TowerEditor::onSaveButtonClicked);
     connect(ui->deleteButton, &QPushButton::clicked, this, &TowerEditor::onDeleteButtonClicked);
+    connect(ui->chooseTextureButton, &QPushButton::clicked, this, &TowerEditor::onChooseTextureButtonClicked);
 
     updateTowerList();
 }
 
 TowerEditor::~TowerEditor() {
     delete ui;
-}
-
-void TowerEditor::updateTowerList() const {
-    qDebug() << "Tower list updated";
-    ui->towerList->clear();
-
-    const auto towerNames = towerController->getTowerNames();
-
-    for (const auto &name: towerNames) {
-        ui->towerList->addItem(QString::fromStdString(name));
-    }
 }
 
 void TowerEditor::addTower() const {
@@ -116,6 +107,46 @@ void TowerEditor::onDeleteButtonClicked() {
     updateTowerList();
 }
 
+void TowerEditor::onChooseTextureButtonClicked() {
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        "Choose Texture",
+        QDir::currentPath(),
+        ".png"
+    );
+
+    if (filePath.isEmpty()) {
+        return;
+    }
+    try {
+        towerController->setTowerTexture(filePath.toStdString());
+        for (auto it = m_propertyEditors.constBegin(); it != m_propertyEditors.constEnd(); it++) {
+            const QString &key = it.key();
+            if (key == "towerTexturePath") {
+                if (auto *edit = qobject_cast<QLineEdit *>(it.value())) {
+                    edit->setText(filePath);
+                }
+                break;
+            }
+        }
+        showTowerTexturePreview(filePath.toStdString());
+    } catch (const std::exception &e) {
+        qDebug() << "Error: " << e.what();
+        return;
+    }
+}
+
+void TowerEditor::updateTowerList() const {
+    qDebug() << "Tower list updated";
+    ui->towerList->clear();
+
+    const auto towerNames = towerController->getTowerNames();
+
+    for (const auto &name: towerNames) {
+        ui->towerList->addItem(QString::fromStdString(name));
+    }
+}
+
 void TowerEditor::clearPropertiesForm() {
     qDeleteAll(ui->propertiesForm->findChildren<QWidget *>("", Qt::FindDirectChildrenOnly));
     while (ui->propertiesForm->rowCount() > 0)
@@ -127,6 +158,25 @@ void TowerEditor::fillPropertiesForm(const std::shared_ptr<TowerSample> &tower) 
     auto j = tower->toJson();
 
     for (auto &[key, value]: j.items()) {
+        bool flag = false;
+        for (auto &elem: doNotShowThisFields) {
+            if (key == elem) {
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            continue;
+        }
+
+        if (key == "towerTexturePath") {
+            if (!value.empty()) {
+                showTowerTexturePreview(value);
+            } else {
+                ui->towerPreview->setText("No preview");
+            }
+        }
+
         QString fieldName = QString::fromStdString(key);
         QString label = fieldName;
         label[0] = label[0].toUpper();
@@ -154,4 +204,13 @@ void TowerEditor::fillPropertiesForm(const std::shared_ptr<TowerSample> &tower) 
             m_propertyEditors[fieldName] = editor;
         }
     }
+}
+
+void TowerEditor::showTowerTexturePreview(const std::string &path) const {
+    QPixmap pixmap(QString::fromStdString(path));
+    ui->towerPreview->setPixmap(pixmap.scaled(
+        ui->towerPreview->size(),
+        Qt::KeepAspectRatio,
+        Qt::SmoothTransformation
+    ));
 }

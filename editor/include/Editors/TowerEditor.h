@@ -30,6 +30,8 @@ private slots:
 
     void onDeleteButtonClicked();
 
+    void onChooseTextureButtonClicked();
+
 private:
     void updateTowerList() const;
 
@@ -41,6 +43,10 @@ private:
     std::shared_ptr<TowerController> towerController;
 
     QMap<QString, QWidget *> m_propertyEditors;
+
+    std::vector<std::string> doNotShowThisFields{"x", "y"};
+
+    void showTowerTexturePreview(const std::string &path) const;
 };
 
 #endif // TOWERDEFENCE_TOWEREDITOR_H
