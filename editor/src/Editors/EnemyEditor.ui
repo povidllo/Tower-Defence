@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TowerEditor</class>
- <widget class="QWidget" name="TowerEditor">
+ <class>EnemyEditor</class>
+ <widget class="QWidget" name="EnemyEditor">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tower Editor</string>
+   <string>Enemy Editor</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
@@ -30,12 +30,12 @@
         </font>
        </property>
        <property name="text">
-        <string>Existing Towers</string>
+        <string>Existing Enemies</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QListWidget" name="towerList">
+      <widget class="QListWidget" name="enemyList">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -45,9 +45,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="addTowerButton">
+      <widget class="QPushButton" name="addEnemyButton">
        <property name="text">
-        <string>+ Add New Tower</string>
+        <string>+ Add New Enemy</string>
        </property>
        <property name="icon">
         <iconset>
@@ -70,17 +70,14 @@
         </font>
        </property>
        <property name="text">
-        <string>Tower Properties</string>
+        <string>Enemy Properties</string>
        </property>
       </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="towerPreview">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
+        <widget class="QLabel" name="enemyPreview">
          <property name="minimumSize">
           <size>
            <width>150</width>
@@ -109,9 +106,6 @@
        </item>
        <item>
         <widget class="QPushButton" name="chooseTextureButton">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
          <property name="text">
           <string>Choose Texture...</string>
          </property>
