@@ -28,7 +28,36 @@ add_executable(editor
         src/Editors/TowerEditor.cpp
         include/Editors/TowerEditor.h
         src/Editors/TowerEditor.ui
+        src/Entity/EnemySample.cpp
+        include/Entity/EnemySample.h
+        src/Controls/EnemyController.cpp
+        include/Controls/EnemyController.h
+        src/Editors/EnemyEditor.cpp
+        include/Editors/EnemyEditor.h
+        src/Editors/EnemyEditor.ui
+        src/Utils/BaseEditor.cpp
+        include/Utils/BaseEditor.h
 )
+#file(GLOB SRC_CONTROLS CONFIGURE_DEPENDS src/Controls/*.cpp)
+#file(GLOB SRC_EDITORS CONFIGURE_DEPENDS src/Editors/*.cpp src/Editors/*.ui)
+#file(GLOB SRC_ENTITY CONFIGURE_DEPENDS src/Entity/*.cpp)
+#
+#file(GLOB INC_CONTROLS CONFIGURE_DEPENDS include/Controls/*.hpp)
+#file(GLOB INC_EDITORS CONFIGURE_DEPENDS include/Editors/*.hpp)
+#file(GLOB INC_ENTITY CONFIGURE_DEPENDS include/Entity/*.hpp)
+#
+#add_executable(editor
+#        src/main.cpp
+#        ${SRC_CONTROLS}
+#        ${SRC_EDITORS}
+#        ${SRC_ENTITY}
+#        ${INC_CONTROLS}
+#        ${INC_EDITORS}
+#        ${INC_ENTITY}
+#        src/Editors/EnemyEditor.cpp
+#        include/Editors/EnemyEditor.h
+#        src/Editors/EnemyEditor.ui
+#)
 
 target_link_libraries(editor PRIVATE
         Qt6::Widgets

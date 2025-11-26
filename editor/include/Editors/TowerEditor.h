@@ -1,52 +1,51 @@
 #ifndef TOWERDEFENCE_TOWEREDITOR_H
 #define TOWERDEFENCE_TOWEREDITOR_H
 
-#include <memory>
 #include <QListWidgetItem>
+#include <memory>
+
+#include "BaseEditor.h"
 #include "TowerController.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-    class TowerEditor;
+	class TowerEditor;
 }
 
 QT_END_NAMESPACE
 
-class TowerEditor : public QWidget {
-    Q_OBJECT
+class TowerEditor : public QWidget, protected BaseEditor {
+	Q_OBJECT
 
 public:
-    explicit TowerEditor(const std::shared_ptr<TowerController> &towerController, QWidget *parent = nullptr);
+	explicit TowerEditor(const std::shared_ptr<TowerController> &towerController, QWidget *parent = nullptr);
 
-    ~TowerEditor() override;
+	~TowerEditor() override;
 
 private slots:
-    void addTower() const;
+	void addTower() const;
 
-    void onItemClicked(const QListWidgetItem *item);
+	void onItemClicked(const QListWidgetItem *item);
 
-    void onSaveButtonClicked();
+	void onSaveButtonClicked();
 
-    void onDeleteButtonClicked();
+	void onDeleteButtonClicked();
 
-    void onChooseTextureButtonClicked();
+	void onChooseTextureButtonClicked();
 
 private:
-    void updateTowerList() const;
+	Ui::TowerEditor *ui;
 
-    void clearPropertiesForm();
+	void updateTowerList() const;
 
-    void fillPropertiesForm(const std::shared_ptr<TowerSample> &tower);
+	void fillPropertiesForm(const std::shared_ptr<TowerSample> &tower);
 
-    Ui::TowerEditor *ui;
-    std::shared_ptr<TowerController> towerController;
+	void showTowerTexturePreview(const std::string &path) const;
 
-    QMap<QString, QWidget *> m_propertyEditors;
-
-    std::vector<std::string> doNotShowThisFields{"x", "y"};
-
-    void showTowerTexturePreview(const std::string &path) const;
+	std::shared_ptr<TowerController> towerController;
+	QMap<QString, QWidget *> m_propertyEditors;
+	std::vector<std::string> doNotShowThisFields{"x", "y"};
 };
 
 #endif // TOWERDEFENCE_TOWEREDITOR_H

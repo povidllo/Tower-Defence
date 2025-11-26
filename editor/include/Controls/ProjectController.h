@@ -2,6 +2,8 @@
 #define TOWERDEFENCE_PROJECTCONTROLLER_H
 
 #include "BaseController.h"
+#include "EnemyController.h"
+#include "EnemyEditor.h"
 #include "TowerController.h"
 
 /**
@@ -9,75 +11,60 @@
  */
 class ProjectController : public BaseController, std::enable_shared_from_this<ProjectController> {
 public:
-    using json = nlohmann::json;
-    /**
-     * Constructor for loading existing project from json file
-     *
-     * @param path path to json file
-     */
-    ProjectController(const std::string &path);
+	using json = nlohmann::json;
+	/**
+	 * Constructor for loading existing project from json file
+	 *
+	 * @param path path to json file
+	 */
+	ProjectController(const std::string &path);
 
-    /**
-     * Creating new project at the specified path
-     *
-     * @param path path where we will create a new project
-     * @param name project's name
-     */
-    ProjectController(const std::string &path, const std::string &name);
+	/**
+	 * Creating new project at the specified path
+	 *
+	 * @param path path where we will create a new project
+	 * @param name project's name
+	 */
+	ProjectController(const std::string &path, const std::string &name);
 
-    std::shared_ptr<TowerController> getTowerController();
+	std::shared_ptr<TowerController> getTowerController();
+	std::shared_ptr<EnemyController> getEnemyController();
 
-    json toJson() const {
-        return currentProject->toJson();
-    }
+	json toJson() const { return currentProject->toJson(); }
 
-    void fromJson(const json &j) {
-        currentProject->fromJson(j);
-    }
+	void fromJson(const json &j) { currentProject->fromJson(j); }
 
-    std::string getProjectName() const {
-        return currentProject->getName();
-    }
+	std::string getProjectName() const { return currentProject->getName(); }
 
-    void setProjectName(const std::string &name) const {
-        currentProject->setName(name);
-    }
+	void setProjectName(const std::string &name) const { currentProject->setName(name); }
 
-    std::string getProjectPath() const {
-        return currentProject->getPath();
-    }
+	std::string getProjectPath() const { return currentProject->getPath(); }
 
-    void setProjectPath(const std::string &path) const {
-        currentProject->setPath(path);
-    }
+	void setProjectPath(const std::string &path) const { currentProject->setPath(path); }
 
-    std::time_t getProjectLastSaveDate() const {
-        return currentProject->getLastSaveDate();
-    }
+	std::time_t getProjectLastSaveDate() const { return currentProject->getLastSaveDate(); }
 
-    void setProjectLastSaveDate(const std::time_t &date) const {
-        currentProject->setLastSaveDate(date);
-    }
+	void setProjectLastSaveDate(const std::time_t &date) const { currentProject->setLastSaveDate(date); }
 
-    std::vector<std::shared_ptr<TowerSample> > &getTowers() const {
-        return currentProject->getTowers();
-    }
+	std::vector<std::shared_ptr<TowerSample>> &getTowers() const { return currentProject->getTowers(); }
+
+	std::vector<std::shared_ptr<EnemySample>> &getEnemies() const { return currentProject->getEnemies(); }
 
 private:
-    std::shared_ptr<Project> currentProject;
-    std::shared_ptr<TowerController> towerController;
-    //     MapController* mapController;
-    //     TowerController* towerController;
-    //     EnemyController* enemyController;
-    //     WaveController* waveController;
-    //     CampaignController* campaignController;
+	std::shared_ptr<Project> currentProject;
+	std::shared_ptr<TowerController> towerController;
+	//     MapController* mapController;
+	//     TowerController* towerController;
+	std::shared_ptr<EnemyController> enemyController;
+	//     WaveController* waveController;
+	//     CampaignController* campaignController;
 
-    /**
-     * Method for initializing all controllers
-     *
-     */
-    void loadControls();
+	/**
+	 * Method for initializing all controllers
+	 *
+	 */
+	void loadControls();
 };
 
 
-#endif //TOWERDEFENCE_PROJECTCONTROLLER_H
+#endif // TOWERDEFENCE_PROJECTCONTROLLER_H

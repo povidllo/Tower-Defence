@@ -2,6 +2,8 @@
 #define ProjectEditor_H
 
 #include <QMainWindow>
+
+#include "EnemyEditor.h"
 #include "Project.h"
 #include "ProjectController.h"
 #include "TowerEditor.h"
@@ -9,35 +11,42 @@
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-    class ProjectEditor;
+	class ProjectEditor;
 }
 
 QT_END_NAMESPACE
 
 class ProjectEditor : public QMainWindow {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit ProjectEditor(std::string path, std::string name, QWidget *parent = nullptr);
-    explicit ProjectEditor(std::string path, QWidget *parent = nullptr);
+	explicit ProjectEditor(std::string path, std::string name, QWidget *parent = nullptr);
+	explicit ProjectEditor(std::string path, QWidget *parent = nullptr);
 
-    ~ProjectEditor() override;
+	~ProjectEditor() override;
 
 private:
-    // std::shared_ptr<Project> currentProject;
+	// std::shared_ptr<Project> currentProject;
 
-    std::shared_ptr<ProjectController> projectController;
-    // CampaignEditor* campaignEditor;
-    // AbilityEditor* abilityEditor;
+	std::shared_ptr<ProjectController> projectController;
+	// CampaignEditor* campaignEditor;
+	// AbilityEditor* abilityEditor;
 
-    Ui::ProjectEditor *ui;
+	Ui::ProjectEditor *ui;
+	QWidget *container;
 
-    std::unique_ptr<TowerEditor> towerEditor;
-    void commonSetUp();
+
+	std::unique_ptr<TowerEditor> towerEditor;
+	std::unique_ptr<EnemyEditor> enemyEditor;
+
+	// TowerEditor *towerEditor;
+	// EnemyEditor *enemyEditor;
+	void commonSetUp();
 
 
 private slots:
-    void openTowerEditor();
+	void openTowerEditor();
+	void openEnemyEditor();
 };
 
 

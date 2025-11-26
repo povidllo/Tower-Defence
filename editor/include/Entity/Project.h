@@ -1,5 +1,6 @@
 #ifndef EDITOR_PROJECT_H
 #define EDITOR_PROJECT_H
+#include "EnemySample.h"
 #include "Serializable.h"
 #include "TowerSample.h"
 
@@ -42,13 +43,15 @@ public:
 
     [[nodiscard]] std::vector<std::shared_ptr<TowerSample> > &getTowers();
 
+    [[nodiscard]] std::vector<std::shared_ptr<EnemySample> > &getEnemies();
+
 private:
     std::string name;
     std::string path;
     std::time_t lastSaveDate;
     //для будущего
     // std::vector<CampaignTemplate*> campaigns;
-    // std::vector<EnemyTemplate*> enemies;
+    std::vector<std::shared_ptr<EnemySample> > enemies;
     std::vector<std::shared_ptr<TowerSample> > towers;
     // std::vector<AbilityTemplate*> abilities;
     // std::vector<Replay*> replays;

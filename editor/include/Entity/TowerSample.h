@@ -1,7 +1,8 @@
 #ifndef TOWERDEFENCE_TOWERSAMPLE_H
 #define TOWERDEFENCE_TOWERSAMPLE_H
+
 #include <string>
-#include <vector>
+#include <utility>
 #include "Serializable.h"
 
 
@@ -9,10 +10,8 @@ class TowerSample : protected ISerializable {
 public:
     using json = nlohmann::json;
 
-    TowerSample(const std::string &name)
-        : name(name),
-          damage(0),
-          fireRate(0) {
+    explicit TowerSample(std::string name)
+        : name(std::move(name)) {
     }
 
     explicit TowerSample(const json &j) {
@@ -33,12 +32,12 @@ public:
 
     void fromJson(const json &j) override {
         name = j.value("name", name);
-        damage = j.value("damage", 0.0);
-        fireRate = j.value("fireRate", 1.0);
+        damage = j.value("damage", damage);
+        fireRate = j.value("fireRate", fireRate);
         towerTexturePath = j.value("towerTexturePath", "");
         // projectileTexturePath = j.value("projectileTexturePath", "");
-        x = j.value("x", 0.0);
-        y = j.value("y", 0.0);
+        x = j.value("x", x);
+        y = j.value("y", y);
     }
 
     [[nodiscard]] std::string getName() {
@@ -75,12 +74,12 @@ public:
 
 private:
     std::string name;
-    double damage;
-    double fireRate;
+    double damage{0};
+    double fireRate{0};
     // std::vector<std::shared_ptr<TowerSample> > nextUpgrade;
     std::string towerTexturePath;
-    int x;
-    int y;
+    int x{0};
+    int y{0};
 };
 
 

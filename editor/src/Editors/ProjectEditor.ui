@@ -35,6 +35,7 @@
      <string>Editor</string>
     </property>
     <addaction name="actionTower_editor"/>
+    <addaction name="actionEnemy_editor"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEditor"/>
@@ -53,6 +54,11 @@
   <action name="actionTower_editor">
    <property name="text">
     <string>Tower editor</string>
+   </property>
+  </action>
+  <action name="actionEnemy_editor">
+   <property name="text">
+    <string>Enemy editor</string>
    </property>
   </action>
  </widget>
