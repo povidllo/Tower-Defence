@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "EnemyEditor.h"
+#include "MapEditor.h"
 #include "Project.h"
 #include "ProjectController.h"
 #include "TowerEditor.h"
@@ -38,6 +39,7 @@ private:
 
 	std::unique_ptr<TowerEditor> towerEditor;
 	std::unique_ptr<EnemyEditor> enemyEditor;
+	std::unique_ptr<MapEditor> mapEditor;
 
 	// TowerEditor *towerEditor;
 	// EnemyEditor *enemyEditor;
@@ -47,6 +49,7 @@ private:
 private slots:
 	void openTowerEditor();
 	void openEnemyEditor();
+	void openMapEditor();
 };
 
 

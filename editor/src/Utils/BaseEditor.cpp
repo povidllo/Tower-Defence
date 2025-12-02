@@ -3,6 +3,7 @@
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QTimer>
+#include <fstream>
 nlohmann::json BaseEditor::collectPropertiesToJson(const QMap<QString, QWidget *> &editors) {
 	nlohmann::json j;
 

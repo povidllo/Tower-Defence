@@ -37,6 +37,17 @@ add_executable(editor
         src/Editors/EnemyEditor.ui
         src/Utils/BaseEditor.cpp
         include/Utils/BaseEditor.h
+        src/Entity/Map.cpp
+        include/Entity/Map.h
+        src/Controls/MapController.cpp
+        include/Controls/MapController.h
+        src/Utils/TextureManager.cpp
+        include/Utils/TextureManager.h
+        src/Editors/MapEditor.cpp
+        include/Editors/MapEditor.h
+        src/Editors/MapEditor.ui
+        src/Utils/TextureUtils.cpp
+        include/Utils/TextureUtils.h
 )
 #file(GLOB SRC_CONTROLS CONFIGURE_DEPENDS src/Controls/*.cpp)
 #file(GLOB SRC_EDITORS CONFIGURE_DEPENDS src/Editors/*.cpp src/Editors/*.ui)

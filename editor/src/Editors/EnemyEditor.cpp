@@ -31,7 +31,6 @@ EnemyEditor::EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController
 EnemyEditor::~EnemyEditor() { delete ui; }
 
 void EnemyEditor::addEnemy() const {
-	qDebug() << "opening enemy editor";
 	std::string baseName = "enemy";
 	int counter = 1;
 	while (enemyController->enemyExists(baseName)) {

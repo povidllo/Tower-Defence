@@ -1,6 +1,8 @@
 #include "ProjectEditor.h"
 
 #include <QPushButton>
+#include <complex>
+#include <qstackedwidget.h>
 
 #include "ui_ProjectEditor.h"
 
@@ -25,51 +27,31 @@ ProjectEditor::~ProjectEditor() { delete ui; }
 void ProjectEditor::commonSetUp() {
 	towerEditor = std::make_unique<TowerEditor>(projectController->getTowerController());
 	enemyEditor = std::make_unique<EnemyEditor>(projectController->getEnemyController());
-	// towerEditor = new TowerEditor(projectController->getTowerController());
-	// enemyEditor = new EnemyEditor(projectController->getEnemyController());
-	container = new QWidget(this);
-	QVBoxLayout *layout = new QVBoxLayout(container);
-	container->setLayout(layout);
-	layout->addWidget(towerEditor.get());
-	layout->addWidget(enemyEditor.get());
+	mapEditor = std::make_unique<MapEditor>(projectController->getMapController());
 
-	towerEditor->hide();
-	enemyEditor->hide();
+	ui->stackedWidget = new QStackedWidget(this);
+	setCentralWidget(ui->stackedWidget);
 
-	setCentralWidget(container);
+	ui->stackedWidget->addWidget(towerEditor.get());
+	ui->stackedWidget->addWidget(enemyEditor.get());
+	ui->stackedWidget->addWidget(mapEditor.get());
 
 
 	connect(ui->actionTower_editor, &QAction::triggered, this, &ProjectEditor::openTowerEditor);
 	connect(ui->actionEnemy_editor, &QAction::triggered, this, &ProjectEditor::openEnemyEditor);
+	connect(ui->actionMap_editor, &QAction::triggered, this, &ProjectEditor::openMapEditor);
 }
 
 void ProjectEditor::openTowerEditor() {
 	qDebug() << "opening tower editor " << towerEditor->metaObject();
-	// if (centralWidget()) {
-	// 	centralWidget()->deleteLater();
-	// }
-
-	// setCentralWidget(towerEditor.get());
-	// setCentralWidget(towerEditor);
-
-
-	// ui->actionTower_editor->setChecked(true);
-
-	towerEditor->show();
-	enemyEditor->hide();
+	ui->stackedWidget->setCurrentWidget(towerEditor.get());
 }
 
 void ProjectEditor::openEnemyEditor() {
 	qDebug() << "opening enemy editor " << enemyEditor->metaObject();
-
-	// if (centralWidget()) {
-	// 	centralWidget()->deleteLater();
-	// }
-
-	// setCentralWidget(enemyEditor.get());
-	// setCentralWidget(enemyEditor);
-
-	// ui->actionEnemy_editor->setChecked(true);
-	enemyEditor->show();
-	towerEditor->hide();
+	ui->stackedWidget->setCurrentWidget(enemyEditor.get());
+}
+void ProjectEditor::openMapEditor() {
+	qDebug() << "opening map editor " << mapEditor->metaObject();
+	ui->stackedWidget->setCurrentWidget(mapEditor.get());
 }

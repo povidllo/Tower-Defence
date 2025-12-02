@@ -4,6 +4,7 @@
 #include "BaseController.h"
 #include "EnemyController.h"
 #include "EnemyEditor.h"
+#include "MapController.h"
 #include "TowerController.h"
 
 /**
@@ -29,6 +30,7 @@ public:
 
 	std::shared_ptr<TowerController> getTowerController();
 	std::shared_ptr<EnemyController> getEnemyController();
+	std::shared_ptr<MapController> getMapController();
 
 	json toJson() const { return currentProject->toJson(); }
 
@@ -50,12 +52,13 @@ public:
 
 	std::vector<std::shared_ptr<EnemySample>> &getEnemies() const { return currentProject->getEnemies(); }
 
+	std::vector<std::shared_ptr<Map>> &getMaps() const { return currentProject->getMaps(); }
+
 private:
 	std::shared_ptr<Project> currentProject;
 	std::shared_ptr<TowerController> towerController;
-	//     MapController* mapController;
-	//     TowerController* towerController;
 	std::shared_ptr<EnemyController> enemyController;
+	std::shared_ptr<MapController> mapController;
 	//     WaveController* waveController;
 	//     CampaignController* campaignController;
 
@@ -64,6 +67,8 @@ private:
 	 *
 	 */
 	void loadControls();
+
+	void setEmptyTile();
 };
 
 
