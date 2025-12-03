@@ -3,7 +3,9 @@
 namespace TDEngine {
     namespace Inner {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
-        EngineStorage::EngineStorage(MapSample map) {
+        EngineStorage::EngineStorage(MapSample map)
+            : curMap(map), curGameStatus(GameStatus(0, 0))
+        {
         }
 
         std::vector<std::shared_ptr<IActing>> EngineStorage::getEverythingActing() {

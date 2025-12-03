@@ -2,16 +2,23 @@
 
 namespace TDEngine {
     namespace Inner {
-        void TickGenerator::tick(std::vector<IActing>& everythingActing) {
+        TickGenerator::TickGenerator(std::chrono::time_point<std::chrono::steady_clock> startTime)
+            : lastTickTime(startTime) {}
+
+        void TickGenerator::tick(const std::vector<std::shared_ptr<IActing>> everythingActing) {
             auto curTickTime = std::chrono::steady_clock::now();
             uint64_t tickIntervalTIme =
                 std::chrono::duration_cast<std::chrono::milliseconds>(curTickTime - lastTickTime).count();
 
             for (auto & acting : everythingActing) {
-                acting.act(tickIntervalTIme);
+                acting->act(tickIntervalTIme);
             }
 
             lastTickTime = curTickTime;
+        }
+
+        void TickGenerator::resetTime(std::chrono::time_point<std::chrono::steady_clock> cur) {
+            lastTickTime = cur;
         }
     } // Inner
 } // TDEngine
