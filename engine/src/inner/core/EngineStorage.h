@@ -16,7 +16,7 @@ namespace TDEngine {
     namespace Inner {
         class EngineStorage {
             public:
-            EngineStorage(MapSample map);
+            explicit EngineStorage(MapSample map);
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
             std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
             GameStatus getGameStatus();
