@@ -1,6 +1,5 @@
 #include "ProjectEditor.h"
 
-#include <QPushButton>
 #include <complex>
 #include <qstackedwidget.h>
 
@@ -40,6 +39,7 @@ void ProjectEditor::commonSetUp() {
 	connect(ui->actionTower_editor, &QAction::triggered, this, &ProjectEditor::openTowerEditor);
 	connect(ui->actionEnemy_editor, &QAction::triggered, this, &ProjectEditor::openEnemyEditor);
 	connect(ui->actionMap_editor, &QAction::triggered, this, &ProjectEditor::openMapEditor);
+	connect(ui->actionSave_project, &QAction::triggered, this, &ProjectEditor::onSaveProjectClicked);
 }
 
 void ProjectEditor::openTowerEditor() {
@@ -54,4 +54,11 @@ void ProjectEditor::openEnemyEditor() {
 void ProjectEditor::openMapEditor() {
 	qDebug() << "opening map editor " << mapEditor->metaObject();
 	ui->stackedWidget->setCurrentWidget(mapEditor.get());
+}
+void ProjectEditor::onSaveProjectClicked() {
+	if (projectController->saveProject()) {
+		qDebug() << "saving project";
+		return;
+	}
+	qDebug() << "failed to save project";
 }

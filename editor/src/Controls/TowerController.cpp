@@ -49,3 +49,10 @@ bool TowerController::towerExists(const std::string &name) const {
 	}
 	return false;
 }
+
+void TowerController::setTowerTexture(const std::string &path) const {
+	if (!TextureUtils::isPngBySignature(path)) {
+		throw std::invalid_argument("Tower texture does not have .png format");
+	}
+	currentTower->setTowerTexturePath(path);
+}

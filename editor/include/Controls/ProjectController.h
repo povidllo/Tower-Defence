@@ -13,6 +13,7 @@
 class ProjectController : public BaseController, std::enable_shared_from_this<ProjectController> {
 public:
 	using json = nlohmann::json;
+
 	/**
 	 * Constructor for loading existing project from json file
 	 *
@@ -28,6 +29,9 @@ public:
 	 */
 	ProjectController(const std::string &path, const std::string &name);
 
+	json loadFromFile(const std::string &path);
+
+	bool saveProject();
 	std::shared_ptr<TowerController> getTowerController();
 	std::shared_ptr<EnemyController> getEnemyController();
 	std::shared_ptr<MapController> getMapController();

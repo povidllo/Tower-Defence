@@ -10,6 +10,7 @@ void MapController::setCurrentMap(const std::string &name) {
 		}
 	}
 }
+
 std::shared_ptr<Map> MapController::getCurrentMap() const { return currentMap; }
 
 void MapController::addMap(const std::string &name, int height, int width) {

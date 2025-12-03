@@ -10,7 +10,7 @@
 namespace fs = std::filesystem;
 
 
-ProjectController::ProjectController(const std::string &path) {
+Project::json ProjectController::loadFromFile(const std::string &path) {
 	fs::path p(path);
 	fs::path jsonFile = p / "Project.json";
 	if (!fs::exists(jsonFile)) {
@@ -29,6 +29,30 @@ ProjectController::ProjectController(const std::string &path) {
 	} catch (const nlohmann::json::parse_error &e) {
 		throw std::runtime_error(std::string("JSON parse error: ") + e.what());
 	}
+
+	return j;
+}
+
+bool ProjectController::saveProject() {
+	try {
+		fs::path path = currentProject->getPath();
+		json j = toJson();
+		fs::path jsonFile = path / "Project.json";
+
+
+		std::ofstream file(jsonFile);
+		file << std::setw(4) << j << std::endl;
+
+		setProjectLastSaveDate(std::time(nullptr));
+
+		return true;
+	} catch (const std::exception &e) {
+		return false;
+	}
+}
+
+ProjectController::ProjectController(const std::string &path) {
+	auto j = loadFromFile(path);
 
 	currentProject = std::make_shared<Project>(j);
 	loadControls();
@@ -69,6 +93,7 @@ ProjectController::ProjectController(const std::string &path, const std::string 
 	loadControls();
 	setEmptyTile();
 }
+
 
 std::shared_ptr<TowerController> ProjectController::getTowerController() { return towerController; }
 std::shared_ptr<EnemyController> ProjectController::getEnemyController() { return enemyController; }

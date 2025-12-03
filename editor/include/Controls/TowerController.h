@@ -29,12 +29,7 @@ public:
 
 	bool towerExists(const std::string &name) const;
 
-	void setTowerTexture(const std::string &path) {
-		if (!TextureUtils::isPngBySignature(path)) {
-			throw std::invalid_argument("Tower texture does not have .png format");
-		}
-		currentTower->setTowerTexturePath(path);
-	}
+	void setTowerTexture(const std::string &path) const;
 
 private:
 	ProjectController *projectController;

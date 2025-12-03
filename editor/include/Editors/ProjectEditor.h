@@ -50,6 +50,7 @@ private slots:
 	void openTowerEditor();
 	void openEnemyEditor();
 	void openMapEditor();
+	void onSaveProjectClicked();
 };
 
 

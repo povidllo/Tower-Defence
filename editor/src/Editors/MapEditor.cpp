@@ -18,6 +18,7 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	connect(ui->mapList, &QListWidget::itemClicked, this, &MapEditor::onMapItemClicked);
 	connect(ui->addTextureButton, &QPushButton::clicked, this, &MapEditor::onAddTextureButtonClicked);
 	connect(ui->textureList, &QListWidget::itemClicked, this, &MapEditor::onTextureItemClicked);
+	connect(ui->deleteMapButoon, &QPushButton::clicked, this, &MapEditor::onDeleteMapButtonClicked);
 
 	updateMapList();
 	updateTextureList();
@@ -174,6 +175,17 @@ void MapEditor::onAddTextureButtonClicked() {
 	updateTextureList();
 
 	QMessageBox::information(this, tr("Success"), tr("Texture added successfully!\nID: %1\nSize: 32×32").arg(newId));
+}
+
+void MapEditor::onDeleteMapButtonClicked() {
+	const auto map = mapController->getCurrentMap();
+	if (!map) {
+		return;
+	}
+
+	mapController->removeMap(map->getName());
+
+	updateMapList();
 }
 
 void MapEditor::updateMapList() const {

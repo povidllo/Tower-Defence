@@ -25,6 +25,8 @@ private slots:
 	void onMapItemClicked(const QListWidgetItem *item);
 	void onTextureItemClicked(QListWidgetItem *item);
 	void onAddTextureButtonClicked();
+	void onDeleteMapButtonClicked();
+	// void onDeleteTextureButtonClicked();
 
 
 private:
