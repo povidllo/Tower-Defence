@@ -4,6 +4,7 @@
 #include "BaseController.h"
 #include "EnemyController.h"
 #include "EnemyEditor.h"
+#include "MapController.h"
 #include "TowerController.h"
 
 /**
@@ -12,6 +13,7 @@
 class ProjectController : public BaseController, std::enable_shared_from_this<ProjectController> {
 public:
 	using json = nlohmann::json;
+
 	/**
 	 * Constructor for loading existing project from json file
 	 *
@@ -27,8 +29,12 @@ public:
 	 */
 	ProjectController(const std::string &path, const std::string &name);
 
+	json loadFromFile(const std::string &path);
+
+	bool saveProject();
 	std::shared_ptr<TowerController> getTowerController();
 	std::shared_ptr<EnemyController> getEnemyController();
+	std::shared_ptr<MapController> getMapController();
 
 	json toJson() const { return currentProject->toJson(); }
 
@@ -50,12 +56,13 @@ public:
 
 	std::vector<std::shared_ptr<EnemySample>> &getEnemies() const { return currentProject->getEnemies(); }
 
+	std::vector<std::shared_ptr<Map>> &getMaps() const { return currentProject->getMaps(); }
+
 private:
 	std::shared_ptr<Project> currentProject;
 	std::shared_ptr<TowerController> towerController;
-	//     MapController* mapController;
-	//     TowerController* towerController;
 	std::shared_ptr<EnemyController> enemyController;
+	std::shared_ptr<MapController> mapController;
 	//     WaveController* waveController;
 	//     CampaignController* campaignController;
 
@@ -64,6 +71,8 @@ private:
 	 *
 	 */
 	void loadControls();
+
+	void setEmptyTile();
 };
 
 
