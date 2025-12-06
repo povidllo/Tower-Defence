@@ -49,3 +49,53 @@ bool MapController::mapExists(const std::string &name) const {
 	}
 	return false;
 }
+void MapController::addWave(const std::string &name) {
+	auto &waves = currentMap->getWaves();
+	WaveSample newWave = WaveSample(name);
+	waves.push_back(newWave);
+}
+
+bool MapController::removeWave(const std::string &name) {
+	auto &waves = currentMap->getWaves();
+	waves.erase(std::remove_if(waves.begin(), waves.end(),
+							   [&name](const WaveSample &wave) { return wave.getName() == name; }),
+				waves.end());
+	return true;
+}
+
+std::vector<std::string> MapController::getWavesNames() const {
+	const auto &waves = currentMap->getWaves();
+	std::vector<std::string> names;
+	for (auto &wave: waves) {
+		names.push_back(wave.getName());
+	}
+	return names;
+}
+
+bool MapController::waveExists(const std::string &name) const {
+	const auto &waves = currentMap->getWaves();
+	for (const auto &wave: waves) {
+		if (wave.getName() == name) {
+			return true;
+		}
+	}
+	return false;
+}
+std::vector<std::string> MapController::getAvailableEnemies() const {
+	auto &enemies = projectController->getEnemies();
+	std::vector<std::string> names;
+	for (auto &enemy: enemies) {
+		names.push_back(enemy->getName());
+	}
+	return names;
+}
+
+std::shared_ptr<WaveSample> MapController::getWave(const std::string &name) {
+	auto &waves = currentMap->getWaves();
+	for (auto &wave: waves) {
+		if (wave.getName() == name) {
+			return std::shared_ptr<WaveSample>(&wave);
+		}
+	}
+	return nullptr;
+}

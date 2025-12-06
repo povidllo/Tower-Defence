@@ -58,6 +58,8 @@ public:
 
 	std::vector<std::shared_ptr<Map>> &getMaps() const { return currentProject->getMaps(); }
 
+	void removeEnemiesFromWaves(std::string enemyName) const;
+
 private:
 	std::shared_ptr<Project> currentProject;
 	std::shared_ptr<TowerController> towerController;

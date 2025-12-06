@@ -48,6 +48,11 @@ add_executable(editor
         src/Editors/MapEditor.ui
         src/Utils/TextureUtils.cpp
         include/Utils/TextureUtils.h
+        src/Entity/WaveSample.cpp
+        include/Entity/WaveSample.h
+        src/Editors/WaveEditor.cpp
+        include/Editors/WaveEditor.h
+        src/Editors/WaveEditor.ui
 )
 #file(GLOB SRC_CONTROLS CONFIGURE_DEPENDS src/Controls/*.cpp)
 #file(GLOB SRC_EDITORS CONFIGURE_DEPENDS src/Editors/*.cpp src/Editors/*.ui)

@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "Serializable.h"
+#include "WaveSample.h"
 
 
 class Map : protected ISerializable {
@@ -20,7 +21,12 @@ public:
 			tileArray.push_back(row);
 		}
 
-		return {{"name", name}, {"height", height}, {"width", width}, {"tiles", tileArray}};
+		json wavesArray = json::array();
+		for (const auto &wave: waves) {
+			wavesArray.push_back(wave.toJson());
+		}
+
+		return {{"name", name}, {"height", height}, {"width", width}, {"tiles", tileArray}, {"waves", wavesArray}};
 	}
 
 	void fromJson(const json &j) override {
@@ -39,6 +45,13 @@ public:
 				}
 			}
 		}
+
+		waves.clear();
+		if (j.contains("waves") && j["waves"].is_array()) {
+			for (const auto &waveJson: j["waves"]) {
+				waves.emplace_back(waveJson);
+			}
+		}
 	}
 
 	int getTile(const int x, const int y) const { return tiles[y][x]; }
@@ -54,11 +67,15 @@ public:
 
 	int getWidth() const { return width; }
 
+	std::vector<WaveSample> &getWaves() { return waves; }
+
+
 private:
 	std::string name;
 	int height;
 	int width;
 
+	std::vector<WaveSample> waves;
 	std::vector<std::vector<int>> tiles;
 };
 

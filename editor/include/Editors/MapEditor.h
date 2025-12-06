@@ -22,10 +22,16 @@ public:
 
 private slots:
 	void onAddMapButtonClicked();
-	void onMapItemClicked(const QListWidgetItem *item);
+	void onMapItemClicked(int index);
+	void onModeItemClicked(const QListWidgetItem *item);
 	void onTextureItemClicked(QListWidgetItem *item);
 	void onAddTextureButtonClicked();
 	void onDeleteMapButtonClicked();
+
+	void onAddWaveButtonClicked();
+	void onDeleteWaveButtonClicked();
+	void onWaveItemClicked(QListWidgetItem *item);
+	void onEditWaveButtonClicked();
 	// void onDeleteTextureButtonClicked();
 
 
@@ -34,11 +40,14 @@ private:
 
 	void updateTextureList();
 	void updateMapList() const;
+	void updateWaveList() const;
 
 	std::shared_ptr<MapController> mapController;
+	std::string currentWaveName;
 
 protected:
 	bool eventFilter(QObject *obj, QEvent *event) override;
+	void refreshMapView();
 };
 
 

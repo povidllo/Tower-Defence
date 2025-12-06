@@ -26,9 +26,11 @@ bool EnemyController::removeEnemy(const std::string &name) const {
 	for (int i = 0; i < enemies.size(); i++) {
 		if (enemies[i]->getName() == name) {
 			enemies.erase(enemies.begin() + i);
+			projectController->removeEnemiesFromWaves(name);
 			return true;
 		}
 	}
+
 	return false;
 }
 
