@@ -11,89 +11,42 @@ using json = nlohmann::json;
 
 class WaveSample : public ISerializable {
 public:
-	WaveSample(std::string name = "New Wave") : name(std::move(name)) {}
+	WaveSample(std::string name);
 
-	explicit WaveSample(const json &j) { fromJson(j); }
+	explicit WaveSample(const json &j);
 
-	json toJson() const override {
-		json enemiesArray = json::array();
-		for (const auto &[enemyName, count]: enemies) {
-			enemiesArray.push_back({{"enemyName", enemyName}, {"count", count}});
-		}
+	json toJson() const override;
 
-		json pathArray = json::array();
-		for (const auto &[x, y]: path) {
-			pathArray.push_back({{"x", x}, {"y", y}});
-		}
+	void fromJson(const json &j) override;
 
-		json j = {{"name", name}, {"enemies", pathArray}, {"path", pathArray}};
+	const std::string &getName() const;
 
-		return j;
-	}
+	void setName(const std::string &n);
 
-	void fromJson(const json &j) override {
-		name = j.value("name", "Wave");
+	const std::vector<std::pair<std::string, int> > &getEnemies() const;
 
-		enemies.clear();
-		if (j.contains("enemies") && j["enemies"].is_array()) {
-			for (const auto &item: j["enemies"]) {
-				std::string enemyName = item.value("enemyName", "");
-				int count = item.value("count", 1);
-				if (!enemyName.empty()) {
-					enemies.emplace_back(enemyName, count);
-				}
-			}
-		}
+	std::vector<std::pair<std::string, int> > &getEnemies();
 
-		if (j.contains("path") && j["path"].is_array()) {
-			for (const auto &item: j["path"]) {
-				int x = item.value("x", 0);
-				int y = item.value("y", 0);
-				path.emplace_back(x, y);
-			}
-		}
-	}
+	void addEnemy(const std::string &enemyName, int count = 1);
 
-	const std::string &getName() const { return name; }
-	void setName(const std::string &n) { name = n; }
+	void removeEnemyByName(const std::string &enemyName);
 
-	const std::vector<std::pair<std::string, int>> &getEnemies() const { return enemies; }
-	std::vector<std::pair<std::string, int>> &getEnemies() { return enemies; }
+	void clearEnemies();
 
-	void addEnemy(const std::string &enemyName, int count = 1) { enemies.emplace_back(enemyName, count); }
+	int getTotalEnemyCount() const;
 
-	void removeEnemyByName(const std::string &enemyName) {
-		enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-									 [&enemyName](const auto &p) { return p.first == enemyName; }),
-					  enemies.end());
-	}
+	std::vector<std::pair<int, int> > &getPath();
 
-	void clearEnemies() { enemies.clear(); }
+	void addPathPoint(int tileX, int tileY);
 
-	int getTotalEnemyCount() const {
-		int total = 0;
-		for (const auto &[name, count]: enemies)
-			total += count;
-		return total;
-	}
+	void removeLastPathPoint();
 
-	std::vector<std::pair<int, int>> &getPath() { return path; }
-
-	void addPathPoint(int tileX, int tileY) { path.emplace_back(tileX, tileY); }
-
-	void removeLastPathPoint() {
-		if (!path.empty()) {
-			path.pop_back();
-		}
-	}
-
-	void clearPath() { path.clear(); }
-
+	void clearPath();
 
 private:
 	std::string name;
-	std::vector<std::pair<std::string, int>> enemies;
-	std::vector<std::pair<int, int>> path;
+	std::vector<std::pair<std::string, int> > enemies;
+	std::vector<std::pair<int, int> > path;
 };
 
 #endif // TOWERDEFENCE_WAVESAMPLE_H

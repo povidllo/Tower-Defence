@@ -8,8 +8,8 @@
 
 #include "ui_TowerEditor.h"
 
-TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController, QWidget *parent) :
-	QWidget(parent), ui(new Ui::TowerEditor), towerController(towerController) {
+TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController, QWidget *parent) : QWidget(parent),
+	ui(new Ui::TowerEditor), towerController(towerController) {
 	ui->setupUi(this);
 
 	connect(ui->addTowerButton, &QPushButton::clicked, this, &TowerEditor::addTower);

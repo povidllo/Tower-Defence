@@ -2,6 +2,10 @@
 
 #include "ProjectController.h"
 
+EnemyController::EnemyController(ProjectController *projectController) : projectController(projectController),
+																		currentEnemy(nullptr) {
+}
+
 void EnemyController::setCurrentEnemy(const std::string &name) {
 	const auto &enemies = projectController->getEnemies();
 	for (auto &enemy: enemies) {
@@ -51,4 +55,11 @@ bool EnemyController::enemyExists(const std::string &name) const {
 		}
 	}
 	return false;
+}
+
+void EnemyController::setEnemyTexture(const std::string &path) const {
+	if (!TextureUtils::isPngBySignature(path)) {
+		throw std::invalid_argument("Enemy texture does not have .png format");
+	}
+	currentEnemy->setEnemyTexturePath(path);
 }

@@ -5,9 +5,8 @@
 
 #include "ui_ProjectEditor.h"
 
-
-ProjectEditor::ProjectEditor(std::string path, std::string name, QWidget *parent) :
-	QMainWindow(parent), ui(new Ui::ProjectEditor) {
+ProjectEditor::ProjectEditor(std::string path, std::string name, QWidget *parent) : QMainWindow(parent),
+	ui(new Ui::ProjectEditor) {
 	ui->setupUi(this);
 	projectController = std::make_shared<ProjectController>(path, name);
 	qDebug() << "created project";
@@ -51,10 +50,12 @@ void ProjectEditor::openEnemyEditor() {
 	qDebug() << "opening enemy editor " << enemyEditor->metaObject();
 	ui->stackedWidget->setCurrentWidget(enemyEditor.get());
 }
+
 void ProjectEditor::openMapEditor() {
 	qDebug() << "opening map editor " << mapEditor->metaObject();
 	ui->stackedWidget->setCurrentWidget(mapEditor.get());
 }
+
 void ProjectEditor::onSaveProjectClicked() {
 	if (projectController->saveProject()) {
 		qDebug() << "saving project";

@@ -5,82 +5,42 @@
 #include <utility>
 #include "Serializable.h"
 
-
 class TowerSample : protected ISerializable {
 public:
-    using json = nlohmann::json;
+	using json = nlohmann::json;
 
-    explicit TowerSample(std::string name)
-        : name(std::move(name)) {
-    }
+	explicit TowerSample(std::string name);
 
-    explicit TowerSample(const json &j) {
-        TowerSample::fromJson(j);
-    }
+	explicit TowerSample(const json &j);
 
-    json toJson() const override {
-        return {
-            {"name", name},
-            {"damage", damage},
-            {"fireRate", fireRate},
-            {"towerTexturePath", towerTexturePath},
-            // {"projectileTexturePath", projectileTexturePath},
-            {"x", x},
-            {"y", y}
-        };
-    }
+	json toJson() const override;
 
-    void fromJson(const json &j) override {
-        name = j.value("name", name);
-        damage = j.value("damage", damage);
-        fireRate = j.value("fireRate", fireRate);
-        towerTexturePath = j.value("towerTexturePath", "");
-        // projectileTexturePath = j.value("projectileTexturePath", "");
-        x = j.value("x", x);
-        y = j.value("y", y);
-    }
+	void fromJson(const json &j) override;
 
-    [[nodiscard]] std::string getName() {
-        return name;
-    }
+	[[nodiscard]] std::string getName();
 
-    void setName(const std::string &n) {
-        name = n;
-    }
+	void setName(const std::string &n);
 
-    [[nodiscard]] double getDamage() const {
-        return damage;
-    }
+	[[nodiscard]] double getDamage() const;
 
-    void setDamage(double d) {
-        damage = d;
-    }
+	void setDamage(double d);
 
-    [[nodiscard]] double getFireRate() const {
-        return fireRate;
-    }
+	[[nodiscard]] double getFireRate() const;
 
-    void setFireRate(double r) {
-        fireRate = r;
-    }
+	void setFireRate(double r);
 
-    void setTowerTexturePath(const std::string &texPath) {
-        towerTexturePath = texPath;
-    }
+	void setTowerTexturePath(const std::string &texPath);
 
-    std::string getTowerTexturePath() const {
-        return towerTexturePath;
-    }
+	std::string getTowerTexturePath() const;
 
 private:
-    std::string name;
-    double damage{0};
-    double fireRate{0};
-    // std::vector<std::shared_ptr<TowerSample> > nextUpgrade;
-    std::string towerTexturePath;
-    int x{0};
-    int y{0};
+	std::string name;
+	double damage{0};
+	double fireRate{0};
+	// std::vector<std::shared_ptr<TowerSample> > nextUpgrade;
+	std::string towerTexturePath;
+	int x{0};
+	int y{0};
 };
-
 
 #endif //TOWERDEFENCE_TOWERSAMPLE_H

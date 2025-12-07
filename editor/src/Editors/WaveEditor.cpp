@@ -5,10 +5,9 @@
 #include "MapController.h"
 #include "ui_WaveEditor.h"
 
-
 WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, const std::string &waveName,
-					   QWidget *parent) :
-	QDialog(parent), ui(new Ui::WaveEditor), originalWaveName(waveName), mapController(mapController) {
+						QWidget *parent) : QDialog(parent), ui(new Ui::WaveEditor), originalWaveName(waveName),
+											mapController(mapController) {
 	ui->setupUi(this);
 	setWindowTitle(tr("Edit Wave: %1").arg(QString::fromStdString(waveName)));
 	auto enemies = mapController->getAvailableEnemies();
@@ -52,6 +51,7 @@ WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, cons
 }
 
 WaveEditor::~WaveEditor() { delete ui; }
+
 void WaveEditor::updateEnemyList() {
 	ui->enemiesList->clear();
 

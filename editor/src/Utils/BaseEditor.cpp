@@ -4,6 +4,7 @@
 #include <QDoubleSpinBox>
 #include <QTimer>
 #include <fstream>
+
 nlohmann::json BaseEditor::collectPropertiesToJson(const QMap<QString, QWidget *> &editors) {
 	nlohmann::json j;
 
@@ -38,6 +39,7 @@ void BaseEditor::fillListWidget(QListWidget *list, const std::vector<std::string
 		list->addItem(QString::fromStdString(elem));
 	}
 }
+
 void BaseEditor::clearPropertiesForm(QFormLayout *propertiesForm, QMap<QString, QWidget *> &m_propertyEditors) {
 	qDeleteAll(propertiesForm->findChildren<QWidget *>("", Qt::FindDirectChildrenOnly));
 	while (propertiesForm->rowCount() > 0) {
