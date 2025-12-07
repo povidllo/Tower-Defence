@@ -19,6 +19,18 @@ public:
 	std::vector<std::string> getMapNames() const;
 	bool mapExists(const std::string &name) const;
 
+	void addWave(const std::string &name);
+	bool removeWave(const std::string &name);
+	std::vector<std::string> getWavesNames() const;
+	bool waveExists(const std::string &name) const;
+	std::shared_ptr<WaveSample> getWave(const std::string &name) const;
+
+	bool addPathPoint(const std::string &waveName, int tx, int ty);
+	bool deletePathPoint(const std::string &waveName);
+
+	std::vector<std::string> getAvailableEnemies() const;
+	std::shared_ptr<WaveSample> getWave(const std::string &name);
+
 private:
 	ProjectController *projectController;
 	std::shared_ptr<Map> currentMap;

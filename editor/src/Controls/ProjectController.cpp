@@ -99,6 +99,18 @@ std::shared_ptr<TowerController> ProjectController::getTowerController() { retur
 std::shared_ptr<EnemyController> ProjectController::getEnemyController() { return enemyController; }
 std::shared_ptr<MapController> ProjectController::getMapController() { return mapController; }
 
+void ProjectController::removeEnemiesFromWaves(std::string enemyName) const {
+	auto maps = currentProject->getMaps();
+
+	for (auto &map: maps) {
+		for (auto &wave: map->getWaves()) {
+			wave->getEnemies().erase(std::remove_if(wave->getEnemies().begin(), wave->getEnemies().end(),
+													[enemyName](const auto &pair) { return pair.first == enemyName; }),
+									 wave->getEnemies().end());
+		}
+	}
+}
+
 void ProjectController::loadControls() {
 	towerController = std::make_shared<TowerController>(this);
 	enemyController = std::make_shared<EnemyController>(this);
