@@ -9,13 +9,12 @@
 
 namespace fs = std::filesystem;
 
-
 Project::json ProjectController::loadFromFile(const std::string &path) {
 	fs::path p(path);
 	fs::path jsonFile = p / "Project.json";
 	if (!fs::exists(jsonFile)) {
 		throw fs::filesystem_error("Path or JSON file doesn't exist", p,
-								   std::make_error_code(std::errc::no_such_file_or_directory));
+									std::make_error_code(std::errc::no_such_file_or_directory));
 	}
 
 	std::ifstream inFile(jsonFile.string());
@@ -79,7 +78,7 @@ ProjectController::ProjectController(const std::string &path, const std::string 
 		std::ofstream outFile(jsonProjectFilePath.string());
 		if (!outFile) {
 			throw fs::filesystem_error("Can't open file", jsonProjectFilePath,
-									   std::make_error_code(std::errc::io_error));
+										std::make_error_code(std::errc::io_error));
 		}
 
 		outFile << currentProject->toJson().dump(4);
@@ -94,10 +93,33 @@ ProjectController::ProjectController(const std::string &path, const std::string 
 	setEmptyTile();
 }
 
-
 std::shared_ptr<TowerController> ProjectController::getTowerController() { return towerController; }
+
 std::shared_ptr<EnemyController> ProjectController::getEnemyController() { return enemyController; }
+
 std::shared_ptr<MapController> ProjectController::getMapController() { return mapController; }
+
+json ProjectController::toJson() const { return currentProject->toJson(); }
+
+void ProjectController::fromJson(const json &j) { currentProject->fromJson(j); }
+
+std::string ProjectController::getProjectName() const { return currentProject->getName(); }
+
+void ProjectController::setProjectName(const std::string &name) const { currentProject->setName(name); }
+
+std::string ProjectController::getProjectPath() const { return currentProject->getPath(); }
+
+void ProjectController::setProjectPath(const std::string &path) const { currentProject->setPath(path); }
+
+std::time_t ProjectController::getProjectLastSaveDate() const { return currentProject->getLastSaveDate(); }
+
+void ProjectController::setProjectLastSaveDate(const std::time_t &date) const { currentProject->setLastSaveDate(date); }
+
+std::vector<std::shared_ptr<TowerSample> > &ProjectController::getTowers() const { return currentProject->getTowers(); }
+
+std::vector<std::shared_ptr<EnemySample> > &ProjectController::getEnemies() const {
+	return currentProject->getEnemies();
+}
 
 void ProjectController::removeEnemiesFromWaves(std::string enemyName) const {
 	auto maps = currentProject->getMaps();
@@ -106,7 +128,7 @@ void ProjectController::removeEnemiesFromWaves(std::string enemyName) const {
 		for (auto &wave: map->getWaves()) {
 			wave->getEnemies().erase(std::remove_if(wave->getEnemies().begin(), wave->getEnemies().end(),
 													[enemyName](const auto &pair) { return pair.first == enemyName; }),
-									 wave->getEnemies().end());
+									wave->getEnemies().end());
 		}
 	}
 }
@@ -116,6 +138,7 @@ void ProjectController::loadControls() {
 	enemyController = std::make_shared<EnemyController>(this);
 	mapController = std::make_shared<MapController>(this);
 }
+
 void ProjectController::setEmptyTile() {
 	int imageSize = TextureManager::instance().getImageSize();
 

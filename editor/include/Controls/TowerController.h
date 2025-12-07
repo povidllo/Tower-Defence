@@ -8,14 +8,11 @@
 #include "TextureUtils.h"
 #include "TowerSample.h"
 
-
 class ProjectController;
-
 
 class TowerController {
 public:
-	explicit TowerController(ProjectController *projectController) :
-		projectController(projectController), currentTower(nullptr) {}
+	explicit TowerController(ProjectController *projectController);
 
 	void setCurrentTower(const std::string &name);
 
@@ -35,6 +32,5 @@ private:
 	ProjectController *projectController;
 	std::shared_ptr<TowerSample> currentTower;
 };
-
 
 #endif // TOWERDEFENCE_TOWERCONTROLLER_H

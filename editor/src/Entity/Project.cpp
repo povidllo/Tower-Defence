@@ -94,8 +94,8 @@ std::time_t Project::getLastSaveDate() const { return lastSaveDate; }
 
 void Project::setLastSaveDate(std::time_t last_save_date) { lastSaveDate = last_save_date; }
 
-std::vector<std::shared_ptr<TowerSample>> &Project::getTowers() { return towers; }
+std::vector<std::shared_ptr<TowerSample> > &Project::getTowers() { return towers; }
 
-std::vector<std::shared_ptr<EnemySample>> &Project::getEnemies() { return enemies; }
+std::vector<std::shared_ptr<EnemySample> > &Project::getEnemies() { return enemies; }
 
-std::vector<std::shared_ptr<Map>> &Project::getMaps() { return maps; }
+std::vector<std::shared_ptr<Map> > &Project::getMaps() { return maps; }

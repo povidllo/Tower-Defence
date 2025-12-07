@@ -2,37 +2,36 @@
 #include "ui_ProjectCreationDialog.h"
 #include <QFileDialog>
 
-
-
 ProjectCreationDialog::ProjectCreationDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ProjectCreationDialog) {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
-    connect(ui->BrowseLocationButton, &QPushButton::clicked, this, &ProjectCreationDialog::onBrowseLocationButtonClicked);
-    connect(ui->CancelButton, &QPushButton::clicked, this, &ProjectCreationDialog::onCancelButtonClicked);
-    connect(ui->CreateButton, &QPushButton::clicked, this, &ProjectCreationDialog::onCreateButtonClicked);
+	connect(ui->BrowseLocationButton, &QPushButton::clicked, this,
+			&ProjectCreationDialog::onBrowseLocationButtonClicked);
+	connect(ui->CancelButton, &QPushButton::clicked, this, &ProjectCreationDialog::onCancelButtonClicked);
+	connect(ui->CreateButton, &QPushButton::clicked, this, &ProjectCreationDialog::onCreateButtonClicked);
 }
 
 ProjectCreationDialog::~ProjectCreationDialog() {
-    delete ui;
+	delete ui;
 }
 
 void ProjectCreationDialog::onBrowseLocationButtonClicked() {
-    QString dir = QFileDialog::getExistingDirectory(this, "Select New Project Directory");
-    if (!dir.isEmpty()) {
-        ui->ProjectLocationLine->setText(dir);
-    }
+	QString dir = QFileDialog::getExistingDirectory(this, "Select New Project Directory");
+	if (!dir.isEmpty()) {
+		ui->ProjectLocationLine->setText(dir);
+	}
 }
 
 void ProjectCreationDialog::onCancelButtonClicked() {
-    this->close();
+	this->close();
 }
 
 void ProjectCreationDialog::onCreateButtonClicked() {
-    std::string basePath = ui->ProjectLocationLine->text().toStdString();
-    std::string projectName = ui->ProjectNameLine->text().toStdString();
-    if (!ui->ProjectLocationLine->text().isEmpty() && !ui->ProjectNameLine->text().isEmpty()) {
-        this->close();
-        emit projectCreationSignal(ui->ProjectLocationLine->text(),
-                                   ui->ProjectNameLine->text());
-    }
+	std::string basePath = ui->ProjectLocationLine->text().toStdString();
+	std::string projectName = ui->ProjectNameLine->text().toStdString();
+	if (!ui->ProjectLocationLine->text().isEmpty() && !ui->ProjectNameLine->text().isEmpty()) {
+		this->close();
+		emit projectCreationSignal(ui->ProjectLocationLine->text(),
+									ui->ProjectNameLine->text());
+	}
 }

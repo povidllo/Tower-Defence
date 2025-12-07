@@ -32,31 +32,34 @@ public:
 	json loadFromFile(const std::string &path);
 
 	bool saveProject();
+
 	std::shared_ptr<TowerController> getTowerController();
+
 	std::shared_ptr<EnemyController> getEnemyController();
+
 	std::shared_ptr<MapController> getMapController();
 
-	json toJson() const { return currentProject->toJson(); }
+	json toJson() const;
 
-	void fromJson(const json &j) { currentProject->fromJson(j); }
+	void fromJson(const json &j);
 
-	std::string getProjectName() const { return currentProject->getName(); }
+	std::string getProjectName() const;
 
-	void setProjectName(const std::string &name) const { currentProject->setName(name); }
+	void setProjectName(const std::string &name) const;
 
-	std::string getProjectPath() const { return currentProject->getPath(); }
+	std::string getProjectPath() const;
 
-	void setProjectPath(const std::string &path) const { currentProject->setPath(path); }
+	void setProjectPath(const std::string &path) const;
 
-	std::time_t getProjectLastSaveDate() const { return currentProject->getLastSaveDate(); }
+	std::time_t getProjectLastSaveDate() const;
 
-	void setProjectLastSaveDate(const std::time_t &date) const { currentProject->setLastSaveDate(date); }
+	void setProjectLastSaveDate(const std::time_t &date) const;
 
-	std::vector<std::shared_ptr<TowerSample>> &getTowers() const { return currentProject->getTowers(); }
+	std::vector<std::shared_ptr<TowerSample> > &getTowers() const;
 
-	std::vector<std::shared_ptr<EnemySample>> &getEnemies() const { return currentProject->getEnemies(); }
+	std::vector<std::shared_ptr<EnemySample> > &getEnemies() const;
 
-	std::vector<std::shared_ptr<Map>> &getMaps() const { return currentProject->getMaps(); }
+	std::vector<std::shared_ptr<Map> > &getMaps() const { return currentProject->getMaps(); }
 
 	void removeEnemiesFromWaves(std::string enemyName) const;
 
@@ -65,17 +68,10 @@ private:
 	std::shared_ptr<TowerController> towerController;
 	std::shared_ptr<EnemyController> enemyController;
 	std::shared_ptr<MapController> mapController;
-	//     WaveController* waveController;
-	//     CampaignController* campaignController;
 
-	/**
-	 * Method for initializing all controllers
-	 *
-	 */
 	void loadControls();
 
 	void setEmptyTile();
 };
-
 
 #endif // TOWERDEFENCE_PROJECTCONTROLLER_H

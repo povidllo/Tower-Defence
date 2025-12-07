@@ -3,34 +3,34 @@
 
 #include <QDialog>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-    class ProjectCreationDialog;
+	class ProjectCreationDialog;
 }
 
 QT_END_NAMESPACE
 
 class ProjectCreationDialog : public QDialog {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit ProjectCreationDialog(QWidget *parent = nullptr);
+	explicit ProjectCreationDialog(QWidget *parent = nullptr);
 
-    ~ProjectCreationDialog() override;
+	~ProjectCreationDialog() override;
 
 private:
-    Ui::ProjectCreationDialog *ui;
+	Ui::ProjectCreationDialog *ui;
 
 private slots:
-    void onBrowseLocationButtonClicked();
-    void onCancelButtonClicked();
-    void onCreateButtonClicked();
+	void onBrowseLocationButtonClicked();
+
+	void onCancelButtonClicked();
+
+	void onCreateButtonClicked();
 
 signals:
-    void projectCreationSignal(const QString &path, const QString &name);
+	void projectCreationSignal(const QString &path, const QString &name);
 };
-
 
 #endif //EDITOR_PROJECTCREATIONDIALOG_H

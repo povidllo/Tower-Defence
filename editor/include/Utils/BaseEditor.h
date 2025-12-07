@@ -7,7 +7,6 @@
 #include <QWidget>
 #include <nlohmann/json.hpp>
 
-
 class BaseEditor {
 protected:
 	static nlohmann::json collectPropertiesToJson(const QMap<QString, QWidget *> &editors);
@@ -18,6 +17,5 @@ protected:
 
 	static void clearPropertiesForm(QFormLayout *propertiesForm, QMap<QString, QWidget *> &m_propertyEditors);
 };
-
 
 #endif // TOWERDEFENCE_BASEEDITOR_H

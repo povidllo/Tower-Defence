@@ -6,12 +6,11 @@
 
 class ISerializable {
 public:
-    virtual ~ISerializable() = default;
+	virtual ~ISerializable() = default;
 
-    virtual nlohmann::json toJson() const = 0;
+	virtual nlohmann::json toJson() const = 0;
 
-    virtual void fromJson(const nlohmann::json& j) = 0;
+	virtual void fromJson(const nlohmann::json &j) = 0;
 };
-
 
 #endif //EDITOR_SERIALIZABLE_H

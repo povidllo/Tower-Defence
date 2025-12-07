@@ -9,9 +9,8 @@
 #include "WaveEditor.h"
 #include "ui_MapEditor.h"
 
-
-MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidget *parent) :
-	QWidget(parent), ui(new Ui::MapEditor), mapController(mapController) {
+MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidget *parent) : QWidget(parent),
+	ui(new Ui::MapEditor), mapController(mapController) {
 	ui->setupUi(this);
 
 	connect(ui->addMapButton, &QPushButton::clicked, this, &MapEditor::onAddMapButtonClicked);
@@ -34,6 +33,7 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	updateMapList();
 	updateTextureList();
 }
+
 MapEditor::~MapEditor() { delete ui; }
 
 void MapEditor::onAddMapButtonClicked() {
@@ -142,13 +142,13 @@ void MapEditor::onAddTextureButtonClicked() {
 	if (const int REQUIRED_SIZE = TextureManager::instance().getImageSize();
 		size.width() != REQUIRED_SIZE || size.height() != REQUIRED_SIZE) {
 		QMessageBox::warning(this, tr("Wrong Size"),
-							 tr("Texture must be exactly %4×%4 pixels!\n"
+							tr("Texture must be exactly %4×%4 pixels!\n"
 								"Current size: %1×%2\n"
 								"File: %3")
-									 .arg(size.width())
-									 .arg(size.height())
-									 .arg(QFileInfo(filePath).fileName())
-									 .arg(REQUIRED_SIZE));
+							.arg(size.width())
+							.arg(size.height())
+							.arg(QFileInfo(filePath).fileName())
+							.arg(REQUIRED_SIZE));
 		return;
 	}
 
@@ -162,7 +162,7 @@ void MapEditor::onAddTextureButtonClicked() {
 	const auto &allTextures = TextureManager::instance().getAllTextures();
 	if (!allTextures.empty()) {
 		auto maxIt = std::max_element(allTextures.begin(), allTextures.end(),
-									  [](const auto &a, const auto &b) { return a.first < b.first; });
+									[](const auto &a, const auto &b) { return a.first < b.first; });
 		newId = maxIt->first + 1;
 	}
 
@@ -183,6 +183,7 @@ void MapEditor::onDeleteMapButtonClicked() {
 
 	updateMapList();
 }
+
 void MapEditor::onAddWaveButtonClicked() {
 	std::string baseName = "wave";
 	int counter = 1;
@@ -218,6 +219,7 @@ void MapEditor::onWaveItemClicked(QListWidgetItem *item) {
 		drawCurrentWavePath();
 	}
 }
+
 void MapEditor::onEditWaveButtonClicked() {
 	if (currentWaveName.empty()) {
 		QMessageBox::information(this, "No Wave Selected", "Please select a wave from the list first!");
@@ -381,6 +383,7 @@ void MapEditor::onTextureItemClicked(QListWidgetItem *item) {
 
 	qDebug() << "Selected texture:" << textureId;
 }
+
 void MapEditor::updateTextureList() {
 	qDebug() << "Texture list updated";
 
@@ -485,7 +488,7 @@ void MapEditor::drawCurrentWavePath() {
 			int nextY = path[i + 1].second;
 			QGraphicsLineItem *line =
 					scene->addLine(tx * tileSize + tileSize / 2, ty * tileSize + tileSize / 2,
-								   nextX * tileSize + tileSize / 2, nextY * tileSize + tileSize / 2, QPen(Qt::red, 4));
+									nextX * tileSize + tileSize / 2, nextY * tileSize + tileSize / 2, QPen(Qt::red, 4));
 			line->setZValue(99);
 			pathGraphicsItems.push_back(line);
 		}

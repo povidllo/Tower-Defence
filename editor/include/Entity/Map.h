@@ -5,71 +5,33 @@
 #include "Serializable.h"
 #include "WaveSample.h"
 
-
 class Map : protected ISerializable {
 public:
 	using json = nlohmann::json;
 
-	Map(std::string name, const int height, const int width) :
-		name(std::move(name)), height(height), width(width), tiles(height, std::vector<int>(width, 0)) {}
+	Map(std::string name, const int height, const int width);
 
-	explicit Map(const json &j) { Map::fromJson(j); }
+	explicit Map(const json &j);
 
-	json toJson() const override {
-		json tileArray = json::array();
-		for (const auto &row: tiles) {
-			tileArray.push_back(row);
-		}
+	json toJson() const override;
 
-		json wavesArray = json::array();
-		for (const auto &wave: waves) {
-			wavesArray.push_back(wave->toJson());
-		}
+	void fromJson(const json &j) override;
 
-		return {{"name", name}, {"height", height}, {"width", width}, {"tiles", tileArray}, {"waves", wavesArray}};
-	}
+	int getTile(int x, int y) const;
 
-	void fromJson(const json &j) override {
-		name = j.value("name", name);
-		height = j.value("height", height);
-		width = j.value("width", width);
+	void setTile(int x, int y, const int tileId);
 
-		tiles.assign(height, std::vector<int>(width, 0));
+	std::vector<std::vector<int> > &getTiles();
 
-		if (j.contains("tiles")) {
-			const auto &tileArray = j["tiles"];
-			for (int y = 0; y < std::min<int>(tileArray.size(), height); ++y) {
-				const auto &row = tileArray[y];
-				for (int x = 0; x < std::min<int>(row.size(), width); ++x) {
-					tiles[y][x] = row[x].get<int>();
-				}
-			}
-		}
+	[[nodiscard]] std::string getName();
 
-		waves.clear();
-		if (j.contains("waves") && j["waves"].is_array()) {
-			for (const auto &waveJson: j["waves"]) {
-				auto wave = std::make_shared<WaveSample>(waveJson);
-				waves.push_back(wave);
-			}
-		}
-	}
+	void setName(const std::string &n);
 
-	int getTile(const int x, const int y) const { return tiles[y][x]; }
-	void setTile(const int x, const int y, const int tileId) { tiles[y][x] = tileId; }
+	int getHeight() const;
 
-	std::vector<std::vector<int>> &getTiles() { return tiles; }
+	int getWidth() const;
 
-	[[nodiscard]] std::string getName() { return name; }
-
-	void setName(const std::string &n) { name = n; }
-
-	int getHeight() const { return height; }
-
-	int getWidth() const { return width; }
-
-	std::vector<std::shared_ptr<WaveSample>> &getWaves() { return waves; }
-
+	std::vector<std::shared_ptr<WaveSample> > &getWaves() { return waves; }
 
 private:
 	std::string name;
@@ -77,9 +39,8 @@ private:
 	int width;
 
 	// std::vector<WaveSample> waves;
-	std::vector<std::shared_ptr<WaveSample>> waves;
-	std::vector<std::vector<int>> tiles;
+	std::vector<std::shared_ptr<WaveSample> > waves;
+	std::vector<std::vector<int> > tiles;
 };
-
 
 #endif // TOWERDEFENCE_MAP_H

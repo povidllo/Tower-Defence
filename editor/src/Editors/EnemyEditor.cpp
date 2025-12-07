@@ -11,9 +11,8 @@
 #include "TowerEditor.h"
 #include "ui_EnemyEditor.h"
 
-
-EnemyEditor::EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController, QWidget *parent) :
-	QWidget(parent), ui(new Ui::EnemyEditor), enemyController{EnemyController} {
+EnemyEditor::EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController, QWidget *parent) : QWidget(parent),
+	ui(new Ui::EnemyEditor), enemyController{EnemyController} {
 	ui->setupUi(this);
 
 	connect(ui->addEnemyButton, &QPushButton::clicked, this, &EnemyEditor::addEnemy);
@@ -26,7 +25,6 @@ EnemyEditor::EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController
 	ui->enemyPreview->setVisible(false);
 	ui->chooseTextureButton->setVisible(false);
 }
-
 
 EnemyEditor::~EnemyEditor() { delete ui; }
 
@@ -89,6 +87,7 @@ void EnemyEditor::onSaveButtonClicked() {
 
 	updateEnemyList();
 }
+
 void EnemyEditor::onDeleteButtonClicked() {
 	const auto enemy = enemyController->getCurrentEnemy();
 	if (!enemy) {
@@ -99,6 +98,7 @@ void EnemyEditor::onDeleteButtonClicked() {
 
 	updateEnemyList();
 }
+
 void EnemyEditor::onChooseTextureButtonClicked() {
 	QString filePath = QFileDialog::getOpenFileName(this, "Choose Texture", QDir::currentPath(), ".png");
 
@@ -122,6 +122,7 @@ void EnemyEditor::onChooseTextureButtonClicked() {
 		return;
 	}
 }
+
 void EnemyEditor::updateEnemyList() const {
 	qDebug() << "Enemy list updated";
 
@@ -134,7 +135,6 @@ void EnemyEditor::fillPropertiesForm(const std::shared_ptr<EnemySample> &enemy) 
 	auto j = enemy->toJson();
 
 	for (auto &[key, value]: j.items()) {
-
 		// Скрытые поля
 		bool skip = false;
 		for (auto &elem: doNotShowThisFields) {
@@ -164,14 +164,12 @@ void EnemyEditor::fillPropertiesForm(const std::shared_ptr<EnemySample> &enemy) 
 		if (value.is_string()) {
 			auto *edit = new QLineEdit(QString::fromStdString(value.get<std::string>()), this);
 			editor = edit;
-
 		} else if (value.is_number_float() || value.is_number()) {
 			auto *spin = new QDoubleSpinBox(this);
 			spin->setRange(-1e6, 1e6);
 			spin->setDecimals(3);
 			spin->setValue(value.get<double>());
 			editor = spin;
-
 		} else if (value.is_boolean()) {
 			auto *check = new QCheckBox(this);
 			check->setChecked(value.get<bool>());

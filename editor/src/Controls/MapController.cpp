@@ -1,6 +1,10 @@
 #include "MapController.h"
 #include "ProjectController.h"
 
+MapController::MapController(ProjectController *projectController) : projectController(projectController),
+																	currentMap(nullptr) {
+}
+
 void MapController::setCurrentMap(const std::string &name) {
 	const auto &maps = projectController->getMaps();
 	for (auto &map: maps) {
@@ -49,6 +53,7 @@ bool MapController::mapExists(const std::string &name) const {
 	}
 	return false;
 }
+
 void MapController::addWave(const std::string &name) {
 	auto &waves = currentMap->getWaves();
 	auto newWave = std::make_shared<WaveSample>(name);
@@ -58,7 +63,7 @@ void MapController::addWave(const std::string &name) {
 bool MapController::removeWave(const std::string &name) {
 	auto waves = currentMap->getWaves();
 	waves.erase(std::remove_if(waves.begin(), waves.end(),
-							   [&name](const std::shared_ptr<WaveSample> &wave) { return wave->getName() == name; }),
+								[&name](const std::shared_ptr<WaveSample> &wave) { return wave->getName() == name; }),
 				waves.end());
 	return true;
 }
@@ -81,6 +86,7 @@ bool MapController::waveExists(const std::string &name) const {
 	}
 	return false;
 }
+
 std::shared_ptr<WaveSample> MapController::getWave(const std::string &name) const {
 	auto &waves = currentMap->getWaves();
 	for (const auto &wave: waves) {
@@ -90,6 +96,7 @@ std::shared_ptr<WaveSample> MapController::getWave(const std::string &name) cons
 	}
 	return nullptr;
 }
+
 bool MapController::addPathPoint(const std::string &waveName, int tx, int ty) {
 	if (tx >= currentMap->getWidth() || ty >= currentMap->getHeight() || tx < 0 || ty < 0) {
 		return false;

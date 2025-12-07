@@ -3,6 +3,10 @@
 
 std::shared_ptr<TowerSample> TowerController::getCurrentTower() { return currentTower; }
 
+TowerController::TowerController(ProjectController *projectController) : projectController(projectController),
+																		currentTower(nullptr) {
+}
+
 void TowerController::setCurrentTower(const std::string &name) {
 	const auto &towers = projectController->getTowers();
 	for (auto &tower: towers) {

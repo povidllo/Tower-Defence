@@ -12,68 +12,33 @@ class TextureManager : protected ISerializable {
 public:
 	using json = nlohmann::json;
 
-	static TextureManager &instance() {
-		static TextureManager inst;
-		return inst;
-	}
+	static TextureManager &instance();
 
 	TextureManager(const TextureManager &) = delete;
+
 	TextureManager &operator=(const TextureManager &) = delete;
 
-	void registerTexture(int id, const std::string &path) {
-		paths[id] = path;
-		pixmaps[id] = QPixmap(QString::fromStdString(path));
-	}
+	void registerTexture(int id, const std::string &path);
 
-	const QPixmap &get(int id) const {
-		static QPixmap empty;
-		auto it = pixmaps.find(id);
-		return (it != pixmaps.end()) ? it->second : empty;
-	}
+	const QPixmap &get(int id) const;
 
-	bool has(int id) const { return paths.find(id) != paths.end(); }
+	bool has(int id) const;
 
-	const std::string &getPath(int id) const {
-		static std::string empty;
-		auto it = paths.find(id);
-		return (it != paths.end()) ? it->second : empty;
-	}
+	const std::string &getPath(int id) const;
 
-	json toJson() const override {
-		json arr = json::array();
-		for (const auto &[id, path]: paths) {
-			arr.push_back({{"id", id}, {"path", path}});
-		}
-		return arr;
-	}
+	json toJson() const override;
 
-	void fromJson(const json &j) override {
-		paths.clear();
-		pixmaps.clear();
+	void fromJson(const json &j) override;
 
-		for (auto &item: j) {
-			int id = item.value("id", -1);
-			std::string path = item.value("path", "");
+	int getImageSize() const;
 
-			if (id >= 0 && !path.empty()) {
-				registerTexture(id, path);
-			}
-		}
-	}
-
-	int getImageSize() const { return imageSize; }
-
-	const std::unordered_map<int, std::string> &getAllTextures() const { return paths; }
+	const std::unordered_map<int, std::string> &getAllTextures() const;
 
 	std::unordered_map<int, QPixmap> pixmaps;
 
-	void setCurrentTexture(const int id) {
-		if (has(id)) {
-			currentTextureId = id;
-		}
-	}
+	void setCurrentTexture(const int id);
 
-	int getCurrentTexture() const { return currentTextureId; }
+	int getCurrentTexture() const;
 
 private:
 	TextureManager() = default;

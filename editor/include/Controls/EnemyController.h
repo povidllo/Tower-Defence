@@ -5,13 +5,11 @@
 #include "EnemySample.h"
 #include "TextureUtils.h"
 
-
 class ProjectController;
 
 class EnemyController {
 public:
-	EnemyController(ProjectController *projectController) :
-		projectController(projectController), currentEnemy(nullptr) {}
+	EnemyController(ProjectController *projectController);
 
 	void setCurrentEnemy(const std::string &name);
 
@@ -25,17 +23,12 @@ public:
 
 	bool enemyExists(const std::string &name) const;
 
-	void setEnemyTexture(const std::string &path) {
-		if (!TextureUtils::isPngBySignature(path)) {
-			throw std::invalid_argument("Enemy texture does not have .png format");
-		}
-		currentEnemy->setEnemyTexturePath(path);
-	}
+	void setEnemyTexture(const std::string &path) const;
 
 private:
 	ProjectController *projectController;
+
 	std::shared_ptr<EnemySample> currentEnemy;
 };
-
 
 #endif // TOWERDEFENCE_ENEMYCONTROLLER_H

@@ -5,7 +5,6 @@
 #include "Serializable.h"
 #include "TowerSample.h"
 
-
 class Project : protected ISerializable {
 public:
 	using json = nlohmann::json;
@@ -42,20 +41,19 @@ public:
 
 	void setLastSaveDate(std::time_t last_save_date);
 
-	[[nodiscard]] std::vector<std::shared_ptr<TowerSample>> &getTowers();
+	[[nodiscard]] std::vector<std::shared_ptr<TowerSample> > &getTowers();
 
-	[[nodiscard]] std::vector<std::shared_ptr<EnemySample>> &getEnemies();
+	[[nodiscard]] std::vector<std::shared_ptr<EnemySample> > &getEnemies();
 
-	[[nodiscard]] std::vector<std::shared_ptr<Map>> &getMaps();
+	[[nodiscard]] std::vector<std::shared_ptr<Map> > &getMaps();
 
 private:
 	std::string name;
 	std::string path;
 	std::time_t lastSaveDate;
-	std::vector<std::shared_ptr<EnemySample>> enemies;
-	std::vector<std::shared_ptr<TowerSample>> towers;
-	std::vector<std::shared_ptr<Map>> maps;
+	std::vector<std::shared_ptr<EnemySample> > enemies;
+	std::vector<std::shared_ptr<TowerSample> > towers;
+	std::vector<std::shared_ptr<Map> > maps;
 };
-
 
 #endif // EDITOR_PROJECT_H

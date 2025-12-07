@@ -22,6 +22,7 @@ class ProjectEditor : public QMainWindow {
 
 public:
 	explicit ProjectEditor(std::string path, std::string name, QWidget *parent = nullptr);
+
 	explicit ProjectEditor(std::string path, QWidget *parent = nullptr);
 
 	~ProjectEditor() override;
@@ -36,22 +37,20 @@ private:
 	Ui::ProjectEditor *ui;
 	QWidget *container;
 
-
 	std::unique_ptr<TowerEditor> towerEditor;
 	std::unique_ptr<EnemyEditor> enemyEditor;
 	std::unique_ptr<MapEditor> mapEditor;
 
-	// TowerEditor *towerEditor;
-	// EnemyEditor *enemyEditor;
 	void commonSetUp();
-
 
 private slots:
 	void openTowerEditor();
+
 	void openEnemyEditor();
+
 	void openMapEditor();
+
 	void onSaveProjectClicked();
 };
-
 
 #endif

@@ -1,18 +1,18 @@
 #ifndef TOWERDEFENCE_ENEMYEDITOR_H
 #define TOWERDEFENCE_ENEMYEDITOR_H
 
-#include <QListWidgetItem>
 #include <QWidget>
 
 #include "BaseEditor.h"
 #include "EnemyController.h"
 #include "EnemySample.h"
 
-
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
 	class EnemyEditor;
 }
+
 QT_END_NAMESPACE
 
 class EnemyEditor : public QWidget, protected BaseEditor {
@@ -20,6 +20,7 @@ class EnemyEditor : public QWidget, protected BaseEditor {
 
 public:
 	explicit EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController, QWidget *parent = nullptr);
+
 	~EnemyEditor() override;
 
 private slots:
@@ -46,6 +47,5 @@ private:
 	QMap<QString, QWidget *> m_propertyEditors;
 	std::vector<std::string> doNotShowThisFields{};
 };
-
 
 #endif // TOWERDEFENCE_ENEMYEDITOR_H
