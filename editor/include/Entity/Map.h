@@ -23,7 +23,7 @@ public:
 
 		json wavesArray = json::array();
 		for (const auto &wave: waves) {
-			wavesArray.push_back(wave.toJson());
+			wavesArray.push_back(wave->toJson());
 		}
 
 		return {{"name", name}, {"height", height}, {"width", width}, {"tiles", tileArray}, {"waves", wavesArray}};
@@ -49,7 +49,8 @@ public:
 		waves.clear();
 		if (j.contains("waves") && j["waves"].is_array()) {
 			for (const auto &waveJson: j["waves"]) {
-				waves.emplace_back(waveJson);
+				auto wave = std::make_shared<WaveSample>(waveJson);
+				waves.push_back(wave);
 			}
 		}
 	}
@@ -67,7 +68,7 @@ public:
 
 	int getWidth() const { return width; }
 
-	std::vector<WaveSample> &getWaves() { return waves; }
+	std::vector<std::shared_ptr<WaveSample>> &getWaves() { return waves; }
 
 
 private:
@@ -75,7 +76,8 @@ private:
 	int height;
 	int width;
 
-	std::vector<WaveSample> waves;
+	// std::vector<WaveSample> waves;
+	std::vector<std::shared_ptr<WaveSample>> waves;
 	std::vector<std::vector<int>> tiles;
 };
 

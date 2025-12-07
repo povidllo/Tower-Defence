@@ -21,7 +21,12 @@ public:
 			enemiesArray.push_back({{"enemyName", enemyName}, {"count", count}});
 		}
 
-		json j = {{"name", name}, {"enemies", enemiesArray}};
+		json pathArray = json::array();
+		for (const auto &[x, y]: path) {
+			pathArray.push_back({{"x", x}, {"y", y}});
+		}
+
+		json j = {{"name", name}, {"enemies", pathArray}, {"path", pathArray}};
 
 		return j;
 	}
@@ -39,6 +44,14 @@ public:
 				}
 			}
 		}
+
+		if (j.contains("path") && j["path"].is_array()) {
+			for (const auto &item: j["path"]) {
+				int x = item.value("x", 0);
+				int y = item.value("y", 0);
+				path.emplace_back(x, y);
+			}
+		}
 	}
 
 	const std::string &getName() const { return name; }
@@ -47,15 +60,7 @@ public:
 	const std::vector<std::pair<std::string, int>> &getEnemies() const { return enemies; }
 	std::vector<std::pair<std::string, int>> &getEnemies() { return enemies; }
 
-	void addEnemy(const std::string &enemyName, int count = 1) {
-		for (auto &pair: enemies) {
-			if (pair.first == enemyName) {
-				pair.second += count;
-				return;
-			}
-		}
-		enemies.emplace_back(enemyName, count);
-	}
+	void addEnemy(const std::string &enemyName, int count = 1) { enemies.emplace_back(enemyName, count); }
 
 	void removeEnemyByName(const std::string &enemyName) {
 		enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
@@ -72,10 +77,23 @@ public:
 		return total;
 	}
 
+	std::vector<std::pair<int, int>> &getPath() { return path; }
+
+	void addPathPoint(int tileX, int tileY) { path.emplace_back(tileX, tileY); }
+
+	void removeLastPathPoint() {
+		if (!path.empty()) {
+			path.pop_back();
+		}
+	}
+
+	void clearPath() { path.clear(); }
+
 
 private:
 	std::string name;
 	std::vector<std::pair<std::string, int>> enemies;
+	std::vector<std::pair<int, int>> path;
 };
 
 #endif // TOWERDEFENCE_WAVESAMPLE_H

@@ -23,6 +23,10 @@ public:
 	bool removeWave(const std::string &name);
 	std::vector<std::string> getWavesNames() const;
 	bool waveExists(const std::string &name) const;
+	std::shared_ptr<WaveSample> getWave(const std::string &name) const;
+
+	bool addPathPoint(const std::string &waveName, int tx, int ty);
+	bool deletePathPoint(const std::string &waveName);
 
 	std::vector<std::string> getAvailableEnemies() const;
 	std::shared_ptr<WaveSample> getWave(const std::string &name);

@@ -26,6 +26,8 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	connect(ui->wavesList, &QListWidget::itemClicked, this, &MapEditor::onWaveItemClicked);
 	connect(ui->editWaveButton, &QPushButton::clicked, this, &MapEditor::onEditWaveButtonClicked);
 
+	connect(ui->editCurrentWavePathButton, &QPushButton::clicked, this, &MapEditor::onEditPathButtonClicked);
+
 	ui->editorStack->setCurrentIndex(0);
 	ui->modeList->setCurrentRow(0);
 
@@ -209,6 +211,12 @@ void MapEditor::onWaveItemClicked(QListWidgetItem *item) {
 	if (waveName != "") {
 		currentWaveName = waveName;
 	}
+
+	refreshMapView();
+
+	if (!pathEditingMode) {
+		drawCurrentWavePath();
+	}
 }
 void MapEditor::onEditWaveButtonClicked() {
 	if (currentWaveName.empty()) {
@@ -235,6 +243,7 @@ void MapEditor::updateMapList() const {
 		ui->mapComboBox->addItem(QString::fromStdString(name));
 	}
 }
+
 void MapEditor::updateWaveList() const {
 	const auto waves = mapController->getWavesNames();
 
@@ -243,18 +252,43 @@ void MapEditor::updateWaveList() const {
 
 bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
 	if (obj == ui->mapView->scene() && event->type() == QEvent::GraphicsSceneMousePress) {
-		QGraphicsSceneMouseEvent *mouseEvent = static_cast<QGraphicsSceneMouseEvent *>(event);
+		auto *mouseEvent = static_cast<QGraphicsSceneMouseEvent *>(event);
+		QPointF pos = mouseEvent->scenePos();
 
 		int tileSize = TextureManager::instance().getImageSize();
-		int tileX = static_cast<int>(mouseEvent->scenePos().x()) / tileSize;
-		int tileY = static_cast<int>(mouseEvent->scenePos().y()) / tileSize;
+		int tileX = static_cast<int>(pos.x()) / tileSize;
+		int tileY = static_cast<int>(pos.y()) / tileSize;
 
 		auto currentMap = mapController->getCurrentMap();
 		if (!currentMap)
 			return true;
 
-		const auto &tiles = currentMap->getTiles();
-		if (tileY < 0 || tileY >= tiles.size() || tileX < 0 || tileX >= tiles[tileY].size()) {
+		if (pathEditingMode) {
+			if (mouseEvent->button() == Qt::LeftButton) {
+				bool result = mapController->addPathPoint(currentWaveName, tileX, tileY);
+				if (result) {
+					for (auto *item: pathGraphicsItems) {
+						ui->mapView->scene()->removeItem(item);
+						delete item;
+					}
+					pathGraphicsItems.clear();
+					drawCurrentWavePath();
+				}
+			} else if (mouseEvent->button() == Qt::RightButton) {
+				bool result = mapController->deletePathPoint(currentWaveName);
+				if (result) {
+					for (auto *item: pathGraphicsItems) {
+						ui->mapView->scene()->removeItem(item);
+						delete item;
+					}
+					pathGraphicsItems.clear();
+					drawCurrentWavePath();
+				}
+			}
+			return true;
+		}
+
+		if (tileY < 0 || tileY >= currentMap->getHeight() || tileX < 0 || tileX >= currentMap->getWidth()) {
 			return true;
 		}
 
@@ -265,7 +299,6 @@ bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
 		}
 
 		currentMap->setTile(tileX, tileY, currentTextureId);
-
 		refreshMapView();
 		return true;
 	}
@@ -273,37 +306,68 @@ bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
 	return QWidget::eventFilter(obj, event);
 }
 
+// void MapEditor::refreshMapView() {
+// 	auto currentMap = mapController->getCurrentMap();
+//
+// 	const auto &tiles = currentMap->getTiles();
+//
+// 	QGraphicsScene *scene = ui->mapView->scene();
+// 	if (!scene) {
+// 		scene = new QGraphicsScene(this);
+// 		ui->mapView->setScene(scene);
+//
+// 		scene->installEventFilter(this);
+// 	} else {
+// 		scene->clear();
+// 	}
+//
+// 	int imageSize = TextureManager::instance().getImageSize();
+//
+// 	for (int y = 0; y < tiles.size(); y++) {
+// 		for (int x = 0; x < tiles[y].size(); x++) {
+// 			int tileId = tiles[y][x];
+// 			QPixmap pix = TextureManager::instance().get(tileId);
+// 			if (!pix.isNull()) {
+// 				QGraphicsPixmapItem *pixItem = scene->addPixmap(pix);
+// 				pixItem->setPos(x * imageSize, y * imageSize);
+// 				QGraphicsRectItem *rectItem =
+// 						scene->addRect(x * imageSize, y * imageSize, imageSize, imageSize, QPen(Qt::black));
+// 				rectItem->setZValue(1);
+// 			}
+// 		}
+// 	}
+//
+//
+// 	ui->mapView->setSceneRect(scene->itemsBoundingRect());
+// }
+
 void MapEditor::refreshMapView() {
 	auto currentMap = mapController->getCurrentMap();
-
-	const auto &tiles = currentMap->getTiles();
+	if (!currentMap)
+		return;
 
 	QGraphicsScene *scene = ui->mapView->scene();
 	if (!scene) {
 		scene = new QGraphicsScene(this);
 		ui->mapView->setScene(scene);
-
 		scene->installEventFilter(this);
 	} else {
 		scene->clear();
 	}
 
-	int imageSize = TextureManager::instance().getImageSize();
+	const auto &tiles = currentMap->getTiles();
+	int tileSize = TextureManager::instance().getImageSize();
 
-	for (int y = 0; y < tiles.size(); y++) {
-		for (int x = 0; x < tiles[y].size(); x++) {
+	for (int y = 0; y < tiles.size(); ++y) {
+		for (int x = 0; x < tiles[y].size(); ++x) {
 			int tileId = tiles[y][x];
 			QPixmap pix = TextureManager::instance().get(tileId);
 			if (!pix.isNull()) {
-				QGraphicsPixmapItem *pixItem = scene->addPixmap(pix);
-				pixItem->setPos(x * imageSize, y * imageSize);
-				QGraphicsRectItem *rectItem =
-						scene->addRect(x * imageSize, y * imageSize, imageSize, imageSize, QPen(Qt::black));
-				rectItem->setZValue(1);
+				scene->addPixmap(pix)->setPos(x * tileSize, y * tileSize);
+				scene->addRect(x * tileSize, y * tileSize, tileSize, tileSize, QPen(QColor(0, 0, 0, 50)));
 			}
 		}
 	}
-
 
 	ui->mapView->setSceneRect(scene->itemsBoundingRect());
 }
@@ -364,5 +428,66 @@ void MapEditor::updateTextureList() {
 
 	if (ui->textureList->count() > 0 && ui->textureList->currentItem() == nullptr) {
 		ui->textureList->setCurrentRow(0);
+	}
+}
+
+void MapEditor::onEditPathButtonClicked() {
+	if (currentWaveName.empty()) {
+		QMessageBox::information(this, "Error", "Select a wave first!");
+		return;
+	}
+
+	pathEditingMode = !pathEditingMode;
+	ui->editCurrentWavePathButton->setChecked(pathEditingMode);
+	ui->editCurrentWavePathButton->setText(pathEditingMode ? "Finish Editing Path" : "Edit Path");
+
+	if (pathEditingMode) {
+		// Очищаем старый путь на карте
+		for (auto *item: pathGraphicsItems) {
+			ui->mapView->scene()->removeItem(item);
+			delete item;
+		}
+		pathGraphicsItems.clear();
+
+		drawCurrentWavePath();
+	}
+}
+
+void MapEditor::drawCurrentWavePath() {
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap)
+		return;
+
+	auto it = mapController->getWave(currentWaveName);
+	if (it == nullptr)
+		return;
+
+	const auto &path = it->getPath();
+	if (path.empty())
+		return;
+
+	int tileSize = TextureManager::instance().getImageSize();
+	QGraphicsScene *scene = ui->mapView->scene();
+	if (!scene)
+		return;
+
+	for (size_t i = 0; i < path.size(); ++i) {
+		int tx = path[i].first;
+		int ty = path[i].second;
+
+		QGraphicsEllipseItem *point = scene->addEllipse(tx * tileSize + tileSize / 4, ty * tileSize + tileSize / 4,
+														tileSize / 2, tileSize / 2, QPen(Qt::red, 3), QBrush(Qt::red));
+		point->setZValue(100);
+		pathGraphicsItems.push_back(point);
+
+		if (i < path.size() - 1) {
+			int nextX = path[i + 1].first;
+			int nextY = path[i + 1].second;
+			QGraphicsLineItem *line =
+					scene->addLine(tx * tileSize + tileSize / 2, ty * tileSize + tileSize / 2,
+								   nextX * tileSize + tileSize / 2, nextY * tileSize + tileSize / 2, QPen(Qt::red, 4));
+			line->setZValue(99);
+			pathGraphicsItems.push_back(line);
+		}
 	}
 }

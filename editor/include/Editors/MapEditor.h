@@ -2,6 +2,7 @@
 #define TOWERDEFENCE_MAPEDITOR_H
 
 #include <QWidget>
+#include <qgraphicsitem.h>
 
 #include "BaseEditor.h"
 #include "MapController.h"
@@ -39,11 +40,16 @@ private:
 	Ui::MapEditor *ui;
 
 	void updateTextureList();
+	void onEditPathButtonClicked();
 	void updateMapList() const;
 	void updateWaveList() const;
 
+	void drawCurrentWavePath();
+
 	std::shared_ptr<MapController> mapController;
 	std::string currentWaveName;
+	bool pathEditingMode = false;
+	std::vector<QGraphicsItem *> pathGraphicsItems;
 
 protected:
 	bool eventFilter(QObject *obj, QEvent *event) override;

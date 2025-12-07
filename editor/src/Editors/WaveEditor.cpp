@@ -47,6 +47,8 @@ WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, cons
 
 		accept();
 	});
+
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 WaveEditor::~WaveEditor() { delete ui; }
@@ -72,14 +74,6 @@ void WaveEditor::onAddEnemyClicked() {
 	int count = ui->countSpinBox->value();
 	if (enemyName.isEmpty())
 		return;
-
-	// Проверяем дубли
-	for (int i = 0; i < ui->enemiesList->count(); ++i) {
-		if (ui->enemiesList->item(i)->data(Qt::UserRole).toString() == enemyName) {
-			QMessageBox::information(this, "Info", "This enemy is already in the wave!");
-			return;
-		}
-	}
 
 	auto *item = new QListWidgetItem(tr("%1 × %2").arg(enemyName).arg(count));
 	item->setData(Qt::UserRole, enemyName);
@@ -110,7 +104,7 @@ bool WaveEditor::isWaveNameUnique(const std::string &name) const {
 		return true;
 
 	for (const auto &wave: currentMap->getWaves()) {
-		if (wave.getName() == name && wave.getName() != originalWaveName) {
+		if (wave->getName() == name && wave->getName() != originalWaveName) {
 			return false;
 		}
 	}

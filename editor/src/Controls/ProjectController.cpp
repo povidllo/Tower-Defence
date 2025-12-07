@@ -104,9 +104,9 @@ void ProjectController::removeEnemiesFromWaves(std::string enemyName) const {
 
 	for (auto &map: maps) {
 		for (auto &wave: map->getWaves()) {
-			wave.getEnemies().erase(std::remove_if(wave.getEnemies().begin(), wave.getEnemies().end(),
-												   [enemyName](const auto &pair) { return pair.first == enemyName; }),
-									wave.getEnemies().end());
+			wave->getEnemies().erase(std::remove_if(wave->getEnemies().begin(), wave->getEnemies().end(),
+													[enemyName](const auto &pair) { return pair.first == enemyName; }),
+									 wave->getEnemies().end());
 		}
 	}
 }
