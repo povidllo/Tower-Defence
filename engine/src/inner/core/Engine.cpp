@@ -1,10 +1,13 @@
 #include "Engine.h"
 
+#include <memory>
+#include <utility>
+
 namespace TDEngine {
     namespace Inner {
         Engine::Engine(std::shared_ptr<ProjectSample> pSample)
-            : storage(nullptr), curProject(pSample), curFrame(std::nullopt),
-            boundaryDT(std::shared_ptr<BoundaryDataTransfer>(new BoundaryDataTransfer(this, curProject))),
+            : storage(nullptr), curProject(std::move(pSample)), curFrame(std::nullopt),
+            boundaryDT(std::make_shared<BoundaryDataTransfer>(this, curProject)),
             tickGen(std::chrono::steady_clock::now())
         {
         }
@@ -13,12 +16,15 @@ namespace TDEngine {
             while (true) {
                 while (solveNextAction());
                 tickGen.tick(storage->getEverythingActing());
-                auto frame = new FrameData(storage->getGameStatus(), storage->getAllMapObjects());
-                boundaryDT->setNextFrame(*frame);
+
+                //ВНИМАНИЕ
+                // Сюда можно бы воткнуть функцию boundary-классов на отрисовку
+                // auto frame = new FrameData(storage->getGameStatus(), storage->getAllMapObjects());
+                // boundaryDT->setNextFrame(*frame);
             }
         }
 
-        void Engine::startGame(std::string mapName) {
+        void Engine::startGame(const std::string& mapName) {
             MapSample map; //Расписать получение карты по имени из проекта
             storage = std::make_shared<EngineStorage>(map);
             gameLoop();

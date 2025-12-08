@@ -13,7 +13,7 @@ namespace TDEngine {
         public:
             Engine(std::shared_ptr<ProjectSample> pSample);
             void gameLoop();
-            void startGame(std::string mapName);
+            void startGame(const std::string& mapName);
             void endGame(bool hasWon);
             bool solveNextAction();
         private:
