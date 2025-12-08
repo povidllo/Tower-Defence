@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.31.6)
 project(engine)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -7,7 +7,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 
-find_package(Qt6 COMPONENTS
+find_package(COMPONENTS
         Core
         Gui
         Widgets
@@ -37,6 +37,15 @@ add_executable(engine main.cpp
         src/inner/game_entities/EnemyActions.h
         src/inner/Zaglushki/MapSample.h
         src/inner/core/FrameData.h
+        src/inner/player_actions/Replay.h
+        src/inner/player_actions/IPlayerAction.h
+        src/inner/player_actions/AbilityUseAction.cpp
+        src/inner/player_actions/AbilityUseAction.h
+        src/inner/player_actions/TowerUpgradeAction.cpp
+        src/inner/player_actions/TowerUpgradeAction.h
+        src/inner/core/ProjectLoader.cpp
+        src/inner/core/ProjectLoader.h
+        src/inner/Zaglushki/ProjectSample.h
 )
 target_link_libraries(engine
         Qt::Core

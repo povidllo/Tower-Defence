@@ -4,20 +4,24 @@
 #include "BoundaryDataTransfer.h"
 #include "EngineStorage.h"
 #include "FrameData.h"
+#include "TickGenerator.h"
+#include "../Zaglushki/ProjectSample.h"
 
 namespace TDEngine {
     namespace Inner {
         class Engine {
         public:
+            Engine(std::shared_ptr<ProjectSample> pSample);
             void gameLoop();
-            void startGame(std::string mapName);
+            void startGame(const std::string& mapName);
             void endGame(bool hasWon);
             bool solveNextAction();
         private:
-            EngineStorage storage;
-            // Project curProject;
-            FrameData curFrame;
-            BoundaryDataTransfer boundaryDT;
+            std::shared_ptr<EngineStorage> storage;
+            std::shared_ptr<ProjectSample> curProject;
+            std::optional<FrameData> curFrame;
+            std::shared_ptr<BoundaryDataTransfer> boundaryDT;
+            TickGenerator tickGen;
         };
 
     } // Inner
