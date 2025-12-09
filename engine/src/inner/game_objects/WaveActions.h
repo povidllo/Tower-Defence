@@ -7,8 +7,9 @@ namespace TDEngine {
         class WaveActions : public IActing{
         public:
             explicit WaveActions(WaveSample sample);
-            void spawnEnemy();
-            void summonNextWave();
+            void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
+            void spawnEnemy(std::shared_ptr<EngineStorage> engineStorage);
+            void summonNextWave(std::shared_ptr<EngineStorage> engineStorage);
 
             Wave storage;
         };

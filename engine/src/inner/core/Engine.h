@@ -5,7 +5,6 @@
 #include "EngineStorage.h"
 #include "FrameData.h"
 #include "TickGenerator.h"
-#include "../../../../editor/include/Entity/Project.h"
 
 namespace TDEngine {
     namespace Inner {
@@ -18,7 +17,6 @@ namespace TDEngine {
             bool solveNextAction();
         private:
             std::shared_ptr<EngineStorage> storage;
-            std::shared_ptr<Project> curProject;
             // std::optional<FrameData> curFrame;
             std::shared_ptr<BoundaryDataTransfer> boundaryDT;
             TickGenerator tickGen;

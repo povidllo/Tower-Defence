@@ -1,13 +1,11 @@
 #include "Engine.h"
 
 #include <memory>
-#include <utility>
-#include "../../../../editor/include/Entity/Map.h"
 namespace TDEngine {
     namespace Inner {
-        Engine::Engine(std::shared_ptr<Project> pSample)
-            : storage(nullptr), curProject(std::move(pSample)), //curFrame(std::nullopt),
-            boundaryDT(std::make_shared<BoundaryDataTransfer>(this, curProject)),
+        Engine::Engine(std::shared_ptr<Project> project)
+            : storage(std::make_shared<EngineStorage>(project)), //curFrame(std::nullopt),
+            boundaryDT(std::make_shared<BoundaryDataTransfer>(this, storage->curProject)),
             tickGen(std::chrono::steady_clock::now())
         {
         }
@@ -16,7 +14,7 @@ namespace TDEngine {
             while (true) {
                 while (solveNextAction());
                 tickGen.tick(storage);
-
+                storage->cleanMap();
                 //ВНИМАНИЕ
                 // Сюда можно бы воткнуть функцию boundary-классов на отрисовку
                 // auto frame = new FrameData(storage->getGameStatus(), storage->getAllMapObjects());

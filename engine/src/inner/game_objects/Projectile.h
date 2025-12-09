@@ -1,14 +1,18 @@
 #pragma once
+#include "EnemyActions.h"
 #include "IActing.h"
 #include "MapObject.h"
+#include "TowerActions.h"
 
 namespace TDEngine {
     namespace Inner {
         class Projectile : public MapObject, public IActing{
         public:
-            Projectile(double moveSpeed, double damage);
+            Projectile(double moveSpeed, double damage,
+            std::shared_ptr<EnemyActions> target, std::pair<double, double> positionCoordinates);
+            void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
+            std::shared_ptr<EnemyActions> target;
         private:
-            void move(uint64_t timePassed);
             void hit();
 
             double moveSpeed;

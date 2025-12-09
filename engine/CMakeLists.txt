@@ -6,13 +6,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-
-find_package(Qt6 COMPONENTS
-        Core
-        Gui
-        Widgets
-        REQUIRED)
-
 add_executable(engine main.cpp
         ../editor/src/Entity/WaveSample.cpp
         ../editor/src/Entity/EnemySample.cpp
@@ -49,14 +42,19 @@ add_executable(engine main.cpp
         src/inner/game_objects/entities/Wave.h
         src/inner/game_objects/entities/Tower.h
 )
+
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(nlohmann_json REQUIRED)
+
+target_link_libraries(engine PRIVATE
+        Qt6::Widgets
+        nlohmann_json::nlohmann_json
+)
+
 target_include_directories(engine PRIVATE
         ${CMAKE_SOURCE_DIR}/../editor/include/Entity
         ${CMAKE_SOURCE_DIR}/../editor/include/Utils
 )
-find_package(nlohmann_json REQUIRED)
-target_link_libraries(engine
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
-        nlohmann_json::nlohmann_json
-)
+#
+
+

@@ -11,18 +11,23 @@
 #include "../game_objects/TowerActions.h"
 #include "../game_objects/WaveActions.h"
 #include "../../../../editor/include/Entity/Map.h"
+#include "../../../../editor/include/Entity/Project.h"
 
 namespace TDEngine {
     namespace Inner {
         class EngineStorage {
             public:
-            explicit EngineStorage(std::shared_ptr<Map> map);
+            explicit EngineStorage(std::shared_ptr<Project> project);
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
             std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
 
             void cleanMap();
-            void addEnemy(std::shared_ptr<EnemyActions> enemy);
-            void removeEnemy(std::shared_ptr<EnemyActions> enemy);
+            void addProjectile(const std::shared_ptr<Projectile> &projectile);
+            void removeProjectile(const std::shared_ptr<Projectile> &projectile);
+            void addTower(const std::shared_ptr<TowerActions> &tower);
+            void removeTower(const std::shared_ptr<TowerActions> &tower);
+            void addEnemy(const std::shared_ptr<EnemyActions> &enemy);
+            void removeEnemy(const std::shared_ptr<EnemyActions> &enemy);
 
 
             std::vector<std::shared_ptr<Projectile>> activeProjectiles;
@@ -32,6 +37,7 @@ namespace TDEngine {
             std::vector<std::shared_ptr<WaveActions>> activeWaves;
             std::vector<std::shared_ptr<MapObject>> mapObjects;
             GameStatus curGameStatus;
+            std::shared_ptr<Project> curProject;
 
             private:
             std::shared_ptr<Map> curMap;

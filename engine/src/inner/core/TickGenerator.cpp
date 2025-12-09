@@ -15,8 +15,6 @@ namespace TDEngine {
                 acting->act(tickIntervalTImeMillis, engineStorage);
             }
 
-            engineStorage->cleanMap();
-
             lastTickTime = curTickTime;
         }
 

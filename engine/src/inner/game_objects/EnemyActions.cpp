@@ -19,10 +19,7 @@ namespace TDEngine {
             }
 
             if (storage.isAlive) {
-                if (abs(positionCoordinates.first - storage.associatedWave->getPath()[storage.targetIndex].first)
-                    < 1e-5
-                    && abs(positionCoordinates.second - storage.associatedWave->getPath()[storage.targetIndex].second)
-                    < 1e-5) {
+                if (getDistanceTo(storage.associatedWave->getPath()[storage.targetIndex]) < 1e-5) {
                     if (storage.targetIndex + 1 == storage.associatedWave->getPath().size()) {
                         attack(engineStorage);
                     }
@@ -31,24 +28,10 @@ namespace TDEngine {
                     }
                     }
 
-                move(timePassedMillis);
+                moveTo(storage.associatedWave->getPath()[storage.targetIndex], storage.curSpeed, timePassedMillis);
             }
         }
 
-        void EnemyActions::move(uint64_t timePassedMillis) {
-            double distTraveled = storage.curSpeed * timePassedMillis / 1000.0;
-            double dx = storage.associatedWave->getPath()[storage.targetIndex].first - positionCoordinates.first;
-            double dy = storage.associatedWave->getPath()[storage.targetIndex].second - positionCoordinates.second;
-            double distLeft = sqrt(dx*dx + dy*dy);
-            if (distLeft < distTraveled) {
-                distTraveled = distLeft;
-            }
-
-            double movedX = dx * distTraveled / distLeft;
-            double movedY = dy * distTraveled / distLeft;
-            positionCoordinates.first += movedX;
-            positionCoordinates.second += movedY;
-        }
 
         void EnemyActions::die() {
             storage.isAlive = false;
