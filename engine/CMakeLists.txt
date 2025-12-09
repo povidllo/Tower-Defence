@@ -14,7 +14,9 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 add_executable(engine main.cpp
-#        ../editor/include/Utils/Serializable.h
+        ../editor/src/Entity/WaveSample.cpp
+        ../editor/src/Entity/EnemySample.cpp
+        ../editor/src/Entity/TowerSample.cpp
         src/inner/core/Engine.cpp
         src/inner/core/Engine.h
         src/inner/core/TickGenerator.cpp
@@ -48,7 +50,6 @@ add_executable(engine main.cpp
         src/inner/game_objects/entities/Tower.h
 )
 target_include_directories(engine PRIVATE
-        ${CMAKE_SOURCE_DIR}/../editor/include
         ${CMAKE_SOURCE_DIR}/../editor/include/Entity
         ${CMAKE_SOURCE_DIR}/../editor/include/Utils
 )

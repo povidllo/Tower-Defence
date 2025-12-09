@@ -14,6 +14,7 @@ namespace TDEngine {
             std::shared_ptr<Wave> associatedWave;
             int targetIndex;
             double curSpeed;
+            bool isAlive;
         };
     } // Inner
 } // TDEngine

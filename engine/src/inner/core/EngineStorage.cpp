@@ -24,9 +24,31 @@ namespace TDEngine {
             return mapObjects;
         }
 
-        GameStatus EngineStorage::getGameStatus() {
-            return curGameStatus;
+        // void EngineStorage::cleanMap() {
+        //
+        // }
+
+        void EngineStorage::addEnemy(std::shared_ptr<EnemyActions> enemy) {
+            activeEnemies.push_back(enemy);
+            mapObjects.push_back(enemy);
         }
+
+        void EngineStorage::removeEnemy(std::shared_ptr<EnemyActions> enemy) {
+            auto enemyIt = std::find(activeEnemies.begin(), activeEnemies.end(), enemy);
+            if (enemyIt != activeEnemies.end()) {
+                activeEnemies.erase(enemyIt);
+            }
+
+            std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(enemy);
+            if (mapObj) {
+                auto mapIt = std::find(mapObjects.begin(), mapObjects.end(), mapObj);
+                if (mapIt != mapObjects.end()) {
+                    mapObjects.erase(mapIt);
+                }
+            }
+        }
+
+
 
 
     } // Inner

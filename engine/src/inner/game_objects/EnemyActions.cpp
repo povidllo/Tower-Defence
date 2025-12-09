@@ -1,5 +1,5 @@
 #include "EnemyActions.h"
-
+#include "../core/EngineStorage.h"
 namespace TDEngine {
     namespace Inner {
         EnemyActions::EnemyActions(EnemySample sample, std::shared_ptr<Wave> wave)
@@ -10,26 +10,29 @@ namespace TDEngine {
             storage.currentHP = storage.getHealth();
             storage.targetIndex = 0;
             storage.curSpeed = 1;
+            storage.isAlive = true;
         }
 
-        void EnemyActions::act(uint64_t timePassedMillis) {
+        void EnemyActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
             if (storage.currentHP <= 0) {
-                die();
+                storage.isAlive = false;
             }
 
-            if (abs(positionCoordinates.first - storage.associatedWave->getPath()[storage.targetIndex].first)
-                < 1e-5
-                && abs(positionCoordinates.second - storage.associatedWave->getPath()[storage.targetIndex].second)
-                < 1e-5) {
-                if (storage.targetIndex + 1 == storage.associatedWave->getPath().size()) {
-                    attack();
-                }
-                else {
-                    storage.targetIndex++;
-                }
-            }
+            if (storage.isAlive) {
+                if (abs(positionCoordinates.first - storage.associatedWave->getPath()[storage.targetIndex].first)
+                    < 1e-5
+                    && abs(positionCoordinates.second - storage.associatedWave->getPath()[storage.targetIndex].second)
+                    < 1e-5) {
+                    if (storage.targetIndex + 1 == storage.associatedWave->getPath().size()) {
+                        attack(engineStorage);
+                    }
+                    else {
+                        storage.targetIndex++;
+                    }
+                    }
 
-            move(timePassedMillis);
+                move(timePassedMillis);
+            }
         }
 
         void EnemyActions::move(uint64_t timePassedMillis) {
@@ -48,11 +51,11 @@ namespace TDEngine {
         }
 
         void EnemyActions::die() {
-
+            storage.isAlive = false;
         }
 
-        void EnemyActions::attack() {
-
+        void EnemyActions::attack(std::shared_ptr<EngineStorage> engineStorage) {
+            engineStorage->curGameStatus.currentHp -= storage.getDamage();
         }
 
 

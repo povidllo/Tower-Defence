@@ -15,7 +15,7 @@ namespace TDEngine {
         void Engine::gameLoop() {
             while (true) {
                 while (solveNextAction());
-                tickGen.tick(storage->getEverythingActing());
+                tickGen.tick(storage);
 
                 //ВНИМАНИЕ
                 // Сюда можно бы воткнуть функцию boundary-классов на отрисовку

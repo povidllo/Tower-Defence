@@ -19,19 +19,22 @@ namespace TDEngine {
             explicit EngineStorage(std::shared_ptr<Map> map);
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
             std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
-            GameStatus getGameStatus();
 
-            //Возможно эти переменные будут приватными и с геттерами-сеттерами
+            void cleanMap();
+            void addEnemy(std::shared_ptr<EnemyActions> enemy);
+            void removeEnemy(std::shared_ptr<EnemyActions> enemy);
+
+
             std::vector<std::shared_ptr<Projectile>> activeProjectiles;
             std::vector<std::shared_ptr<AbilityActions>> activeAbilities;
             std::vector<std::shared_ptr<TowerActions>> activeTowers;
             std::vector<std::shared_ptr<EnemyActions>> activeEnemies;
             std::vector<std::shared_ptr<WaveActions>> activeWaves;
             std::vector<std::shared_ptr<MapObject>> mapObjects;
+            GameStatus curGameStatus;
 
             private:
             std::shared_ptr<Map> curMap;
-            GameStatus curGameStatus;
 
         };
     } // Inner
