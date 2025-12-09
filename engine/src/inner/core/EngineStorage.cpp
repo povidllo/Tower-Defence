@@ -3,7 +3,7 @@
 namespace TDEngine {
     namespace Inner {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
-        EngineStorage::EngineStorage(MapSample map)
+        EngineStorage::EngineStorage(std::shared_ptr<Map> map)
             : curMap(map), curGameStatus(GameStatus(0, 0))
         {
         }

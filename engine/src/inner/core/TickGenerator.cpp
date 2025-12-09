@@ -7,11 +7,11 @@ namespace TDEngine {
 
         void TickGenerator::tick(const std::vector<std::shared_ptr<IActing>> everythingActing) {
             auto curTickTime = std::chrono::steady_clock::now();
-            uint64_t tickIntervalTIme =
+            uint64_t tickIntervalTImeMillis =
                 std::chrono::duration_cast<std::chrono::milliseconds>(curTickTime - lastTickTime).count();
 
             for (auto & acting : everythingActing) {
-                acting->act(tickIntervalTIme);
+                acting->act(tickIntervalTImeMillis);
             }
 
             lastTickTime = curTickTime;

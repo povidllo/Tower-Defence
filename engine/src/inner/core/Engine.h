@@ -5,21 +5,21 @@
 #include "EngineStorage.h"
 #include "FrameData.h"
 #include "TickGenerator.h"
-#include "../Zaglushki/ProjectSample.h"
+#include "../../../../editor/include/Entity/Project.h"
 
 namespace TDEngine {
     namespace Inner {
         class Engine {
         public:
-            Engine(std::shared_ptr<ProjectSample> pSample);
+            Engine(std::shared_ptr<Project> pSample);
             void gameLoop();
             void startGame(const std::string& mapName);
             void endGame(bool hasWon);
             bool solveNextAction();
         private:
             std::shared_ptr<EngineStorage> storage;
-            std::shared_ptr<ProjectSample> curProject;
-            std::optional<FrameData> curFrame;
+            std::shared_ptr<Project> curProject;
+            // std::optional<FrameData> curFrame;
             std::shared_ptr<BoundaryDataTransfer> boundaryDT;
             TickGenerator tickGen;
         };

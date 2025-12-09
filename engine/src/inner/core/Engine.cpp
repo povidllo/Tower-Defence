@@ -2,11 +2,11 @@
 
 #include <memory>
 #include <utility>
-
+#include "../../../../editor/include/Entity/Map.h"
 namespace TDEngine {
     namespace Inner {
-        Engine::Engine(std::shared_ptr<ProjectSample> pSample)
-            : storage(nullptr), curProject(std::move(pSample)), curFrame(std::nullopt),
+        Engine::Engine(std::shared_ptr<Project> pSample)
+            : storage(nullptr), curProject(std::move(pSample)), //curFrame(std::nullopt),
             boundaryDT(std::make_shared<BoundaryDataTransfer>(this, curProject)),
             tickGen(std::chrono::steady_clock::now())
         {
@@ -25,8 +25,8 @@ namespace TDEngine {
         }
 
         void Engine::startGame(const std::string& mapName) {
-            MapSample map; //Расписать получение карты по имени из проекта
-            storage = std::make_shared<EngineStorage>(map);
+            // Map map; //Расписать получение карты по имени из проекта
+            // storage = std::make_shared<EngineStorage>(map);
             gameLoop();
         }
 

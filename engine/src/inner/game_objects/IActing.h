@@ -5,7 +5,7 @@ namespace TDEngine {
     namespace Inner {
         class IActing {
         public:
-        virtual void act(uint64_t timePassed) = 0;
+        virtual void act(uint64_t timePassedMillis) = 0;
         //     virtual void createNew(EngineStorage storage) = 0;
         virtual ~IActing() = default;
         };

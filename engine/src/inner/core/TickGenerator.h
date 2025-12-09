@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <chrono>
-#include "../game_entities/IActing.h"
+#include "../game_objects/IActing.h"
 
 namespace TDEngine {
     namespace Inner {

@@ -1,24 +1,24 @@
 #include "BoundaryDataTransfer.h"
 
 #include <utility>
-
 namespace TDEngine {
     namespace Inner {
-        BoundaryDataTransfer::BoundaryDataTransfer(Engine *engine, std::shared_ptr<ProjectSample> &projectSample)
+        BoundaryDataTransfer::BoundaryDataTransfer(Engine *engine, std::shared_ptr<Project> &projectSample)
             : engine(engine), currentProject(projectSample)
         {}
-        std::optional<FrameData> BoundaryDataTransfer::getCurFrame() {
-            std::lock_guard<std::mutex> lockCur(curFrameMutex);
-            std::lock_guard<std::mutex> lockNext(nextFrameMutex);
-            auto returnFrame = std::exchange(curFrame, nextFrame);
-            nextFrame = std::nullopt;
-            return returnFrame;
-        }
 
-        void BoundaryDataTransfer::setNextFrame(FrameData &newNextFrame) {
-            std::lock_guard<std::mutex> lockNext(nextFrameMutex);
-            nextFrame = std::move(newNextFrame);
-        }
+        // std::optional<FrameData> BoundaryDataTransfer::getCurFrame() {
+        //     std::lock_guard<std::mutex> lockCur(curFrameMutex);
+        //     std::lock_guard<std::mutex> lockNext(nextFrameMutex);
+        //     auto returnFrame = std::exchange(curFrame, nextFrame);
+        //     nextFrame = std::nullopt;
+        //     return returnFrame;
+        // }
+        //
+        // void BoundaryDataTransfer::setNextFrame(FrameData &newNextFrame) {
+        //     std::lock_guard<std::mutex> lockNext(nextFrameMutex);
+        //     nextFrame = std::move(newNextFrame);
+        // }
 
         void BoundaryDataTransfer::addPlayerAction(std::shared_ptr<IPlayerAction> &action) {
             std::lock_guard<std::mutex> lock(playerActionsMutex);
