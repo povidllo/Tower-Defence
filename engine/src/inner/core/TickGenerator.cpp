@@ -1,17 +1,18 @@
 #include "TickGenerator.h"
 
+
 namespace TDEngine {
     namespace Inner {
         TickGenerator::TickGenerator(std::chrono::time_point<std::chrono::steady_clock> startTime)
             : lastTickTime(startTime) {}
 
-        void TickGenerator::tick(const std::vector<std::shared_ptr<IActing>> everythingActing) {
+        void TickGenerator::tick(const std::shared_ptr<EngineStorage> engineStorage) {
             auto curTickTime = std::chrono::steady_clock::now();
-            uint64_t tickIntervalTIme =
+            uint64_t tickIntervalTImeMillis =
                 std::chrono::duration_cast<std::chrono::milliseconds>(curTickTime - lastTickTime).count();
 
-            for (auto & acting : everythingActing) {
-                acting->act(tickIntervalTIme);
+            for (auto & acting : engineStorage->getEverythingActing()) {
+                acting->act(tickIntervalTImeMillis, engineStorage);
             }
 
             lastTickTime = curTickTime;

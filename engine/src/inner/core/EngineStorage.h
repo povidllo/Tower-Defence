@@ -2,36 +2,45 @@
 #include <memory>
 #include <vector>
 
-#include "../game_entities/AbilityActions.h"
-#include "../game_entities/EnemyActions.h"
-#include "../game_entities/GameStatus.h"
-#include "../game_entities/IActing.h"
-#include "../game_entities/MapObject.h"
-#include "../game_entities/Projectile.h"
-#include "../game_entities/TowerActions.h"
-#include "../game_entities/WaveActions.h"
-#include "../Zaglushki/MapSample.h"
+#include "../game_objects/AbilityActions.h"
+#include "../game_objects/EnemyActions.h"
+#include "../game_objects/GameStatus.h"
+#include "../game_objects/IActing.h"
+#include "../game_objects/MapObject.h"
+#include "../game_objects/Projectile.h"
+#include "../game_objects/TowerActions.h"
+#include "../game_objects/WaveActions.h"
+#include "../../../../editor/include/Entity/Map.h"
+#include "../../../../editor/include/Entity/Project.h"
 
 namespace TDEngine {
     namespace Inner {
         class EngineStorage {
             public:
-            explicit EngineStorage(MapSample map);
+            explicit EngineStorage(std::shared_ptr<Project> project);
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
             std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
-            GameStatus getGameStatus();
 
-            //Возможно эти переменные будут приватными и с геттерами-сеттерами
+            void cleanMap();
+            void addProjectile(const std::shared_ptr<Projectile> &projectile);
+            void removeProjectile(const std::shared_ptr<Projectile> &projectile);
+            void addTower(const std::shared_ptr<TowerActions> &tower);
+            void removeTower(const std::shared_ptr<TowerActions> &tower);
+            void addEnemy(const std::shared_ptr<EnemyActions> &enemy);
+            void removeEnemy(const std::shared_ptr<EnemyActions> &enemy);
+
+
             std::vector<std::shared_ptr<Projectile>> activeProjectiles;
             std::vector<std::shared_ptr<AbilityActions>> activeAbilities;
             std::vector<std::shared_ptr<TowerActions>> activeTowers;
             std::vector<std::shared_ptr<EnemyActions>> activeEnemies;
             std::vector<std::shared_ptr<WaveActions>> activeWaves;
             std::vector<std::shared_ptr<MapObject>> mapObjects;
+            GameStatus curGameStatus;
+            std::shared_ptr<Project> curProject;
 
             private:
-            MapSample curMap;
-            GameStatus curGameStatus;
+            std::shared_ptr<Map> curMap;
 
         };
     } // Inner
