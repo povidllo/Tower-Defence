@@ -8,12 +8,16 @@ TowerSample::TowerSample(const json &j) {
 }
 
 TowerSample::json TowerSample::toJson() const {
+	json upgradeArray = json::array();
+	for (const auto &name: nextUpgrade) {
+		upgradeArray.push_back(name);
+	}
 	return {
 		{"name", name},
 		{"damage", damage},
 		{"fireRate", fireRate},
 		{"towerTexturePath", towerTexturePath},
-		// {"projectileTexturePath", projectileTexturePath},
+		{"nextUpgrade", upgradeArray},
 		{"x", x},
 		{"y", y}
 	};
@@ -24,7 +28,16 @@ void TowerSample::fromJson(const json &j) {
 	damage = j.value("damage", damage);
 	fireRate = j.value("fireRate", fireRate);
 	towerTexturePath = j.value("towerTexturePath", "");
-	// projectileTexturePath = j.value("projectileTexturePath", "");
+
+	if (j.contains("nextUpgrade") && j["nextUpgrade"].is_array()) {
+		nextUpgrade.clear();
+		for (const auto &item: j["nextUpgrade"]) {
+			if (item.is_string()) {
+				nextUpgrade.push_back(item.get<std::string>());
+			}
+		}
+	}
+
 	x = j.value("x", x);
 	y = j.value("y", y);
 }
@@ -59,4 +72,21 @@ void TowerSample::setTowerTexturePath(const std::string &texPath) {
 
 std::string TowerSample::getTowerTexturePath() const {
 	return towerTexturePath;
+}
+
+std::vector<std::string> TowerSample::getUpgradeNames() const {
+	return nextUpgrade;
+}
+
+void TowerSample::addNextUpgrade(const std::string &name) {
+	nextUpgrade.push_back(name);
+}
+
+bool TowerSample::removeNextUpgrade(const std::string &name) {
+	auto it = std::remove(nextUpgrade.begin(), nextUpgrade.end(), name);
+	if (it != nextUpgrade.end()) {
+		nextUpgrade.erase(it, nextUpgrade.end());
+		return true;
+	}
+	return false;
 }

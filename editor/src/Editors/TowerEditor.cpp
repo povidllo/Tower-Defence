@@ -18,9 +18,17 @@ TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController
 	connect(ui->deleteButton, &QPushButton::clicked, this, &TowerEditor::onDeleteButtonClicked);
 	connect(ui->chooseTextureButton, &QPushButton::clicked, this, &TowerEditor::onChooseTextureButtonClicked);
 
+	connect(ui->chooseTextureButton, &QPushButton::clicked, this, &TowerEditor::onChooseTextureButtonClicked);
+	connect(ui->addNextTowerButton, &QPushButton::clicked, this, &TowerEditor::onAddNextUpgradeButtonClicked);
+	connect(ui->removeNextTowerButton, &QPushButton::clicked, this, &TowerEditor::onRemoveNextUpgradeButtonClicked);
+
 	updateTowerList();
 	ui->towerPreview->setVisible(false);
 	ui->chooseTextureButton->setVisible(false);
+
+	ui->nextTowerList->setVisible(false);
+	ui->addNextTowerButton->setVisible(false);
+	ui->removeNextTowerButton->setVisible(false);
 }
 
 TowerEditor::~TowerEditor() { delete ui; }
@@ -35,6 +43,7 @@ void TowerEditor::addTower() const {
 	}
 	towerController->addTower(baseName);
 	updateTowerList();
+	updateUpgradeList();
 }
 
 void TowerEditor::onItemClicked(const QListWidgetItem *item) {
@@ -47,14 +56,12 @@ void TowerEditor::onItemClicked(const QListWidgetItem *item) {
 
 	BaseEditor::clearPropertiesForm(ui->propertiesForm, m_propertyEditors);
 
-	if (!currentTower) {
-		ui->editorTitle->setText("Tower Properties");
-		return;
-	}
 	ui->towerPreview->setVisible(true);
 	ui->chooseTextureButton->setVisible(true);
 
-	ui->editorTitle->setText("Editing: " + QString::fromStdString(currentTower->getName()));
+	ui->nextTowerList->setVisible(true);
+	ui->addNextTowerButton->setVisible(true);
+	ui->removeNextTowerButton->setVisible(true);
 
 	fillPropertiesForm(currentTower);
 }
@@ -83,9 +90,10 @@ void TowerEditor::onSaveButtonClicked() {
 	}
 
 	updateTowerList();
+	updateUpgradeList();
 }
 
-void TowerEditor::onDeleteButtonClicked() {
+void TowerEditor::onDeleteButtonClicked() const {
 	const auto tower = towerController->getCurrentTower();
 	if (!tower) {
 		return;
@@ -94,6 +102,7 @@ void TowerEditor::onDeleteButtonClicked() {
 	towerController->removeTower(tower->getName());
 
 	updateTowerList();
+	updateUpgradeList();
 }
 
 void TowerEditor::onChooseTextureButtonClicked() {
@@ -120,12 +129,22 @@ void TowerEditor::onChooseTextureButtonClicked() {
 	}
 }
 
+void TowerEditor::onAddNextUpgradeButtonClicked() {
+}
+
+void TowerEditor::onRemoveNextUpgradeButtonClicked() {
+}
+
 void TowerEditor::updateTowerList() const {
 	qDebug() << "Tower list updated";
 
 	const auto towerNames = towerController->getTowerNames();
 
 	BaseEditor::fillListWidget(ui->towerList, towerNames);
+}
+
+void TowerEditor::updateUpgradeList() const {
+	BaseEditor::fillListWidget(ui->nextTowerList, towerController->getNextUpgradeNames());
 }
 
 void TowerEditor::fillPropertiesForm(const std::shared_ptr<TowerSample> &tower) {
@@ -157,21 +176,24 @@ void TowerEditor::fillPropertiesForm(const std::shared_ptr<TowerSample> &tower) 
 
 		QWidget *editor = nullptr;
 
-		if (value.is_string()) {
-			auto *edit = new QLineEdit(QString::fromStdString(value.get<std::string>()), this);
-			editor = edit;
-		} else if (value.is_number_float() || value.is_number()) {
-			auto *spin = new QDoubleSpinBox(this);
-			spin->setRange(-1e6, 1e6);
-			spin->setDecimals(3);
-			spin->setValue(value.get<double>());
-			editor = spin;
-		} else if (value.is_boolean()) {
-			auto *check = new QCheckBox(this);
-			check->setChecked(value.get<bool>());
-			editor = check;
+		if (key == "nextUpgrade") {
+			// auto *edit =
+		} else {
+			if (value.is_string()) {
+				auto *edit = new QLineEdit(QString::fromStdString(value.get<std::string>()), this);
+				editor = edit;
+			} else if (value.is_number_float() || value.is_number()) {
+				auto *spin = new QDoubleSpinBox(this);
+				spin->setRange(-1e6, 1e6);
+				spin->setDecimals(3);
+				spin->setValue(value.get<double>());
+				editor = spin;
+			} else if (value.is_boolean()) {
+				auto *check = new QCheckBox(this);
+				check->setChecked(value.get<bool>());
+				editor = check;
+			}
 		}
-
 		if (editor) {
 			editor->setObjectName(fieldName);
 			ui->propertiesForm->addRow(label + ":", editor);

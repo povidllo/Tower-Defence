@@ -10,13 +10,6 @@ Project::Project(const std::string &name, const std::string &path, const std::ti
 
 Project::Project(const json &j) { Project::fromJson(j); }
 
-// Project::json Project::toJson() const { return {{"name", name}, {"lastSaveDate", lastSaveDate}, {"path", path}}; }
-//
-// void Project::fromJson(const json &j) {
-// 	name = j.at("name").get<std::string>();
-// 	lastSaveDate = j.at("lastSaveDate").get<std::time_t>();
-// }
-
 Project::json Project::toJson() const {
 	json j;
 

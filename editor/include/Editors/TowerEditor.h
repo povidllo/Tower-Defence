@@ -30,14 +30,20 @@ private slots:
 
 	void onSaveButtonClicked();
 
-	void onDeleteButtonClicked();
+	void onDeleteButtonClicked() const;
 
 	void onChooseTextureButtonClicked();
+
+	void onAddNextUpgradeButtonClicked();
+
+	void onRemoveNextUpgradeButtonClicked();
 
 private:
 	Ui::TowerEditor *ui;
 
 	void updateTowerList() const;
+
+	void updateUpgradeList() const;
 
 	void fillPropertiesForm(const std::shared_ptr<TowerSample> &tower);
 
