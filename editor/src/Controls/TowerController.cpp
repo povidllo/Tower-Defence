@@ -78,3 +78,19 @@ std::vector<std::string> TowerController::getNextUpgradeNames() const {
 std::string TowerController::getCurrentNextUpgrade() const {
 	return currentNextUpgrade;
 }
+
+void TowerController::updateUpgradesNameAfterRename(const std::string &oldName, const std::string &newName) {
+	auto &towers = projectController->getTowers();
+	for (auto &tower: towers) {
+		if (tower->removeNextUpgrade(oldName)) {
+			tower->addNextUpgrade(newName);
+		}
+	}
+}
+
+void TowerController::updateUpgradesAfterRemoving(const std::string &name) {
+	auto &towers = projectController->getTowers();
+	for (auto &tower: towers) {
+		tower->removeNextUpgrade(name);
+	}
+}

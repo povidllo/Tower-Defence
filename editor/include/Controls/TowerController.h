@@ -36,6 +36,10 @@ public:
 
 	std::string getCurrentNextUpgrade() const;
 
+	void updateUpgradesNameAfterRename(const std::string &oldName, const std::string &newName);
+
+	void updateUpgradesAfterRemoving(const std::string &name);
+
 private:
 	ProjectController *projectController;
 	std::shared_ptr<TowerSample> currentTower;
