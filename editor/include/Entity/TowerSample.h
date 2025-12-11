@@ -33,11 +33,17 @@ public:
 
 	std::string getTowerTexturePath() const;
 
+	std::vector<std::string> getUpgradeNames() const;
+
+	void addNextUpgrade(const std::string &name);
+
+	bool removeNextUpgrade(const std::string &name);
+
 private:
 	std::string name;
 	double damage{0};
 	double fireRate{0};
-	// std::vector<std::shared_ptr<TowerSample> > nextUpgrade;
+	std::vector<std::string> nextUpgrade;
 	std::string towerTexturePath;
 	int x{0};
 	int y{0};

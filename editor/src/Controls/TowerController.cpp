@@ -4,7 +4,7 @@
 std::shared_ptr<TowerSample> TowerController::getCurrentTower() { return currentTower; }
 
 TowerController::TowerController(ProjectController *projectController) : projectController(projectController),
-																		currentTower(nullptr) {
+																		currentTower(nullptr), currentNextUpgrade("") {
 }
 
 void TowerController::setCurrentTower(const std::string &name) {
@@ -59,4 +59,38 @@ void TowerController::setTowerTexture(const std::string &path) const {
 		throw std::invalid_argument("Tower texture does not have .png format");
 	}
 	currentTower->setTowerTexturePath(path);
+}
+
+void TowerController::addNextUpgrade(const std::string &name) {
+	if (towerExists(name)) {
+		currentTower->addNextUpgrade(name);
+	}
+}
+
+bool TowerController::removeNextUpgrade(const std::string &name) {
+	return currentTower->removeNextUpgrade(name);
+}
+
+std::vector<std::string> TowerController::getNextUpgradeNames() const {
+	return currentTower->getUpgradeNames();
+}
+
+std::string TowerController::getCurrentNextUpgrade() const {
+	return currentNextUpgrade;
+}
+
+void TowerController::updateUpgradesNameAfterRename(const std::string &oldName, const std::string &newName) {
+	auto &towers = projectController->getTowers();
+	for (auto &tower: towers) {
+		if (tower->removeNextUpgrade(oldName)) {
+			tower->addNextUpgrade(newName);
+		}
+	}
+}
+
+void TowerController::updateUpgradesAfterRemoving(const std::string &name) {
+	auto &towers = projectController->getTowers();
+	for (auto &tower: towers) {
+		tower->removeNextUpgrade(name);
+	}
 }

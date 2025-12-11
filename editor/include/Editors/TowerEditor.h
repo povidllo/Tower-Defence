@@ -21,10 +21,12 @@ class TowerEditor : public QWidget, protected BaseEditor {
 public:
 	explicit TowerEditor(const std::shared_ptr<TowerController> &towerController, QWidget *parent = nullptr);
 
+	void rightPanelView(bool what);
+
 	~TowerEditor() override;
 
 private slots:
-	void addTower() const;
+	void onAddTowerButtonClicked();
 
 	void onItemClicked(const QListWidgetItem *item);
 
@@ -34,10 +36,16 @@ private slots:
 
 	void onChooseTextureButtonClicked();
 
+	void onAddNextUpgradeButtonClicked();
+
+	void onRemoveNextUpgradeButtonClicked();
+
 private:
 	Ui::TowerEditor *ui;
 
 	void updateTowerList() const;
+
+	void updateUpgradeList() const;
 
 	void fillPropertiesForm(const std::shared_ptr<TowerSample> &tower);
 

@@ -28,9 +28,22 @@ public:
 
 	void setTowerTexture(const std::string &path) const;
 
+	void addNextUpgrade(const std::string &name);
+
+	bool removeNextUpgrade(const std::string &name);
+
+	std::vector<std::string> getNextUpgradeNames() const;
+
+	std::string getCurrentNextUpgrade() const;
+
+	void updateUpgradesNameAfterRename(const std::string &oldName, const std::string &newName);
+
+	void updateUpgradesAfterRemoving(const std::string &name);
+
 private:
 	ProjectController *projectController;
 	std::shared_ptr<TowerSample> currentTower;
+	std::string currentNextUpgrade;
 };
 
 #endif // TOWERDEFENCE_TOWERCONTROLLER_H
