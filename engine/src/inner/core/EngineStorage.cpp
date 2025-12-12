@@ -4,7 +4,8 @@ namespace TDEngine {
     namespace Inner {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
         EngineStorage::EngineStorage(std::shared_ptr<Project> project)
-            : curGameStatus(GameStatus(0, 0)), curMap(nullptr), curProject(project), curWave(0)
+            : curGameStatus(GameStatus(0, 0)), curMap(nullptr),
+    		curProject(project), curWave(0), isPlaying(false)
         {
         }
 

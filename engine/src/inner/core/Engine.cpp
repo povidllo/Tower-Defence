@@ -11,14 +11,12 @@ namespace TDEngine {
         }
 
         void Engine::gameLoop() {
-            while (true) {
+            while (storage->isPlaying) {
                 while (solveNextAction());
                 tickGen.tick(storage);
                 storage->cleanMap();
                 //ВНИМАНИЕ
                 // Сюда можно бы воткнуть функцию boundary-классов на отрисовку
-                // auto frame = new FrameData(storage->getGameStatus(), storage->getAllMapObjects());
-                // boundaryDT->setNextFrame(*frame);
             }
         }
 
@@ -42,6 +40,7 @@ namespace TDEngine {
 
     	void Engine::initMap() {
         	storage->curWave = 0;
+        	storage->isPlaying = true;
 	        storage->activeAbilities.clear();
         	storage->activeEnemies.clear();
         	storage->activeProjectiles.clear();
@@ -56,8 +55,7 @@ namespace TDEngine {
         	storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
         }
 
-        void Engine::endGame(bool hasWon) {
-
+        void Engine::endGame() {
         }
 
         bool Engine::solveNextAction() {

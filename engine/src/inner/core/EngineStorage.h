@@ -43,6 +43,7 @@ namespace TDEngine {
 
             std::shared_ptr<Map> curMap;
         	int curWave;
+        	bool isPlaying;
 
         };
     } // Inner

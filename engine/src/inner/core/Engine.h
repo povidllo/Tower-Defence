@@ -14,7 +14,7 @@ namespace TDEngine {
             void gameLoop();
             void startGame(const std::string& mapName);
         	void initMap();
-            void endGame(bool hasWon);
+            void endGame();
             bool solveNextAction();
         private:
             std::shared_ptr<EngineStorage> storage;

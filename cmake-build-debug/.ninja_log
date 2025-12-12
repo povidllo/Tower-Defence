@@ -76,3 +76,15 @@
 4	20	1765538435242460520	/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/engine/engine_autogen/mocs_compilation.cpp	344176afa65e1198
 20	1707	1765538435258460451	engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o	9e883231a60762df
 1707	1987	1765538436945453219	engine/engine	273a041869b0ebe8
+6	23	1765543082527197217	engine/engine_autogen/timestamp	344176afa65e1198
+6	23	1765543082527197217	engine/engine_autogen/mocs_compilation.cpp	344176afa65e1198
+6	23	1765543082527197217	/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/engine/engine_autogen/timestamp	344176afa65e1198
+6	23	1765543082527197217	/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/engine/engine_autogen/mocs_compilation.cpp	344176afa65e1198
+24	2984	1765543082546769589	engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o	6da08d5794c2d6b8
+24	3071	1765543082545983297	engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o	ebb91688e2fe16c5
+24	3148	1765543082546375468	engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o	233520d312380091
+23	3400	1765543082545717272	engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o	9e883231a60762df
+23	3465	1765543082544183756	engine/CMakeFiles/engine.dir/main.cpp.o	32e0f0c0b9fe4133
+24	3682	1765543082546575903	engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o	f128e333c07b5a2d
+24	3883	1765543082546157766	engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o	11b790a31e73b2cc
+3883	4237	1765543086404163421	engine/engine	273a041869b0ebe8
