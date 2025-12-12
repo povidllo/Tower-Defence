@@ -1,11 +1,17 @@
 #include "MapEditor.h"
-#include <QFileDialog>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QMessageBox>
 #include <qimagereader.h>
+#include <qinputdialog.h>
 #include <qspinbox.h>
+#include <QCheckBox>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QPushButton>
+
+#include "ProjectController.h"
 #include "TextureManager.h"
+#include "TowerController.h"
 #include "WaveEditor.h"
 #include "ui_MapEditor.h"
 
@@ -24,6 +30,12 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	connect(ui->deleteWaveButton, &QPushButton::clicked, this, &MapEditor::onDeleteWaveButtonClicked);
 	connect(ui->wavesList, &QListWidget::itemClicked, this, &MapEditor::onWaveItemClicked);
 	connect(ui->editWaveButton, &QPushButton::clicked, this, &MapEditor::onEditWaveButtonClicked);
+	connect(ui->saveSettingsButton, &QPushButton::clicked, this, &MapEditor::onSaveMapSettingsButtonClicked);
+
+	connect(ui->addSpotButton, &QPushButton::clicked, this, &MapEditor::onAddSpotButtonClicked);
+	connect(ui->removeSpotButton, &QPushButton::clicked, this, &MapEditor::onRemoveSpotButtonClicked);
+	connect(ui->spotsList, &QListWidget::itemClicked, this, &MapEditor::onSpotItemClicked);
+	connect(ui->editSpotButton, &QPushButton::clicked, this, &MapEditor::onEditSpotButtonClicked);
 
 	connect(ui->editCurrentWavePathButton, &QPushButton::clicked, this, &MapEditor::onEditPathButtonClicked);
 
@@ -32,6 +44,8 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 
 	updateMapList();
 	updateTextureList();
+	updateWaveList();
+	updateSpotList();
 }
 
 MapEditor::~MapEditor() { delete ui; }
@@ -107,6 +121,7 @@ void MapEditor::onMapItemClicked(const int index) {
 	refreshMapView();
 	updateTextureList();
 	updateWaveList();
+	updateSpotList();
 	currentWaveName = "";
 }
 
@@ -117,6 +132,11 @@ void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 		ui->editorStack->setCurrentIndex(0);
 	} else if (mode == "Waves & Paths") {
 		ui->editorStack->setCurrentIndex(1);
+	} else if (mode == "Spots") {
+		ui->editorStack->setCurrentIndex(2);
+	} else if (mode == "Settings") {
+		ui->editorStack->setCurrentIndex(3);
+		fillPropertiesForm();
 	}
 }
 
@@ -235,6 +255,257 @@ void MapEditor::onEditWaveButtonClicked() {
 	}
 }
 
+// void MapEditor::onAddSpotButtonClicked() {
+// 	QDialog *dialog = new QDialog(this);
+//
+// 	std::string baseName = "spot";
+// 	int counter = 1;
+// 	auto tc = mapController->getProjectController()->getTowerController();
+//
+// 	if (tc->towerExists(baseName)) {
+// 		baseName = "spot_" + std::to_string(counter);
+// 		counter++;
+// 	}
+// 	mapController->addSpot(baseName, x, y);
+// 	updateSpotList();
+// }
+void MapEditor::onAddSpotButtonClicked() {
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) {
+		QMessageBox::warning(this, "Error", "No map selected!");
+		return;
+	}
+	std::string baseName = "spot";
+	int counter = 1;
+
+	while (mapController->spotExist(baseName)) {
+		baseName = "spot_" + std::to_string(counter);
+		counter++;
+	}
+
+	QDialog dialog(this);
+	dialog.setWindowTitle("Add Spot");
+
+	QVBoxLayout *layout = new QVBoxLayout(&dialog);
+
+	QHBoxLayout *xLayout = new QHBoxLayout();
+	QLabel *xLabel = new QLabel("X (tile):");
+	QSpinBox *xSpin = new QSpinBox();
+	xSpin->setRange(0, currentMap->getWidth() - 1);
+	xLayout->addWidget(xLabel);
+	xLayout->addWidget(xSpin);
+	layout->addLayout(xLayout);
+
+	QHBoxLayout *yLayout = new QHBoxLayout();
+	QLabel *yLabel = new QLabel("Y (tile):");
+	QSpinBox *ySpin = new QSpinBox();
+	ySpin->setRange(0, currentMap->getHeight() - 1);
+	yLayout->addWidget(yLabel);
+	yLayout->addWidget(ySpin);
+	layout->addLayout(yLayout);
+
+	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+	connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+	connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+	layout->addWidget(buttonBox);
+
+	if (dialog.exec() != QDialog::Accepted) {
+		return;
+	}
+
+	int x = xSpin->value();
+	int y = ySpin->value();
+
+	if (y < 0 || y >= currentMap->getHeight() || x < 0 || x >= currentMap->getWidth()) {
+		return;
+	}
+	const auto &spots = currentMap->getSpots();
+	auto it = std::find_if(spots.begin(), spots.end(),
+							[x, y, this](const std::shared_ptr<TowerSample> &s) {
+								return s->getX() == x && s->getY() == y && s->getName() != currentWaveName;
+							});
+
+	if (it != spots.end()) {
+		QMessageBox::warning(this, "Error", "Spot already exists at this position!");
+		return;
+	}
+
+	mapController->addSpot(baseName, x, y);
+	refreshMapView();
+	updateSpotList();
+	qDebug() << "Added spot at (" << x << "," << y << ") with tower:" << QString::fromStdString(baseName);
+}
+
+void MapEditor::updateSpotList() {
+	ui->spotsList->clear();
+
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) return;
+
+	for (const auto &spot: currentMap->getSpots()) {
+		QString text = QString::fromStdString(spot->getName());
+		ui->spotsList->addItem(text);
+	}
+}
+
+void MapEditor::onRemoveSpotButtonClicked() {
+	if (currentSpot.empty()) {
+		return;
+	}
+	mapController->removeSpot(currentSpot);
+	refreshMapView();
+	updateSpotList();
+}
+
+void MapEditor::onEditSpotButtonClicked() {
+	if (currentSpot.empty()) {
+		QMessageBox::warning(this, "Error", "No spot selected!");
+		return;
+	}
+
+	auto spot = mapController->getSpot(currentSpot);
+	int currentX = spot->getX();
+	int currentY = spot->getY();
+
+	QDialog dialog(this);
+	dialog.setWindowTitle("Edit Spot");
+	dialog.resize(400, 500);
+
+	QVBoxLayout *layout = new QVBoxLayout(&dialog);
+
+	// X
+	QHBoxLayout *xLayout = new QHBoxLayout();
+	QLabel *xLabel = new QLabel("X (tile):");
+	QSpinBox *xSpin = new QSpinBox();
+	xSpin->setRange(0, mapController->getCurrentMap()->getWidth() - 1);
+	xSpin->setValue(currentX);
+	xLayout->addWidget(xLabel);
+	xLayout->addWidget(xSpin);
+	layout->addLayout(xLayout);
+
+	// Y
+	QHBoxLayout *yLayout = new QHBoxLayout();
+	QLabel *yLabel = new QLabel("Y (tile):");
+	QSpinBox *ySpin = new QSpinBox();
+	ySpin->setRange(0, mapController->getCurrentMap()->getHeight() - 1);
+	ySpin->setValue(currentY);
+	yLayout->addWidget(yLabel);
+	yLayout->addWidget(ySpin);
+	layout->addLayout(yLayout);
+
+	// QHBoxLayout *towerLayout = new QHBoxLayout();
+	// QLabel *towerLabel = new QLabel("Tower:");
+	QComboBox *towerCombo = new QComboBox();
+	const auto allTowerNames = mapController->getAvailableTowers();;
+	// int comboIndex = 0;
+	// for (int i = 0; i < allTowerNames.size(); ++i) {
+	// 	towerCombo->addItem(QString::fromStdString(allTowerNames[i]));
+	// 	if (allTowerNames[i] == currentSpot) {
+	// 		comboIndex = i;
+	// 	}
+	// }
+	// towerCombo->setCurrentIndex(comboIndex);
+	// towerLayout->addWidget(towerLabel);
+	// towerLayout->addWidget(towerCombo);
+	// layout->addLayout(towerLayout);
+
+	QGroupBox *upgradesGroup = new QGroupBox("Upgrade Paths");
+	QVBoxLayout *upgradesLayout = new QVBoxLayout(upgradesGroup);
+
+	auto currentUpgrades = mapController->getSpot(currentSpot)->getUpgradeNames();
+	QListWidget *upgradesList = new QListWidget();
+	for (const auto &name: currentUpgrades) {
+		upgradesList->addItem(QString::fromStdString(name));
+	}
+	upgradesLayout->addWidget(upgradesList);
+
+	QHBoxLayout *upgradeButtons = new QHBoxLayout();
+	QPushButton *addUpgradeBtn = new QPushButton("Add Upgrade");
+	QPushButton *removeUpgradeBtn = new QPushButton("Remove");
+	upgradeButtons->addWidget(addUpgradeBtn);
+	upgradeButtons->addWidget(removeUpgradeBtn);
+	upgradesLayout->addLayout(upgradeButtons);
+
+	layout->addWidget(upgradesGroup);
+
+	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+	layout->addWidget(buttonBox);
+
+	connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+	connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+	connect(addUpgradeBtn, &QPushButton::clicked, this, [towerCombo, allTowerNames, upgradesList, &dialog]() {
+		QString currentTower = towerCombo->currentText();
+		QStringList available;
+		for (const auto &name: allTowerNames) {
+			std::string n = name;
+			if (n == currentTower.toStdString()) continue;
+			bool alreadyAdded = false;
+			for (int i = 0; i < upgradesList->count(); ++i) {
+				if (upgradesList->item(i)->text().toStdString() == n) {
+					alreadyAdded = true;
+					break;
+				}
+			}
+			if (!alreadyAdded) available << QString::fromStdString(n);
+		}
+
+		if (available.isEmpty()) {
+			QMessageBox::information(&dialog, "No Upgrades", "No available towers.");
+			return;
+		}
+
+		bool ok;
+		QString selected = QInputDialog::getItem(&dialog, "Add Upgrade", "Choose tower:", available, 0, false, &ok);
+		if (ok && !selected.isEmpty()) {
+			upgradesList->addItem(selected);
+		}
+	});
+
+	connect(removeUpgradeBtn, &QPushButton::clicked, this, [=]() {
+		auto *item = upgradesList->currentItem();
+		if (item) delete item;
+	});
+
+	if (dialog.exec() != QDialog::Accepted) {
+		return;
+	}
+
+	int newX = xSpin->value();
+	int newY = ySpin->value();
+	auto list = upgradesList->selectedItems();
+
+	const auto &spots = mapController->getCurrentMap()->getSpots();
+	auto it = std::find_if(spots.begin(), spots.end(),
+							[newX, newY, this](const std::shared_ptr<TowerSample> &s) {
+								return s->getX() == newX && s->getY() == newY && s->getName() != currentSpot;
+							});
+
+	if (it != spots.end()) {
+		QMessageBox::warning(this, "Error", "Spot already exists at this position!");
+		return;
+	}
+
+	spot->setX(newX);
+	spot->setY(newY);
+
+	json upgradeArray = json::array();
+
+	for (int i = 0; i < upgradesList->count(); ++i) {
+		QListWidgetItem *item = upgradesList->item(i);
+		upgradeArray.push_back(item->text().toStdString());
+	}
+
+	json updateJson = {{"nextUpgrade", upgradeArray}};
+
+	mapController->getSpot(currentSpot)->fromJson(updateJson);
+
+	refreshMapView();
+	updateSpotList();
+
+	qDebug() << "Spot edited: (" << newX << "," << newY << ") ";
+}
+
 void MapEditor::updateMapList() const {
 	qDebug() << "Map list updated";
 
@@ -308,41 +579,6 @@ bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
 	return QWidget::eventFilter(obj, event);
 }
 
-// void MapEditor::refreshMapView() {
-// 	auto currentMap = mapController->getCurrentMap();
-//
-// 	const auto &tiles = currentMap->getTiles();
-//
-// 	QGraphicsScene *scene = ui->mapView->scene();
-// 	if (!scene) {
-// 		scene = new QGraphicsScene(this);
-// 		ui->mapView->setScene(scene);
-//
-// 		scene->installEventFilter(this);
-// 	} else {
-// 		scene->clear();
-// 	}
-//
-// 	int imageSize = TextureManager::instance().getImageSize();
-//
-// 	for (int y = 0; y < tiles.size(); y++) {
-// 		for (int x = 0; x < tiles[y].size(); x++) {
-// 			int tileId = tiles[y][x];
-// 			QPixmap pix = TextureManager::instance().get(tileId);
-// 			if (!pix.isNull()) {
-// 				QGraphicsPixmapItem *pixItem = scene->addPixmap(pix);
-// 				pixItem->setPos(x * imageSize, y * imageSize);
-// 				QGraphicsRectItem *rectItem =
-// 						scene->addRect(x * imageSize, y * imageSize, imageSize, imageSize, QPen(Qt::black));
-// 				rectItem->setZValue(1);
-// 			}
-// 		}
-// 	}
-//
-//
-// 	ui->mapView->setSceneRect(scene->itemsBoundingRect());
-// }
-
 void MapEditor::refreshMapView() {
 	auto currentMap = mapController->getCurrentMap();
 	if (!currentMap)
@@ -371,17 +607,48 @@ void MapEditor::refreshMapView() {
 		}
 	}
 
+	for (const auto &spot: currentMap->getSpots()) {
+		int x = spot->getX() * tileSize;
+		int y = spot->getY() * tileSize;
+
+		// Полупрозрачный синий круг
+		scene->addEllipse(x + tileSize / 6, y + tileSize / 6,
+						tileSize * 2 / 3, tileSize * 2 / 3,
+						QPen(Qt::blue, 4), QBrush(QColor(0, 0, 255, 80)));
+
+		// Имя башни
+		QGraphicsTextItem *text = scene->addText(QString::fromStdString(spot->getName()));
+		text->setDefaultTextColor(Qt::white);
+		QFont font = text->font();
+		font.setBold(true);
+		text->setFont(font);
+		text->setPos(x + tileSize / 4, y + tileSize / 4);
+		text->setZValue(101);
+	}
+
 	ui->mapView->setSceneRect(scene->itemsBoundingRect());
 }
 
 void MapEditor::onTextureItemClicked(QListWidgetItem *item) {
-	if (!item)
+	if (!item) {
 		return;
+	}
 
 	int textureId = item->data(Qt::UserRole).toInt();
 	TextureManager::instance().setCurrentTexture(textureId);
 
 	qDebug() << "Selected texture:" << textureId;
+}
+
+void MapEditor::onSpotItemClicked(QListWidgetItem *item) {
+	if (!item) {
+		return;
+	}
+	const std::string spotName = item->text().toStdString();
+	qDebug() << "spot name: " << spotName;
+	qDebug() << "item clicked";
+
+	currentSpot = spotName;
 }
 
 void MapEditor::updateTextureList() {
@@ -493,4 +760,57 @@ void MapEditor::drawCurrentWavePath() {
 			pathGraphicsItems.push_back(line);
 		}
 	}
+}
+
+void MapEditor::fillPropertiesForm() {
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) return;
+
+	BaseEditor::clearPropertiesForm(ui->propertiesForm, m_propertyEditors);
+
+	{
+		QString key = "hp";
+		QString label = "HP:";
+
+		QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+		spin->setRange(1.0, 10000.0);
+		spin->setDecimals(1);
+		spin->setValue(currentMap->getHp());
+
+		ui->propertiesForm->addRow(label, spin);
+		m_propertyEditors[key] = spin;
+	}
+
+	{
+		QString key = "startCurrency";
+		QString label = "Start Currency:";
+
+		QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+		spin->setRange(0.0, 100000.0);
+		spin->setDecimals(0);
+		spin->setValue(currentMap->getStartCurrency());
+
+		ui->propertiesForm->addRow(label, spin);
+		m_propertyEditors[key] = spin;
+	}
+}
+
+void MapEditor::onSaveMapSettingsButtonClicked() {
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) return;
+
+	if (m_propertyEditors.contains("hp")) {
+		if (const auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors["hp"])) {
+			currentMap->setHp(spin->value());
+		}
+	}
+
+	if (m_propertyEditors.contains("startCurrency")) {
+		if (const auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors["startCurrency"])) {
+			currentMap->setStartCurrency(spin->value());
+		}
+	}
+
+	qDebug() << "Map settings saved: HP =" << currentMap->getHp()
+			<< "Start Currency =" << currentMap->getStartCurrency();
 }

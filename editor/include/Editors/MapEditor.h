@@ -32,6 +32,8 @@ private slots:
 
 	void onTextureItemClicked(QListWidgetItem *item);
 
+	void onSpotItemClicked(QListWidgetItem *item);
+
 	void onAddTextureButtonClicked();
 
 	void onDeleteMapButtonClicked();
@@ -43,6 +45,16 @@ private slots:
 	void onWaveItemClicked(QListWidgetItem *item);
 
 	void onEditWaveButtonClicked();
+
+	void onAddSpotButtonClicked();
+
+	void updateSpotList();
+
+	void onRemoveSpotButtonClicked();
+
+	void onEditSpotButtonClicked();
+
+	void onSaveMapSettingsButtonClicked();
 
 	// void onDeleteTextureButtonClicked();
 
@@ -59,10 +71,15 @@ private:
 
 	void drawCurrentWavePath();
 
+	void fillPropertiesForm();
+
 	std::shared_ptr<MapController> mapController;
 	std::string currentWaveName;
+	std::string currentSpot;
 	bool pathEditingMode = false;
 	std::vector<QGraphicsItem *> pathGraphicsItems;
+
+	QMap<QString, QWidget *> m_propertyEditors;
 
 protected:
 	bool eventFilter(QObject *obj, QEvent *event) override;

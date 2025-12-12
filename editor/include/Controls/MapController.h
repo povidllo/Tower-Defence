@@ -8,6 +8,8 @@ class MapController {
 public:
 	explicit MapController(ProjectController *projectController);
 
+	ProjectController *getProjectController();
+
 	void setCurrentMap(const std::string &name);
 
 	std::shared_ptr<Map> getCurrentMap() const;
@@ -36,7 +38,17 @@ public:
 
 	std::vector<std::string> getAvailableEnemies() const;
 
+	std::vector<std::string> getAvailableTowers() const;
+
 	std::shared_ptr<WaveSample> getWave(const std::string &name);
+
+	void addSpot(const std::string &name, int tx, int ty);
+
+	bool spotExist(const std::string &name);
+
+	bool removeSpot(const std::string &name);
+
+	std::shared_ptr<TowerSample> getSpot(const std::string &name);
 
 private:
 	ProjectController *projectController;

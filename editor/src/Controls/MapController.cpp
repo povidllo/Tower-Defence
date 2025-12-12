@@ -5,6 +5,10 @@ MapController::MapController(ProjectController *projectController) : projectCont
 																	currentMap(nullptr) {
 }
 
+ProjectController *MapController::getProjectController() {
+	return projectController;
+}
+
 void MapController::setCurrentMap(const std::string &name) {
 	const auto &maps = projectController->getMaps();
 	for (auto &map: maps) {
@@ -61,7 +65,7 @@ void MapController::addWave(const std::string &name) {
 }
 
 bool MapController::removeWave(const std::string &name) {
-	auto waves = currentMap->getWaves();
+	auto &waves = currentMap->getWaves();
 	waves.erase(std::remove_if(waves.begin(), waves.end(),
 								[&name](const std::shared_ptr<WaveSample> &wave) { return wave->getName() == name; }),
 				waves.end());
@@ -69,6 +73,9 @@ bool MapController::removeWave(const std::string &name) {
 }
 
 std::vector<std::string> MapController::getWavesNames() const {
+	if (!currentMap) {
+		return std::vector<std::string>();
+	}
 	const auto &waves = currentMap->getWaves();
 	std::vector<std::string> names;
 	for (auto &wave: waves) {
@@ -127,11 +134,59 @@ std::vector<std::string> MapController::getAvailableEnemies() const {
 	return names;
 }
 
+std::vector<std::string> MapController::getAvailableTowers() const {
+	auto &towers = projectController->getTowers();
+	std::vector<std::string> names;
+	for (auto &tower: towers) {
+		names.push_back(tower->getName());
+	}
+	return names;
+}
+
 std::shared_ptr<WaveSample> MapController::getWave(const std::string &name) {
 	auto waves = currentMap->getWaves();
 	for (auto &wave: waves) {
 		if (wave->getName() == name) {
 			return wave;
+		}
+	}
+	return nullptr;
+}
+
+void MapController::addSpot(const std::string &name, int tx, int ty) {
+	auto &spots = currentMap->getSpots();
+	spots.push_back(std::make_shared<TowerSample>(name, tx, ty));
+}
+
+bool MapController::spotExist(const std::string &name) {
+	const auto &spots = currentMap->getSpots();
+	for (const auto &spot: spots) {
+		if (spot->getName() == name) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool MapController::removeSpot(const std::string &name) {
+	if (!spotExist(name)) {
+		return false;
+	}
+	auto &spots = currentMap->getSpots();
+	for (int i = 0; i < spots.size(); i++) {
+		if (spots[i]->getName() == name) {
+			spots.erase(spots.begin() + i);
+			return true;
+		}
+	}
+	return false;
+}
+
+std::shared_ptr<TowerSample> MapController::getSpot(const std::string &name) {
+	auto &spots = currentMap->getSpots();
+	for (const auto &spot: spots) {
+		if (spot->getName() == name) {
+			return spot;
 		}
 	}
 	return nullptr;

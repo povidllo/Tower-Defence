@@ -43,7 +43,17 @@ public:
 
 	void clearPath();
 
+	double getTimeForWave() const;
+
+	void setTimeForWave(double timeForWave);
+
+	double getEnemySpawnInterval();
+
+	void setEnemySpawnInterval(double spawnInterval);
+
 private:
+	double timeForWave{0};
+	double enemySpawnInterval{0};
 	std::string name;
 	std::vector<std::pair<std::string, int> > enemies;
 	std::vector<std::pair<int, int> > path;

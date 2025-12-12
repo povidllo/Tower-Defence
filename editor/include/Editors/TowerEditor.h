@@ -40,6 +40,8 @@ private slots:
 
 	void onRemoveNextUpgradeButtonClicked();
 
+	void onProjectileSettingsButtonClicked();
+
 private:
 	Ui::TowerEditor *ui;
 
@@ -50,6 +52,8 @@ private:
 	void fillPropertiesForm(const std::shared_ptr<TowerSample> &tower);
 
 	void showTowerTexturePreview(const std::string &path) const;
+
+	void showProjectileTexturePreview(const std::string &path) const;
 
 	std::shared_ptr<TowerController> towerController;
 	QMap<QString, QWidget *> m_propertyEditors;

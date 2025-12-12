@@ -23,6 +23,8 @@ public:
 	~WaveEditor() override;
 
 private:
+	void fillWaveSettingsForm();
+
 	void updateEnemyList();
 
 	void onAddEnemyClicked();
@@ -36,6 +38,8 @@ private:
 	Ui::WaveEditor *ui;
 	std::string originalWaveName;
 	std::shared_ptr<MapController> mapController;
+
+	QMap<QString, QWidget *> waveSettingsEditors;
 };
 
 #endif // TOWERDEFENCE_WAVEEDITOR_H

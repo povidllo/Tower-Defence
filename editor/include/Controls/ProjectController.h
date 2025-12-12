@@ -63,6 +63,8 @@ public:
 
 	void removeEnemiesFromWaves(std::string enemyName) const;
 
+	void removeTowersFromSpots(const std::string &towerName);
+
 private:
 	std::shared_ptr<Project> currentProject;
 	std::shared_ptr<TowerController> towerController;

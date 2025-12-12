@@ -23,22 +23,19 @@ TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController
 	connect(ui->addNextTowerButton, &QPushButton::clicked, this, &TowerEditor::onAddNextUpgradeButtonClicked);
 	connect(ui->removeNextTowerButton, &QPushButton::clicked, this, &TowerEditor::onRemoveNextUpgradeButtonClicked);
 
+	connect(ui->projectileSettings, &QPushButton::clicked, this, &TowerEditor::onProjectileSettingsButtonClicked);
+
 	updateTowerList();
-	// ui->towerPreview->setVisible(false);
-	// ui->chooseTextureButton->setVisible(false);
-	//
-	// ui->nextTowerList->setVisible(false);
-	// ui->addNextTowerButton->setVisible(false);
-	// ui->removeNextTowerButton->setVisible(false);
 	rightPanelView(false);
 }
 
 void TowerEditor::rightPanelView(bool what) {
-	ui->towerPreview->setVisible(what);
-	ui->chooseTextureButton->setVisible(what);
-	ui->nextTowerList->setVisible(what);
-	ui->addNextTowerButton->setVisible(what);
-	ui->removeNextTowerButton->setVisible(what);
+	// ui->towerPreview->setVisible(what);
+	// ui->chooseTextureButton->setVisible(what);
+	// ui->nextTowerList->setVisible(what);
+	// ui->addNextTowerButton->setVisible(what);
+	// ui->removeNextTowerButton->setVisible(what);
+	ui->rightPanel->setVisible(what);
 
 	ui->towerPreview->setText("No preview");
 
@@ -72,16 +69,6 @@ void TowerEditor::onItemClicked(const QListWidgetItem *item) {
 
 	auto currentTower = towerController->getCurrentTower();
 
-	// BaseEditor::clearPropertiesForm(ui->propertiesForm, m_propertyEditors);
-	//
-	// ui->towerPreview->setVisible(true);
-	// ui->chooseTextureButton->setVisible(true);
-	//
-	// ui->nextTowerList->setVisible(true);
-	// ui->addNextTowerButton->setVisible(true);
-	// ui->removeNextTowerButton->setVisible(true);
-	//
-	// fillPropertiesForm(currentTower);
 	rightPanelView(true);
 	updateUpgradeList();
 }
@@ -165,7 +152,9 @@ void TowerEditor::onAddNextUpgradeButtonClicked() {
 
 	for (const auto &nameStr: allNames) {
 		std::string name = nameStr;
-		if (name == currentTower->getName()) continue;
+		if (name == currentTower->getName()) {
+			continue;
+		}
 		if (std::find(currentUpgrades.begin(), currentUpgrades.end(), name) != currentUpgrades.end()) {
 			continue;
 		}
@@ -210,6 +199,88 @@ void TowerEditor::onRemoveNextUpgradeButtonClicked() {
 
 	updateUpgradeList();
 	qDebug() << "Removed upgrade:" << QString::fromStdString(upgradeName);
+}
+
+void TowerEditor::onProjectileSettingsButtonClicked() {
+	auto currentTower = towerController->getCurrentTower();
+	if (!currentTower) {
+		QMessageBox::warning(this, "Error", "No tower selected!");
+		return;
+	}
+
+	std::string currentPath = currentTower->getProjectileTexturePath();
+	double currentSpeed = currentTower->getProjectileSpeed();
+
+	QDialog dialog(this);
+	dialog.setWindowTitle("Projectile Settings");
+	dialog.resize(400, 400);
+
+	QVBoxLayout *layout = new QVBoxLayout(&dialog);
+
+	QLabel *previewLabel = new QLabel("No preview");
+	previewLabel->setAlignment(Qt::AlignCenter);
+	previewLabel->setMinimumSize(128, 128);
+	previewLabel->setStyleSheet("border: 1px solid gray; background: white;");
+	layout->addWidget(previewLabel);
+
+	QPushButton *chooseBtn = new QPushButton("Choose Projectile Texture");
+	layout->addWidget(chooseBtn);
+
+	QHBoxLayout *speedLayout = new QHBoxLayout();
+	QLabel *speedLabel = new QLabel("Projectile Speed:");
+	QDoubleSpinBox *speedSpin = new QDoubleSpinBox();
+	speedSpin->setRange(0.1, 1000.0);
+	speedSpin->setDecimals(2);
+	speedSpin->setValue(currentSpeed);
+	speedLayout->addWidget(speedLabel);
+	speedLayout->addWidget(speedSpin);
+	layout->addLayout(speedLayout);
+
+	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+	layout->addWidget(buttonBox);
+
+	connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+	connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+	connect(chooseBtn, &QPushButton::clicked, this, [&]() {
+		QString filePath = QFileDialog::getOpenFileName(&dialog, "Choose Projectile Texture", QDir::currentPath(),
+														"*.png");
+		if (filePath.isEmpty()) return;
+
+		currentPath = filePath.toStdString();
+
+		QPixmap pixmap(filePath);
+		if (pixmap.isNull()) {
+			previewLabel->setText("Invalid image");
+		} else {
+			previewLabel->setPixmap(pixmap.scaled(previewLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		}
+	});
+
+	if (!currentPath.empty()) {
+		QPixmap pixmap(QString::fromStdString(currentPath));
+		if (!pixmap.isNull()) {
+			previewLabel->setPixmap(pixmap.scaled(previewLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		}
+	}
+
+	if (dialog.exec() != QDialog::Accepted) {
+		return;
+	}
+
+	currentTower->setProjectileTexturePath(currentPath);
+	currentTower->setProjectileSpeed(speedSpin->value());
+
+	if (m_propertyEditors.contains("projectileTexturePath")) {
+		auto *edit = qobject_cast<QLineEdit *>(m_propertyEditors["projectileTexturePath"]);
+		if (edit) edit->setText(QString::fromStdString(currentPath));
+	}
+	if (m_propertyEditors.contains("projectileSpeed")) {
+		auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors["projectileSpeed"]);
+		if (spin) spin->setValue(currentTower->getProjectileSpeed());
+	}
+
+	qDebug() << "Projectile settings updated for tower:" << QString::fromStdString(currentTower->getName());
 }
 
 void TowerEditor::updateTowerList() const {

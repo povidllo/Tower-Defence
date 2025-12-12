@@ -11,6 +11,8 @@ public:
 
 	explicit TowerSample(std::string name);
 
+	explicit TowerSample(std::string name, int x, int y);
+
 	explicit TowerSample(const json &j);
 
 	json toJson() const override;
@@ -39,14 +41,34 @@ public:
 
 	bool removeNextUpgrade(const std::string &name);
 
+	int getX() const;
+
+	void setProjectileTexturePath(const std::string &path);;
+
+	std::string getProjectileTexturePath() const;
+
+	void setProjectileSpeed(const double speed);
+
+	double getProjectileSpeed() const;
+
+	int getY() const;;
+
+	void setX(const int x);
+
+	void setY(const int y);
+
 private:
 	std::string name;
 	double damage{0};
 	double fireRate{0};
 	std::vector<std::string> nextUpgrade;
 	std::string towerTexturePath;
-	int x{0};
-	int y{0};
+	double cost{0};
+	double x{0};
+	double y{0};
+
+	std::string projectileTexturePath;
+	double projectileSpeed{0};
 };
 
 #endif //TOWERDEFENCE_TOWERSAMPLE_H

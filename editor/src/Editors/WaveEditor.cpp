@@ -17,6 +17,8 @@ WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, cons
 
 	auto wave = mapController->getWave(waveName);
 	updateEnemyList();
+	fillWaveSettingsForm();
+
 
 	auto currentMap = mapController->getCurrentMap();
 	connect(ui->addEnemyButton, &QPushButton::clicked, this, &WaveEditor::onAddEnemyClicked);
@@ -44,6 +46,20 @@ WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, cons
 			wave->addEnemy(enemyName.toStdString(), count);
 		}
 
+		if (waveSettingsEditors.contains("timeForWave")) {
+			auto *spin = qobject_cast<QDoubleSpinBox *>(waveSettingsEditors["timeForWave"]);
+			if (spin) {
+				wave->setTimeForWave(spin->value());
+			}
+		}
+
+		if (waveSettingsEditors.contains("enemySpawnInterval")) {
+			auto *spin = qobject_cast<QDoubleSpinBox *>(waveSettingsEditors["enemySpawnInterval"]);
+			if (spin) {
+				wave->setEnemySpawnInterval(spin->value());
+			}
+		}
+
 		accept();
 	});
 
@@ -51,6 +67,41 @@ WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, cons
 }
 
 WaveEditor::~WaveEditor() { delete ui; }
+
+void WaveEditor::fillWaveSettingsForm() {
+	auto wave = mapController->getWave(originalWaveName);
+	if (!wave) {
+		return;
+	}
+
+	ui->waveNameEdit->setText(QString::fromStdString(originalWaveName));
+
+	while (ui->propertiesForm->rowCount() > 0) {
+		ui->propertiesForm->removeRow(0);
+	}
+
+	{
+		QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+		spin->setRange(1.0, 600.0);
+		spin->setDecimals(1);
+		spin->setSuffix(" sec");
+		spin->setValue(wave->getTimeForWave());
+
+		ui->propertiesForm->addRow("Time for Wave:", spin);
+		waveSettingsEditors["timeForWave"] = spin;
+	}
+
+	{
+		QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+		spin->setRange(0.1, 60.0);
+		spin->setDecimals(2);
+		spin->setSuffix(" sec");
+		spin->setValue(wave->getEnemySpawnInterval());
+
+		ui->propertiesForm->addRow("Spawn Interval:", spin);
+		waveSettingsEditors["enemySpawnInterval"] = spin;
+	}
+}
 
 void WaveEditor::updateEnemyList() {
 	ui->enemiesList->clear();
