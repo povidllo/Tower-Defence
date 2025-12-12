@@ -135,7 +135,6 @@ void EnemyEditor::fillPropertiesForm(const std::shared_ptr<EnemySample> &enemy) 
 	auto j = enemy->toJson();
 
 	for (auto &[key, value]: j.items()) {
-		// Скрытые поля
 		bool skip = false;
 		for (auto &elem: doNotShowThisFields) {
 			if (key == elem) {
@@ -143,10 +142,10 @@ void EnemyEditor::fillPropertiesForm(const std::shared_ptr<EnemySample> &enemy) 
 				break;
 			}
 		}
-		if (skip)
+		if (skip) {
 			continue;
+		}
 
-		// Превью текстуры
 		if (key == "enemyTexturePath") {
 			if (!value.empty()) {
 				showEnemyTexturePreview(value);

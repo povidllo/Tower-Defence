@@ -37,6 +37,9 @@ private:
 	std::string name;
 	double health{0};
 	double damage{0};
+	double moneyFallsOut{0};
+	double moneyFallsOutPercentage{0};
+	double speed{0};
 	std::string enemyTexturePath;
 };
 

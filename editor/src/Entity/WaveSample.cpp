@@ -16,16 +16,22 @@ json WaveSample::toJson() const {
 		pathArray.push_back({{"x", x}, {"y", y}});
 	}
 
-	json j = {{"name", name}, {"enemies", pathArray}, {"path", pathArray}};
+	json j = {
+		{"name", name}, {"enemies", pathArray}, {"path", pathArray}, {"timeForWave", timeForWave},
+		{"enemySpawnInterval", enemySpawnInterval}
+	};
 
 	return j;
 }
 
 void WaveSample::fromJson(const json &j) {
 	name = j.value("name", "Wave");
+	timeForWave = j.value("timeForWave", 0);
+	enemySpawnInterval = j.value("enemySpawnInterval", 0);
 
-	enemies.clear();
+
 	if (j.contains("enemies") && j["enemies"].is_array()) {
+		enemies.clear();
 		for (const auto &item: j["enemies"]) {
 			std::string enemyName = item.value("enemyName", "");
 			int count = item.value("count", 1);
@@ -80,3 +86,19 @@ void WaveSample::removeLastPathPoint() {
 }
 
 void WaveSample::clearPath() { path.clear(); }
+
+double WaveSample::getTimeForWave() const {
+	return timeForWave;
+}
+
+void WaveSample::setTimeForWave(double timeForWave) {
+	this->timeForWave = timeForWave;
+}
+
+double WaveSample::getEnemySpawnInterval() {
+	return enemySpawnInterval;
+}
+
+void WaveSample::setEnemySpawnInterval(double spawnInterval) {
+	this->enemySpawnInterval = spawnInterval;
+}

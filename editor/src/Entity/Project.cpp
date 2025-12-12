@@ -45,11 +45,8 @@ void Project::fromJson(const json &j) {
 	path = j.value("path", "");
 	lastSaveDate = j.value("lastSaveDate", std::time(nullptr));
 
-	maps.clear();
-	towers.clear();
-	enemies.clear();
-
 	if (j.contains("maps")) {
+		maps.clear();
 		for (const auto &mapJson: j["maps"]) {
 			auto map = std::make_shared<Map>(mapJson);
 			maps.push_back(map);
@@ -57,6 +54,7 @@ void Project::fromJson(const json &j) {
 	}
 
 	if (j.contains("towers")) {
+		towers.clear();
 		for (const auto &towerJson: j["towers"]) {
 			auto tower = std::make_shared<TowerSample>(towerJson);
 			towers.push_back(tower);
@@ -64,6 +62,7 @@ void Project::fromJson(const json &j) {
 	}
 
 	if (j.contains("enemies")) {
+		enemies.clear();
 		for (const auto &enemyJson: j["enemies"]) {
 			auto enemy = std::make_shared<EnemySample>(enemyJson);
 			enemies.push_back(enemy);

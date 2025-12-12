@@ -133,6 +133,14 @@ void ProjectController::removeEnemiesFromWaves(std::string enemyName) const {
 	}
 }
 
+void ProjectController::removeTowersFromSpots(const std::string &towerName) {
+	for (auto &map: currentProject->getMaps()) {
+		for (auto &spot: map->getSpots()) {
+			spot->removeNextUpgrade(towerName);
+		}
+	}
+}
+
 void ProjectController::loadControls() {
 	towerController = std::make_shared<TowerController>(this);
 	enemyController = std::make_shared<EnemyController>(this);

@@ -3,6 +3,9 @@
 TowerSample::TowerSample(std::string name) : name(std::move(name)) {
 }
 
+TowerSample::TowerSample(std::string name, const int x, const int y) : name(std::move(name)), x(x), y(y) {
+}
+
 TowerSample::TowerSample(const json &j) {
 	TowerSample::fromJson(j);
 }
@@ -19,7 +22,10 @@ TowerSample::json TowerSample::toJson() const {
 		{"towerTexturePath", towerTexturePath},
 		{"nextUpgrade", upgradeArray},
 		{"x", x},
-		{"y", y}
+		{"y", y},
+		{"cost", cost},
+		{"projectileTexturePath", projectileTexturePath},
+		{"projectileSpeed", projectileSpeed}
 	};
 }
 
@@ -28,6 +34,9 @@ void TowerSample::fromJson(const json &j) {
 	damage = j.value("damage", damage);
 	fireRate = j.value("fireRate", fireRate);
 	towerTexturePath = j.value("towerTexturePath", "");
+	cost = j.value("cost", cost);
+	projectileTexturePath = j.value("projectileTexturePath", "");
+	projectileSpeed = j.value("projectileSpeed", projectileSpeed);
 
 	if (j.contains("nextUpgrade") && j["nextUpgrade"].is_array()) {
 		nextUpgrade.clear();
@@ -89,4 +98,36 @@ bool TowerSample::removeNextUpgrade(const std::string &name) {
 		return true;
 	}
 	return false;
+}
+
+int TowerSample::getX() const {
+	return x;
+}
+
+void TowerSample::setProjectileTexturePath(const std::string &path) {
+	projectileTexturePath = path;
+}
+
+std::string TowerSample::getProjectileTexturePath() const {
+	return projectileTexturePath;
+}
+
+void TowerSample::setProjectileSpeed(const double speed) {
+	projectileSpeed = speed;
+}
+
+double TowerSample::getProjectileSpeed() const {
+	return projectileSpeed;
+}
+
+int TowerSample::getY() const {
+	return y;
+}
+
+void TowerSample::setX(const int x) {
+	this->x = x;
+}
+
+void TowerSample::setY(const int y) {
+	this->y = y;
 }

@@ -29,6 +29,7 @@ bool TowerController::removeTower(const std::string &name) const {
 	for (int i = 0; i < towers.size(); i++) {
 		if (towers[i]->getName() == name) {
 			towers.erase(towers.begin() + i);
+			projectController->removeTowersFromSpots(name);
 			return true;
 		}
 	}

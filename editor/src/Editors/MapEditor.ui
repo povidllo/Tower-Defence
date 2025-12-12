@@ -134,12 +134,22 @@
                                                     :/icons/wave.png</iconset>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Spots</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Settings</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>
          <widget class="QStackedWidget" name="editorStack">
           <property name="currentIndex">
-           <number>1</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="tilesEditorPage">
            <layout class="QVBoxLayout">
@@ -250,6 +260,58 @@
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="spotsEditorPage">
+           <property name="minimumSize">
+            <size>
+             <width>337</width>
+             <height>0</height>
+            </size>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QListWidget" name="spotsList"/>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QPushButton" name="editSpotButton">
+                <property name="text">
+                 <string>Edit spot</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="removeSpotButton">
+                <property name="text">
+                 <string>Remove spot</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addSpotButton">
+              <property name="text">
+               <string>Add spot</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="page">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <layout class="QFormLayout" name="propertiesForm"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="saveSettingsButton">
+              <property name="text">
+               <string>Save settings</string>
+              </property>
              </widget>
             </item>
            </layout>

@@ -17,13 +17,24 @@ json Map::toJson() const {
 		wavesArray.push_back(wave->toJson());
 	}
 
-	return {{"name", name}, {"height", height}, {"width", width}, {"tiles", tileArray}, {"waves", wavesArray}};
+	json spotArrays = json::array();
+	for (const auto &spot: spots) {
+		spotArrays.push_back(spot->toJson());
+	}
+
+	return {
+		{"name", name}, {"height", height}, {"width", width}, {"tiles", tileArray}, {"waves", wavesArray},
+		{"spots", spotArrays}, {"startCurrency", startCurrency}, {"hp", hp}
+	};
 }
 
 void Map::fromJson(const json &j) {
 	name = j.value("name", name);
 	height = j.value("height", height);
 	width = j.value("width", width);
+
+	startCurrency = j.value("startCurrency", startCurrency);
+	hp = j.value("hp", hp);
 
 	tiles.assign(height, std::vector<int>(width, 0));
 
@@ -37,11 +48,19 @@ void Map::fromJson(const json &j) {
 		}
 	}
 
-	waves.clear();
 	if (j.contains("waves") && j["waves"].is_array()) {
+		waves.clear();
 		for (const auto &waveJson: j["waves"]) {
 			auto wave = std::make_shared<WaveSample>(waveJson);
 			waves.push_back(wave);
+		}
+	}
+
+	if (j.contains("spots") && j["spots"].is_array()) {
+		spots.clear();
+		for (const auto &spotJson: j["spots"]) {
+			auto spot = std::make_shared<TowerSample>(spotJson);
+			spots.push_back(spot);
 		}
 	}
 }
@@ -59,3 +78,19 @@ void Map::setName(const std::string &n) { name = n; }
 int Map::getHeight() const { return height; }
 
 int Map::getWidth() const { return width; }
+
+double Map::getHp() {
+	return hp;
+}
+
+void Map::setHp(double hp) {
+	this->hp = hp;
+}
+
+double Map::getStartCurrency() {
+	return startCurrency;
+}
+
+void Map::setStartCurrency(double currency) {
+	startCurrency = currency;
+}

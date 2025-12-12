@@ -13,6 +13,8 @@ EnemySample::json EnemySample::toJson() const {
 		{"health", health},
 		{"damage", damage},
 		{"enemyTexturePath", enemyTexturePath},
+		{"moneyFallsOut", moneyFallsOut},
+		{"moneyFallsOutPercentage", moneyFallsOutPercentage}
 	};
 }
 
@@ -20,6 +22,9 @@ void EnemySample::fromJson(const json &j) {
 	name = j.value("name", name);
 	health = j.value("health", health);
 	damage = j.value("damage", damage);
+	moneyFallsOut = j.value("moneyFallsOut", moneyFallsOut);
+	moneyFallsOutPercentage = j.value("moneyFallsOutPercentage", moneyFallsOutPercentage);
+
 	enemyTexturePath = j.value("enemyTexturePath", "");
 }
 

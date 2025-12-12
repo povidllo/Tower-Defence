@@ -3,7 +3,10 @@
 #include <utility>
 
 #include "Serializable.h"
+#include "TowerSample.h"
 #include "WaveSample.h"
+
+class QWidget;
 
 class Map : protected ISerializable {
 public:
@@ -33,13 +36,25 @@ public:
 
 	std::vector<std::shared_ptr<WaveSample> > &getWaves() { return waves; }
 
+	std::vector<std::shared_ptr<TowerSample> > &getSpots() { return spots; }
+
+	double getHp();
+
+	void setHp(double hp);
+
+	double getStartCurrency();
+
+	void setStartCurrency(double currency);
+
 private:
 	std::string name;
-	int height;
-	int width;
+	int height{0};
+	int width{0};
+	double startCurrency{0};
+	double hp{0};
 
-	// std::vector<WaveSample> waves;
 	std::vector<std::shared_ptr<WaveSample> > waves;
+	std::vector<std::shared_ptr<TowerSample> > spots;
 	std::vector<std::vector<int> > tiles;
 };
 
