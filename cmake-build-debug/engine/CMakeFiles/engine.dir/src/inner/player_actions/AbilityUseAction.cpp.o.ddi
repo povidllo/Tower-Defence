@@ -1,0 +1,11 @@
+{
+"rules": [
+{
+"primary-output": "engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o",
+"requires": [
+]
+}
+],
+"version": 0,
+"revision": 0
+}

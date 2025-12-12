@@ -39,6 +39,9 @@ namespace TDEngine {
 
         void EnemyActions::attack(std::shared_ptr<EngineStorage> engineStorage) {
             engineStorage->curGameStatus.currentHp -= storage.getDamage();
+        	if (engineStorage->curGameStatus.currentHp <= 0) {
+        		engineStorage->isPlaying = false;
+        	}
         }
 
 

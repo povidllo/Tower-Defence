@@ -8,7 +8,7 @@ namespace TDEngine {
         class TickGenerator {
         public:
             explicit TickGenerator(std::chrono::time_point<std::chrono::steady_clock> startTime);
-            void tick(const std::shared_ptr<EngineStorage> everythingActing);
+            void tick(const std::shared_ptr<EngineStorage> engineStorage);
             void resetTime(std::chrono::time_point<std::chrono::steady_clock> startTime);
 
         private:

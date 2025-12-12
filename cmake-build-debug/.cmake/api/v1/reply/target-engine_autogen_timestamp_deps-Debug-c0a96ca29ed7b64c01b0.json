@@ -1,0 +1,34 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"engine/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "editor_common::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "engine_autogen_timestamp_deps::@4088515cb4035b412499",
+	"isGeneratorProvided" : true,
+	"name" : "engine_autogen_timestamp_deps",
+	"paths" : 
+	{
+		"build" : "engine",
+		"source" : "engine"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

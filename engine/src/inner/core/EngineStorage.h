@@ -25,9 +25,11 @@ namespace TDEngine {
             void addProjectile(const std::shared_ptr<Projectile> &projectile);
             void removeProjectile(const std::shared_ptr<Projectile> &projectile);
             void addTower(const std::shared_ptr<TowerActions> &tower);
-            void removeTower(const std::shared_ptr<TowerActions> &tower);
-            void addEnemy(const std::shared_ptr<EnemyActions> &enemy);
-            void removeEnemy(const std::shared_ptr<EnemyActions> &enemy);
+        	void removeTower(const std::shared_ptr<TowerActions> &tower);
+        	void addEnemy(const std::shared_ptr<EnemyActions> &enemy);
+        	void removeEnemy(const std::shared_ptr<EnemyActions> &enemy);
+        	void addWave(const std::shared_ptr<WaveActions> &wave);
+        	void removeWave(const std::shared_ptr<WaveActions> &wave);
 
 
             std::vector<std::shared_ptr<Projectile>> activeProjectiles;
@@ -39,8 +41,9 @@ namespace TDEngine {
             GameStatus curGameStatus;
             std::shared_ptr<Project> curProject;
 
-            private:
             std::shared_ptr<Map> curMap;
+        	int curWave;
+        	bool isPlaying;
 
         };
     } // Inner

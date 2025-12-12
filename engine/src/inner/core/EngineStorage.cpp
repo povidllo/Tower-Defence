@@ -4,7 +4,8 @@ namespace TDEngine {
     namespace Inner {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
         EngineStorage::EngineStorage(std::shared_ptr<Project> project)
-            : curGameStatus(GameStatus(0, 0)), curMap(nullptr), curProject(project)
+            : curGameStatus(GameStatus(0, 0)), curMap(nullptr),
+    		curProject(project), curWave(0), isPlaying(false)
         {
         }
 
@@ -76,22 +77,32 @@ namespace TDEngine {
 
         }
 
-        void EngineStorage::addEnemy(const std::shared_ptr<EnemyActions> &enemy) {
-            activeEnemies.push_back(enemy);
-            mapObjects.push_back(enemy);
+    	void EngineStorage::addEnemy(const std::shared_ptr<EnemyActions> &enemy) {
+        	activeEnemies.push_back(enemy);
+        	mapObjects.push_back(enemy);
         }
 
-        void EngineStorage::removeEnemy(const std::shared_ptr<EnemyActions> &enemy) {
-            auto enemyIt = std::find(activeEnemies.begin(), activeEnemies.end(), enemy);
-            if (enemyIt != activeEnemies.end()) {
-                activeEnemies.erase(enemyIt);
-            }
+    	void EngineStorage::removeEnemy(const std::shared_ptr<EnemyActions> &enemy) {
+        	auto enemyIt = std::find(activeEnemies.begin(), activeEnemies.end(), enemy);
+        	if (enemyIt != activeEnemies.end()) {
+        		activeEnemies.erase(enemyIt);
+        	}
 
-            std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(enemy);
-            auto mapIt = std::find(mapObjects.begin(), mapObjects.end(), mapObj);
-            if (mapIt != mapObjects.end()) {
-                mapObjects.erase(mapIt);
-            }
+        	std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(enemy);
+        	auto mapIt = std::find(mapObjects.begin(), mapObjects.end(), mapObj);
+        	if (mapIt != mapObjects.end()) {
+        		mapObjects.erase(mapIt);
+        	}
+        }
+    	void EngineStorage::addWave(const std::shared_ptr<WaveActions> &wave) {
+        	activeWaves.push_back(wave);
+        }
+
+    	void EngineStorage::removeWave(const std::shared_ptr<WaveActions> &wave) {
+        	auto waveIt = std::find(activeWaves.begin(), activeWaves.end(), wave);
+        	if (waveIt != activeWaves.end()) {
+        		activeWaves.erase(waveIt);
+        	}
         }
     } // Inner
 } // TDEngine
