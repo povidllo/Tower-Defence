@@ -24,8 +24,8 @@ namespace TDEngine {
             std::shared_ptr<Project> currentProject;
             // std::optional<FrameData> curFrame;
             // std::optional<FrameData> nextFrame;
-            std::mutex curFrameMutex;
-            std::mutex nextFrameMutex;
+            // std::mutex curFrameMutex;
+            // std::mutex nextFrameMutex;
             std::queue<std::shared_ptr<IPlayerAction>> playerActions;
             std::mutex playerActionsMutex;
         };

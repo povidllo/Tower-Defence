@@ -23,9 +23,37 @@ namespace TDEngine {
         }
 
         void Engine::startGame(const std::string& mapName) {
-            // Map map; //Расписать получение карты по имени из проекта
-            // storage = std::make_shared<EngineStorage>(map);
-            gameLoop();
+			bool mapFound = false;
+        	for (const auto& map : storage->curProject->getMaps()) {
+        		if (map->getName() == mapName) {
+        			mapFound = true;
+        			storage->curMap = map;
+        		}
+        	}
+
+        	if (mapFound) {
+        		initMap();
+        		gameLoop();
+        	}
+        	else {
+        		throw std::invalid_argument("Map not found");
+        	}
+        }
+
+    	void Engine::initMap() {
+        	storage->curWave = 0;
+	        storage->activeAbilities.clear();
+        	storage->activeEnemies.clear();
+        	storage->activeProjectiles.clear();
+        	storage->activeTowers.clear();
+        	storage->activeWaves.clear();
+        	storage->mapObjects.clear();
+
+        	for (const auto& tower : storage->curMap->getSpots()) {
+        		storage->addTower(std::make_shared<TowerActions>(
+        			TowerActions(*tower, {tower->getX(), tower->getY()})));
+        	}
+        	storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
         }
 
         void Engine::endGame(bool hasWon) {

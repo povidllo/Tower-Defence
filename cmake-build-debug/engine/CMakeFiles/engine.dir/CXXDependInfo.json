@@ -1,0 +1,89 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"database-info" : null,
+	"dir-cur-bld" : "/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/engine",
+	"dir-cur-src" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine",
+	"dir-top-bld" : "/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug",
+	"dir-top-src" : "/home/dimandr/Other/F/Programming/Tower-Defence",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"/home/dimandr/Other/F/Programming/Tower-Defence/editor/include",
+		"/home/dimandr/Other/F/Programming/Tower-Defence/editor/include/Entity",
+		"/home/dimandr/Other/F/Programming/Tower-Defence/editor/include/Utils",
+		"/home/dimandr/Other/F/Programming/Tower-Defence/editor/src/Entity",
+		"engine/engine_autogen/include"
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/engine/CMakeFiles/engine.dir",
+	"sources" : 
+	{
+		"engine/CMakeFiles/engine.dir/main.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/main.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/core/Engine.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/core/EngineStorage.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/core/TickGenerator.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp"
+		},
+		"engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/dimandr/Other/F/Programming/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp"
+		}
+	}
+}

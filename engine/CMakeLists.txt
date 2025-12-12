@@ -1,15 +1,12 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.22)
 project(engine)
-
-set(CMAKE_CXX_STANDARD 23)
+#set(CMAKE_CXX_COMPILER /usr/bin/g++-14)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_executable(engine main.cpp
-        ../editor/src/Entity/WaveSample.cpp
-        ../editor/src/Entity/EnemySample.cpp
-        ../editor/src/Entity/TowerSample.cpp
+add_executable(engine
+        main.cpp
         src/inner/core/Engine.cpp
         src/inner/core/Engine.h
         src/inner/core/TickGenerator.cpp
@@ -43,18 +40,8 @@ add_executable(engine main.cpp
         src/inner/game_objects/entities/Tower.h
 )
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-find_package(nlohmann_json REQUIRED)
+target_compile_options(engine PRIVATE -include valarray)
 
 target_link_libraries(engine PRIVATE
-        Qt6::Widgets
-        nlohmann_json::nlohmann_json
+        editor_common
 )
-
-target_include_directories(engine PRIVATE
-        ${CMAKE_SOURCE_DIR}/../editor/include/Entity
-        ${CMAKE_SOURCE_DIR}/../editor/include/Utils
-)
-#
-
-

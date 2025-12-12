@@ -1,0 +1,27 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"editor/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"id" : "editor_autogen_timestamp_deps::@ed37844f285895dce70e",
+	"isGeneratorProvided" : true,
+	"name" : "editor_autogen_timestamp_deps",
+	"paths" : 
+	{
+		"build" : "editor",
+		"source" : "editor"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

@@ -48,8 +48,11 @@ namespace TDEngine {
         }
 
         void WaveActions::summonNextWave(std::shared_ptr<EngineStorage> engineStorage) {
-            //Сюда надо добавить спавн следующей волны, но пока это, вроде, невозможно
-            //Нужно обновить энтити в редакторе
+        	engineStorage->curWave++;
+        	if (engineStorage->curWave < engineStorage->curMap->getWaves().size()) {
+        		engineStorage->addWave(std::make_shared<WaveActions>
+        			(WaveActions(*engineStorage->curMap->getWaves()[engineStorage->curWave])));
+        	}
             storage.spawningIndex++;
         }
 
