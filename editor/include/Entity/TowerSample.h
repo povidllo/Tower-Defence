@@ -57,6 +57,10 @@ public:
 
 	void setY(const int y);
 
+	double getCost() const;
+
+	void setCost(const double cost);
+
 private:
 	std::string name;
 	double damage{0};

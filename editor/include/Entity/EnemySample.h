@@ -37,6 +37,14 @@ public:
 
 	void setSpeed(double speed);
 
+	double getMoneyFallsOut() const;
+
+	void setMoneyFallsOut(double moneyFallsOut);
+
+	double getMoneyFallsOutPercentage();
+
+	void setMoneyFallsOutPercentage(double moneyFallsOutPercentage);
+
 private:
 	std::string name;
 	double health{0};

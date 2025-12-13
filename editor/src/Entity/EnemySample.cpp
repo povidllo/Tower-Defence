@@ -9,13 +9,13 @@ EnemySample::EnemySample(const json &j) {
 
 EnemySample::json EnemySample::toJson() const {
 	return {
-			{"name", name},
-			{"health", health},
-			{"damage", damage},
-			{"enemyTexturePath", enemyTexturePath},
-			{"moneyFallsOut", moneyFallsOut},
-			{"moneyFallsOutPercentage", moneyFallsOutPercentage},
-			{"speed", speed}
+		{"name", name},
+		{"health", health},
+		{"damage", damage},
+		{"enemyTexturePath", enemyTexturePath},
+		{"moneyFallsOut", moneyFallsOut},
+		{"moneyFallsOutPercentage", moneyFallsOutPercentage},
+		{"speed", speed}
 	};
 }
 
@@ -68,4 +68,20 @@ double EnemySample::getSpeed() const {
 
 void EnemySample::setSpeed(double speed) {
 	this->speed = speed;
+}
+
+double EnemySample::getMoneyFallsOut() const {
+	return this->moneyFallsOut;
+}
+
+void EnemySample::setMoneyFallsOut(double moneyFallsOut) {
+	this->moneyFallsOut = moneyFallsOut;
+}
+
+double EnemySample::getMoneyFallsOutPercentage() {
+	return this->moneyFallsOutPercentage;
+}
+
+void EnemySample::setMoneyFallsOutPercentage(double moneyFallsOutPercentage) {
+	this->moneyFallsOutPercentage = moneyFallsOutPercentage;
 }

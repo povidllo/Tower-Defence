@@ -96,3 +96,7 @@ double Map::getStartCurrency() {
 void Map::setStartCurrency(double currency) {
 	startCurrency = currency;
 }
+
+std::string Map::getFinalMapImagePath() {
+	return finalMapImagePath;
+}
