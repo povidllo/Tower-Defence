@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/cmake_install.cmake",
-		"/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/editor/cmake_install.cmake",
-		"/home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug/engine/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

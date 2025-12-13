@@ -1,5 +1,4 @@
-/opt/clion-2025.2.4/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/opt/clion-2025.2.4/bin/ninja/linux/x64/ninja -G Ninja -S /home/dimandr/Other/F/Programming/Tower-Defence -B /home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug
--- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
--- Configuring done (0.1s)
--- Generating done (0.0s)
--- Build files have been written to: /home/dimandr/Other/F/Programming/Tower-Defence/cmake-build-debug
+/Volumes/Storage/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Volumes/Storage/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -DPython_EXECUTABLE=/Users/mikle/Developer/Projects/NSU/Tower-Defence/.venv/bin/python -DPython3_EXECUTABLE=/Users/mikle/Developer/Projects/NSU/Tower-Defence/.venv/bin/python -S /Users/mikle/Developer/Projects/NSU/Tower-Defence -B /Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug
+-- Configuring done (0.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug
