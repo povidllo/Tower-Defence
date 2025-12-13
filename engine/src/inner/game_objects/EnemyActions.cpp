@@ -3,7 +3,9 @@
 namespace TDEngine {
     namespace Inner {
         EnemyActions::EnemyActions(EnemySample sample, std::shared_ptr<Wave> wave)
-            : MapObject(wave->getPath()[0].first, wave->getPath()[0].second), storage(std::move(sample))
+            : MapObject(sample.getEnemyTexturePath(),
+            	wave->getPath()[0].first, wave->getPath()[0].second, MapObjectTypes::Enemy),
+    	storage(std::move(sample))
         {
 
             storage.associatedWave = std::move(wave);
@@ -38,8 +40,8 @@ namespace TDEngine {
         }
 
         void EnemyActions::attack(std::shared_ptr<EngineStorage> engineStorage) {
-            engineStorage->curGameStatus.currentHp -= storage.getDamage();
-        	if (engineStorage->curGameStatus.currentHp <= 0) {
+            engineStorage->curGameStatus->currentHp -= storage.getDamage();
+        	if (engineStorage->curGameStatus->currentHp <= 0) {
         		engineStorage->isPlaying = false;
         	}
         }

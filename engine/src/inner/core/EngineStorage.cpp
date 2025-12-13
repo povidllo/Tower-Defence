@@ -4,7 +4,7 @@ namespace TDEngine {
     namespace Inner {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
         EngineStorage::EngineStorage(std::shared_ptr<Project> project)
-            : curGameStatus(GameStatus(0, 0)), curMap(nullptr),
+            : curGameStatus(std::make_shared<GameStatus>(GameStatus(0, 0))), curMap(nullptr),
     		curProject(project), curWave(0), isPlaying(false)
         {
         }
@@ -21,9 +21,9 @@ namespace TDEngine {
             return actings;
         }
 
-        std::vector<std::shared_ptr<MapObject>> EngineStorage::getAllMapObjects() {
-            return mapObjects;
-        }
+        // std::vector<std::shared_ptr<MapObject>> EngineStorage::getAllMapObjects() {
+        //     return mapObjects;
+        // }
 
         void EngineStorage::cleanMap() {
             for (auto projPtr : activeProjectiles) {
@@ -40,7 +40,7 @@ namespace TDEngine {
 
         void EngineStorage::addProjectile(const std::shared_ptr<Projectile> &projectile) {
             activeProjectiles.push_back(projectile);
-            mapObjects.push_back(projectile);
+            curGameStatus->mapObjects.push_back(projectile);
 
         }
         void EngineStorage::removeProjectile(const std::shared_ptr<Projectile> &projectile) {
@@ -51,16 +51,16 @@ namespace TDEngine {
             }
 
             std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(projectile);
-            auto mapIt = std::find(mapObjects.begin(), mapObjects.end(), mapObj);
-            if (mapIt != mapObjects.end()) {
-                mapObjects.erase(mapIt);
+            auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
+            if (mapIt != curGameStatus->mapObjects.end()) {
+                curGameStatus->mapObjects.erase(mapIt);
             }
 
         }
 
         void EngineStorage::addTower(const std::shared_ptr<TowerActions> &tower) {
             activeTowers.push_back(tower);
-            mapObjects.push_back(tower);
+            curGameStatus->mapObjects.push_back(tower);
 
         }
         void EngineStorage::removeTower(const std::shared_ptr<TowerActions> &tower) {
@@ -70,16 +70,16 @@ namespace TDEngine {
             }
 
             std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(tower);
-            auto mapIt = std::find(mapObjects.begin(), mapObjects.end(), mapObj);
-            if (mapIt != mapObjects.end()) {
-                mapObjects.erase(mapIt);
+            auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
+            if (mapIt != curGameStatus->mapObjects.end()) {
+                curGameStatus->mapObjects.erase(mapIt);
             }
 
         }
 
     	void EngineStorage::addEnemy(const std::shared_ptr<EnemyActions> &enemy) {
         	activeEnemies.push_back(enemy);
-        	mapObjects.push_back(enemy);
+        	curGameStatus->mapObjects.push_back(enemy);
         }
 
     	void EngineStorage::removeEnemy(const std::shared_ptr<EnemyActions> &enemy) {
@@ -89,9 +89,9 @@ namespace TDEngine {
         	}
 
         	std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(enemy);
-        	auto mapIt = std::find(mapObjects.begin(), mapObjects.end(), mapObj);
-        	if (mapIt != mapObjects.end()) {
-        		mapObjects.erase(mapIt);
+        	auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
+        	if (mapIt != curGameStatus->mapObjects.end()) {
+        		curGameStatus->mapObjects.erase(mapIt);
         	}
         }
     	void EngineStorage::addWave(const std::shared_ptr<WaveActions> &wave) {

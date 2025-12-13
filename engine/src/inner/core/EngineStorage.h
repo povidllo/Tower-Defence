@@ -19,7 +19,7 @@ namespace TDEngine {
             public:
             explicit EngineStorage(std::shared_ptr<Project> project);
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
-            std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
+            // std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
 
             void cleanMap();
             void addProjectile(const std::shared_ptr<Projectile> &projectile);
@@ -37,8 +37,7 @@ namespace TDEngine {
             std::vector<std::shared_ptr<TowerActions>> activeTowers;
             std::vector<std::shared_ptr<EnemyActions>> activeEnemies;
             std::vector<std::shared_ptr<WaveActions>> activeWaves;
-            std::vector<std::shared_ptr<MapObject>> mapObjects;
-            GameStatus curGameStatus;
+            std::shared_ptr<GameStatus> curGameStatus;
             std::shared_ptr<Project> curProject;
 
             std::shared_ptr<Map> curMap;

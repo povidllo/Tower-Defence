@@ -4,23 +4,20 @@
 namespace TDEngine {
     namespace Inner {
         Engine::Engine(std::shared_ptr<Project> project)
-            : storage(std::make_shared<EngineStorage>(project)), //curFrame(std::nullopt),
+            : storage(std::make_shared<EngineStorage>(project)),
             boundaryDT(std::make_shared<BoundaryDataTransfer>(this, storage->curProject)),
             tickGen(std::chrono::steady_clock::now())
         {
         }
 
-        void Engine::gameLoop() {
-            while (storage->isPlaying) {
-                while (solveNextAction());
+        std::shared_ptr<GameStatus> Engine::gameStep() {
+                // while (solveNextAction());
                 tickGen.tick(storage);
                 storage->cleanMap();
-                //ВНИМАНИЕ
-                // Сюда можно бы воткнуть функцию boundary-классов на отрисовку
-            }
+				return storage->curGameStatus;
         }
 
-        void Engine::startGame(const std::string& mapName) {
+        std::shared_ptr<GameStatus> Engine::startGame(const std::string& mapName) {
 			bool mapFound = false;
         	for (const auto& map : storage->curProject->getMaps()) {
         		if (map->getName() == mapName) {
@@ -31,7 +28,7 @@ namespace TDEngine {
 
         	if (mapFound) {
         		initMap();
-        		gameLoop();
+				return storage->curGameStatus;
         	}
         	else {
         		throw std::invalid_argument("Map not found");
@@ -46,7 +43,9 @@ namespace TDEngine {
         	storage->activeProjectiles.clear();
         	storage->activeTowers.clear();
         	storage->activeWaves.clear();
-        	storage->mapObjects.clear();
+        	storage->curGameStatus->mapObjects.clear();
+			storage->curGameStatus->currentGold = storage->curMap->getStartCurrency();
+        	storage->curGameStatus->currentHp = storage->curMap->getHp();
 
         	for (const auto& tower : storage->curMap->getSpots()) {
         		storage->addTower(std::make_shared<TowerActions>(
@@ -65,6 +64,10 @@ namespace TDEngine {
                 return true;
             }
             return false;
+        }
+
+    	bool Engine::isPlaying() {
+	        return storage->isPlaying;
         }
 
 

@@ -5,7 +5,8 @@
 namespace TDEngine {
     namespace Inner {
         TowerActions::TowerActions(TowerSample sample, std::pair<double, double> startPosition)
-            : MapObject(startPosition.first, startPosition.second), storage(std::move(sample)) {
+            : MapObject(sample.getTowerTexturePath(), startPosition.first, startPosition.second, MapObjectTypes::Tower),
+    		storage(std::move(sample)) {
             storage.setUpgradingTo = std::nullopt;
             storage.timeAfterLastShot = UINT64_MAX;
         }
@@ -31,7 +32,8 @@ namespace TDEngine {
 
         void TowerActions::attack(std::shared_ptr<EnemyActions> enemy, std::shared_ptr<EngineStorage> engineStorage) {
             double projectileSpeed = 1; //Вероятно, стоит добавить в параметры башни
-            Projectile newProjectile = Projectile(projectileSpeed, storage.getDamage(), enemy, positionCoordinates);
+            Projectile newProjectile = Projectile(projectileSpeed, storage.getDamage(), enemy,
+            	positionCoordinates, storage.getProjectileTexturePath());
             engineStorage->addProjectile(std::make_shared<Projectile>(newProjectile));
             storage.timeAfterLastShot = 0;
         }
