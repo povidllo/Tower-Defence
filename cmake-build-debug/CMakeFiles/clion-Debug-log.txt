@@ -1,4 +1,0 @@
-/Volumes/Storage/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Volumes/Storage/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -DPython_EXECUTABLE=/Users/mikle/Developer/Projects/NSU/Tower-Defence/.venv/bin/python -DPython3_EXECUTABLE=/Users/mikle/Developer/Projects/NSU/Tower-Defence/.venv/bin/python -S /Users/mikle/Developer/Projects/NSU/Tower-Defence -B /Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug
--- Configuring done (0.2s)
--- Generating done (0.1s)
--- Build files have been written to: /Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug

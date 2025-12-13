@@ -1,6 +1,0 @@
-set(__QT_DEPLOY_TARGET_editor_FILE /Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/editor/editor)
-set(__QT_DEPLOY_TARGET_editor_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_engine_FILE /Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/engine/engine)
-set(__QT_DEPLOY_TARGET_engine_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_editor_common_FILE /Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/libeditor_common.a)
-set(__QT_DEPLOY_TARGET_editor_common_TYPE STATIC_LIBRARY)
