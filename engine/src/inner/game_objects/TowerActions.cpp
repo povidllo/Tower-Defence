@@ -13,7 +13,7 @@ namespace TDEngine {
 
         void TowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
             if (storage.setUpgradingTo.has_value()) {
-                upgradeTower();
+                upgradeTower(engineStorage);
                 storage.setUpgradingTo.reset();
             }
             else {
@@ -55,9 +55,11 @@ namespace TDEngine {
             storage.setTowerTexturePath(sample.getTowerTexturePath());
         }
 
-        void TowerActions::upgradeTower() {
+        void TowerActions::upgradeTower(std::shared_ptr<EngineStorage> engineStorage) {
             if (storage.setUpgradingTo.has_value()) {
-                setSample(storage.setUpgradingTo.value());
+            	if (storage.getCost() <= engineStorage->curGameStatus->currentGold) {
+            		setSample(storage.setUpgradingTo.value());
+            	}
             }
         }
     } // Inner
