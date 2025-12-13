@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 
 #include "src/inner/core/Engine.h"
@@ -6,13 +7,15 @@
 int main(int argc, char *argv[]) {
 	std::cout << "hello user\n";
 	std::cout << "to continue, enter yes\n";
-	std::string ans;
-	std::cin >> ans;
-	if (ans != "yes") {
-		return 0;
-	}
+	// std::string ans;
+	// std::cin >> ans;
+	// if (ans != "yes") {
+	// 	return 0;
+	// }
     std::cout << "Amogus\n";
-    Project proj = Project("testname", "testpath", 123);
-    TDEngine::Inner::Engine engine = TDEngine::Inner::Engine(std::make_shared<Project>(proj));
-    engine.startGame("asd");
+	std::ifstream pFile("project.json");
+	nlohmann::json pJson;
+    Project proj(pJson);
+    // TDEngine::Inner::Engine engine = TDEngine::Inner::Engine(std::make_shared<Project>(proj));
+    // engine.startGame("asd");
 }
