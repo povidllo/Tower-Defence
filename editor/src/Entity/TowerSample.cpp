@@ -132,6 +132,10 @@ void TowerSample::setY(const int y) {
 	this->y = y;
 }
 
+double TowerSample::getCost() const {
+	return cost;
+}
+
 void TowerSample::setCost(const double cost) {
 	this->cost = cost;
 }

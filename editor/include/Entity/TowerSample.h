@@ -57,9 +57,8 @@ public:
 
 	void setY(const int y);
 
-	double getCost() const {
-		return cost;
-	}
+	double getCost() const;
+
 	void setCost(const double cost);
 
 private:
