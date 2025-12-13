@@ -131,3 +131,7 @@ void TowerSample::setX(const int x) {
 void TowerSample::setY(const int y) {
 	this->y = y;
 }
+
+void TowerSample::setCost(const double cost) {
+	this->cost = cost;
+}

@@ -46,6 +46,8 @@ public:
 
 	void setStartCurrency(double currency);
 
+	std::string getFinalMapImagePath();
+
 private:
 	std::string name;
 	int height{0};
