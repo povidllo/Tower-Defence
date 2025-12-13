@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[]) {
     std::cout << "Amogus\n";
-	std::ifstream pFile("project.json");
+	std::ifstream pFile("../../engine/project.json");
 	if (!pFile.is_open()) {
 		std::cerr << "[ERROR] Failed to open file: " << "project.json" << std::endl;
 		std::cerr << "Make sure the file is in the working directory!" << std::endl;

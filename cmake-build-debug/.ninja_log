@@ -79,3 +79,9 @@
 8	40	1765615503973954635	/Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/engine/engine_autogen/mocs_compilation.cpp	85f905480f618f05
 40	1197	1765615504006307719	engine/CMakeFiles/engine.dir/main.cpp.o	2db004e5f7d3922a
 1197	1312	1765615505162788439	engine/engine	dce65fc7e7940741
+7	35	1765615610796092136	engine/engine_autogen/timestamp	85f905480f618f05
+7	35	1765615610796092136	engine/engine_autogen/mocs_compilation.cpp	85f905480f618f05
+7	35	1765615610796092136	/Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/engine/engine_autogen/timestamp	85f905480f618f05
+7	35	1765615610796092136	/Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/engine/engine_autogen/mocs_compilation.cpp	85f905480f618f05
+35	1340	1765615610824136042	engine/CMakeFiles/engine.dir/main.cpp.o	2db004e5f7d3922a
+1341	1522	1765615612129556307	engine/engine	dce65fc7e7940741
