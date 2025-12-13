@@ -12,7 +12,7 @@ namespace TDEngine {
             explicit EnemyActions(EnemySample sample, std::shared_ptr<Wave> wave);
             void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
             void attack(std::shared_ptr<EngineStorage> engineStorage);
-            void die();
+            void die(std::shared_ptr<EngineStorage> engineStorage);
 
 
             Enemy storage;
