@@ -14,20 +14,10 @@ namespace TDEngine {
         class Engine;
         class BoundaryDataTransfer {
         public:
-            explicit BoundaryDataTransfer(Engine* engine, std::shared_ptr<Project> &projectSample);
-            // std::optional<FrameData> getCurFrame();
-            // void setNextFrame(FrameData &newNextFrame);
             void addPlayerAction(std::shared_ptr<IPlayerAction> &action);
-            std::optional<std::shared_ptr<IPlayerAction>> extractPlayerAction();
-        private:
-            Engine* engine;
-            std::shared_ptr<Project> currentProject;
-            // std::optional<FrameData> curFrame;
-            // std::optional<FrameData> nextFrame;
-            // std::mutex curFrameMutex;
-            // std::mutex nextFrameMutex;
-            std::queue<std::shared_ptr<IPlayerAction>> playerActions;
-            std::mutex playerActionsMutex;
+            std::optional<std::shared_ptr<IPlayerAction>> extractPlayerActionForEngine();
+            std::queue<std::shared_ptr<IPlayerAction>> playerActionsForEngine;
+        	std::queue<std::shared_ptr<IPlayerAction>> playerActionsForRenderer;
         };
     } // Inner
 } // TDEngine

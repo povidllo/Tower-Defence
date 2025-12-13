@@ -38,6 +38,10 @@ add_executable(engine
         src/inner/game_objects/entities/Enemy.h
         src/inner/game_objects/entities/Wave.h
         src/inner/game_objects/entities/Tower.h
+        src/display/renderer.cpp
+        src/display/renderer.h
+        src/display/mainManager.cpp
+        src/display/mainManager.h
 )
 
 target_compile_options(engine PRIVATE -include valarray)
