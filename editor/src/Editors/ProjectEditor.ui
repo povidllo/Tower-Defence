@@ -45,6 +45,7 @@
     </property>
     <addaction name="actionOpen_project"/>
     <addaction name="actionSave_project"/>
+    <addaction name="actionCompile_project"/>
    </widget>
    <widget class="QMenu" name="menuEditor">
     <property name="title">
@@ -81,6 +82,11 @@
   <action name="actionMap_editor">
    <property name="text">
     <string>Map editor</string>
+   </property>
+  </action>
+  <action name="actionCompile_project">
+   <property name="text">
+    <string>Compile project</string>
    </property>
   </action>
  </widget>

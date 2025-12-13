@@ -36,6 +36,8 @@ void Map::fromJson(const json &j) {
 	startCurrency = j.value("startCurrency", startCurrency);
 	hp = j.value("hp", hp);
 
+	finalMapImagePath = j.value("finalMapImagePath", finalMapImagePath);
+
 	tiles.assign(height, std::vector<int>(width, 0));
 
 	if (j.contains("tiles")) {
