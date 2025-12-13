@@ -82,3 +82,9 @@
 1654	2635	1765611155426426837	engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o	3a015885d2647540
 1843	2730	1765611155615959218	engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o	9833a2ad307c3674
 2730	2923	1765611156502507675	engine/engine	dce65fc7e7940741
+8	42	1765611402850462985	engine/engine_autogen/timestamp	85f905480f618f05
+8	42	1765611402850462985	engine/engine_autogen/mocs_compilation.cpp	85f905480f618f05
+8	42	1765611402850462985	/Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/engine/engine_autogen/timestamp	85f905480f618f05
+8	42	1765611402850462985	/Users/mikle/Developer/Projects/NSU/Tower-Defence/cmake-build-debug/engine/engine_autogen/mocs_compilation.cpp	85f905480f618f05
+42	1098	1765611402884534391	engine/CMakeFiles/engine.dir/main.cpp.o	2db004e5f7d3922a
+1098	1278	1765611403940212233	engine/engine	dce65fc7e7940741

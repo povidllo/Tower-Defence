@@ -39,6 +39,7 @@ namespace TDEngine {
             }
             std::pair<double, double> positionCoordinates;
         	//добавить поле type для определения определение типа
+        	//добавить
         };
     } // Inner
 } // TDEngine
