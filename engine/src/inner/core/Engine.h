@@ -11,14 +11,14 @@ namespace TDEngine {
         class Engine {
         public:
             Engine(std::shared_ptr<Project> pSample);
-            void gameLoop();
-            void startGame(const std::string& mapName);
+            std::shared_ptr<GameStatus> gameStep();
+            std::shared_ptr<GameStatus> startGame(const std::string& mapName);
         	void initMap();
             void endGame();
             bool solveNextAction();
+        	bool isPlaying();
         private:
             std::shared_ptr<EngineStorage> storage;
-            // std::optional<FrameData> curFrame;
             std::shared_ptr<BoundaryDataTransfer> boundaryDT;
             TickGenerator tickGen;
         };

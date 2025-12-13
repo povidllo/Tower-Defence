@@ -9,6 +9,7 @@ namespace TDEngine {
                 : currentHp(currentHp), currentGold(currentGold) {}
             uint32_t currentHp;
             uint32_t currentGold;
+            std::vector<std::shared_ptr<MapObject>> mapObjects;
         };
     } // Inner
 } // TDEngine
