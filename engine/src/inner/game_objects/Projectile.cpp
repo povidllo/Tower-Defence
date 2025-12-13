@@ -11,7 +11,7 @@ namespace TDEngine {
             moveTo(target->positionCoordinates, moveSpeed, timePassedMillis);
             if (getDistanceTo(target) < 1e-5) {
                 hit();
-            }
+            } //что произойдет если врага убьют до того как снаряд долетит
         }
 
         void Projectile::hit() {

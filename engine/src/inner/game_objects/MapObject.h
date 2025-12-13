@@ -1,7 +1,7 @@
 #pragma once
 #include <math.h>
 #include <utility>
-#include <bits/valarray_after.h>
+// #include <bits/valarray_after.h>
 
 namespace TDEngine {
     namespace Inner {
@@ -38,6 +38,7 @@ namespace TDEngine {
                 positionCoordinates.second += movedY;
             }
             std::pair<double, double> positionCoordinates;
+        	//добавить поле type для определения определение типа
         };
     } // Inner
 } // TDEngine

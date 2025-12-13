@@ -6,7 +6,7 @@ namespace TDEngine {
         Engine::Engine(std::shared_ptr<Project> project)
             : storage(std::make_shared<EngineStorage>(project)), //curFrame(std::nullopt),
             boundaryDT(std::make_shared<BoundaryDataTransfer>(this, storage->curProject)),
-            tickGen(std::chrono::steady_clock::now())
+            tickGen(std::chrono::steady_clock::now()) //загружается при старте игры
         {
         }
 
@@ -20,7 +20,14 @@ namespace TDEngine {
             }
         }
 
-        void Engine::startGame(const std::string& mapName) {
+    	void Engine::gameStep() { //возврат gamestatus
+        	while (solveNextAction());
+        	tickGen.tick(storage);
+        	storage->cleanMap();
+        	//
+        }
+
+        void Engine::startGame(const std::string& mapName) { //возврат gamestatus
 			bool mapFound = false;
         	for (const auto& map : storage->curProject->getMaps()) {
         		if (map->getName() == mapName) {

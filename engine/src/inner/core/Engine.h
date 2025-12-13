@@ -16,6 +16,7 @@ namespace TDEngine {
         	void initMap();
             void endGame();
             bool solveNextAction();
+        	void gameStep();
         private:
             std::shared_ptr<EngineStorage> storage;
             // std::optional<FrameData> curFrame;
