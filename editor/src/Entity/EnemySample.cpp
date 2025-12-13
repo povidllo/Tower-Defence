@@ -9,12 +9,13 @@ EnemySample::EnemySample(const json &j) {
 
 EnemySample::json EnemySample::toJson() const {
 	return {
-		{"name", name},
-		{"health", health},
-		{"damage", damage},
-		{"enemyTexturePath", enemyTexturePath},
-		{"moneyFallsOut", moneyFallsOut},
-		{"moneyFallsOutPercentage", moneyFallsOutPercentage}
+			{"name", name},
+			{"health", health},
+			{"damage", damage},
+			{"enemyTexturePath", enemyTexturePath},
+			{"moneyFallsOut", moneyFallsOut},
+			{"moneyFallsOutPercentage", moneyFallsOutPercentage},
+			{"speed", speed}
 	};
 }
 
@@ -24,6 +25,7 @@ void EnemySample::fromJson(const json &j) {
 	damage = j.value("damage", damage);
 	moneyFallsOut = j.value("moneyFallsOut", moneyFallsOut);
 	moneyFallsOutPercentage = j.value("moneyFallsOutPercentage", moneyFallsOutPercentage);
+	speed = j.value("speed", speed);
 
 	enemyTexturePath = j.value("enemyTexturePath", "");
 }
@@ -58,4 +60,12 @@ std::string EnemySample::getEnemyTexturePath() const {
 
 void EnemySample::setEnemyTexturePath(const std::string &enemyTexturePath) {
 	this->enemyTexturePath = enemyTexturePath;
+}
+
+double EnemySample::getSpeed() const {
+	return speed;
+}
+
+void EnemySample::setSpeed(double speed) {
+	this->speed = speed;
 }

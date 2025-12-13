@@ -141,6 +141,10 @@ void ProjectController::removeTowersFromSpots(const std::string &towerName) {
 	}
 }
 
+std::shared_ptr<Project> ProjectController::getCurrentProject() const {
+	return currentProject;
+}
+
 void ProjectController::loadControls() {
 	towerController = std::make_shared<TowerController>(this);
 	enemyController = std::make_shared<EnemyController>(this);

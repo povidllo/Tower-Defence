@@ -33,6 +33,10 @@ public:
 
 	void setEnemyTexturePath(const std::string &enemyTexturePath);
 
+	double getSpeed() const;
+
+	void setSpeed(double speed);
+
 private:
 	std::string name;
 	double health{0};

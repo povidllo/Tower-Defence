@@ -65,6 +65,8 @@ public:
 
 	void removeTowersFromSpots(const std::string &towerName);
 
+	std::shared_ptr<Project> getCurrentProject() const;
+
 private:
 	std::shared_ptr<Project> currentProject;
 	std::shared_ptr<TowerController> towerController;

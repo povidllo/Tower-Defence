@@ -53,6 +53,8 @@ private:
 	double startCurrency{0};
 	double hp{0};
 
+	std::string finalMapImagePath;
+
 	std::vector<std::shared_ptr<WaveSample> > waves;
 	std::vector<std::shared_ptr<TowerSample> > spots;
 	std::vector<std::vector<int> > tiles;

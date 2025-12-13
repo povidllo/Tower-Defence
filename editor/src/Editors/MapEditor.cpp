@@ -255,20 +255,6 @@ void MapEditor::onEditWaveButtonClicked() {
 	}
 }
 
-// void MapEditor::onAddSpotButtonClicked() {
-// 	QDialog *dialog = new QDialog(this);
-//
-// 	std::string baseName = "spot";
-// 	int counter = 1;
-// 	auto tc = mapController->getProjectController()->getTowerController();
-//
-// 	if (tc->towerExists(baseName)) {
-// 		baseName = "spot_" + std::to_string(counter);
-// 		counter++;
-// 	}
-// 	mapController->addSpot(baseName, x, y);
-// 	updateSpotList();
-// }
 void MapEditor::onAddSpotButtonClicked() {
 	auto currentMap = mapController->getCurrentMap();
 	if (!currentMap) {
@@ -579,10 +565,62 @@ bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
 	return QWidget::eventFilter(obj, event);
 }
 
+// void MapEditor::refreshMapView() {
+// 	auto currentMap = mapController->getCurrentMap();
+// 	if (!currentMap) {
+// 		return;
+// 	}
+//
+// 	QGraphicsScene *scene = ui->mapView->scene();
+// 	if (!scene) {
+// 		scene = new QGraphicsScene(this);
+// 		ui->mapView->setScene(scene);
+// 		scene->installEventFilter(this);
+// 	} else {
+// 		scene->clear();
+// 	}
+//
+// 	for (auto *item: pathGraphicsItems) {
+// 		delete item;
+// 	}
+// 	pathGraphicsItems.clear();
+//
+// 	const auto &tiles = currentMap->getTiles();
+// 	int tileSize = TextureManager::instance().getImageSize();
+//
+// 	for (int y = 0; y < tiles.size(); ++y) {
+// 		for (int x = 0; x < tiles[y].size(); ++x) {
+// 			int tileId = tiles[y][x];
+// 			QPixmap pix = TextureManager::instance().get(tileId);
+// 			if (!pix.isNull()) {
+// 				scene->addPixmap(pix)->setPos(x * tileSize, y * tileSize);
+// 				scene->addRect(x * tileSize, y * tileSize, tileSize, tileSize, QPen(QColor(0, 0, 0, 50)));
+// 			}
+// 		}
+// 	}
+//
+// for (const auto &spot: currentMap->getSpots()) {
+// 	int x = spot->getX() * tileSize;
+// 	int y = spot->getY() * tileSize;
+//
+// 	scene->addEllipse(x + tileSize / 6, y + tileSize / 6,
+// 					tileSize * 2 / 3, tileSize * 2 / 3,
+// 					QPen(Qt::blue, 4), QBrush(QColor(0, 0, 255, 80)));
+//
+// 	QGraphicsTextItem *text = scene->addText(QString::fromStdString(spot->getName()));
+// 	text->setDefaultTextColor(Qt::white);
+// 	QFont font = text->font();
+// 	font.setBold(true);
+// 	text->setFont(font);
+// 	text->setPos(x + tileSize / 4, y + tileSize / 4);
+// 	text->setZValue(101);
+// }
+//
+// 	ui->mapView->setSceneRect(scene->itemsBoundingRect());
+// }
 void MapEditor::refreshMapView() {
 	auto currentMap = mapController->getCurrentMap();
-	if (!currentMap)
-		return;
+	if (!currentMap) return;
 
 	QGraphicsScene *scene = ui->mapView->scene();
 	if (!scene) {
@@ -593,6 +631,8 @@ void MapEditor::refreshMapView() {
 		scene->clear();
 	}
 
+	pathGraphicsItems.clear();
+
 	const auto &tiles = currentMap->getTiles();
 	int tileSize = TextureManager::instance().getImageSize();
 
@@ -602,21 +642,19 @@ void MapEditor::refreshMapView() {
 			QPixmap pix = TextureManager::instance().get(tileId);
 			if (!pix.isNull()) {
 				scene->addPixmap(pix)->setPos(x * tileSize, y * tileSize);
-				scene->addRect(x * tileSize, y * tileSize, tileSize, tileSize, QPen(QColor(0, 0, 0, 50)));
+				scene->addRect(x * tileSize, y * tileSize, tileSize, tileSize,
+								QPen(QColor(0, 0, 0, 50)));
 			}
 		}
 	}
-
 	for (const auto &spot: currentMap->getSpots()) {
 		int x = spot->getX() * tileSize;
 		int y = spot->getY() * tileSize;
 
-		// Полупрозрачный синий круг
 		scene->addEllipse(x + tileSize / 6, y + tileSize / 6,
 						tileSize * 2 / 3, tileSize * 2 / 3,
 						QPen(Qt::blue, 4), QBrush(QColor(0, 0, 255, 80)));
 
-		// Имя башни
 		QGraphicsTextItem *text = scene->addText(QString::fromStdString(spot->getName()));
 		text->setDefaultTextColor(Qt::white);
 		QFont font = text->font();
@@ -625,6 +663,7 @@ void MapEditor::refreshMapView() {
 		text->setPos(x + tileSize / 4, y + tileSize / 4);
 		text->setZValue(101);
 	}
+
 
 	ui->mapView->setSceneRect(scene->itemsBoundingRect());
 }
@@ -701,6 +740,32 @@ void MapEditor::updateTextureList() {
 	}
 }
 
+// void MapEditor::onEditPathButtonClicked() {
+// 	if (currentWaveName.empty()) {
+// 		QMessageBox::information(this, "Error", "Select a wave first!");
+// 		return;
+// 	}
+//
+// 	pathEditingMode = !pathEditingMode;
+// 	ui->editCurrentWavePathButton->setChecked(pathEditingMode);
+// 	ui->editCurrentWavePathButton->setText(pathEditingMode ? "Finish Editing Path" : "Edit Path");
+//
+// 	// if (pathEditingMode) {
+// 	// 	for (auto *item: pathGraphicsItems) {
+// 	// 		ui->mapView->scene()->removeItem(item);
+// 	// 		delete item;
+// 	// 	}
+// 	// 	pathGraphicsItems.clear();
+// 	//
+// 	// 	drawCurrentWavePath();
+// 	// }
+// 	if (pathEditingMode) {
+// 		refreshMapView();
+// 		drawCurrentWavePath();
+// 	} else {
+// 		refreshMapView();
+// 	}
+// }
 void MapEditor::onEditPathButtonClicked() {
 	if (currentWaveName.empty()) {
 		QMessageBox::information(this, "Error", "Select a wave first!");
@@ -711,51 +776,87 @@ void MapEditor::onEditPathButtonClicked() {
 	ui->editCurrentWavePathButton->setChecked(pathEditingMode);
 	ui->editCurrentWavePathButton->setText(pathEditingMode ? "Finish Editing Path" : "Edit Path");
 
-	if (pathEditingMode) {
-		// Очищаем старый путь на карте
-		for (auto *item: pathGraphicsItems) {
-			ui->mapView->scene()->removeItem(item);
-			delete item;
-		}
-		pathGraphicsItems.clear();
+	refreshMapView();
 
-		drawCurrentWavePath();
-	}
+	// if (pathEditingMode) {
+	drawCurrentWavePath();
+	// }
 }
 
+// void MapEditor::drawCurrentWavePath() {
+// 	auto currentMap = mapController->getCurrentMap();
+// 	if (!currentMap) {
+// 		return;
+// 	}
+//
+// 	auto it = mapController->getWave(currentWaveName);
+// 	if (it == nullptr) {
+// 		return;
+// 	}
+//
+// 	const auto &path = it->getPath();
+// 	if (path.empty()) {
+// 		return;
+// 	}
+//
+// 	int tileSize = TextureManager::instance().getImageSize();
+// 	QGraphicsScene *scene = ui->mapView->scene();
+// 	if (!scene) {
+// 		return;
+// 	}
+//
+// 	for (size_t i = 0; i < path.size(); ++i) {
+// 		int tx = path[i].first;
+// 		int ty = path[i].second;
+//
+// 		QGraphicsEllipseItem *point = scene->addEllipse(tx * tileSize + tileSize / 4, ty * tileSize + tileSize / 4,
+// 														tileSize / 2, tileSize / 2, QPen(Qt::red, 3), QBrush(Qt::red));
+// 		point->setZValue(100);
+// 		pathGraphicsItems.push_back(point);
+//
+// 		if (i < path.size() - 1) {
+// 			int nextX = path[i + 1].first;
+// 			int nextY = path[i + 1].second;
+// 			QGraphicsLineItem *line =
+// 					scene->addLine(tx * tileSize + tileSize / 2, ty * tileSize + tileSize / 2,
+// 									nextX * tileSize + tileSize / 2, nextY * tileSize + tileSize / 2, QPen(Qt::red, 4));
+// 			line->setZValue(99);
+// 			pathGraphicsItems.push_back(line);
+// 		}
+// 	}
+// }
 void MapEditor::drawCurrentWavePath() {
 	auto currentMap = mapController->getCurrentMap();
-	if (!currentMap)
-		return;
+	if (!currentMap) return;
 
-	auto it = mapController->getWave(currentWaveName);
-	if (it == nullptr)
-		return;
+	auto wave = mapController->getWave(currentWaveName);
+	if (!wave) return;
 
-	const auto &path = it->getPath();
-	if (path.empty())
-		return;
+	const auto &path = wave->getPath();
+	if (path.empty()) return;
 
 	int tileSize = TextureManager::instance().getImageSize();
 	QGraphicsScene *scene = ui->mapView->scene();
-	if (!scene)
-		return;
+	if (!scene) return;
 
 	for (size_t i = 0; i < path.size(); ++i) {
 		int tx = path[i].first;
 		int ty = path[i].second;
 
-		QGraphicsEllipseItem *point = scene->addEllipse(tx * tileSize + tileSize / 4, ty * tileSize + tileSize / 4,
-														tileSize / 2, tileSize / 2, QPen(Qt::red, 3), QBrush(Qt::red));
+		auto *point = scene->addEllipse(
+			tx * tileSize + tileSize / 4, ty * tileSize + tileSize / 4,
+			tileSize / 2, tileSize / 2,
+			QPen(Qt::red, 3), QBrush(Qt::red));
 		point->setZValue(100);
 		pathGraphicsItems.push_back(point);
 
 		if (i < path.size() - 1) {
-			int nextX = path[i + 1].first;
-			int nextY = path[i + 1].second;
-			QGraphicsLineItem *line =
-					scene->addLine(tx * tileSize + tileSize / 2, ty * tileSize + tileSize / 2,
-									nextX * tileSize + tileSize / 2, nextY * tileSize + tileSize / 2, QPen(Qt::red, 4));
+			int nx = path[i + 1].first;
+			int ny = path[i + 1].second;
+			auto *line = scene->addLine(
+				tx * tileSize + tileSize / 2, ty * tileSize + tileSize / 2,
+				nx * tileSize + tileSize / 2, ny * tileSize + tileSize / 2,
+				QPen(Qt::red, 4));
 			line->setZValue(99);
 			pathGraphicsItems.push_back(line);
 		}

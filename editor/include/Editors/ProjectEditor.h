@@ -28,8 +28,6 @@ public:
 	~ProjectEditor() override;
 
 private:
-	// std::shared_ptr<Project> currentProject;
-
 	std::shared_ptr<ProjectController> projectController;
 	// CampaignEditor* campaignEditor;
 	// AbilityEditor* abilityEditor;
@@ -51,6 +49,10 @@ private slots:
 	void openMapEditor();
 
 	void onSaveProjectClicked();
+
+	void compileProject();
+
+	void compileProjectClicked();
 };
 
 #endif

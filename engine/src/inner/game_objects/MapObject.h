@@ -1,17 +1,27 @@
 #pragma once
 #include <math.h>
+#include <string>
 #include <utility>
 // #include <bits/valarray_after.h>
 
 namespace TDEngine {
     namespace Inner {
+    	enum class MapObjectTypes {
+    		Tower,
+    		Enemy,
+    		Projectile
+    	};
         class MapObject {
         public:
-            explicit MapObject(double x, double y) {
+        	MapObject(std::string texturePath, double x, double y, MapObjectTypes type) {
                 positionCoordinates = {x, y};
+            	this->texturePath = std::move(texturePath);
+        		this->type = type;
             }
-            explicit MapObject(std::pair<double, double> position) {
+        	MapObject(std::string texturePath, std::pair<double, double> position, MapObjectTypes type) {
                 positionCoordinates = position;
+            	this->texturePath = std::move(texturePath);
+        		this->type = type;
             }
             double getDistanceTo(std::shared_ptr<MapObject> const& other) const {
                 double dx = positionCoordinates.first - other->positionCoordinates.first;
@@ -37,6 +47,8 @@ namespace TDEngine {
                 positionCoordinates.first += movedX;
                 positionCoordinates.second += movedY;
             }
+        	std::string texturePath;
+			MapObjectTypes type;
             std::pair<double, double> positionCoordinates;
         };
     } // Inner
