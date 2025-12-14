@@ -58,11 +58,11 @@ namespace TDEngine {
         }
 
         bool Engine::solveNextAction() {
-            std::optional<std::shared_ptr<IPlayerAction>> action = boundaryDT->extractPlayerAction();
-            if (action.has_value()) {
-                action.value()->MakeAction();
-                return true;
-            }
+            // std::optional<std::shared_ptr<IPlayerAction>> action = boundaryDT->extractPlayerAction();
+            // if (action.has_value()) {
+            //     action.value()->MakeAction();
+            //     return true;
+            // }
             return false;
         }
 

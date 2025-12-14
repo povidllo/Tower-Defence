@@ -40,8 +40,8 @@ add_executable(engine
         src/inner/game_objects/entities/Tower.h
         src/display/RendererGame.cpp
         src/display/RendererGame.h
-        src/display/mainManager.cpp
-        src/display/mainManager.h
+        src/display/MainManager.cpp
+        src/display/MainManager.h
         src/display/TextureCache.h
         src/display/TextureCache.cpp
         src/display/TextureCache.h
