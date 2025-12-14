@@ -2,9 +2,10 @@
 #include <iostream>
 #include <filesystem>
 
-#include "src/inner/core/Engine.h"
 #include <nlohmann/json.hpp>
 #include "../editor/include/Entity/Project.h"
+#include "src/display/MainManager.h"
+#include "src/inner/core/Engine.h"
 
 int main(int argc, char *argv[]) {
     std::cout << "Amogus\n";
@@ -18,6 +19,7 @@ int main(int argc, char *argv[]) {
 	nlohmann::json pJson;
 	pFile >> pJson;
     Project proj(pJson);
-    TDEngine::Inner::Engine engine = TDEngine::Inner::Engine(std::make_shared<Project>(proj));
-    engine.startGame("map_1");
+
+    TDEngine::Inner::MainManager mainManager(proj, 800, 600);
+    mainManager.mainLoop("map_1");
 }
