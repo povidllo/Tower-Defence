@@ -39,6 +39,9 @@ namespace TDEngine {
                 double dx = target.first - positionCoordinates.first;
                 double dy = target.second - positionCoordinates.second;
                 double distLeft = sqrt(dx*dx + dy*dy);
+        		if (distLeft < 1e-8) {
+        			return;
+        		}
                 if (distLeft < distTraveled) {
                     distTraveled = distLeft;
                 }
