@@ -18,21 +18,14 @@ namespace TDEngine {
         }
 
         std::shared_ptr<GameStatus> Engine::startGame(const std::string& mapName) {
-			bool mapFound = false;
         	for (const auto& map : storage->curProject->getMaps()) {
         		if (map->getName() == mapName) {
-        			mapFound = true;
         			storage->curMap = map;
+        			initMap();
+					return storage->curGameStatus;
         		}
         	}
-
-        	if (mapFound) {
-        		initMap();
-				return storage->curGameStatus;
-        	}
-        	else {
-        		throw std::invalid_argument("Map not found");
-        	}
+        	throw std::invalid_argument("Map not found");
         }
 
     	void Engine::initMap() {

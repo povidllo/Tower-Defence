@@ -26,9 +26,9 @@ namespace TDEngine {
         // }
 
         void EngineStorage::cleanMap() {
-            for (auto projPtr : activeProjectiles) {
-                if (!projPtr->target->storage.isAlive) {
-                    removeProjectile(projPtr);
+            for (auto projectilePtr : activeProjectiles) {
+                if (!projectilePtr->target->storage.isAlive || !projectilePtr->isActive) {
+                    removeProjectile(projectilePtr);
                 }
             }
             for (auto enemyPtr : activeEnemies) {
