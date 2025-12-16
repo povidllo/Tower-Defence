@@ -17,9 +17,15 @@ namespace TDEngine {
 		class RendererGame {
 		public:
 			TextureCache textureCache;
-			sf::RenderWindow &window;
 			void renderFrame(const std::shared_ptr<GameStatus> &gameStat);
 			RendererGame(sf::RenderWindow &window);
+			void initMapDimensions(float worldWidth, float worldHeight);
+			void onResize();
+
+		private:
+			sf::RenderWindow &window;
+			sf::View mapView;
+			void updateViewport();
 		};
 	}
 }

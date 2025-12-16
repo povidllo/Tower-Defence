@@ -19,17 +19,29 @@ namespace TDEngine {
 		void MainManager::mainLoop(std::string mapName) {
 			std::shared_ptr<GameStatus> gameStatus;
 			gameStatus = engine.startGame(mapName);
-			while (window.isOpen()) {
 
+			float mapPixelWidth = 15 * 32.0f;
+			float mapPixelHeight = 10 * 32.0f;
+
+			renderer.initMapDimensions(mapPixelWidth, mapPixelHeight);
+
+
+			while (window.isOpen()) {
 				while (const auto event = window.pollEvent()) {
 					if (event->is<sf::Event::Closed>()) {
 						window.close();
 					}
+					// [ВАЖНО] Обработка ресайза для SFML 3
+					else if (const auto* resized = event->getIf<sf::Event::Resized>()) {
+						// Сообщаем рендереру, что окно изменилось
+						renderer.onResize();
+					}
 				}
 
-				window.clear();
+				window.clear(); // Очистка черным цветом (будет на полосах)
 				renderer.renderFrame(gameStatus);
 				window.display();
+
 				gameStatus = engine.gameStep();
 			}
 		}
