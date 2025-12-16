@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <math.h>
 #include <string>
 #include <utility>
@@ -34,6 +35,7 @@ namespace TDEngine {
                 return sqrt(dx*dx + dy*dy);
             }
             void moveTo(std::pair<double, double> target, double speed, uint64_t timeMillis) {
+        		std::cout << "object moved to " << target.first << " " << target.second << std::endl;
                 double distTraveled = speed * timeMillis / 1000.0;
                 double dx = target.first - positionCoordinates.first;
                 double dy = target.second - positionCoordinates.second;
