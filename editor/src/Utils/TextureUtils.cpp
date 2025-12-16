@@ -12,3 +12,19 @@ bool TextureUtils::isPngBySignature(const std::string &path) {
 
 	return std::equal(std::begin(pngSignature), std::end(pngSignature), header);
 }
+
+QString TextureUtils::returnRelativeOrAbsolutePath(const QString &path) {
+	QString absolutePath = QFileInfo(path).absoluteFilePath();
+
+	QDir baseDir(QDir::currentPath());
+
+	QString relativePath = baseDir.relativeFilePath(absolutePath);
+
+	QString pathToStore;
+	if (!relativePath.startsWith("..") && !QDir::isAbsolutePath(relativePath)) {
+		pathToStore = relativePath;
+	} else {
+		pathToStore = absolutePath;
+	}
+	return pathToStore;
+}

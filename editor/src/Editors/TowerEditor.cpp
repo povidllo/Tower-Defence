@@ -19,7 +19,6 @@ TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController
 	connect(ui->deleteButton, &QPushButton::clicked, this, &TowerEditor::onDeleteButtonClicked);
 	connect(ui->chooseTextureButton, &QPushButton::clicked, this, &TowerEditor::onChooseTextureButtonClicked);
 
-	connect(ui->chooseTextureButton, &QPushButton::clicked, this, &TowerEditor::onChooseTextureButtonClicked);
 	connect(ui->addNextTowerButton, &QPushButton::clicked, this, &TowerEditor::onAddNextUpgradeButtonClicked);
 	connect(ui->removeNextTowerButton, &QPushButton::clicked, this, &TowerEditor::onRemoveNextUpgradeButtonClicked);
 
@@ -30,11 +29,6 @@ TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController
 }
 
 void TowerEditor::rightPanelView(bool what) {
-	// ui->towerPreview->setVisible(what);
-	// ui->chooseTextureButton->setVisible(what);
-	// ui->nextTowerList->setVisible(what);
-	// ui->addNextTowerButton->setVisible(what);
-	// ui->removeNextTowerButton->setVisible(what);
 	ui->rightPanel->setVisible(what);
 
 	ui->towerPreview->setText("No preview");
@@ -120,6 +114,10 @@ void TowerEditor::onChooseTextureButtonClicked() {
 	if (filePath.isEmpty()) {
 		return;
 	}
+
+	filePath = TextureUtils::returnRelativeOrAbsolutePath(filePath);
+
+
 	try {
 		towerController->setTowerTexture(filePath.toStdString());
 		for (auto it = m_propertyEditors.constBegin(); it != m_propertyEditors.constEnd(); it++) {
@@ -145,7 +143,6 @@ void TowerEditor::onAddNextUpgradeButtonClicked() {
 		return;
 	}
 
-	// Получаем все башни кроме текущей и уже добавленных
 	QStringList availableTowers;
 	const auto &allNames = towerController->getTowerNames();
 	const auto &currentUpgrades = towerController->getNextUpgradeNames();
@@ -245,7 +242,11 @@ void TowerEditor::onProjectileSettingsButtonClicked() {
 	connect(chooseBtn, &QPushButton::clicked, this, [&]() {
 		QString filePath = QFileDialog::getOpenFileName(&dialog, "Choose Projectile Texture", QDir::currentPath(),
 														"*.png");
-		if (filePath.isEmpty()) return;
+		if (filePath.isEmpty()) {
+			return;
+		}
+
+		filePath = TextureUtils::returnRelativeOrAbsolutePath(filePath);
 
 		currentPath = filePath.toStdString();
 

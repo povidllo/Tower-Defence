@@ -1,10 +1,10 @@
 #include "ProjectEditor.h"
 
 #include <complex>
+#include <iostream>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <qstackedwidget.h>
-#include <qjsonobject.h>
 #include <qjsonarray.h>
 #include <qpainter.h>
 
@@ -17,6 +17,7 @@ ProjectEditor::ProjectEditor(std::string path, std::string name, QWidget *parent
 	projectController = std::make_shared<ProjectController>(path, name);
 	qDebug() << "created project";
 	commonSetUp();
+	connectQtElements();
 }
 
 ProjectEditor::ProjectEditor(std::string path, QWidget *parent) : QMainWindow(parent), ui(new Ui::ProjectEditor) {
@@ -24,9 +25,19 @@ ProjectEditor::ProjectEditor(std::string path, QWidget *parent) : QMainWindow(pa
 	projectController = std::make_shared<ProjectController>(path);
 	qDebug() << "created project";
 	commonSetUp();
+	connectQtElements();
 }
 
 ProjectEditor::~ProjectEditor() { delete ui; }
+
+void ProjectEditor::connectQtElements() {
+	connect(ui->actionTower_editor, &QAction::triggered, this, &ProjectEditor::openTowerEditor);
+	connect(ui->actionEnemy_editor, &QAction::triggered, this, &ProjectEditor::openEnemyEditor);
+	connect(ui->actionMap_editor, &QAction::triggered, this, &ProjectEditor::openMapEditor);
+	connect(ui->actionSave_project, &QAction::triggered, this, &ProjectEditor::onSaveProjectClicked);
+	connect(ui->actionCompile_project, &QAction::triggered, this, &ProjectEditor::compileProjectClicked);
+	connect(ui->actionOpen_project, &QAction::triggered, this, &ProjectEditor::openProjectClicked);
+}
 
 void ProjectEditor::commonSetUp() {
 	towerEditor = std::make_unique<TowerEditor>(projectController->getTowerController());
@@ -40,12 +51,7 @@ void ProjectEditor::commonSetUp() {
 	ui->stackedWidget->addWidget(enemyEditor.get());
 	ui->stackedWidget->addWidget(mapEditor.get());
 
-
-	connect(ui->actionTower_editor, &QAction::triggered, this, &ProjectEditor::openTowerEditor);
-	connect(ui->actionEnemy_editor, &QAction::triggered, this, &ProjectEditor::openEnemyEditor);
-	connect(ui->actionMap_editor, &QAction::triggered, this, &ProjectEditor::openMapEditor);
-	connect(ui->actionSave_project, &QAction::triggered, this, &ProjectEditor::onSaveProjectClicked);
-	connect(ui->actionCompile_project, &QAction::triggered, this, &ProjectEditor::compileProjectClicked);
+	QDir::setCurrent(projectController->getCurrentProject()->getPath().data());
 }
 
 void ProjectEditor::openTowerEditor() {
@@ -142,25 +148,6 @@ void ProjectEditor::compileProject() {
 		mapObj.erase("tiles");
 		mapObj["finalMapImagePath"] = atlasName.toStdString();
 
-		// json spotsArray = json::array();
-		// for (const auto& spot : map->getSpots()) {
-		//     json spotObj = spot->toJson();
-		//
-		//     if (spotObj.contains("towerTexturePath")) {
-		//         QString oldPath = QString::fromStdString(spot->getTowerTexturePath());
-		//         QFileInfo info(oldPath);
-		//         spotObj["towerTexturePath"] = ("resources/" + info.fileName()).toStdString();
-		//     }
-		//     if (spotObj.contains("projectileTexturePath")) {
-		//         QString oldPath = QString::fromStdString(spot->getProjectileTexturePath());
-		//         QFileInfo info(oldPath);
-		//         spotObj["projectileTexturePath"] = ("resources/" + info.fileName()).toStdString();
-		//     }
-		//
-		//     spotsArray.push_back(spotObj);
-		// }
-		// mapObj["spots"] = spotsArray;
-
 		compiledMaps.push_back(std::move(mapObj));
 	}
 	json compiledTowers = json::array();
@@ -218,4 +205,21 @@ void ProjectEditor::compileProject() {
 
 void ProjectEditor::compileProjectClicked() {
 	compileProject();
+}
+
+void ProjectEditor::openProjectClicked() {
+	QString path = QFileDialog::getExistingDirectory(
+		this,
+		"Select Project Folder",
+		"",
+		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
+	);
+	try {
+		projectController = std::make_shared<ProjectController>(path.toStdString());
+	} catch (const std::filesystem::filesystem_error &e) {
+		std::cerr << e.what() << std::endl;
+		qDebug() << "Ooops, some mistakes with file system " << path.toStdString();
+	}
+	qDebug() << "created project";
+	commonSetUp();
 }
