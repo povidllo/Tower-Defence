@@ -5,7 +5,7 @@ namespace TDEngine {
     namespace Inner {
         Engine::Engine(std::shared_ptr<Project> project)
             : storage(std::make_shared<EngineStorage>(project)),
-            boundaryDT(std::make_shared<BoundaryDataTransfer>(this, storage->curProject)),
+            // boundaryDT(std::make_shared<BoundaryDataTransfer>(this, storage->curProject)),
             tickGen(std::chrono::steady_clock::now())
         {
         }
@@ -57,14 +57,14 @@ namespace TDEngine {
         void Engine::endGame() {
         }
 
-        bool Engine::solveNextAction() {
-            std::optional<std::shared_ptr<IPlayerAction>> action = boundaryDT->extractPlayerAction();
-            if (action.has_value()) {
-                action.value()->MakeAction();
-                return true;
-            }
-            return false;
-        }
+        // bool Engine::solveNextAction() {
+        //     std::optional<std::shared_ptr<IPlayerAction>> action = boundaryDT->extractPlayerAction();
+        //     if (action.has_value()) {
+        //         action.value()->MakeAction();
+        //         return true;
+        //     }
+        //     return false;
+        // }
 
     	bool Engine::isPlaying() {
 	        return storage->isPlaying;

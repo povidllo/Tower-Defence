@@ -21,6 +21,7 @@ namespace TDEngine {
 					sf::Texture tex;
 					if (!tex.loadFromFile(path)) {
 						std::cerr << "Error loading texture: " << path << std::endl;
+						auto er = tex.loadFromFile("2025-12-16 19.50.07.jpg");
 					}
 					cache[path] = tex;
 				}
