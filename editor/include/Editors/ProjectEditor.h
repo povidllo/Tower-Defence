@@ -27,6 +27,8 @@ public:
 
 	~ProjectEditor() override;
 
+	void connectQtElements();
+
 private:
 	std::shared_ptr<ProjectController> projectController;
 	// CampaignEditor* campaignEditor;
@@ -53,6 +55,8 @@ private slots:
 	void compileProject();
 
 	void compileProjectClicked();
+
+	void openProjectClicked();
 };
 
 #endif

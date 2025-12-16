@@ -105,6 +105,10 @@ void EnemyEditor::onChooseTextureButtonClicked() {
 	if (filePath.isEmpty()) {
 		return;
 	}
+
+	filePath = TextureUtils::returnRelativeOrAbsolutePath(filePath);
+
+
 	try {
 		enemyController->setEnemyTexture(filePath.toStdString());
 		for (auto it = m_propertyEditors.constBegin(); it != m_propertyEditors.constEnd(); it++) {

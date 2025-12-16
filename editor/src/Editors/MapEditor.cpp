@@ -147,6 +147,8 @@ void MapEditor::onAddTextureButtonClicked() {
 		return;
 	}
 
+	filePath = TextureUtils::returnRelativeOrAbsolutePath(filePath);
+
 	QImageReader reader(filePath);
 	if (!reader.canRead()) {
 		QMessageBox::warning(this, tr("Error"), tr("Cannot read file:\n%1").arg(filePath));
@@ -379,21 +381,8 @@ void MapEditor::onEditSpotButtonClicked() {
 	yLayout->addWidget(ySpin);
 	layout->addLayout(yLayout);
 
-	// QHBoxLayout *towerLayout = new QHBoxLayout();
-	// QLabel *towerLabel = new QLabel("Tower:");
-	QComboBox *towerCombo = new QComboBox();
 	const auto allTowerNames = mapController->getAvailableTowers();;
-	// int comboIndex = 0;
-	// for (int i = 0; i < allTowerNames.size(); ++i) {
-	// 	towerCombo->addItem(QString::fromStdString(allTowerNames[i]));
-	// 	if (allTowerNames[i] == currentSpot) {
-	// 		comboIndex = i;
-	// 	}
-	// }
-	// towerCombo->setCurrentIndex(comboIndex);
-	// towerLayout->addWidget(towerLabel);
-	// towerLayout->addWidget(towerCombo);
-	// layout->addLayout(towerLayout);
+
 
 	QGroupBox *upgradesGroup = new QGroupBox("Upgrade Paths");
 	QVBoxLayout *upgradesLayout = new QVBoxLayout(upgradesGroup);
@@ -420,12 +409,10 @@ void MapEditor::onEditSpotButtonClicked() {
 	connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
 	connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
 
-	connect(addUpgradeBtn, &QPushButton::clicked, this, [towerCombo, allTowerNames, upgradesList, &dialog]() {
-		QString currentTower = towerCombo->currentText();
+	connect(addUpgradeBtn, &QPushButton::clicked, this, [allTowerNames, upgradesList, &dialog]() {
 		QStringList available;
 		for (const auto &name: allTowerNames) {
 			std::string n = name;
-			if (n == currentTower.toStdString()) continue;
 			bool alreadyAdded = false;
 			for (int i = 0; i < upgradesList->count(); ++i) {
 				if (upgradesList->item(i)->text().toStdString() == n) {
@@ -433,7 +420,9 @@ void MapEditor::onEditSpotButtonClicked() {
 					break;
 				}
 			}
-			if (!alreadyAdded) available << QString::fromStdString(n);
+			if (!alreadyAdded) {
+				available << QString::fromStdString(n);
+			}
 		}
 
 		if (available.isEmpty()) {
@@ -506,7 +495,7 @@ void MapEditor::updateMapList() const {
 void MapEditor::updateWaveList() const {
 	const auto waves = mapController->getWavesNames();
 
-	BaseEditor::fillListWidget(ui->wavesList, waves);
+	fillListWidget(ui->wavesList, waves);
 }
 
 bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
@@ -565,59 +554,6 @@ bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
 	return QWidget::eventFilter(obj, event);
 }
 
-// void MapEditor::refreshMapView() {
-// 	auto currentMap = mapController->getCurrentMap();
-// 	if (!currentMap) {
-// 		return;
-// 	}
-//
-// 	QGraphicsScene *scene = ui->mapView->scene();
-// 	if (!scene) {
-// 		scene = new QGraphicsScene(this);
-// 		ui->mapView->setScene(scene);
-// 		scene->installEventFilter(this);
-// 	} else {
-// 		scene->clear();
-// 	}
-//
-// 	for (auto *item: pathGraphicsItems) {
-// 		delete item;
-// 	}
-// 	pathGraphicsItems.clear();
-//
-// 	const auto &tiles = currentMap->getTiles();
-// 	int tileSize = TextureManager::instance().getImageSize();
-//
-// 	for (int y = 0; y < tiles.size(); ++y) {
-// 		for (int x = 0; x < tiles[y].size(); ++x) {
-// 			int tileId = tiles[y][x];
-// 			QPixmap pix = TextureManager::instance().get(tileId);
-// 			if (!pix.isNull()) {
-// 				scene->addPixmap(pix)->setPos(x * tileSize, y * tileSize);
-// 				scene->addRect(x * tileSize, y * tileSize, tileSize, tileSize, QPen(QColor(0, 0, 0, 50)));
-// 			}
-// 		}
-// 	}
-//
-// for (const auto &spot: currentMap->getSpots()) {
-// 	int x = spot->getX() * tileSize;
-// 	int y = spot->getY() * tileSize;
-//
-// 	scene->addEllipse(x + tileSize / 6, y + tileSize / 6,
-// 					tileSize * 2 / 3, tileSize * 2 / 3,
-// 					QPen(Qt::blue, 4), QBrush(QColor(0, 0, 255, 80)));
-//
-// 	QGraphicsTextItem *text = scene->addText(QString::fromStdString(spot->getName()));
-// 	text->setDefaultTextColor(Qt::white);
-// 	QFont font = text->font();
-// 	font.setBold(true);
-// 	text->setFont(font);
-// 	text->setPos(x + tileSize / 4, y + tileSize / 4);
-// 	text->setZValue(101);
-// }
-//
-// 	ui->mapView->setSceneRect(scene->itemsBoundingRect());
-// }
 void MapEditor::refreshMapView() {
 	auto currentMap = mapController->getCurrentMap();
 	if (!currentMap) return;
