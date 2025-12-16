@@ -55,6 +55,7 @@ namespace TDEngine {
         	if (engineStorage->curGameStatus->currentHp <= 0) {
         		engineStorage->isPlaying = false;
         	}
+        	die(engineStorage);
         }
 
 

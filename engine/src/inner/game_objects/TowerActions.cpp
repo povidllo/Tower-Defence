@@ -17,16 +17,18 @@ namespace TDEngine {
                 storage.setUpgradingTo.reset();
             }
             else {
-                uint64_t timeBetweenShots = ceil(1000.0 / storage.getFireRate());
-                if (storage.timeAfterLastShot < timeBetweenShots) {
-                    storage.timeAfterLastShot += timePassedMillis;
-                }
-                if (storage.timeAfterLastShot >= timeBetweenShots) {
-                    auto target = findTarget(engineStorage);
-                    if (target != nullptr) {
-                        attack(target, engineStorage);
-                    }
-                }
+            	if (storage.getFireRate() > 0) {
+            		uint64_t timeBetweenShots = ceil(1000.0 / storage.getFireRate());
+            		if (storage.timeAfterLastShot < timeBetweenShots) {
+            			storage.timeAfterLastShot += timePassedMillis;
+            		}
+            		if (storage.timeAfterLastShot >= timeBetweenShots) {
+            			auto target = findTarget(engineStorage);
+            			if (target != nullptr) {
+            				attack(target, engineStorage);
+            			}
+            		}
+            	}
             }
         }
 

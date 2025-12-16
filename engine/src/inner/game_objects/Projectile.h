@@ -13,6 +13,7 @@ namespace TDEngine {
             void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
             std::shared_ptr<EnemyActions> target;
 
+        	bool isActive;
         private:
             void hit();
 
