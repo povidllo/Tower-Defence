@@ -35,7 +35,6 @@ namespace TDEngine {
                 return sqrt(dx*dx + dy*dy);
             }
             void moveTo(std::pair<double, double> target, double speed, uint64_t timeMillis) {
-        		std::cout << "object moved to " << target.first << " " << target.second << std::endl;
                 double distTraveled = speed * timeMillis / 1000.0;
                 double dx = target.first - positionCoordinates.first;
                 double dy = target.second - positionCoordinates.second;
@@ -48,6 +47,8 @@ namespace TDEngine {
                 double movedY = dy * distTraveled / distLeft;
                 positionCoordinates.first += movedX;
                 positionCoordinates.second += movedY;
+        		std::cout << "object moved to " << positionCoordinates.first << " " << positionCoordinates.second <<
+        			"and was moving to " << target.first << " " << target.second << std::endl;
             }
         	std::string texturePath;
 			MapObjectTypes type;
