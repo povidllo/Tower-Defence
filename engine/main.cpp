@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[]) {
     std::cout << "Amogus\n";
-	std::ifstream pFile("../../engine/project.json");
+	std::ifstream pFile("project.json");
 	if (!pFile.is_open()) {
 		std::cerr << "[ERROR] Failed to open file: " << "project.json" << std::endl;
 		std::cerr << "Make sure the file is in the working directory!" << std::endl;
@@ -20,6 +20,6 @@ int main(int argc, char *argv[]) {
 	pFile >> pJson;
     Project proj(pJson);
 
-    TDEngine::Inner::MainManager mainManager(proj, 800, 600);
+    TDEngine::Inner::MainManager mainManager(proj, 480, 320);
     mainManager.mainLoop("map_1");
 }
