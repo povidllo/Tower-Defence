@@ -41,4 +41,4 @@
 *.dwo
 
 cmake-build-debug/*
-build/
+build/*
