@@ -48,19 +48,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /opt/homebrew/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alarm/Developer/Tower-Defence
+CMAKE_SOURCE_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
+CMAKE_BINARY_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/opt/homebrew/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -78,7 +78,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/opt/homebrew/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/alarm/Developer/Tower-Defence/build/CMakeFiles /home/alarm/Developer/Tower-Defence/build/engine//CMakeFiles/progress.marks
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/alarm/Developer/Tower-Defence/build/CMakeFiles 0
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine//CMakeFiles/progress.marks
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/clean
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/preinstall
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/preinstall
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 engine/CMakeFiles/engine.dir/rule:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/CMakeFiles/engine.dir/rule
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/CMakeFiles/engine.dir/rule
 .PHONY : engine/CMakeFiles/engine.dir/rule
 
 # Convenience name for target.
@@ -127,12 +127,12 @@ engine: engine/CMakeFiles/engine.dir/rule
 
 # fast build rule for target.
 engine/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/build
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/build
 .PHONY : engine/fast
 
 # Convenience name for target.
 engine/CMakeFiles/engine_autogen_timestamp_deps.dir/rule:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/CMakeFiles/engine_autogen_timestamp_deps.dir/rule
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/CMakeFiles/engine_autogen_timestamp_deps.dir/rule
 .PHONY : engine/CMakeFiles/engine_autogen_timestamp_deps.dir/rule
 
 # Convenience name for target.
@@ -141,12 +141,12 @@ engine_autogen_timestamp_deps: engine/CMakeFiles/engine_autogen_timestamp_deps.d
 
 # fast build rule for target.
 engine_autogen_timestamp_deps/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine_autogen_timestamp_deps.dir/build.make engine/CMakeFiles/engine_autogen_timestamp_deps.dir/build
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine_autogen_timestamp_deps.dir/build.make engine/CMakeFiles/engine_autogen_timestamp_deps.dir/build
 .PHONY : engine_autogen_timestamp_deps/fast
 
 # Convenience name for target.
 engine/CMakeFiles/engine_autogen.dir/rule:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/CMakeFiles/engine_autogen.dir/rule
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 engine/CMakeFiles/engine_autogen.dir/rule
 .PHONY : engine/CMakeFiles/engine_autogen.dir/rule
 
 # Convenience name for target.
@@ -155,7 +155,7 @@ engine_autogen: engine/CMakeFiles/engine_autogen.dir/rule
 
 # fast build rule for target.
 engine_autogen/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine_autogen.dir/build.make engine/CMakeFiles/engine_autogen.dir/build
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine_autogen.dir/build.make engine/CMakeFiles/engine_autogen.dir/build
 .PHONY : engine_autogen/fast
 
 engine_autogen/mocs_compilation.o: engine_autogen/mocs_compilation.cpp.o
@@ -163,7 +163,7 @@ engine_autogen/mocs_compilation.o: engine_autogen/mocs_compilation.cpp.o
 
 # target to build an object file
 engine_autogen/mocs_compilation.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o
 .PHONY : engine_autogen/mocs_compilation.cpp.o
 
 engine_autogen/mocs_compilation.i: engine_autogen/mocs_compilation.cpp.i
@@ -171,7 +171,7 @@ engine_autogen/mocs_compilation.i: engine_autogen/mocs_compilation.cpp.i
 
 # target to preprocess a source file
 engine_autogen/mocs_compilation.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.i
 .PHONY : engine_autogen/mocs_compilation.cpp.i
 
 engine_autogen/mocs_compilation.s: engine_autogen/mocs_compilation.cpp.s
@@ -179,7 +179,7 @@ engine_autogen/mocs_compilation.s: engine_autogen/mocs_compilation.cpp.s
 
 # target to generate assembly for a file
 engine_autogen/mocs_compilation.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.s
 .PHONY : engine_autogen/mocs_compilation.cpp.s
 
 main.o: main.cpp.o
@@ -187,7 +187,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/main.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -195,7 +195,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/main.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -203,7 +203,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/main.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 src/display/MainManager.o: src/display/MainManager.cpp.o
@@ -211,7 +211,7 @@ src/display/MainManager.o: src/display/MainManager.cpp.o
 
 # target to build an object file
 src/display/MainManager.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o
 .PHONY : src/display/MainManager.cpp.o
 
 src/display/MainManager.i: src/display/MainManager.cpp.i
@@ -219,7 +219,7 @@ src/display/MainManager.i: src/display/MainManager.cpp.i
 
 # target to preprocess a source file
 src/display/MainManager.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.i
 .PHONY : src/display/MainManager.cpp.i
 
 src/display/MainManager.s: src/display/MainManager.cpp.s
@@ -227,7 +227,7 @@ src/display/MainManager.s: src/display/MainManager.cpp.s
 
 # target to generate assembly for a file
 src/display/MainManager.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.s
 .PHONY : src/display/MainManager.cpp.s
 
 src/display/RendererGame.o: src/display/RendererGame.cpp.o
@@ -235,7 +235,7 @@ src/display/RendererGame.o: src/display/RendererGame.cpp.o
 
 # target to build an object file
 src/display/RendererGame.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o
 .PHONY : src/display/RendererGame.cpp.o
 
 src/display/RendererGame.i: src/display/RendererGame.cpp.i
@@ -243,7 +243,7 @@ src/display/RendererGame.i: src/display/RendererGame.cpp.i
 
 # target to preprocess a source file
 src/display/RendererGame.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.i
 .PHONY : src/display/RendererGame.cpp.i
 
 src/display/RendererGame.s: src/display/RendererGame.cpp.s
@@ -251,7 +251,7 @@ src/display/RendererGame.s: src/display/RendererGame.cpp.s
 
 # target to generate assembly for a file
 src/display/RendererGame.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.s
 .PHONY : src/display/RendererGame.cpp.s
 
 src/display/TextureCache.o: src/display/TextureCache.cpp.o
@@ -259,7 +259,7 @@ src/display/TextureCache.o: src/display/TextureCache.cpp.o
 
 # target to build an object file
 src/display/TextureCache.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o
 .PHONY : src/display/TextureCache.cpp.o
 
 src/display/TextureCache.i: src/display/TextureCache.cpp.i
@@ -267,7 +267,7 @@ src/display/TextureCache.i: src/display/TextureCache.cpp.i
 
 # target to preprocess a source file
 src/display/TextureCache.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.i
 .PHONY : src/display/TextureCache.cpp.i
 
 src/display/TextureCache.s: src/display/TextureCache.cpp.s
@@ -275,7 +275,7 @@ src/display/TextureCache.s: src/display/TextureCache.cpp.s
 
 # target to generate assembly for a file
 src/display/TextureCache.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.s
 .PHONY : src/display/TextureCache.cpp.s
 
 src/inner/core/BoundaryDataTransfer.o: src/inner/core/BoundaryDataTransfer.cpp.o
@@ -283,7 +283,7 @@ src/inner/core/BoundaryDataTransfer.o: src/inner/core/BoundaryDataTransfer.cpp.o
 
 # target to build an object file
 src/inner/core/BoundaryDataTransfer.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o
 .PHONY : src/inner/core/BoundaryDataTransfer.cpp.o
 
 src/inner/core/BoundaryDataTransfer.i: src/inner/core/BoundaryDataTransfer.cpp.i
@@ -291,7 +291,7 @@ src/inner/core/BoundaryDataTransfer.i: src/inner/core/BoundaryDataTransfer.cpp.i
 
 # target to preprocess a source file
 src/inner/core/BoundaryDataTransfer.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.i
 .PHONY : src/inner/core/BoundaryDataTransfer.cpp.i
 
 src/inner/core/BoundaryDataTransfer.s: src/inner/core/BoundaryDataTransfer.cpp.s
@@ -299,7 +299,7 @@ src/inner/core/BoundaryDataTransfer.s: src/inner/core/BoundaryDataTransfer.cpp.s
 
 # target to generate assembly for a file
 src/inner/core/BoundaryDataTransfer.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.s
 .PHONY : src/inner/core/BoundaryDataTransfer.cpp.s
 
 src/inner/core/Engine.o: src/inner/core/Engine.cpp.o
@@ -307,7 +307,7 @@ src/inner/core/Engine.o: src/inner/core/Engine.cpp.o
 
 # target to build an object file
 src/inner/core/Engine.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o
 .PHONY : src/inner/core/Engine.cpp.o
 
 src/inner/core/Engine.i: src/inner/core/Engine.cpp.i
@@ -315,7 +315,7 @@ src/inner/core/Engine.i: src/inner/core/Engine.cpp.i
 
 # target to preprocess a source file
 src/inner/core/Engine.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.i
 .PHONY : src/inner/core/Engine.cpp.i
 
 src/inner/core/Engine.s: src/inner/core/Engine.cpp.s
@@ -323,7 +323,7 @@ src/inner/core/Engine.s: src/inner/core/Engine.cpp.s
 
 # target to generate assembly for a file
 src/inner/core/Engine.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.s
 .PHONY : src/inner/core/Engine.cpp.s
 
 src/inner/core/EngineStorage.o: src/inner/core/EngineStorage.cpp.o
@@ -331,7 +331,7 @@ src/inner/core/EngineStorage.o: src/inner/core/EngineStorage.cpp.o
 
 # target to build an object file
 src/inner/core/EngineStorage.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o
 .PHONY : src/inner/core/EngineStorage.cpp.o
 
 src/inner/core/EngineStorage.i: src/inner/core/EngineStorage.cpp.i
@@ -339,7 +339,7 @@ src/inner/core/EngineStorage.i: src/inner/core/EngineStorage.cpp.i
 
 # target to preprocess a source file
 src/inner/core/EngineStorage.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.i
 .PHONY : src/inner/core/EngineStorage.cpp.i
 
 src/inner/core/EngineStorage.s: src/inner/core/EngineStorage.cpp.s
@@ -347,7 +347,7 @@ src/inner/core/EngineStorage.s: src/inner/core/EngineStorage.cpp.s
 
 # target to generate assembly for a file
 src/inner/core/EngineStorage.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.s
 .PHONY : src/inner/core/EngineStorage.cpp.s
 
 src/inner/core/TickGenerator.o: src/inner/core/TickGenerator.cpp.o
@@ -355,7 +355,7 @@ src/inner/core/TickGenerator.o: src/inner/core/TickGenerator.cpp.o
 
 # target to build an object file
 src/inner/core/TickGenerator.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o
 .PHONY : src/inner/core/TickGenerator.cpp.o
 
 src/inner/core/TickGenerator.i: src/inner/core/TickGenerator.cpp.i
@@ -363,7 +363,7 @@ src/inner/core/TickGenerator.i: src/inner/core/TickGenerator.cpp.i
 
 # target to preprocess a source file
 src/inner/core/TickGenerator.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.i
 .PHONY : src/inner/core/TickGenerator.cpp.i
 
 src/inner/core/TickGenerator.s: src/inner/core/TickGenerator.cpp.s
@@ -371,7 +371,7 @@ src/inner/core/TickGenerator.s: src/inner/core/TickGenerator.cpp.s
 
 # target to generate assembly for a file
 src/inner/core/TickGenerator.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.s
 .PHONY : src/inner/core/TickGenerator.cpp.s
 
 src/inner/game_objects/AbilityActions.o: src/inner/game_objects/AbilityActions.cpp.o
@@ -379,7 +379,7 @@ src/inner/game_objects/AbilityActions.o: src/inner/game_objects/AbilityActions.c
 
 # target to build an object file
 src/inner/game_objects/AbilityActions.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o
 .PHONY : src/inner/game_objects/AbilityActions.cpp.o
 
 src/inner/game_objects/AbilityActions.i: src/inner/game_objects/AbilityActions.cpp.i
@@ -387,7 +387,7 @@ src/inner/game_objects/AbilityActions.i: src/inner/game_objects/AbilityActions.c
 
 # target to preprocess a source file
 src/inner/game_objects/AbilityActions.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.i
 .PHONY : src/inner/game_objects/AbilityActions.cpp.i
 
 src/inner/game_objects/AbilityActions.s: src/inner/game_objects/AbilityActions.cpp.s
@@ -395,7 +395,7 @@ src/inner/game_objects/AbilityActions.s: src/inner/game_objects/AbilityActions.c
 
 # target to generate assembly for a file
 src/inner/game_objects/AbilityActions.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.s
 .PHONY : src/inner/game_objects/AbilityActions.cpp.s
 
 src/inner/game_objects/EnemyActions.o: src/inner/game_objects/EnemyActions.cpp.o
@@ -403,7 +403,7 @@ src/inner/game_objects/EnemyActions.o: src/inner/game_objects/EnemyActions.cpp.o
 
 # target to build an object file
 src/inner/game_objects/EnemyActions.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o
 .PHONY : src/inner/game_objects/EnemyActions.cpp.o
 
 src/inner/game_objects/EnemyActions.i: src/inner/game_objects/EnemyActions.cpp.i
@@ -411,7 +411,7 @@ src/inner/game_objects/EnemyActions.i: src/inner/game_objects/EnemyActions.cpp.i
 
 # target to preprocess a source file
 src/inner/game_objects/EnemyActions.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.i
 .PHONY : src/inner/game_objects/EnemyActions.cpp.i
 
 src/inner/game_objects/EnemyActions.s: src/inner/game_objects/EnemyActions.cpp.s
@@ -419,7 +419,7 @@ src/inner/game_objects/EnemyActions.s: src/inner/game_objects/EnemyActions.cpp.s
 
 # target to generate assembly for a file
 src/inner/game_objects/EnemyActions.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.s
 .PHONY : src/inner/game_objects/EnemyActions.cpp.s
 
 src/inner/game_objects/Projectile.o: src/inner/game_objects/Projectile.cpp.o
@@ -427,7 +427,7 @@ src/inner/game_objects/Projectile.o: src/inner/game_objects/Projectile.cpp.o
 
 # target to build an object file
 src/inner/game_objects/Projectile.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o
 .PHONY : src/inner/game_objects/Projectile.cpp.o
 
 src/inner/game_objects/Projectile.i: src/inner/game_objects/Projectile.cpp.i
@@ -435,7 +435,7 @@ src/inner/game_objects/Projectile.i: src/inner/game_objects/Projectile.cpp.i
 
 # target to preprocess a source file
 src/inner/game_objects/Projectile.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.i
 .PHONY : src/inner/game_objects/Projectile.cpp.i
 
 src/inner/game_objects/Projectile.s: src/inner/game_objects/Projectile.cpp.s
@@ -443,7 +443,7 @@ src/inner/game_objects/Projectile.s: src/inner/game_objects/Projectile.cpp.s
 
 # target to generate assembly for a file
 src/inner/game_objects/Projectile.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.s
 .PHONY : src/inner/game_objects/Projectile.cpp.s
 
 src/inner/game_objects/TowerActions.o: src/inner/game_objects/TowerActions.cpp.o
@@ -451,7 +451,7 @@ src/inner/game_objects/TowerActions.o: src/inner/game_objects/TowerActions.cpp.o
 
 # target to build an object file
 src/inner/game_objects/TowerActions.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o
 .PHONY : src/inner/game_objects/TowerActions.cpp.o
 
 src/inner/game_objects/TowerActions.i: src/inner/game_objects/TowerActions.cpp.i
@@ -459,7 +459,7 @@ src/inner/game_objects/TowerActions.i: src/inner/game_objects/TowerActions.cpp.i
 
 # target to preprocess a source file
 src/inner/game_objects/TowerActions.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.i
 .PHONY : src/inner/game_objects/TowerActions.cpp.i
 
 src/inner/game_objects/TowerActions.s: src/inner/game_objects/TowerActions.cpp.s
@@ -467,7 +467,7 @@ src/inner/game_objects/TowerActions.s: src/inner/game_objects/TowerActions.cpp.s
 
 # target to generate assembly for a file
 src/inner/game_objects/TowerActions.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.s
 .PHONY : src/inner/game_objects/TowerActions.cpp.s
 
 src/inner/game_objects/WaveActions.o: src/inner/game_objects/WaveActions.cpp.o
@@ -475,7 +475,7 @@ src/inner/game_objects/WaveActions.o: src/inner/game_objects/WaveActions.cpp.o
 
 # target to build an object file
 src/inner/game_objects/WaveActions.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o
 .PHONY : src/inner/game_objects/WaveActions.cpp.o
 
 src/inner/game_objects/WaveActions.i: src/inner/game_objects/WaveActions.cpp.i
@@ -483,7 +483,7 @@ src/inner/game_objects/WaveActions.i: src/inner/game_objects/WaveActions.cpp.i
 
 # target to preprocess a source file
 src/inner/game_objects/WaveActions.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.i
 .PHONY : src/inner/game_objects/WaveActions.cpp.i
 
 src/inner/game_objects/WaveActions.s: src/inner/game_objects/WaveActions.cpp.s
@@ -491,7 +491,7 @@ src/inner/game_objects/WaveActions.s: src/inner/game_objects/WaveActions.cpp.s
 
 # target to generate assembly for a file
 src/inner/game_objects/WaveActions.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.s
 .PHONY : src/inner/game_objects/WaveActions.cpp.s
 
 src/inner/player_actions/AbilityUseAction.o: src/inner/player_actions/AbilityUseAction.cpp.o
@@ -499,7 +499,7 @@ src/inner/player_actions/AbilityUseAction.o: src/inner/player_actions/AbilityUse
 
 # target to build an object file
 src/inner/player_actions/AbilityUseAction.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o
 .PHONY : src/inner/player_actions/AbilityUseAction.cpp.o
 
 src/inner/player_actions/AbilityUseAction.i: src/inner/player_actions/AbilityUseAction.cpp.i
@@ -507,7 +507,7 @@ src/inner/player_actions/AbilityUseAction.i: src/inner/player_actions/AbilityUse
 
 # target to preprocess a source file
 src/inner/player_actions/AbilityUseAction.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.i
 .PHONY : src/inner/player_actions/AbilityUseAction.cpp.i
 
 src/inner/player_actions/AbilityUseAction.s: src/inner/player_actions/AbilityUseAction.cpp.s
@@ -515,7 +515,7 @@ src/inner/player_actions/AbilityUseAction.s: src/inner/player_actions/AbilityUse
 
 # target to generate assembly for a file
 src/inner/player_actions/AbilityUseAction.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.s
 .PHONY : src/inner/player_actions/AbilityUseAction.cpp.s
 
 src/inner/player_actions/TowerUpgradeAction.o: src/inner/player_actions/TowerUpgradeAction.cpp.o
@@ -523,7 +523,7 @@ src/inner/player_actions/TowerUpgradeAction.o: src/inner/player_actions/TowerUpg
 
 # target to build an object file
 src/inner/player_actions/TowerUpgradeAction.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o
 .PHONY : src/inner/player_actions/TowerUpgradeAction.cpp.o
 
 src/inner/player_actions/TowerUpgradeAction.i: src/inner/player_actions/TowerUpgradeAction.cpp.i
@@ -531,7 +531,7 @@ src/inner/player_actions/TowerUpgradeAction.i: src/inner/player_actions/TowerUpg
 
 # target to preprocess a source file
 src/inner/player_actions/TowerUpgradeAction.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.i
 .PHONY : src/inner/player_actions/TowerUpgradeAction.cpp.i
 
 src/inner/player_actions/TowerUpgradeAction.s: src/inner/player_actions/TowerUpgradeAction.cpp.s
@@ -539,7 +539,7 @@ src/inner/player_actions/TowerUpgradeAction.s: src/inner/player_actions/TowerUpg
 
 # target to generate assembly for a file
 src/inner/player_actions/TowerUpgradeAction.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f engine/CMakeFiles/engine.dir/build.make engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.s
 .PHONY : src/inner/player_actions/TowerUpgradeAction.cpp.s
 
 # Help Target
@@ -612,6 +612,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /opt/homebrew/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alarm/Developer/Tower-Defence
+CMAKE_SOURCE_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
+CMAKE_BINARY_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence/build
 
 # Include any dependencies generated for this target.
 include editor/CMakeFiles/editor.dir/depend.make
@@ -75,296 +75,296 @@ editor/CMakeFiles/editor.dir/codegen:
 editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o: editor/CMakeFiles/editor.dir/flags.make
 editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o: editor/editor_autogen/mocs_compilation.cpp
 editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o -MF CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o -c /home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o -MF CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor/editor_autogen/mocs_compilation.cpp
 
 editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/mocs_compilation.cpp > CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor/editor_autogen/mocs_compilation.cpp > CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.i
 
 editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/mocs_compilation.cpp -o CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor/editor_autogen/mocs_compilation.cpp -o CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.s
 
 editor/CMakeFiles/editor.dir/src/main.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/main.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/main.cpp
+editor/CMakeFiles/editor.dir/src/main.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/main.cpp
 editor/CMakeFiles/editor.dir/src/main.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object editor/CMakeFiles/editor.dir/src/main.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/main.cpp.o -MF CMakeFiles/editor.dir/src/main.cpp.o.d -o CMakeFiles/editor.dir/src/main.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object editor/CMakeFiles/editor.dir/src/main.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/main.cpp.o -MF CMakeFiles/editor.dir/src/main.cpp.o.d -o CMakeFiles/editor.dir/src/main.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/main.cpp
 
 editor/CMakeFiles/editor.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/main.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/main.cpp > CMakeFiles/editor.dir/src/main.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/main.cpp > CMakeFiles/editor.dir/src/main.cpp.i
 
 editor/CMakeFiles/editor.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/main.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/main.cpp -o CMakeFiles/editor.dir/src/main.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/main.cpp -o CMakeFiles/editor.dir/src/main.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp
+editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp
 editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o -MF CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o -MF CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp > CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp > CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp -o CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp -o CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp
+editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp
 editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o -MF CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o -MF CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp > CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp > CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp -o CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp -o CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectEditor.cpp
+editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectEditor.cpp
 editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectEditor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectEditor.cpp
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectEditor.cpp > CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectEditor.cpp > CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectEditor.cpp -o CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/ProjectEditor.cpp -o CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Entity/Project.cpp
+editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Project.cpp
 editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o -MF CMakeFiles/editor.dir/src/Entity/Project.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/Project.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Entity/Project.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o -MF CMakeFiles/editor.dir/src/Entity/Project.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/Project.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Project.cpp
 
 editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Entity/Project.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Entity/Project.cpp > CMakeFiles/editor.dir/src/Entity/Project.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Project.cpp > CMakeFiles/editor.dir/src/Entity/Project.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Entity/Project.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Entity/Project.cpp -o CMakeFiles/editor.dir/src/Entity/Project.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Project.cpp -o CMakeFiles/editor.dir/src/Entity/Project.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Controls/ProjectController.cpp
+editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/ProjectController.cpp
 editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Controls/ProjectController.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/ProjectController.cpp
 
 editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Controls/ProjectController.cpp > CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/ProjectController.cpp > CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Controls/ProjectController.cpp -o CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/ProjectController.cpp -o CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Entity/TowerSample.cpp
+editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/TowerSample.cpp
 editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o -MF CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Entity/TowerSample.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o -MF CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/TowerSample.cpp
 
 editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Entity/TowerSample.cpp > CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/TowerSample.cpp > CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Entity/TowerSample.cpp -o CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/TowerSample.cpp -o CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Controls/TowerController.cpp
+editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/TowerController.cpp
 editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Controls/TowerController.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/TowerController.cpp
 
 editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Controls/TowerController.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Controls/TowerController.cpp > CMakeFiles/editor.dir/src/Controls/TowerController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/TowerController.cpp > CMakeFiles/editor.dir/src/Controls/TowerController.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Controls/TowerController.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Controls/TowerController.cpp -o CMakeFiles/editor.dir/src/Controls/TowerController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/TowerController.cpp -o CMakeFiles/editor.dir/src/Controls/TowerController.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Editors/TowerEditor.cpp
+editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/TowerEditor.cpp
 editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Editors/TowerEditor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/TowerEditor.cpp
 
 editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Editors/TowerEditor.cpp > CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/TowerEditor.cpp > CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Editors/TowerEditor.cpp -o CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/TowerEditor.cpp -o CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Entity/EnemySample.cpp
+editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/EnemySample.cpp
 editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o -MF CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Entity/EnemySample.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o -MF CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/EnemySample.cpp
 
 editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Entity/EnemySample.cpp > CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/EnemySample.cpp > CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Entity/EnemySample.cpp -o CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/EnemySample.cpp -o CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Controls/EnemyController.cpp
+editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/EnemyController.cpp
 editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Controls/EnemyController.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/EnemyController.cpp
 
 editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Controls/EnemyController.cpp > CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/EnemyController.cpp > CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Controls/EnemyController.cpp -o CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/EnemyController.cpp -o CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Editors/EnemyEditor.cpp
+editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/EnemyEditor.cpp
 editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Editors/EnemyEditor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/EnemyEditor.cpp
 
 editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Editors/EnemyEditor.cpp > CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/EnemyEditor.cpp > CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Editors/EnemyEditor.cpp -o CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/EnemyEditor.cpp -o CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Utils/BaseEditor.cpp
+editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/BaseEditor.cpp
 editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o -MF CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Utils/BaseEditor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o -MF CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/BaseEditor.cpp
 
 editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Utils/BaseEditor.cpp > CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/BaseEditor.cpp > CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Utils/BaseEditor.cpp -o CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/BaseEditor.cpp -o CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Entity/Map.cpp
+editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Map.cpp
 editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o -MF CMakeFiles/editor.dir/src/Entity/Map.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/Map.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Entity/Map.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o -MF CMakeFiles/editor.dir/src/Entity/Map.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/Map.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Map.cpp
 
 editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Entity/Map.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Entity/Map.cpp > CMakeFiles/editor.dir/src/Entity/Map.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Map.cpp > CMakeFiles/editor.dir/src/Entity/Map.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Entity/Map.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Entity/Map.cpp -o CMakeFiles/editor.dir/src/Entity/Map.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/Map.cpp -o CMakeFiles/editor.dir/src/Entity/Map.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Controls/MapController.cpp
+editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/MapController.cpp
 editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/MapController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/MapController.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Controls/MapController.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o -MF CMakeFiles/editor.dir/src/Controls/MapController.cpp.o.d -o CMakeFiles/editor.dir/src/Controls/MapController.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/MapController.cpp
 
 editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Controls/MapController.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Controls/MapController.cpp > CMakeFiles/editor.dir/src/Controls/MapController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/MapController.cpp > CMakeFiles/editor.dir/src/Controls/MapController.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Controls/MapController.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Controls/MapController.cpp -o CMakeFiles/editor.dir/src/Controls/MapController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Controls/MapController.cpp -o CMakeFiles/editor.dir/src/Controls/MapController.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureManager.cpp
+editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureManager.cpp
 editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o -MF CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o.d -o CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o -MF CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o.d -o CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureManager.cpp
 
 editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureManager.cpp > CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureManager.cpp > CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureManager.cpp -o CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureManager.cpp -o CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Editors/MapEditor.cpp
+editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/MapEditor.cpp
 editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Editors/MapEditor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/MapEditor.cpp
 
 editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Editors/MapEditor.cpp > CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/MapEditor.cpp > CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Editors/MapEditor.cpp -o CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/MapEditor.cpp -o CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureUtils.cpp
+editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureUtils.cpp
 editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o -MF CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o.d -o CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureUtils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o -MF CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o.d -o CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureUtils.cpp
 
 editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureUtils.cpp > CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureUtils.cpp > CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureUtils.cpp -o CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Utils/TextureUtils.cpp -o CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Entity/WaveSample.cpp
+editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/WaveSample.cpp
 editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o -MF CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Entity/WaveSample.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o -MF CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o.d -o CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/WaveSample.cpp
 
 editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Entity/WaveSample.cpp > CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/WaveSample.cpp > CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Entity/WaveSample.cpp -o CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Entity/WaveSample.cpp -o CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.s
 
 editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o: editor/CMakeFiles/editor.dir/flags.make
-editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o: /home/alarm/Developer/Tower-Defence/editor/src/Editors/WaveEditor.cpp
+editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/WaveEditor.cpp
 editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o: editor/CMakeFiles/editor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o -c /home/alarm/Developer/Tower-Defence/editor/src/Editors/WaveEditor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o -MF CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o.d -o CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/WaveEditor.cpp
 
 editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/editor/src/Editors/WaveEditor.cpp > CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/WaveEditor.cpp > CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.i
 
 editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/editor/src/Editors/WaveEditor.cpp -o CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/src/Editors/WaveEditor.cpp -o CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.s
 
 # Object files for target editor
 editor_OBJECTS = \
@@ -415,25 +415,22 @@ editor/editor: editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o
 editor/editor: editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o
 editor/editor: editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o
 editor/editor: editor/CMakeFiles/editor.dir/build.make
-editor/editor: editor/CMakeFiles/editor.dir/compiler_depend.ts
-editor/editor: /usr/lib/libQt6Widgets.so.6.10.1
-editor/editor: /usr/lib/libQt6Gui.so.6.10.1
-editor/editor: /usr/lib/libGLX.so
-editor/editor: /usr/lib/libOpenGL.so
-editor/editor: /usr/lib/libQt6Core.so.6.10.1
+editor/editor: /opt/homebrew/lib/QtWidgets.framework/Versions/A/QtWidgets
+editor/editor: /opt/homebrew/lib/QtGui.framework/Versions/A/QtGui
+editor/editor: /opt/homebrew/lib/QtCore.framework/Versions/A/QtCore
 editor/editor: editor/CMakeFiles/editor.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable editor"
-	cd /home/alarm/Developer/Tower-Defence/build/editor && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/editor.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable editor"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/editor.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 editor/CMakeFiles/editor.dir/build: editor/editor
 .PHONY : editor/CMakeFiles/editor.dir/build
 
 editor/CMakeFiles/editor.dir/clean:
-	cd /home/alarm/Developer/Tower-Defence/build/editor && $(CMAKE_COMMAND) -P CMakeFiles/editor.dir/cmake_clean.cmake
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor && $(CMAKE_COMMAND) -P CMakeFiles/editor.dir/cmake_clean.cmake
 .PHONY : editor/CMakeFiles/editor.dir/clean
 
 editor/CMakeFiles/editor.dir/depend:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alarm/Developer/Tower-Defence /home/alarm/Developer/Tower-Defence/editor /home/alarm/Developer/Tower-Defence/build /home/alarm/Developer/Tower-Defence/build/editor /home/alarm/Developer/Tower-Defence/build/editor/CMakeFiles/editor.dir/DependInfo.cmake "--color=$(COLOR)" editor
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/mikle/Developer/Projects/NSU/Tower-Defence /Users/mikle/Developer/Projects/NSU/Tower-Defence/editor /Users/mikle/Developer/Projects/NSU/Tower-Defence/build /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor/CMakeFiles/editor.dir/DependInfo.cmake "--color=$(COLOR)" editor
 .PHONY : editor/CMakeFiles/editor.dir/depend
 

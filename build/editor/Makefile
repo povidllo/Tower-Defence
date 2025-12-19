@@ -48,19 +48,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /opt/homebrew/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alarm/Developer/Tower-Defence
+CMAKE_SOURCE_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
+CMAKE_BINARY_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/opt/homebrew/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -78,7 +78,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/opt/homebrew/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/alarm/Developer/Tower-Defence/build/CMakeFiles /home/alarm/Developer/Tower-Defence/build/editor//CMakeFiles/progress.marks
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/alarm/Developer/Tower-Defence/build/CMakeFiles 0
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor//CMakeFiles/progress.marks
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/clean
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/preinstall
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/preinstall
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 editor/CMakeFiles/editor.dir/rule:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/CMakeFiles/editor.dir/rule
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/CMakeFiles/editor.dir/rule
 .PHONY : editor/CMakeFiles/editor.dir/rule
 
 # Convenience name for target.
@@ -127,12 +127,12 @@ editor: editor/CMakeFiles/editor.dir/rule
 
 # fast build rule for target.
 editor/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/build
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/build
 .PHONY : editor/fast
 
 # Convenience name for target.
 editor/CMakeFiles/editor_autogen_timestamp_deps.dir/rule:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/CMakeFiles/editor_autogen_timestamp_deps.dir/rule
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/CMakeFiles/editor_autogen_timestamp_deps.dir/rule
 .PHONY : editor/CMakeFiles/editor_autogen_timestamp_deps.dir/rule
 
 # Convenience name for target.
@@ -141,12 +141,12 @@ editor_autogen_timestamp_deps: editor/CMakeFiles/editor_autogen_timestamp_deps.d
 
 # fast build rule for target.
 editor_autogen_timestamp_deps/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor_autogen_timestamp_deps.dir/build.make editor/CMakeFiles/editor_autogen_timestamp_deps.dir/build
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor_autogen_timestamp_deps.dir/build.make editor/CMakeFiles/editor_autogen_timestamp_deps.dir/build
 .PHONY : editor_autogen_timestamp_deps/fast
 
 # Convenience name for target.
 editor/CMakeFiles/editor_autogen.dir/rule:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/CMakeFiles/editor_autogen.dir/rule
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 editor/CMakeFiles/editor_autogen.dir/rule
 .PHONY : editor/CMakeFiles/editor_autogen.dir/rule
 
 # Convenience name for target.
@@ -155,7 +155,7 @@ editor_autogen: editor/CMakeFiles/editor_autogen.dir/rule
 
 # fast build rule for target.
 editor_autogen/fast:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor_autogen.dir/build.make editor/CMakeFiles/editor_autogen.dir/build
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor_autogen.dir/build.make editor/CMakeFiles/editor_autogen.dir/build
 .PHONY : editor_autogen/fast
 
 editor_autogen/mocs_compilation.o: editor_autogen/mocs_compilation.cpp.o
@@ -163,7 +163,7 @@ editor_autogen/mocs_compilation.o: editor_autogen/mocs_compilation.cpp.o
 
 # target to build an object file
 editor_autogen/mocs_compilation.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.o
 .PHONY : editor_autogen/mocs_compilation.cpp.o
 
 editor_autogen/mocs_compilation.i: editor_autogen/mocs_compilation.cpp.i
@@ -171,7 +171,7 @@ editor_autogen/mocs_compilation.i: editor_autogen/mocs_compilation.cpp.i
 
 # target to preprocess a source file
 editor_autogen/mocs_compilation.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.i
 .PHONY : editor_autogen/mocs_compilation.cpp.i
 
 editor_autogen/mocs_compilation.s: editor_autogen/mocs_compilation.cpp.s
@@ -179,7 +179,7 @@ editor_autogen/mocs_compilation.s: editor_autogen/mocs_compilation.cpp.s
 
 # target to generate assembly for a file
 editor_autogen/mocs_compilation.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/editor_autogen/mocs_compilation.cpp.s
 .PHONY : editor_autogen/mocs_compilation.cpp.s
 
 src/Controls/EnemyController.o: src/Controls/EnemyController.cpp.o
@@ -187,7 +187,7 @@ src/Controls/EnemyController.o: src/Controls/EnemyController.cpp.o
 
 # target to build an object file
 src/Controls/EnemyController.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.o
 .PHONY : src/Controls/EnemyController.cpp.o
 
 src/Controls/EnemyController.i: src/Controls/EnemyController.cpp.i
@@ -195,7 +195,7 @@ src/Controls/EnemyController.i: src/Controls/EnemyController.cpp.i
 
 # target to preprocess a source file
 src/Controls/EnemyController.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.i
 .PHONY : src/Controls/EnemyController.cpp.i
 
 src/Controls/EnemyController.s: src/Controls/EnemyController.cpp.s
@@ -203,7 +203,7 @@ src/Controls/EnemyController.s: src/Controls/EnemyController.cpp.s
 
 # target to generate assembly for a file
 src/Controls/EnemyController.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/EnemyController.cpp.s
 .PHONY : src/Controls/EnemyController.cpp.s
 
 src/Controls/MapController.o: src/Controls/MapController.cpp.o
@@ -211,7 +211,7 @@ src/Controls/MapController.o: src/Controls/MapController.cpp.o
 
 # target to build an object file
 src/Controls/MapController.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.o
 .PHONY : src/Controls/MapController.cpp.o
 
 src/Controls/MapController.i: src/Controls/MapController.cpp.i
@@ -219,7 +219,7 @@ src/Controls/MapController.i: src/Controls/MapController.cpp.i
 
 # target to preprocess a source file
 src/Controls/MapController.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.i
 .PHONY : src/Controls/MapController.cpp.i
 
 src/Controls/MapController.s: src/Controls/MapController.cpp.s
@@ -227,7 +227,7 @@ src/Controls/MapController.s: src/Controls/MapController.cpp.s
 
 # target to generate assembly for a file
 src/Controls/MapController.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/MapController.cpp.s
 .PHONY : src/Controls/MapController.cpp.s
 
 src/Controls/ProjectController.o: src/Controls/ProjectController.cpp.o
@@ -235,7 +235,7 @@ src/Controls/ProjectController.o: src/Controls/ProjectController.cpp.o
 
 # target to build an object file
 src/Controls/ProjectController.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.o
 .PHONY : src/Controls/ProjectController.cpp.o
 
 src/Controls/ProjectController.i: src/Controls/ProjectController.cpp.i
@@ -243,7 +243,7 @@ src/Controls/ProjectController.i: src/Controls/ProjectController.cpp.i
 
 # target to preprocess a source file
 src/Controls/ProjectController.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.i
 .PHONY : src/Controls/ProjectController.cpp.i
 
 src/Controls/ProjectController.s: src/Controls/ProjectController.cpp.s
@@ -251,7 +251,7 @@ src/Controls/ProjectController.s: src/Controls/ProjectController.cpp.s
 
 # target to generate assembly for a file
 src/Controls/ProjectController.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/ProjectController.cpp.s
 .PHONY : src/Controls/ProjectController.cpp.s
 
 src/Controls/TowerController.o: src/Controls/TowerController.cpp.o
@@ -259,7 +259,7 @@ src/Controls/TowerController.o: src/Controls/TowerController.cpp.o
 
 # target to build an object file
 src/Controls/TowerController.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.o
 .PHONY : src/Controls/TowerController.cpp.o
 
 src/Controls/TowerController.i: src/Controls/TowerController.cpp.i
@@ -267,7 +267,7 @@ src/Controls/TowerController.i: src/Controls/TowerController.cpp.i
 
 # target to preprocess a source file
 src/Controls/TowerController.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.i
 .PHONY : src/Controls/TowerController.cpp.i
 
 src/Controls/TowerController.s: src/Controls/TowerController.cpp.s
@@ -275,7 +275,7 @@ src/Controls/TowerController.s: src/Controls/TowerController.cpp.s
 
 # target to generate assembly for a file
 src/Controls/TowerController.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Controls/TowerController.cpp.s
 .PHONY : src/Controls/TowerController.cpp.s
 
 src/Editors/EnemyEditor.o: src/Editors/EnemyEditor.cpp.o
@@ -283,7 +283,7 @@ src/Editors/EnemyEditor.o: src/Editors/EnemyEditor.cpp.o
 
 # target to build an object file
 src/Editors/EnemyEditor.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.o
 .PHONY : src/Editors/EnemyEditor.cpp.o
 
 src/Editors/EnemyEditor.i: src/Editors/EnemyEditor.cpp.i
@@ -291,7 +291,7 @@ src/Editors/EnemyEditor.i: src/Editors/EnemyEditor.cpp.i
 
 # target to preprocess a source file
 src/Editors/EnemyEditor.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.i
 .PHONY : src/Editors/EnemyEditor.cpp.i
 
 src/Editors/EnemyEditor.s: src/Editors/EnemyEditor.cpp.s
@@ -299,7 +299,7 @@ src/Editors/EnemyEditor.s: src/Editors/EnemyEditor.cpp.s
 
 # target to generate assembly for a file
 src/Editors/EnemyEditor.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/EnemyEditor.cpp.s
 .PHONY : src/Editors/EnemyEditor.cpp.s
 
 src/Editors/MapEditor.o: src/Editors/MapEditor.cpp.o
@@ -307,7 +307,7 @@ src/Editors/MapEditor.o: src/Editors/MapEditor.cpp.o
 
 # target to build an object file
 src/Editors/MapEditor.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.o
 .PHONY : src/Editors/MapEditor.cpp.o
 
 src/Editors/MapEditor.i: src/Editors/MapEditor.cpp.i
@@ -315,7 +315,7 @@ src/Editors/MapEditor.i: src/Editors/MapEditor.cpp.i
 
 # target to preprocess a source file
 src/Editors/MapEditor.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.i
 .PHONY : src/Editors/MapEditor.cpp.i
 
 src/Editors/MapEditor.s: src/Editors/MapEditor.cpp.s
@@ -323,7 +323,7 @@ src/Editors/MapEditor.s: src/Editors/MapEditor.cpp.s
 
 # target to generate assembly for a file
 src/Editors/MapEditor.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/MapEditor.cpp.s
 .PHONY : src/Editors/MapEditor.cpp.s
 
 src/Editors/ProjectCreationDialog.o: src/Editors/ProjectCreationDialog.cpp.o
@@ -331,7 +331,7 @@ src/Editors/ProjectCreationDialog.o: src/Editors/ProjectCreationDialog.cpp.o
 
 # target to build an object file
 src/Editors/ProjectCreationDialog.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.o
 .PHONY : src/Editors/ProjectCreationDialog.cpp.o
 
 src/Editors/ProjectCreationDialog.i: src/Editors/ProjectCreationDialog.cpp.i
@@ -339,7 +339,7 @@ src/Editors/ProjectCreationDialog.i: src/Editors/ProjectCreationDialog.cpp.i
 
 # target to preprocess a source file
 src/Editors/ProjectCreationDialog.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.i
 .PHONY : src/Editors/ProjectCreationDialog.cpp.i
 
 src/Editors/ProjectCreationDialog.s: src/Editors/ProjectCreationDialog.cpp.s
@@ -347,7 +347,7 @@ src/Editors/ProjectCreationDialog.s: src/Editors/ProjectCreationDialog.cpp.s
 
 # target to generate assembly for a file
 src/Editors/ProjectCreationDialog.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectCreationDialog.cpp.s
 .PHONY : src/Editors/ProjectCreationDialog.cpp.s
 
 src/Editors/ProjectEditor.o: src/Editors/ProjectEditor.cpp.o
@@ -355,7 +355,7 @@ src/Editors/ProjectEditor.o: src/Editors/ProjectEditor.cpp.o
 
 # target to build an object file
 src/Editors/ProjectEditor.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.o
 .PHONY : src/Editors/ProjectEditor.cpp.o
 
 src/Editors/ProjectEditor.i: src/Editors/ProjectEditor.cpp.i
@@ -363,7 +363,7 @@ src/Editors/ProjectEditor.i: src/Editors/ProjectEditor.cpp.i
 
 # target to preprocess a source file
 src/Editors/ProjectEditor.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.i
 .PHONY : src/Editors/ProjectEditor.cpp.i
 
 src/Editors/ProjectEditor.s: src/Editors/ProjectEditor.cpp.s
@@ -371,7 +371,7 @@ src/Editors/ProjectEditor.s: src/Editors/ProjectEditor.cpp.s
 
 # target to generate assembly for a file
 src/Editors/ProjectEditor.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectEditor.cpp.s
 .PHONY : src/Editors/ProjectEditor.cpp.s
 
 src/Editors/ProjectSelectorDialog.o: src/Editors/ProjectSelectorDialog.cpp.o
@@ -379,7 +379,7 @@ src/Editors/ProjectSelectorDialog.o: src/Editors/ProjectSelectorDialog.cpp.o
 
 # target to build an object file
 src/Editors/ProjectSelectorDialog.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.o
 .PHONY : src/Editors/ProjectSelectorDialog.cpp.o
 
 src/Editors/ProjectSelectorDialog.i: src/Editors/ProjectSelectorDialog.cpp.i
@@ -387,7 +387,7 @@ src/Editors/ProjectSelectorDialog.i: src/Editors/ProjectSelectorDialog.cpp.i
 
 # target to preprocess a source file
 src/Editors/ProjectSelectorDialog.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.i
 .PHONY : src/Editors/ProjectSelectorDialog.cpp.i
 
 src/Editors/ProjectSelectorDialog.s: src/Editors/ProjectSelectorDialog.cpp.s
@@ -395,7 +395,7 @@ src/Editors/ProjectSelectorDialog.s: src/Editors/ProjectSelectorDialog.cpp.s
 
 # target to generate assembly for a file
 src/Editors/ProjectSelectorDialog.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/ProjectSelectorDialog.cpp.s
 .PHONY : src/Editors/ProjectSelectorDialog.cpp.s
 
 src/Editors/TowerEditor.o: src/Editors/TowerEditor.cpp.o
@@ -403,7 +403,7 @@ src/Editors/TowerEditor.o: src/Editors/TowerEditor.cpp.o
 
 # target to build an object file
 src/Editors/TowerEditor.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.o
 .PHONY : src/Editors/TowerEditor.cpp.o
 
 src/Editors/TowerEditor.i: src/Editors/TowerEditor.cpp.i
@@ -411,7 +411,7 @@ src/Editors/TowerEditor.i: src/Editors/TowerEditor.cpp.i
 
 # target to preprocess a source file
 src/Editors/TowerEditor.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.i
 .PHONY : src/Editors/TowerEditor.cpp.i
 
 src/Editors/TowerEditor.s: src/Editors/TowerEditor.cpp.s
@@ -419,7 +419,7 @@ src/Editors/TowerEditor.s: src/Editors/TowerEditor.cpp.s
 
 # target to generate assembly for a file
 src/Editors/TowerEditor.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/TowerEditor.cpp.s
 .PHONY : src/Editors/TowerEditor.cpp.s
 
 src/Editors/WaveEditor.o: src/Editors/WaveEditor.cpp.o
@@ -427,7 +427,7 @@ src/Editors/WaveEditor.o: src/Editors/WaveEditor.cpp.o
 
 # target to build an object file
 src/Editors/WaveEditor.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.o
 .PHONY : src/Editors/WaveEditor.cpp.o
 
 src/Editors/WaveEditor.i: src/Editors/WaveEditor.cpp.i
@@ -435,7 +435,7 @@ src/Editors/WaveEditor.i: src/Editors/WaveEditor.cpp.i
 
 # target to preprocess a source file
 src/Editors/WaveEditor.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.i
 .PHONY : src/Editors/WaveEditor.cpp.i
 
 src/Editors/WaveEditor.s: src/Editors/WaveEditor.cpp.s
@@ -443,7 +443,7 @@ src/Editors/WaveEditor.s: src/Editors/WaveEditor.cpp.s
 
 # target to generate assembly for a file
 src/Editors/WaveEditor.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Editors/WaveEditor.cpp.s
 .PHONY : src/Editors/WaveEditor.cpp.s
 
 src/Entity/EnemySample.o: src/Entity/EnemySample.cpp.o
@@ -451,7 +451,7 @@ src/Entity/EnemySample.o: src/Entity/EnemySample.cpp.o
 
 # target to build an object file
 src/Entity/EnemySample.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.o
 .PHONY : src/Entity/EnemySample.cpp.o
 
 src/Entity/EnemySample.i: src/Entity/EnemySample.cpp.i
@@ -459,7 +459,7 @@ src/Entity/EnemySample.i: src/Entity/EnemySample.cpp.i
 
 # target to preprocess a source file
 src/Entity/EnemySample.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.i
 .PHONY : src/Entity/EnemySample.cpp.i
 
 src/Entity/EnemySample.s: src/Entity/EnemySample.cpp.s
@@ -467,7 +467,7 @@ src/Entity/EnemySample.s: src/Entity/EnemySample.cpp.s
 
 # target to generate assembly for a file
 src/Entity/EnemySample.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/EnemySample.cpp.s
 .PHONY : src/Entity/EnemySample.cpp.s
 
 src/Entity/Map.o: src/Entity/Map.cpp.o
@@ -475,7 +475,7 @@ src/Entity/Map.o: src/Entity/Map.cpp.o
 
 # target to build an object file
 src/Entity/Map.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.o
 .PHONY : src/Entity/Map.cpp.o
 
 src/Entity/Map.i: src/Entity/Map.cpp.i
@@ -483,7 +483,7 @@ src/Entity/Map.i: src/Entity/Map.cpp.i
 
 # target to preprocess a source file
 src/Entity/Map.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.i
 .PHONY : src/Entity/Map.cpp.i
 
 src/Entity/Map.s: src/Entity/Map.cpp.s
@@ -491,7 +491,7 @@ src/Entity/Map.s: src/Entity/Map.cpp.s
 
 # target to generate assembly for a file
 src/Entity/Map.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Map.cpp.s
 .PHONY : src/Entity/Map.cpp.s
 
 src/Entity/Project.o: src/Entity/Project.cpp.o
@@ -499,7 +499,7 @@ src/Entity/Project.o: src/Entity/Project.cpp.o
 
 # target to build an object file
 src/Entity/Project.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.o
 .PHONY : src/Entity/Project.cpp.o
 
 src/Entity/Project.i: src/Entity/Project.cpp.i
@@ -507,7 +507,7 @@ src/Entity/Project.i: src/Entity/Project.cpp.i
 
 # target to preprocess a source file
 src/Entity/Project.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.i
 .PHONY : src/Entity/Project.cpp.i
 
 src/Entity/Project.s: src/Entity/Project.cpp.s
@@ -515,7 +515,7 @@ src/Entity/Project.s: src/Entity/Project.cpp.s
 
 # target to generate assembly for a file
 src/Entity/Project.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/Project.cpp.s
 .PHONY : src/Entity/Project.cpp.s
 
 src/Entity/TowerSample.o: src/Entity/TowerSample.cpp.o
@@ -523,7 +523,7 @@ src/Entity/TowerSample.o: src/Entity/TowerSample.cpp.o
 
 # target to build an object file
 src/Entity/TowerSample.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.o
 .PHONY : src/Entity/TowerSample.cpp.o
 
 src/Entity/TowerSample.i: src/Entity/TowerSample.cpp.i
@@ -531,7 +531,7 @@ src/Entity/TowerSample.i: src/Entity/TowerSample.cpp.i
 
 # target to preprocess a source file
 src/Entity/TowerSample.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.i
 .PHONY : src/Entity/TowerSample.cpp.i
 
 src/Entity/TowerSample.s: src/Entity/TowerSample.cpp.s
@@ -539,7 +539,7 @@ src/Entity/TowerSample.s: src/Entity/TowerSample.cpp.s
 
 # target to generate assembly for a file
 src/Entity/TowerSample.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/TowerSample.cpp.s
 .PHONY : src/Entity/TowerSample.cpp.s
 
 src/Entity/WaveSample.o: src/Entity/WaveSample.cpp.o
@@ -547,7 +547,7 @@ src/Entity/WaveSample.o: src/Entity/WaveSample.cpp.o
 
 # target to build an object file
 src/Entity/WaveSample.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.o
 .PHONY : src/Entity/WaveSample.cpp.o
 
 src/Entity/WaveSample.i: src/Entity/WaveSample.cpp.i
@@ -555,7 +555,7 @@ src/Entity/WaveSample.i: src/Entity/WaveSample.cpp.i
 
 # target to preprocess a source file
 src/Entity/WaveSample.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.i
 .PHONY : src/Entity/WaveSample.cpp.i
 
 src/Entity/WaveSample.s: src/Entity/WaveSample.cpp.s
@@ -563,7 +563,7 @@ src/Entity/WaveSample.s: src/Entity/WaveSample.cpp.s
 
 # target to generate assembly for a file
 src/Entity/WaveSample.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Entity/WaveSample.cpp.s
 .PHONY : src/Entity/WaveSample.cpp.s
 
 src/Utils/BaseEditor.o: src/Utils/BaseEditor.cpp.o
@@ -571,7 +571,7 @@ src/Utils/BaseEditor.o: src/Utils/BaseEditor.cpp.o
 
 # target to build an object file
 src/Utils/BaseEditor.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.o
 .PHONY : src/Utils/BaseEditor.cpp.o
 
 src/Utils/BaseEditor.i: src/Utils/BaseEditor.cpp.i
@@ -579,7 +579,7 @@ src/Utils/BaseEditor.i: src/Utils/BaseEditor.cpp.i
 
 # target to preprocess a source file
 src/Utils/BaseEditor.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.i
 .PHONY : src/Utils/BaseEditor.cpp.i
 
 src/Utils/BaseEditor.s: src/Utils/BaseEditor.cpp.s
@@ -587,7 +587,7 @@ src/Utils/BaseEditor.s: src/Utils/BaseEditor.cpp.s
 
 # target to generate assembly for a file
 src/Utils/BaseEditor.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/BaseEditor.cpp.s
 .PHONY : src/Utils/BaseEditor.cpp.s
 
 src/Utils/TextureManager.o: src/Utils/TextureManager.cpp.o
@@ -595,7 +595,7 @@ src/Utils/TextureManager.o: src/Utils/TextureManager.cpp.o
 
 # target to build an object file
 src/Utils/TextureManager.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.o
 .PHONY : src/Utils/TextureManager.cpp.o
 
 src/Utils/TextureManager.i: src/Utils/TextureManager.cpp.i
@@ -603,7 +603,7 @@ src/Utils/TextureManager.i: src/Utils/TextureManager.cpp.i
 
 # target to preprocess a source file
 src/Utils/TextureManager.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.i
 .PHONY : src/Utils/TextureManager.cpp.i
 
 src/Utils/TextureManager.s: src/Utils/TextureManager.cpp.s
@@ -611,7 +611,7 @@ src/Utils/TextureManager.s: src/Utils/TextureManager.cpp.s
 
 # target to generate assembly for a file
 src/Utils/TextureManager.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureManager.cpp.s
 .PHONY : src/Utils/TextureManager.cpp.s
 
 src/Utils/TextureUtils.o: src/Utils/TextureUtils.cpp.o
@@ -619,7 +619,7 @@ src/Utils/TextureUtils.o: src/Utils/TextureUtils.cpp.o
 
 # target to build an object file
 src/Utils/TextureUtils.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.o
 .PHONY : src/Utils/TextureUtils.cpp.o
 
 src/Utils/TextureUtils.i: src/Utils/TextureUtils.cpp.i
@@ -627,7 +627,7 @@ src/Utils/TextureUtils.i: src/Utils/TextureUtils.cpp.i
 
 # target to preprocess a source file
 src/Utils/TextureUtils.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.i
 .PHONY : src/Utils/TextureUtils.cpp.i
 
 src/Utils/TextureUtils.s: src/Utils/TextureUtils.cpp.s
@@ -635,7 +635,7 @@ src/Utils/TextureUtils.s: src/Utils/TextureUtils.cpp.s
 
 # target to generate assembly for a file
 src/Utils/TextureUtils.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/Utils/TextureUtils.cpp.s
 .PHONY : src/Utils/TextureUtils.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -643,7 +643,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/main.cpp.o
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -651,7 +651,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/main.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -659,7 +659,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	cd /home/alarm/Developer/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/main.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(MAKE) $(MAKESILENT) -f editor/CMakeFiles/editor.dir/build.make editor/CMakeFiles/editor.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -747,6 +747,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

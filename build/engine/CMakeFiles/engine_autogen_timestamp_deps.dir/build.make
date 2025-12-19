@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /opt/homebrew/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alarm/Developer/Tower-Defence
+CMAKE_SOURCE_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
+CMAKE_BINARY_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence/build
 
 # Utility rule file for engine_autogen_timestamp_deps.
 
@@ -77,10 +77,10 @@ engine/CMakeFiles/engine_autogen_timestamp_deps.dir/build: engine_autogen_timest
 .PHONY : engine/CMakeFiles/engine_autogen_timestamp_deps.dir/build
 
 engine/CMakeFiles/engine_autogen_timestamp_deps.dir/clean:
-	cd /home/alarm/Developer/Tower-Defence/build/engine && $(CMAKE_COMMAND) -P CMakeFiles/engine_autogen_timestamp_deps.dir/cmake_clean.cmake
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && $(CMAKE_COMMAND) -P CMakeFiles/engine_autogen_timestamp_deps.dir/cmake_clean.cmake
 .PHONY : engine/CMakeFiles/engine_autogen_timestamp_deps.dir/clean
 
 engine/CMakeFiles/engine_autogen_timestamp_deps.dir/depend:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alarm/Developer/Tower-Defence /home/alarm/Developer/Tower-Defence/engine /home/alarm/Developer/Tower-Defence/build /home/alarm/Developer/Tower-Defence/build/engine /home/alarm/Developer/Tower-Defence/build/engine/CMakeFiles/engine_autogen_timestamp_deps.dir/DependInfo.cmake "--color=$(COLOR)" engine_autogen_timestamp_deps
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/mikle/Developer/Projects/NSU/Tower-Defence /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine /Users/mikle/Developer/Projects/NSU/Tower-Defence/build /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/CMakeFiles/engine_autogen_timestamp_deps.dir/DependInfo.cmake "--color=$(COLOR)" engine_autogen_timestamp_deps
 .PHONY : engine/CMakeFiles/engine_autogen_timestamp_deps.dir/depend
 

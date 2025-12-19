@@ -4,7 +4,9 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB
 
-CXX_INCLUDES = -I/home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/include -I/home/alarm/Developer/Tower-Defence/editor/include/Editors -I/home/alarm/Developer/Tower-Defence/editor/include/Entity -I/home/alarm/Developer/Tower-Defence/editor/include/Utils -I/home/alarm/Developer/Tower-Defence/editor/include/Controls -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui
+CXX_INCLUDES = -I/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor/editor_autogen/include -I/Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/include/Editors -I/Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/include/Entity -I/Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/include/Utils -I/Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/include/Controls -isystem /opt/homebrew/lib/QtWidgets.framework/Headers -iframework /opt/homebrew/lib -isystem /opt/homebrew/lib/QtCore.framework/Headers -isystem /opt/homebrew/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/include -isystem /opt/homebrew/lib/QtGui.framework/Headers
 
-CXX_FLAGS = -O3 -DNDEBUG
+CXX_FLAGSarm64 = -std=gnu++17 -arch arm64
+
+CXX_FLAGS = -std=gnu++17 -arch arm64
 

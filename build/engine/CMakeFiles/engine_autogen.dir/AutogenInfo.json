@@ -1,169 +1,169 @@
 {
-	"BUILD_DIR" : "/home/alarm/Developer/Tower-Defence/build/engine/engine_autogen",
-	"CMAKE_BINARY_DIR" : "/home/alarm/Developer/Tower-Defence/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "/home/alarm/Developer/Tower-Defence/build/engine",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/home/alarm/Developer/Tower-Defence/engine",
-	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
+	"BUILD_DIR" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine",
+	"CMAKE_EXECUTABLE" : "/opt/homebrew/bin/cmake",
 	"CMAKE_LIST_FILES" : 
 	[
-		"/home/alarm/Developer/Tower-Defence/engine/CMakeLists.txt",
-		"/usr/lib/cmake/SFML/SFMLConfigVersion.cmake",
-		"/usr/lib/cmake/SFML/SFMLConfig.cmake",
-		"/usr/lib/cmake/SFML/SFMLSystemSharedTargets.cmake",
-		"/usr/lib/cmake/SFML/SFMLSystemSharedTargets-release.cmake",
-		"/usr/lib/cmake/SFML/SFMLWindowSharedTargets.cmake",
-		"/usr/lib/cmake/SFML/SFMLWindowSharedTargets-release.cmake",
-		"/usr/lib/cmake/SFML/SFMLGraphicsSharedTargets.cmake",
-		"/usr/lib/cmake/SFML/SFMLGraphicsSharedTargets-release.cmake"
+		"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/CMakeLists.txt",
+		"/opt/homebrew/lib/cmake/SFML/SFMLConfigVersion.cmake",
+		"/opt/homebrew/lib/cmake/SFML/SFMLConfig.cmake",
+		"/opt/homebrew/lib/cmake/SFML/SFMLSystemSharedTargets.cmake",
+		"/opt/homebrew/lib/cmake/SFML/SFMLSystemSharedTargets-release.cmake",
+		"/opt/homebrew/lib/cmake/SFML/SFMLWindowSharedTargets.cmake",
+		"/opt/homebrew/lib/cmake/SFML/SFMLWindowSharedTargets-release.cmake",
+		"/opt/homebrew/lib/cmake/SFML/SFMLGraphicsSharedTargets.cmake",
+		"/opt/homebrew/lib/cmake/SFML/SFMLGraphicsSharedTargets-release.cmake"
 	],
-	"CMAKE_SOURCE_DIR" : "/home/alarm/Developer/Tower-Defence",
+	"CMAKE_SOURCE_DIR" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence",
 	"CROSS_CONFIG" : false,
-	"DEP_FILE" : "/home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/deps",
+	"DEP_FILE" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "engine_autogen/timestamp",
 	"HEADERS" : 
 	[
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/display/MainManager.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/MainManager.h",
 			"MU",
 			"JM76JVVYLW/moc_MainManager.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/display/RendererGame.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/RendererGame.h",
 			"MU",
 			"JM76JVVYLW/moc_RendererGame.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/display/TextureCache.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/TextureCache.h",
 			"MU",
 			"JM76JVVYLW/moc_TextureCache.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.h",
 			"MU",
 			"DQS3HC3U4C/moc_BoundaryDataTransfer.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/Engine.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/Engine.h",
 			"MU",
 			"DQS3HC3U4C/moc_Engine.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/EngineStorage.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/EngineStorage.h",
 			"MU",
 			"DQS3HC3U4C/moc_EngineStorage.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/FrameData.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/FrameData.h",
 			"MU",
 			"DQS3HC3U4C/moc_FrameData.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/TickGenerator.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/TickGenerator.h",
 			"MU",
 			"DQS3HC3U4C/moc_TickGenerator.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/AbilityActions.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/AbilityActions.h",
 			"MU",
 			"I3XRCMOXJW/moc_AbilityActions.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/EnemyActions.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/EnemyActions.h",
 			"MU",
 			"I3XRCMOXJW/moc_EnemyActions.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/GameStatus.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/GameStatus.h",
 			"MU",
 			"I3XRCMOXJW/moc_GameStatus.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/IActing.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/IActing.h",
 			"MU",
 			"I3XRCMOXJW/moc_IActing.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/MapObject.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/MapObject.h",
 			"MU",
 			"I3XRCMOXJW/moc_MapObject.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/Projectile.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/Projectile.h",
 			"MU",
 			"I3XRCMOXJW/moc_Projectile.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/TowerActions.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/TowerActions.h",
 			"MU",
 			"I3XRCMOXJW/moc_TowerActions.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/WaveActions.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/WaveActions.h",
 			"MU",
 			"I3XRCMOXJW/moc_WaveActions.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/entities/Enemy.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/entities/Enemy.h",
 			"MU",
 			"QGDODCONPG/moc_Enemy.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/entities/Tower.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/entities/Tower.h",
 			"MU",
 			"QGDODCONPG/moc_Tower.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/entities/Wave.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/entities/Wave.h",
 			"MU",
 			"QGDODCONPG/moc_Wave.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.h",
 			"MU",
 			"O53PBSGMD4/moc_AbilityUseAction.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/IPlayerAction.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/IPlayerAction.h",
 			"MU",
 			"O53PBSGMD4/moc_IPlayerAction.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/Replay.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/Replay.h",
 			"MU",
 			"O53PBSGMD4/moc_Replay.cpp",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.h",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.h",
 			"MU",
 			"O53PBSGMD4/moc_TowerUpgradeAction.cpp",
 			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/include",
-	"MOC_COMPILATION_FILE" : "/home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/include",
+	"MOC_COMPILATION_FILE" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB" ],
 	"MOC_DEPEND_FILTERS" : 
 	[
@@ -174,21 +174,21 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/home/alarm/Developer/Tower-Defence/editor/include",
-		"/home/alarm/Developer/Tower-Defence/editor/include/Entity",
-		"/home/alarm/Developer/Tower-Defence/editor/include/Utils",
-		"/usr/include/qt6/QtCore",
-		"/usr/include/qt6",
-		"/usr/lib/qt6/mkspecs/linux-g++",
-		"/usr/include/qt6/QtWidgets",
-		"/usr/include/qt6/QtGui",
-		"/usr/include",
-		"/usr/include/c++/15.2.1",
-		"/usr/include/c++/15.2.1/aarch64-unknown-linux-gnu",
-		"/usr/include/c++/15.2.1/backward",
-		"/usr/lib/gcc/aarch64-unknown-linux-gnu/15.2.1/include",
-		"/usr/local/include",
-		"/usr/lib/gcc/aarch64-unknown-linux-gnu/15.2.1/include-fixed"
+		"/Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/include",
+		"/Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/include/Entity",
+		"/Users/mikle/Developer/Projects/NSU/Tower-Defence/editor/include/Utils",
+		"/opt/homebrew/lib/QtCore.framework/Headers",
+		"/opt/homebrew/lib/QtCore.framework",
+		"/opt/homebrew/share/qt/mkspecs/macx-clang",
+		"/opt/homebrew/include",
+		"/opt/homebrew/lib/QtWidgets.framework/Headers",
+		"/opt/homebrew/lib/QtWidgets.framework",
+		"/opt/homebrew/lib/QtGui.framework/Headers",
+		"/opt/homebrew/lib/QtGui.framework",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+		"/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+		"/Library/Developer/CommandLineTools/usr/include"
 	],
 	"MOC_MACRO_NAMES" : 
 	[
@@ -204,92 +204,97 @@
 	"MOC_PREDEFS_CMD" : 
 	[
 		"/usr/bin/c++",
+		"-std=gnu++17",
 		"-w",
 		"-dM",
 		"-E",
-		"/usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
+		"/opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
-	"PARALLEL" : 4,
-	"PARSE_CACHE_FILE" : "/home/alarm/Developer/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/ParseCache.txt",
-	"QT_MOC_EXECUTABLE" : "/usr/lib/qt6/moc",
-	"QT_UIC_EXECUTABLE" : "/usr/lib/qt6/uic",
+	"PARALLEL" : 8,
+	"PARSE_CACHE_FILE" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/opt/homebrew/share/qt/libexec/moc",
+	"QT_UIC_EXECUTABLE" : "/opt/homebrew/share/qt/libexec/uic",
 	"QT_VERSION_MAJOR" : 6,
-	"QT_VERSION_MINOR" : 10,
-	"SETTINGS_FILE" : "/home/alarm/Developer/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/AutogenUsed.txt",
+	"QT_VERSION_MINOR" : 9,
+	"SETTINGS_FILE" : "/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "/home/alarm/Developer/Tower-Defence/engine/main.cpp", "MU", null ],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/display/MainManager.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/main.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/display/RendererGame.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/MainManager.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/display/TextureCache.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/RendererGame.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/TextureCache.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/Engine.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/EngineStorage.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/Engine.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/core/TickGenerator.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/EngineStorage.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/TickGenerator.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp",
 			"MU",
 			null
 		],
 		[
-			"/home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp",
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp",
 			"MU",
 			null
 		]

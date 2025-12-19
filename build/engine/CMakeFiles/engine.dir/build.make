@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /opt/homebrew/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alarm/Developer/Tower-Defence
+CMAKE_SOURCE_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
+CMAKE_BINARY_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence/build
 
 # Include any dependencies generated for this target.
 include engine/CMakeFiles/engine.dir/depend.make
@@ -75,226 +75,226 @@ engine/CMakeFiles/engine.dir/codegen:
 engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o: engine/CMakeFiles/engine.dir/flags.make
 engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o: engine/engine_autogen/mocs_compilation.cpp
 engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o -MF CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o -c /home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o -MF CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp
 
 engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp > CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp > CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.i
 
 engine/CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp -o CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/mocs_compilation.cpp -o CMakeFiles/engine.dir/engine_autogen/mocs_compilation.cpp.s
 
 engine/CMakeFiles/engine.dir/main.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/main.cpp.o: /home/alarm/Developer/Tower-Defence/engine/main.cpp
+engine/CMakeFiles/engine.dir/main.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/main.cpp
 engine/CMakeFiles/engine.dir/main.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object engine/CMakeFiles/engine.dir/main.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/main.cpp.o -MF CMakeFiles/engine.dir/main.cpp.o.d -o CMakeFiles/engine.dir/main.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object engine/CMakeFiles/engine.dir/main.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/main.cpp.o -MF CMakeFiles/engine.dir/main.cpp.o.d -o CMakeFiles/engine.dir/main.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/main.cpp
 
 engine/CMakeFiles/engine.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/main.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/main.cpp > CMakeFiles/engine.dir/main.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/main.cpp > CMakeFiles/engine.dir/main.cpp.i
 
 engine/CMakeFiles/engine.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/main.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/main.cpp -o CMakeFiles/engine.dir/main.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/main.cpp -o CMakeFiles/engine.dir/main.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/core/Engine.cpp
+engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/Engine.cpp
 engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/core/Engine.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/Engine.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/Engine.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/core/Engine.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/core/Engine.cpp > CMakeFiles/engine.dir/src/inner/core/Engine.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/Engine.cpp > CMakeFiles/engine.dir/src/inner/core/Engine.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/core/Engine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/core/Engine.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/core/Engine.cpp -o CMakeFiles/engine.dir/src/inner/core/Engine.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/Engine.cpp -o CMakeFiles/engine.dir/src/inner/core/Engine.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/core/TickGenerator.cpp
+engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/TickGenerator.cpp
 engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/core/TickGenerator.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/TickGenerator.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/core/TickGenerator.cpp > CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/TickGenerator.cpp > CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/core/TickGenerator.cpp -o CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/TickGenerator.cpp -o CMakeFiles/engine.dir/src/inner/core/TickGenerator.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp
+engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp
 engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp > CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp > CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp -o CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/BoundaryDataTransfer.cpp -o CMakeFiles/engine.dir/src/inner/core/BoundaryDataTransfer.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/core/EngineStorage.cpp
+engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/EngineStorage.cpp
 engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/core/EngineStorage.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o -MF CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o.d -o CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/EngineStorage.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/core/EngineStorage.cpp > CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/EngineStorage.cpp > CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/core/EngineStorage.cpp -o CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/core/EngineStorage.cpp -o CMakeFiles/engine.dir/src/inner/core/EngineStorage.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp
+engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp
 engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp > CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp > CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/Projectile.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/Projectile.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp
+engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp
 engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/WaveActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/WaveActions.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp
+engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp
 engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/AbilityActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/AbilityActions.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp
+engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp
 engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/TowerActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/TowerActions.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp
+engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp
 engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o -MF CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o.d -o CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp > CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/game_objects/EnemyActions.cpp -o CMakeFiles/engine.dir/src/inner/game_objects/EnemyActions.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp
+engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp
 engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o -MF CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o.d -o CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o -MF CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o.d -o CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp > CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp > CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp -o CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/AbilityUseAction.cpp -o CMakeFiles/engine.dir/src/inner/player_actions/AbilityUseAction.cpp.s
 
 engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp
+engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp
 engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o -MF CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o.d -o CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o -MF CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o.d -o CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp
 
 engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp > CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp > CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.i
 
 engine/CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp -o CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/inner/player_actions/TowerUpgradeAction.cpp -o CMakeFiles/engine.dir/src/inner/player_actions/TowerUpgradeAction.cpp.s
 
 engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/display/RendererGame.cpp
+engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/RendererGame.cpp
 engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o -MF CMakeFiles/engine.dir/src/display/RendererGame.cpp.o.d -o CMakeFiles/engine.dir/src/display/RendererGame.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/display/RendererGame.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o -MF CMakeFiles/engine.dir/src/display/RendererGame.cpp.o.d -o CMakeFiles/engine.dir/src/display/RendererGame.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/RendererGame.cpp
 
 engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/display/RendererGame.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/display/RendererGame.cpp > CMakeFiles/engine.dir/src/display/RendererGame.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/RendererGame.cpp > CMakeFiles/engine.dir/src/display/RendererGame.cpp.i
 
 engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/display/RendererGame.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/display/RendererGame.cpp -o CMakeFiles/engine.dir/src/display/RendererGame.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/RendererGame.cpp -o CMakeFiles/engine.dir/src/display/RendererGame.cpp.s
 
 engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/display/MainManager.cpp
+engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/MainManager.cpp
 engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o -MF CMakeFiles/engine.dir/src/display/MainManager.cpp.o.d -o CMakeFiles/engine.dir/src/display/MainManager.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/display/MainManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o -MF CMakeFiles/engine.dir/src/display/MainManager.cpp.o.d -o CMakeFiles/engine.dir/src/display/MainManager.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/MainManager.cpp
 
 engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/display/MainManager.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/display/MainManager.cpp > CMakeFiles/engine.dir/src/display/MainManager.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/MainManager.cpp > CMakeFiles/engine.dir/src/display/MainManager.cpp.i
 
 engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/display/MainManager.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/display/MainManager.cpp -o CMakeFiles/engine.dir/src/display/MainManager.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/MainManager.cpp -o CMakeFiles/engine.dir/src/display/MainManager.cpp.s
 
 engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o: engine/CMakeFiles/engine.dir/flags.make
-engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o: /home/alarm/Developer/Tower-Defence/engine/src/display/TextureCache.cpp
+engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o: /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/TextureCache.cpp
 engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o: engine/CMakeFiles/engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o -MF CMakeFiles/engine.dir/src/display/TextureCache.cpp.o.d -o CMakeFiles/engine.dir/src/display/TextureCache.cpp.o -c /home/alarm/Developer/Tower-Defence/engine/src/display/TextureCache.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o -MF CMakeFiles/engine.dir/src/display/TextureCache.cpp.o.d -o CMakeFiles/engine.dir/src/display/TextureCache.cpp.o -c /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/TextureCache.cpp
 
 engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/engine.dir/src/display/TextureCache.cpp.i"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alarm/Developer/Tower-Defence/engine/src/display/TextureCache.cpp > CMakeFiles/engine.dir/src/display/TextureCache.cpp.i
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/TextureCache.cpp > CMakeFiles/engine.dir/src/display/TextureCache.cpp.i
 
 engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/engine.dir/src/display/TextureCache.cpp.s"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alarm/Developer/Tower-Defence/engine/src/display/TextureCache.cpp -o CMakeFiles/engine.dir/src/display/TextureCache.cpp.s
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/src/display/TextureCache.cpp -o CMakeFiles/engine.dir/src/display/TextureCache.cpp.s
 
 # Object files for target engine
 engine_OBJECTS = \
@@ -335,29 +335,26 @@ engine/engine: engine/CMakeFiles/engine.dir/src/display/RendererGame.cpp.o
 engine/engine: engine/CMakeFiles/engine.dir/src/display/MainManager.cpp.o
 engine/engine: engine/CMakeFiles/engine.dir/src/display/TextureCache.cpp.o
 engine/engine: engine/CMakeFiles/engine.dir/build.make
-engine/engine: engine/CMakeFiles/engine.dir/compiler_depend.ts
 engine/engine: libeditor_common.a
-engine/engine: /usr/lib/libsfml-graphics.so.3.0.2
-engine/engine: /usr/lib/libsfml-window.so.3.0.2
-engine/engine: /usr/lib/libsfml-system.so.3.0.2
-engine/engine: /usr/lib/libQt6Widgets.so.6.10.1
-engine/engine: /usr/lib/libQt6Gui.so.6.10.1
-engine/engine: /usr/lib/libGLX.so
-engine/engine: /usr/lib/libOpenGL.so
-engine/engine: /usr/lib/libQt6Core.so.6.10.1
+engine/engine: /opt/homebrew/lib/libsfml-graphics.3.0.2.dylib
+engine/engine: /opt/homebrew/lib/libsfml-window.3.0.2.dylib
+engine/engine: /opt/homebrew/lib/libsfml-system.3.0.2.dylib
+engine/engine: /opt/homebrew/lib/QtWidgets.framework/Versions/A/QtWidgets
+engine/engine: /opt/homebrew/lib/QtGui.framework/Versions/A/QtGui
+engine/engine: /opt/homebrew/lib/QtCore.framework/Versions/A/QtCore
 engine/engine: engine/CMakeFiles/engine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable engine"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/engine.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable engine"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/engine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 engine/CMakeFiles/engine.dir/build: engine/engine
 .PHONY : engine/CMakeFiles/engine.dir/build
 
 engine/CMakeFiles/engine.dir/clean:
-	cd /home/alarm/Developer/Tower-Defence/build/engine && $(CMAKE_COMMAND) -P CMakeFiles/engine.dir/cmake_clean.cmake
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && $(CMAKE_COMMAND) -P CMakeFiles/engine.dir/cmake_clean.cmake
 .PHONY : engine/CMakeFiles/engine.dir/clean
 
 engine/CMakeFiles/engine.dir/depend:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alarm/Developer/Tower-Defence /home/alarm/Developer/Tower-Defence/engine /home/alarm/Developer/Tower-Defence/build /home/alarm/Developer/Tower-Defence/build/engine /home/alarm/Developer/Tower-Defence/build/engine/CMakeFiles/engine.dir/DependInfo.cmake "--color=$(COLOR)" engine
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/mikle/Developer/Projects/NSU/Tower-Defence /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine /Users/mikle/Developer/Projects/NSU/Tower-Defence/build /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/CMakeFiles/engine.dir/DependInfo.cmake "--color=$(COLOR)" engine
 .PHONY : engine/CMakeFiles/engine.dir/depend
 

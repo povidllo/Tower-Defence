@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /opt/homebrew/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alarm/Developer/Tower-Defence
+CMAKE_SOURCE_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alarm/Developer/Tower-Defence/build
+CMAKE_BINARY_DIR = /Users/mikle/Developer/Projects/NSU/Tower-Defence/build
 
 # Utility rule file for engine_autogen.
 
@@ -68,12 +68,12 @@ include engine/CMakeFiles/engine_autogen.dir/progress.make
 
 engine/CMakeFiles/engine_autogen: engine/engine_autogen/timestamp
 
-engine/engine_autogen/timestamp: /usr/lib/qt6/moc
-engine/engine_autogen/timestamp: /usr/lib/qt6/uic
+engine/engine_autogen/timestamp: /opt/homebrew/share/qt/libexec/moc
+engine/engine_autogen/timestamp: /opt/homebrew/share/qt/libexec/uic
 engine/engine_autogen/timestamp: engine/CMakeFiles/engine_autogen.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/alarm/Developer/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target engine"
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/cmake -E cmake_autogen /home/alarm/Developer/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/AutogenInfo.json Release
-	cd /home/alarm/Developer/Tower-Defence/build/engine && /usr/bin/cmake -E touch /home/alarm/Developer/Tower-Defence/build/engine/engine_autogen/timestamp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target engine"
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /opt/homebrew/bin/cmake -E cmake_autogen /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/AutogenInfo.json ""
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && /opt/homebrew/bin/cmake -E touch /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/engine_autogen/timestamp
 
 engine/CMakeFiles/engine_autogen.dir/codegen:
 .PHONY : engine/CMakeFiles/engine_autogen.dir/codegen
@@ -88,10 +88,10 @@ engine/CMakeFiles/engine_autogen.dir/build: engine_autogen
 .PHONY : engine/CMakeFiles/engine_autogen.dir/build
 
 engine/CMakeFiles/engine_autogen.dir/clean:
-	cd /home/alarm/Developer/Tower-Defence/build/engine && $(CMAKE_COMMAND) -P CMakeFiles/engine_autogen.dir/cmake_clean.cmake
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine && $(CMAKE_COMMAND) -P CMakeFiles/engine_autogen.dir/cmake_clean.cmake
 .PHONY : engine/CMakeFiles/engine_autogen.dir/clean
 
 engine/CMakeFiles/engine_autogen.dir/depend:
-	cd /home/alarm/Developer/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alarm/Developer/Tower-Defence /home/alarm/Developer/Tower-Defence/engine /home/alarm/Developer/Tower-Defence/build /home/alarm/Developer/Tower-Defence/build/engine /home/alarm/Developer/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/DependInfo.cmake "--color=$(COLOR)" engine_autogen
+	cd /Users/mikle/Developer/Projects/NSU/Tower-Defence/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/mikle/Developer/Projects/NSU/Tower-Defence /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine /Users/mikle/Developer/Projects/NSU/Tower-Defence/build /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine /Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/CMakeFiles/engine_autogen.dir/DependInfo.cmake "--color=$(COLOR)" engine_autogen
 .PHONY : engine/CMakeFiles/engine_autogen.dir/depend
 
