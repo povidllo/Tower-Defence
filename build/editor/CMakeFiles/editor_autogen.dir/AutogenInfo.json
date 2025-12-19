@@ -1,0 +1,356 @@
+{
+	"BUILD_DIR" : "/home/alarm/Developer/Tower-Defence/build/editor/editor_autogen",
+	"CMAKE_BINARY_DIR" : "/home/alarm/Developer/Tower-Defence/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/alarm/Developer/Tower-Defence/build/editor",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/alarm/Developer/Tower-Defence/editor",
+	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/home/alarm/Developer/Tower-Defence/editor/CMakeLists.txt",
+		"/usr/lib/cmake/Qt6/Qt6ConfigVersion.cmake",
+		"/usr/lib/cmake/Qt6/Qt6ConfigVersionImpl.cmake",
+		"/usr/lib/cmake/Qt6/Qt6Config.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicCMakeEarlyPolicyHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake",
+		"/usr/lib/cmake/Qt6/Qt6ConfigExtras.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicCMakeVersionHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtInstallPaths.cmake",
+		"/usr/lib/cmake/Qt6/Qt6Targets.cmake",
+		"/usr/lib/cmake/Qt6/Qt6VersionlessAliasTargets.cmake",
+		"/usr/lib/cmake/Qt6/QtFeature.cmake",
+		"/usr/share/cmake/Modules/CheckCXXCompilerFlag.cmake",
+		"/usr/lib/cmake/Qt6/QtFeatureCommon.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicAndroidHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicAppleHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicCMakeVersionHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicExternalProjectHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicGitHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicPluginHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomAttributionHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomCpeHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomDepHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomFileHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomGenerationHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomLicenseHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomOpsHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomPurlHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomPythonHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomQtEntityHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicSbomSystemDepHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicTargetHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicTestHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicToolHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicWalkLibsHelpers.cmake",
+		"/usr/lib/cmake/Qt6/QtPublicWindowsHelpers.cmake",
+		"/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake",
+		"/usr/lib/cmake/Qt6/Qt6Dependencies.cmake",
+		"/usr/share/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake",
+		"/usr/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake",
+		"/usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake",
+		"/usr/share/cmake/Modules/FindPackageMessage.cmake"
+	],
+	"CMAKE_SOURCE_DIR" : "/home/alarm/Developer/Tower-Defence",
+	"CROSS_CONFIG" : false,
+	"DEP_FILE" : "/home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/deps",
+	"DEP_FILE_RULE_NAME" : "editor_autogen/timestamp",
+	"HEADERS" : 
+	[
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Controls/EnemyController.h",
+			"MU",
+			"WWB25O7DMA/moc_EnemyController.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Controls/MapController.h",
+			"MU",
+			"WWB25O7DMA/moc_MapController.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Controls/ProjectController.h",
+			"MU",
+			"WWB25O7DMA/moc_ProjectController.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Controls/TowerController.h",
+			"MU",
+			"WWB25O7DMA/moc_TowerController.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Editors/EnemyEditor.h",
+			"MU",
+			"LOCO42D6VE/moc_EnemyEditor.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Editors/MapEditor.h",
+			"MU",
+			"LOCO42D6VE/moc_MapEditor.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Editors/ProjectCreationDialog.h",
+			"MU",
+			"LOCO42D6VE/moc_ProjectCreationDialog.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Editors/ProjectEditor.h",
+			"MU",
+			"LOCO42D6VE/moc_ProjectEditor.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Editors/ProjectSelectorDialog.h",
+			"MU",
+			"LOCO42D6VE/moc_ProjectSelectorDialog.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Editors/TowerEditor.h",
+			"MU",
+			"LOCO42D6VE/moc_TowerEditor.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Editors/WaveEditor.h",
+			"MU",
+			"LOCO42D6VE/moc_WaveEditor.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Entity/EnemySample.h",
+			"MU",
+			"44OI2CELVZ/moc_EnemySample.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Entity/Map.h",
+			"MU",
+			"44OI2CELVZ/moc_Map.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Entity/Project.h",
+			"MU",
+			"44OI2CELVZ/moc_Project.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Entity/TowerSample.h",
+			"MU",
+			"44OI2CELVZ/moc_TowerSample.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Entity/WaveSample.h",
+			"MU",
+			"44OI2CELVZ/moc_WaveSample.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Utils/BaseController.h",
+			"MU",
+			"TSWPDONXHL/moc_BaseController.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Utils/BaseEditor.h",
+			"MU",
+			"TSWPDONXHL/moc_BaseEditor.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Utils/Serializable.h",
+			"MU",
+			"TSWPDONXHL/moc_Serializable.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Utils/TextureManager.h",
+			"MU",
+			"TSWPDONXHL/moc_TextureManager.cpp",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/include/Utils/TextureUtils.h",
+			"MU",
+			"TSWPDONXHL/moc_TextureUtils.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/home/alarm/Developer/Tower-Defence/editor/include/Editors",
+		"/home/alarm/Developer/Tower-Defence/editor/include/Entity",
+		"/home/alarm/Developer/Tower-Defence/editor/include/Utils",
+		"/home/alarm/Developer/Tower-Defence/editor/include/Controls",
+		"/usr/include/qt6/QtWidgets",
+		"/usr/include/qt6",
+		"/usr/include/qt6/QtCore",
+		"/usr/lib/qt6/mkspecs/linux-g++",
+		"/usr/include/qt6/QtGui",
+		"/usr/include",
+		"/usr/include/c++/15.2.1",
+		"/usr/include/c++/15.2.1/aarch64-unknown-linux-gnu",
+		"/usr/include/c++/15.2.1/backward",
+		"/usr/lib/gcc/aarch64-unknown-linux-gnu/15.2.1/include",
+		"/usr/local/include",
+		"/usr/lib/gcc/aarch64-unknown-linux-gnu/15.2.1/include-fixed"
+	],
+	"MOC_MACRO_NAMES" : 
+	[
+		"Q_OBJECT",
+		"Q_GADGET",
+		"Q_NAMESPACE",
+		"Q_NAMESPACE_EXPORT",
+		"Q_GADGET_EXPORT",
+		"Q_ENUM_NS"
+	],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-w",
+		"-dM",
+		"-E",
+		"/usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/alarm/Developer/Tower-Defence/build/editor/editor_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 4,
+	"PARSE_CACHE_FILE" : "/home/alarm/Developer/Tower-Defence/build/editor/CMakeFiles/editor_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/lib/qt6/moc",
+	"QT_UIC_EXECUTABLE" : "/usr/lib/qt6/uic",
+	"QT_VERSION_MAJOR" : 6,
+	"QT_VERSION_MINOR" : 10,
+	"SETTINGS_FILE" : "/home/alarm/Developer/Tower-Defence/build/editor/CMakeFiles/editor_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Controls/EnemyController.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Controls/MapController.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Controls/ProjectController.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Controls/TowerController.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Editors/EnemyEditor.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Editors/MapEditor.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectCreationDialog.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectEditor.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Editors/ProjectSelectorDialog.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Editors/TowerEditor.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Editors/WaveEditor.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Entity/EnemySample.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Entity/Map.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Entity/Project.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Entity/TowerSample.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Entity/WaveSample.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Utils/BaseEditor.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureManager.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/alarm/Developer/Tower-Defence/editor/src/Utils/TextureUtils.cpp",
+			"MU",
+			null
+		],
+		[ "/home/alarm/Developer/Tower-Defence/editor/src/main.cpp", "MU", null ]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

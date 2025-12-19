@@ -1,0 +1,6 @@
+set(__QT_DEPLOY_TARGET_editor_FILE /home/alarm/Developer/Tower-Defence/build/editor/editor)
+set(__QT_DEPLOY_TARGET_editor_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_engine_FILE /home/alarm/Developer/Tower-Defence/build/engine/engine)
+set(__QT_DEPLOY_TARGET_engine_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_editor_common_FILE /home/alarm/Developer/Tower-Defence/build/libeditor_common.a)
+set(__QT_DEPLOY_TARGET_editor_common_TYPE STATIC_LIBRARY)

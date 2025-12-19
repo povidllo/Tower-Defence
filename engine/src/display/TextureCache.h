@@ -19,7 +19,7 @@ namespace TDEngine {
 			sf::Texture &getTexture(const std::string &path) {
 				if (cache.find(path) == cache.end()) {
 					sf::Texture tex;
-					if (!tex.loadFromFile(path)) {
+					if (path.empty() || !tex.loadFromFile(path)) {
 						std::cerr << "Error loading texture: " << path << std::endl;
 						auto er = tex.loadFromFile("stub.jpg");
 					}
