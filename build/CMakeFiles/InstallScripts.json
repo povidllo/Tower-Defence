@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/cmake_install.cmake",
-		"/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/editor/cmake_install.cmake",
-		"/Users/mikle/Developer/Projects/NSU/Tower-Defence/build/engine/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
