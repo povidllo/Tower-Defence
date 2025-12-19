@@ -1,7 +1,9 @@
 #pragma once
+#include <iostream>
 #include <math.h>
 #include <string>
 #include <utility>
+// #include <bits/valarray_after.h>
 
 namespace TDEngine {
     namespace Inner {
@@ -37,6 +39,9 @@ namespace TDEngine {
                 double dx = target.first - positionCoordinates.first;
                 double dy = target.second - positionCoordinates.second;
                 double distLeft = sqrt(dx*dx + dy*dy);
+        		if (distLeft < 1e-8) {
+        			return;
+        		}
                 if (distLeft < distTraveled) {
                     distTraveled = distLeft;
                 }
@@ -45,6 +50,8 @@ namespace TDEngine {
                 double movedY = dy * distTraveled / distLeft;
                 positionCoordinates.first += movedX;
                 positionCoordinates.second += movedY;
+        		std::cout << "object moved to " << positionCoordinates.first << " " << positionCoordinates.second <<
+        			"and was moving to " << target.first << " " << target.second << std::endl;
             }
         	std::string texturePath;
 			MapObjectTypes type;

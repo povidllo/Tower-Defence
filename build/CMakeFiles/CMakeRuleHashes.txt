@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+f643024e584c6ae4f1728d72c53ba32c editor/CMakeFiles/editor_autogen
+1c799f0fd53bd18813cea2f2a0c38485 editor/editor_autogen/timestamp
+3bd93451cc869d8e9cbda894447a8486 engine/CMakeFiles/engine_autogen
+d7ce338d49a86caeeac8f49778422c6a engine/engine_autogen/timestamp

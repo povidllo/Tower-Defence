@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.22)
 project(engine)
+
+#list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/freetype")
+find_package(SFML REQUIRED COMPONENTS Graphics Window System)
+
 #set(CMAKE_CXX_COMPILER /usr/bin/g++-14)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -38,10 +42,20 @@ add_executable(engine
         src/inner/game_objects/entities/Enemy.h
         src/inner/game_objects/entities/Wave.h
         src/inner/game_objects/entities/Tower.h
+        src/display/RendererGame.cpp
+        src/display/RendererGame.h
+        src/display/MainManager.cpp
+        src/display/MainManager.h
+        src/display/TextureCache.h
+        src/display/TextureCache.cpp
+        src/display/TextureCache.h
 )
 
 target_compile_options(engine PRIVATE -include valarray)
 
 target_link_libraries(engine PRIVATE
         editor_common
+        SFML::Graphics
+        SFML::Window
+        SFML::System
 )

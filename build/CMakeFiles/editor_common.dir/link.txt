@@ -1,0 +1,2 @@
+/usr/bin/ar qc libeditor_common.a CMakeFiles/editor_common.dir/editor/src/Entity/EnemySample.cpp.o CMakeFiles/editor_common.dir/editor/src/Entity/Map.cpp.o CMakeFiles/editor_common.dir/editor/src/Entity/Project.cpp.o CMakeFiles/editor_common.dir/editor/src/Entity/TowerSample.cpp.o CMakeFiles/editor_common.dir/editor/src/Entity/WaveSample.cpp.o CMakeFiles/editor_common.dir/editor/src/Utils/BaseEditor.cpp.o CMakeFiles/editor_common.dir/editor/src/Utils/TextureManager.cpp.o CMakeFiles/editor_common.dir/editor/src/Utils/TextureUtils.cpp.o
+/usr/bin/ranlib libeditor_common.a
