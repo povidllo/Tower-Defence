@@ -2,22 +2,20 @@
 
 set -e
 
-echo "build start"
+#rm -rf build CMakeUserPresets.json
 
-mkdir -p build
-cd build
+conan install . --build=missing
 
-cmake ..
-cmake --build .
+cmake --preset conan-release
+
+cmake --build --preset conan-release
 
 TEMP_DIR=$(mktemp -d)
 
-cd ..
-
 tar -xzf "./rabota.tar.gz" -C "$TEMP_DIR"
-rsync -av --ignore-existing --remove-source-files "$TEMP_DIR/" "./build/engine/"
+rsync -av --ignore-existing --remove-source-files "$TEMP_DIR/" "./build/Release/engine/"
 
-cp -nv ./stub.jpg ./build/engine/
+cp -nv ./stub.jpg ./build/Release/engine/
 
 rm -rf "$TEMP_DIR"
 

@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.22)
 project(TowerDefence)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
+
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(nlohmann_json REQUIRED)
 
