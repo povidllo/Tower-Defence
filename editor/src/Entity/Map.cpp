@@ -23,8 +23,14 @@ json Map::toJson() const {
 	}
 
 	return {
-		{"name", name}, {"height", height}, {"width", width}, {"tiles", tileArray}, {"waves", wavesArray},
-		{"spots", spotArrays}, {"startCurrency", startCurrency}, {"hp", hp}
+		{"name", name},
+		{"height", height},
+		{"width", width},
+		{"startCurrency", startCurrency},
+		{"hp", hp},
+		{"waves", wavesArray},
+		{"spots", spotArrays},
+		{"tiles", tileArray}
 	};
 }
 

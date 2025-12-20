@@ -106,6 +106,17 @@ void ProjectEditor::compileProject() {
 		}
 	}
 
+	for (const auto &map: projectController->getMaps()) {
+		for (const auto &spot: map->getSpots()) {
+			if (!spot->getTowerTexturePath().empty()) {
+				usedTextures.insert(QString::fromStdString(spot->getTowerTexturePath()));
+			}
+			if (!spot->getProjectileTexturePath().empty()) {
+				usedTextures.insert(QString::fromStdString(spot->getProjectileTexturePath()));
+			}
+		}
+	}
+
 	for (const QString &srcPath: usedTextures) {
 		QFileInfo info(srcPath);
 		QString destPath = dir.filePath("resources/" + info.fileName());
@@ -116,7 +127,6 @@ void ProjectEditor::compileProject() {
 	}
 
 	json compiledMaps = json::array();
-	//
 	for (const auto &map: projectController->getMaps()) {
 		auto mapObj = map->toJson();
 		const auto &tiles = map->getTiles();
@@ -147,6 +157,19 @@ void ProjectEditor::compileProject() {
 
 		mapObj.erase("tiles");
 		mapObj["finalMapImagePath"] = atlasName.toStdString();
+
+		if (mapObj.contains("spots") && mapObj["spots"].is_array()) {
+			json newSpots = json::array();
+			for (auto &spotObj: mapObj["spots"]) {
+				if (spotObj.contains("towerTexturePath")) {
+					QString oldPath = QString::fromStdString(spotObj["towerTexturePath"].get<std::string>());
+					QFileInfo info(oldPath);
+					spotObj["towerTexturePath"] = ("resources/" + info.fileName()).toStdString();
+				}
+				newSpots.push_back(std::move(spotObj));
+			}
+			mapObj["spots"] = newSpots;
+		}
 
 		compiledMaps.push_back(std::move(mapObj));
 	}

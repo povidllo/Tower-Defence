@@ -12,10 +12,10 @@ EnemySample::json EnemySample::toJson() const {
 		{"name", name},
 		{"health", health},
 		{"damage", damage},
-		{"enemyTexturePath", enemyTexturePath},
 		{"moneyFallsOut", moneyFallsOut},
 		{"moneyFallsOutPercentage", moneyFallsOutPercentage},
-		{"speed", speed}
+		{"speed", speed},
+		{"enemyTexturePath", enemyTexturePath}
 	};
 }
 

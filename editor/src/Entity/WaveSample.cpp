@@ -17,8 +17,11 @@ json WaveSample::toJson() const {
 	}
 
 	json j = {
-		{"name", name}, {"enemies", enemiesArray}, {"path", pathArray}, {"timeForWave", timeForWave},
-		{"enemySpawnInterval", enemySpawnInterval}
+		{"name", name},
+		{"timeForWave", timeForWave},
+		{"enemySpawnInterval", enemySpawnInterval},
+		{"enemies", enemiesArray},
+		{"path", pathArray}
 	};
 
 	return j;

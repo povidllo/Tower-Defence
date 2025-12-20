@@ -1,0 +1,372 @@
+{
+    "name": "testTDproject",
+    "path": "/home/maksim/testTDproject",
+    "lastSaveDate": 1766207051,
+    "maps": [
+        {
+            "name": "map_1",
+            "height": 10,
+            "width": 15,
+            "startCurrency": 30.0,
+            "hp": 100.0,
+            "waves": [
+                {
+                    "name": "wave",
+                    "timeForWave": 10.0,
+                    "enemySpawnInterval": 1.0,
+                    "enemies": [
+                        {
+                            "enemyName": "enemy",
+                            "count": 5
+                        },
+                        {
+                            "enemyName": "enemy_2",
+                            "count": 5
+                        },
+                        {
+                            "enemyName": "enemy_1",
+                            "count": 5
+                        }
+                    ],
+                    "path": [
+                        {
+                            "x": 0,
+                            "y": 8
+                        },
+                        {
+                            "x": 1,
+                            "y": 8
+                        },
+                        {
+                            "x": 1,
+                            "y": 2
+                        },
+                        {
+                            "x": 4,
+                            "y": 2
+                        },
+                        {
+                            "x": 4,
+                            "y": 8
+                        },
+                        {
+                            "x": 6,
+                            "y": 8
+                        },
+                        {
+                            "x": 6,
+                            "y": 3
+                        },
+                        {
+                            "x": 8,
+                            "y": 3
+                        },
+                        {
+                            "x": 8,
+                            "y": 8
+                        },
+                        {
+                            "x": 10,
+                            "y": 8
+                        },
+                        {
+                            "x": 10,
+                            "y": 4
+                        },
+                        {
+                            "x": 12,
+                            "y": 4
+                        },
+                        {
+                            "x": 12,
+                            "y": 8
+                        },
+                        {
+                            "x": 12,
+                            "y": 8
+                        },
+                        {
+                            "x": 13,
+                            "y": 8
+                        }
+                    ]
+                },
+                {
+                    "name": "wave_1",
+                    "timeForWave": 15.0,
+                    "enemySpawnInterval": 1.0,
+                    "enemies": [
+                        {
+                            "enemyName": "enemy_1",
+                            "count": 10
+                        },
+                        {
+                            "enemyName": "enemy_2",
+                            "count": 10
+                        }
+                    ],
+                    "path": [
+                        {
+                            "x": 0,
+                            "y": 8
+                        },
+                        {
+                            "x": 1,
+                            "y": 8
+                        },
+                        {
+                            "x": 1,
+                            "y": 2
+                        },
+                        {
+                            "x": 4,
+                            "y": 2
+                        },
+                        {
+                            "x": 4,
+                            "y": 8
+                        },
+                        {
+                            "x": 6,
+                            "y": 8
+                        },
+                        {
+                            "x": 6,
+                            "y": 3
+                        },
+                        {
+                            "x": 8,
+                            "y": 3
+                        },
+                        {
+                            "x": 8,
+                            "y": 8
+                        },
+                        {
+                            "x": 10,
+                            "y": 8
+                        },
+                        {
+                            "x": 10,
+                            "y": 4
+                        },
+                        {
+                            "x": 12,
+                            "y": 4
+                        },
+                        {
+                            "x": 12,
+                            "y": 8
+                        },
+                        {
+                            "x": 13,
+                            "y": 8
+                        }
+                    ]
+                }
+            ],
+            "spots": [
+                {
+                    "name": "spot",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 2.0,
+                    "y": 4.0,
+                    "projectileSpeed": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower",
+                        "tower_1",
+                        "tower_2"
+                    ]
+                },
+                {
+                    "name": "spot_1",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 3.0,
+                    "y": 6.0,
+                    "projectileSpeed": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower_2",
+                        "tower"
+                    ]
+                },
+                {
+                    "name": "spot_2",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 5.0,
+                    "y": 5.0,
+                    "projectileSpeed": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower_3"
+                    ]
+                },
+                {
+                    "name": "spot_3",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 7.0,
+                    "y": 7.0,
+                    "projectileSpeed": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower"
+                    ]
+                },
+                {
+                    "name": "spot_4",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 11.0,
+                    "y": 5.0,
+                    "projectileSpeed": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower_2"
+                    ]
+                }
+            ],
+            "finalMapImagePath": "map_map_1.png"
+        }
+    ],
+    "towers": [
+        {
+            "name": "tower",
+            "damage": 5.0,
+            "fireRate": 3.0,
+            "cost": 10.0,
+            "x": 0.0,
+            "y": 0.0,
+            "projectileSpeed": 1.0,
+            "towerTexturePath": "resources/tower_1.png",
+            "projectileTexturePath": "resources/projectile_1.png",
+            "nextUpgrade": [
+                "tower_4",
+                "tower_5",
+                "tower_6"
+            ]
+        },
+        {
+            "name": "tower_1",
+            "damage": 5.0,
+            "fireRate": 2.0,
+            "cost": 11.0,
+            "x": 0.0,
+            "y": 0.0,
+            "projectileSpeed": 1.0,
+            "towerTexturePath": "resources/tower_2.png",
+            "projectileTexturePath": "resources/projectile_2.png",
+            "nextUpgrade": [
+                "tower_4"
+            ]
+        },
+        {
+            "name": "tower_2",
+            "damage": 6.0,
+            "fireRate": 2000.0,
+            "cost": 12.0,
+            "x": 0.0,
+            "y": 0.0,
+            "projectileSpeed": 1.0,
+            "towerTexturePath": "resources/tower_3.png",
+            "projectileTexturePath": "resources/projectile_1.png",
+            "nextUpgrade": [
+                "tower_5"
+            ]
+        },
+        {
+            "name": "tower_3",
+            "damage": 5.0,
+            "fireRate": 2.0,
+            "cost": 13.0,
+            "x": 0.0,
+            "y": 0.0,
+            "projectileSpeed": 1.0,
+            "towerTexturePath": "resources/tower_4.png",
+            "projectileTexturePath": "resources/projectile_2.png",
+            "nextUpgrade": [
+                "tower_6",
+                "tower_4"
+            ]
+        },
+        {
+            "name": "tower_4",
+            "damage": 10.0,
+            "fireRate": 3.0,
+            "cost": 14.0,
+            "x": 0.0,
+            "y": 0.0,
+            "projectileSpeed": 2.0,
+            "towerTexturePath": "resources/tower_5.png",
+            "projectileTexturePath": "resources/projectile_1.png",
+            "nextUpgrade": []
+        },
+        {
+            "name": "tower_5",
+            "damage": 12.0,
+            "fireRate": 3.0,
+            "cost": 15.0,
+            "x": 0.0,
+            "y": 0.0,
+            "projectileSpeed": 2.0,
+            "towerTexturePath": "resources/tower_6.png",
+            "projectileTexturePath": "resources/projectile_1.png",
+            "nextUpgrade": []
+        },
+        {
+            "name": "tower_6",
+            "damage": 20.0,
+            "fireRate": 2.0,
+            "cost": 16.0,
+            "x": 0.0,
+            "y": 0.0,
+            "projectileSpeed": 2.3,
+            "towerTexturePath": "resources/tower_7.png",
+            "projectileTexturePath": "resources/projectile_1.png",
+            "nextUpgrade": []
+        }
+    ],
+    "enemies": [
+        {
+            "name": "enemy",
+            "health": 20.0,
+            "damage": 10.0,
+            "moneyFallsOut": 3.0,
+            "moneyFallsOutPercentage": 100.0,
+            "speed": 0.0,
+            "enemyTexturePath": "resources/enemy_1.png"
+        },
+        {
+            "name": "enemy_1",
+            "health": 20.0,
+            "damage": 10.0,
+            "moneyFallsOut": 3.0,
+            "moneyFallsOutPercentage": 100.0,
+            "speed": 0.0,
+            "enemyTexturePath": "resources/enemy_2.png"
+        },
+        {
+            "name": "enemy_2",
+            "health": 13.0,
+            "damage": 10.0,
+            "moneyFallsOut": 13.0,
+            "moneyFallsOutPercentage": 100.0,
+            "speed": 0.0,
+            "enemyTexturePath": "resources/enemy_3.png"
+        }
+    ]
+}

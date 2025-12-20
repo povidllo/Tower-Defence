@@ -7,7 +7,7 @@
 
 class TowerSample : protected ISerializable {
 public:
-	using json = nlohmann::json;
+	using json = nlohmann::ordered_json;
 
 	explicit TowerSample(std::string name);
 
@@ -65,14 +65,13 @@ private:
 	std::string name;
 	double damage{0};
 	double fireRate{0};
-	std::vector<std::string> nextUpgrade;
-	std::string towerTexturePath;
 	double cost{0};
 	double x{0};
 	double y{0};
-
-	std::string projectileTexturePath;
 	double projectileSpeed{0};
+	std::string towerTexturePath;
+	std::string projectileTexturePath;
+	std::vector<std::string> nextUpgrade;
 };
 
 #endif //TOWERDEFENCE_TOWERSAMPLE_H

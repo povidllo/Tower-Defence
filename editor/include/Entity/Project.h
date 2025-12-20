@@ -7,7 +7,7 @@
 
 class Project : protected ISerializable {
 public:
-	using json = nlohmann::json;
+	using json = nlohmann::ordered_json;
 
 	/**
 	 * Constructor for new project
