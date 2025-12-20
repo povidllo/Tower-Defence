@@ -10,14 +10,13 @@
 
 namespace TDEngine {
 	namespace Inner {
-		RendererGame::RendererGame(sf::RenderWindow &window) : window(window) {
-			std::cout << "It is init\n";
-		}
+		RendererGame::RendererGame(sf::RenderWindow &window) : window(window) { std::cout << "It is init\n"; }
 
 		void RendererGame::renderFrame(const std::shared_ptr<GameStatus> &gameStat) {
 
-			for (const auto neededType : std::vector<MapObjectTypes> {MapObjectTypes::Tower, MapObjectTypes::Enemy, MapObjectTypes::Projectile}) {
-				for (const auto& obj : gameStat->mapObjects) {
+			for (const auto neededType: std::vector<MapObjectTypes>{MapObjectTypes::Tower, MapObjectTypes::Enemy,
+																	MapObjectTypes::Projectile}) {
+				for (const auto &obj: gameStat->mapObjects) {
 					std::cout << obj->texturePath << std::endl;
 
 					if (obj->type != neededType) {
@@ -31,7 +30,8 @@ namespace TDEngine {
 					// sf::RectangleShape sprite({32.f, 32.f});
 					// sprite.setFillColor(sf::Color::Red);
 
-					sprite.setPosition({(float)obj->positionCoordinates.first * 32.0f - 16.0f, (float)obj->positionCoordinates.second * 32.0f - 16.0f});
+					sprite.setPosition((float) obj->positionCoordinates.first * 32.0f - 16.0f,
+									   (float) obj->positionCoordinates.second * 32.0f - 16.0f);
 					window.draw(sprite);
 				}
 			}
@@ -40,5 +40,6 @@ namespace TDEngine {
 			// window.setView(window.getDefaultView());
 			// drawUI();
 		}
-	}
-}
+	} // namespace Inner
+} // namespace TDEngine
+

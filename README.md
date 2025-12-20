@@ -12,3 +12,7 @@ project/
 создать заглушку в TextureCache
 
 lol
+
+Cthulhu
+
+yog sothoth

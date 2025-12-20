@@ -4,7 +4,7 @@ set -e
 
 echo "start run"
 
-cd build/engine
+cd build/Release/engine
 ./engine
 
 echo "finish run"

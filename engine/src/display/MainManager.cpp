@@ -7,12 +7,8 @@
 namespace TDEngine {
 	namespace Inner {
 		MainManager::MainManager(Project &proj, unsigned int width, unsigned int height) :
-			project(proj),
-			width(width),
-			height(height),
-			engine(std::make_shared<Project>(project)),
-			window(sf::RenderWindow(sf::VideoMode({width, height}), "Tower Defence")),
-			renderer(window) {
+			project(proj), width(width), height(height), engine(std::make_shared<Project>(project)),
+			window(sf::RenderWindow(sf::VideoMode(width, height), "Tower Defence")), renderer(window) {
 			std::cout << "main manager init\n";
 		}
 
@@ -22,10 +18,11 @@ namespace TDEngine {
 
 
 			while (window.isOpen()) {
-				while (const auto event = window.pollEvent()) {
-					if (event->is<sf::Event::Closed>()) {
+				sf::Event event;
+				while (window.pollEvent(event)) {
+
+					if (event.type == sf::Event::Closed)
 						window.close();
-					}
 				}
 
 				window.clear();
@@ -36,5 +33,5 @@ namespace TDEngine {
 			}
 		}
 
-	}
-}
+	} // namespace Inner
+} // namespace TDEngine

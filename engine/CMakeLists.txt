@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.22)
 project(engine)
 
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
+
 #list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/freetype")
-find_package(SFML REQUIRED COMPONENTS Graphics Window System)
+find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system CONFIG)
 
 #set(CMAKE_CXX_COMPILER /usr/bin/g++-14)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(engine
         main.cpp
@@ -55,7 +59,6 @@ target_compile_options(engine PRIVATE -include valarray)
 
 target_link_libraries(engine PRIVATE
         editor_common
-        SFML::Graphics
-        SFML::Window
-        SFML::System
-)
+        sfml-graphics 
+        sfml-window 
+        sfml-system)
