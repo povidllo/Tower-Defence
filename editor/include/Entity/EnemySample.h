@@ -7,7 +7,7 @@
 
 class EnemySample : protected ISerializable {
 public:
-	using json = nlohmann::json;
+	using json = nlohmann::ordered_json;
 
 	explicit EnemySample(std::string name);
 

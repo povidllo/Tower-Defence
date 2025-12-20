@@ -10,7 +10,7 @@ class QWidget;
 
 class Map : protected ISerializable {
 public:
-	using json = nlohmann::json;
+	using json = nlohmann::ordered_json;
 
 	Map(std::string name, const int height, const int width);
 

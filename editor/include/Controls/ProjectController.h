@@ -12,7 +12,7 @@
  */
 class ProjectController : public BaseController, std::enable_shared_from_this<ProjectController> {
 public:
-	using json = nlohmann::json;
+	using json = nlohmann::ordered_json;
 
 	/**
 	 * Constructor for loading existing project from json file

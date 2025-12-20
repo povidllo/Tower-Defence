@@ -7,7 +7,7 @@
 #include <vector>
 #include "Serializable.h"
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 class WaveSample : public ISerializable {
 public:
@@ -52,9 +52,9 @@ public:
 	void setEnemySpawnInterval(double spawnInterval);
 
 private:
+	std::string name;
 	double timeForWave{0};
 	double enemySpawnInterval{0};
-	std::string name;
 	std::vector<std::pair<std::string, int> > enemies;
 	std::vector<std::pair<int, int> > path;
 };
