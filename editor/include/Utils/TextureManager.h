@@ -10,7 +10,7 @@
 
 class TextureManager : protected ISerializable {
 public:
-	using json = nlohmann::json;
+	using json = nlohmann::ordered_json;
 
 	static TextureManager &instance();
 

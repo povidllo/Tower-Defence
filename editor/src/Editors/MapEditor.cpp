@@ -357,7 +357,7 @@ void MapEditor::onEditSpotButtonClicked() {
 
 	QDialog dialog(this);
 	dialog.setWindowTitle("Edit Spot");
-	dialog.resize(400, 500);
+	dialog.resize(500, 600);
 
 	QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
@@ -380,6 +380,32 @@ void MapEditor::onEditSpotButtonClicked() {
 	yLayout->addWidget(yLabel);
 	yLayout->addWidget(ySpin);
 	layout->addLayout(yLayout);
+
+	QGroupBox *textureGroup = new QGroupBox("Tower Texture");
+	QVBoxLayout *textureLayout = new QVBoxLayout(textureGroup);
+
+	QLabel *texturePreview = new QLabel("No preview");
+	texturePreview->setAlignment(Qt::AlignCenter);
+	texturePreview->setMinimumSize(TextureManager::instance().getImageSize(),
+									TextureManager::instance().getImageSize());
+	texturePreview->setStyleSheet("border: 1px solid gray; background: white;");
+	textureLayout->addWidget(texturePreview);
+
+	QPushButton *chooseTextureBtn = new QPushButton("Choose Tower Texture");
+	textureLayout->addWidget(chooseTextureBtn);
+
+	layout->addWidget(textureGroup);
+
+	std::string currentTexturePath = spot->getTowerTexturePath();
+	if (!currentTexturePath.empty()) {
+		QPixmap pix(QString::fromStdString(currentTexturePath));
+		if (!pix.isNull()) {
+			texturePreview->
+					setPixmap(pix.scaled(texturePreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		} else {
+			texturePreview->setText("Invalid image");
+		}
+	}
 
 	const auto allTowerNames = mapController->getAvailableTowers();;
 
@@ -437,10 +463,30 @@ void MapEditor::onEditSpotButtonClicked() {
 		}
 	});
 
+	connect(chooseTextureBtn, &QPushButton::clicked, this, [&currentTexturePath, &texturePreview, &dialog]() {
+		QString filePath = QFileDialog::getOpenFileName(&dialog, "Choose Tower Texture", QDir::currentPath(), "*.png");
+		if (filePath.isEmpty()) {
+			return;
+		}
+
+		QPixmap pix(filePath);
+		if (pix.isNull()) {
+			QMessageBox::warning(&dialog, "Error", "Invalid image file!");
+			return;
+		}
+
+		texturePreview->setPixmap(pix.scaled(texturePreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+		currentTexturePath = filePath.toStdString();
+	});
+
 	connect(removeUpgradeBtn, &QPushButton::clicked, this, [=]() {
 		auto *item = upgradesList->currentItem();
-		if (item) delete item;
+		if (item) {
+			delete item;
+		}
 	});
+
 
 	if (dialog.exec() != QDialog::Accepted) {
 		return;
@@ -463,6 +509,8 @@ void MapEditor::onEditSpotButtonClicked() {
 
 	spot->setX(newX);
 	spot->setY(newY);
+
+	spot->setTowerTexturePath(currentTexturePath);
 
 	json upgradeArray = json::array();
 

@@ -19,13 +19,13 @@ TowerSample::json TowerSample::toJson() const {
 		{"name", name},
 		{"damage", damage},
 		{"fireRate", fireRate},
-		{"towerTexturePath", towerTexturePath},
-		{"nextUpgrade", upgradeArray},
+		{"cost", cost},
 		{"x", x},
 		{"y", y},
-		{"cost", cost},
+		{"projectileSpeed", projectileSpeed},
+		{"towerTexturePath", towerTexturePath},
 		{"projectileTexturePath", projectileTexturePath},
-		{"projectileSpeed", projectileSpeed}
+		{"nextUpgrade", upgradeArray}
 	};
 }
 
@@ -33,9 +33,9 @@ void TowerSample::fromJson(const json &j) {
 	name = j.value("name", name);
 	damage = j.value("damage", damage);
 	fireRate = j.value("fireRate", fireRate);
-	towerTexturePath = j.value("towerTexturePath", "");
+	towerTexturePath = j.value("towerTexturePath", towerTexturePath);
 	cost = j.value("cost", cost);
-	projectileTexturePath = j.value("projectileTexturePath", "");
+	projectileTexturePath = j.value("projectileTexturePath", projectileTexturePath);
 	projectileSpeed = j.value("projectileSpeed", projectileSpeed);
 
 	if (j.contains("nextUpgrade") && j["nextUpgrade"].is_array()) {
