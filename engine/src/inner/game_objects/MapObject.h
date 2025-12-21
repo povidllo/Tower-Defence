@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string>
 #include <utility>
-// #include <bits/valarray_after.h>
+#include <memory>
 
 namespace TDEngine {
     namespace Inner {
