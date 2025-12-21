@@ -13,11 +13,10 @@ namespace TDEngine {
         }
 
         void WaveActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
-            uint64_t spawnInterval = 500;
-            if (storage.timeAfterLastSpawn < spawnInterval) {
+            if (storage.timeAfterLastSpawn < storage.getEnemySpawnInterval() * 1000) {
                 storage.timeAfterLastSpawn += timePassedMillis;
             }
-            if (storage.timeAfterLastSpawn >= spawnInterval && storage.spawningIndex < storage.getEnemies().size()) {
+            if (storage.timeAfterLastSpawn >= storage.getEnemySpawnInterval() * 1000 && storage.spawningIndex < storage.getEnemies().size()) {
                 if (storage.spawningIndex == storage.getEnemies().size() - 1 &&
                     storage.enemiesSpawned == storage.getEnemies()[storage.spawningIndex].second) {
                     summonNextWave(engineStorage);
@@ -40,7 +39,7 @@ namespace TDEngine {
                     EnemySample enemySample = EnemySample(*enPtr);
                     EnemyActions enemy = EnemyActions(enemySample, std::make_shared<Wave>(storage));
                     engineStorage->addEnemy(std::make_shared<EnemyActions>(enemy));
-                    storage.spawningIndex++;
+                    storage.enemiesSpawned++;
                     storage.timeAfterLastSpawn = 0;
                     break;
                 }
