@@ -36,6 +36,28 @@ namespace TDEngine {
 
 					if (event.type == sf::Event::Closed)
 						window.close();
+
+					if (event.type == sf::Event::MouseButtonPressed) {
+						if (event.mouseButton.button == sf::Mouse::Left) {
+
+							sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+							sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+
+
+							for (const auto &obj: gameStatus->mapObjects) {
+								if (obj->type != MapObjectTypes::Tower)
+									continue;
+
+								if (worldPos.x > obj->positionCoordinates.first * 32 &&
+									worldPos.x < obj->positionCoordinates.first * 32 + 32 &&
+									worldPos.y > obj->positionCoordinates.second * 32 &&
+									worldPos.y < obj->positionCoordinates.second * 32 + 32) {
+									std::cout << "click on tower\n";
+									break;
+								}
+							}
+						}
+					}
 				}
 
 				window.clear();

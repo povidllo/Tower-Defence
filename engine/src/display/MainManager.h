@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <cstdlib>
 
 #include "../inner/core/Engine.h"
 #include "Project.h"
