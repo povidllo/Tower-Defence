@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <cstdlib>
 
 #include "../inner/core/Engine.h"
 #include "Project.h"
@@ -25,10 +26,10 @@ namespace TDEngine {
 
 			MainManager(Project &proj, unsigned int width, unsigned int height);
 			void mainLoop(std::string mapName);
+			std::string getMapBackgroundImgPath(std::string mapName);
 		};
-	}
-}
+	} // namespace Inner
+} // namespace TDEngine
 
 
-
-#endif //MAINMANAGER_H
+#endif // MAINMANAGER_H

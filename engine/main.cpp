@@ -1,6 +1,6 @@
+#include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <filesystem>
 
 #include <nlohmann/json.hpp>
 #include "../editor/include/Entity/Project.h"
@@ -8,7 +8,7 @@
 #include "src/inner/core/Engine.h"
 
 int main(int argc, char *argv[]) {
-    std::cout << "Amogus\n";
+	std::cout << "Amogus\n";
 	std::ifstream pFile("project.json");
 	if (!pFile.is_open()) {
 		std::cerr << "[ERROR] Failed to open file: " << "project.json" << std::endl;
@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
 	}
 	nlohmann::json pJson;
 	pFile >> pJson;
-    Project proj(pJson);
+	Project proj(pJson);
 
-    TDEngine::Inner::MainManager mainManager(proj, 480, 320);
-    mainManager.mainLoop("map_1");
+	TDEngine::Inner::MainManager mainManager(proj, 800, 600);
+	mainManager.mainLoop("map_1");
 }
