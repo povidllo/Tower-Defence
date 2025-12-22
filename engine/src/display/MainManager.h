@@ -25,10 +25,10 @@ namespace TDEngine {
 
 			MainManager(Project &proj, unsigned int width, unsigned int height);
 			void mainLoop(std::string mapName);
+			std::string getMapBackgroundImgPath(std::string mapName);
 		};
-	}
-}
+	} // namespace Inner
+} // namespace TDEngine
 
 
-
-#endif //MAINMANAGER_H
+#endif // MAINMANAGER_H

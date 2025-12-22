@@ -12,7 +12,7 @@ cmake --build --preset conan-release
 
 TEMP_DIR=$(mktemp -d)
 
-tar -xzf "./rabota.tar.gz" -C "$TEMP_DIR"
+tar -xzf "./example_project/rabota.tar.gz" -C "$TEMP_DIR"
 rsync -av --ignore-existing --remove-source-files "$TEMP_DIR/" "./build/Release/engine/"
 
 cp -nv ./stub.jpg ./build/Release/engine/
