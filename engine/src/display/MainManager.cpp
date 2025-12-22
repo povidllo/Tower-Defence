@@ -52,7 +52,13 @@ namespace TDEngine {
 									worldPos.x < obj->positionCoordinates.first * 32 + 32 &&
 									worldPos.y > obj->positionCoordinates.second * 32 &&
 									worldPos.y < obj->positionCoordinates.second * 32 + 32) {
-									std::cout << "click on tower\n";
+									std::cout << "tower: " << obj << "\n";
+									std::cout << "by x: " << obj->positionCoordinates.first * 32 + 16
+											  << " | y: " << obj->positionCoordinates.second * 32 + 16 << std::endl;
+									std::cout << "you can upgrade it to \n";
+									auto towerPtr = std::static_pointer_cast<TowerActions>(obj);
+									for (const auto &upg: towerPtr->storage.getUpgradeNames())
+										std::cout << upg << std::endl;
 									break;
 								}
 							}
@@ -61,8 +67,10 @@ namespace TDEngine {
 				}
 
 				window.clear();
+
 				window.draw(mapBackground);
 				renderer.renderFrame(gameStatus);
+
 				window.display();
 
 				gameStatus = engine.gameStep();
