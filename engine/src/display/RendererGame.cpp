@@ -17,7 +17,6 @@ namespace TDEngine {
 			for (const auto neededType: std::vector<MapObjectTypes>{MapObjectTypes::Tower, MapObjectTypes::Enemy,
 																	MapObjectTypes::Projectile}) {
 				for (const auto &obj: gameStat->mapObjects) {
-					std::cout << obj->texturePath << std::endl;
 
 					if (obj->type != neededType) {
 						continue;
@@ -30,8 +29,8 @@ namespace TDEngine {
 					// sf::RectangleShape sprite({32.f, 32.f});
 					// sprite.setFillColor(sf::Color::Red);
 
-					sprite.setPosition((float) obj->positionCoordinates.first * 32.0f - 16.0f,
-									   (float) obj->positionCoordinates.second * 32.0f - 16.0f);
+					sprite.setPosition((float) obj->positionCoordinates.first * 32.0f,
+									   (float) obj->positionCoordinates.second * 32.0f);
 					window.draw(sprite);
 				}
 			}
@@ -42,4 +41,3 @@ namespace TDEngine {
 		}
 	} // namespace Inner
 } // namespace TDEngine
-
