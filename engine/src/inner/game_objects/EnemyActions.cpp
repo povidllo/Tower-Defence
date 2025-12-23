@@ -19,7 +19,7 @@ namespace TDEngine {
 
         	if (storage.isAlive) {
         		if (storage.currentHP <= 0) {
-        			die(engineStorage);
+        			killed(engineStorage);
         			return;
         		}
 
@@ -37,7 +37,7 @@ namespace TDEngine {
         }
 
 
-        void EnemyActions::die(std::shared_ptr<EngineStorage> engineStorage) {
+        void EnemyActions::killed(std::shared_ptr<EngineStorage> engineStorage) {
             storage.isAlive = false;
 
         	// Инициализация генератора случайных чисел
@@ -55,7 +55,7 @@ namespace TDEngine {
         	if (engineStorage->curGameStatus->currentHp <= 0) {
         		engineStorage->isPlaying = false;
         	}
-        	die(engineStorage);
+			storage.isAlive = false;
         }
 
 
