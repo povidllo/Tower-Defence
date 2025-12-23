@@ -4,6 +4,7 @@
 
 #include "MainManager.h"
 #include <SFML/Graphics/Texture.hpp>
+#include <vector>
 
 namespace TDEngine {
 	namespace Inner {
@@ -29,6 +30,7 @@ namespace TDEngine {
 			gameStatus = engine.startGame(mapName);
 			sf::Sprite mapBackground(renderer.textureCache.getTexture(getMapBackgroundImgPath(mapName)));
 			mapBackground.setPosition(0, 0);
+			std::vector<std::pair<sf::Texture, std::string>> showUpgrade;
 
 			while (window.isOpen()) {
 				sf::Event event;
@@ -39,10 +41,10 @@ namespace TDEngine {
 
 					if (event.type == sf::Event::MouseButtonPressed) {
 						if (event.mouseButton.button == sf::Mouse::Left) {
+							showUpgrade.clear();
 
 							sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
 							sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-
 
 							for (const auto &obj: gameStatus->mapObjects) {
 								if (obj->type != MapObjectTypes::Tower)
@@ -57,8 +59,19 @@ namespace TDEngine {
 											  << " | y: " << obj->positionCoordinates.second * 32 + 16 << std::endl;
 									std::cout << "you can upgrade it to \n";
 									auto towerPtr = std::static_pointer_cast<TowerActions>(obj);
-									for (const auto &upg: towerPtr->storage.getUpgradeNames())
+									for (const auto &upg: towerPtr->storage.getUpgradeNames()) {
+
 										std::cout << upg << std::endl;
+										for (const auto &tower: project.getTowers()) {
+											if (tower->getName() == upg) {
+												showUpgrade.push_back(std::pair{
+														renderer.textureCache.getTexture(tower->getTowerTexturePath()),
+														upg});
+												break;
+											}
+										}
+									}
+
 									break;
 								}
 							}
@@ -70,6 +83,12 @@ namespace TDEngine {
 
 				window.draw(mapBackground);
 				renderer.renderFrame(gameStatus);
+				sf::Sprite upgTowSprite;
+				for (int i = 0; i < showUpgrade.size(); i++) {
+					upgTowSprite.setTexture(showUpgrade[i].first);
+					upgTowSprite.setPosition(600, (float) i * 32);
+					window.draw(upgTowSprite);
+				}
 
 				window.display();
 

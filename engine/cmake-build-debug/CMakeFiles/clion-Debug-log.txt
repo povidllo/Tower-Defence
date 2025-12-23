@@ -1,0 +1,15 @@
+/Volumes/Storage/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Volumes/Storage/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -DPython_EXECUTABLE=/Users/mikle/Developer/Projects/NSU/Tower-Defence/.venv/bin/python -DPython3_EXECUTABLE=/Users/mikle/Developer/Projects/NSU/Tower-Defence/.venv/bin/python -S /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine -B /Users/mikle/Developer/Projects/NSU/Tower-Defence/engine/cmake-build-debug
+CMake Error at CMakeLists.txt:7 (find_package):
+  Could not find a package configuration file provided by "SFML" (requested
+  version 2.6) with any of the following names:
+
+    SFMLConfig.cmake
+    sfml-config.cmake
+
+  Add the installation prefix of "SFML" to CMAKE_PREFIX_PATH or set
+  "SFML_DIR" to a directory containing one of the above files.  If "SFML"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+
+
+-- Configuring incomplete, errors occurred!
