@@ -5,36 +5,32 @@
 #include "../editor/include/Entity/Project.h"
 #include "src/display/MainManager.h"
 
-
 int main(int argc, char *argv[]) {
 	namespace fs = std::filesystem;
 	const std::string projectFile = "project.json";
 
 	if (!fs::exists(projectFile)) {
 		std::cerr << "[ERROR] File not found: " << projectFile << std::endl;
-		std::cerr << "Current working directory: " << fs::current_path() << std::endl;
 		return 1;
 	}
 
 	std::ifstream pFile(projectFile);
-	if (!pFile.is_open()) {
-		std::cerr << "[ERROR] Failed to open file." << std::endl;
+	if (!pFile.is_open())
 		return 1;
-	}
 
 	nlohmann::json pJson;
 	try {
 		pFile >> pJson;
 	} catch (const nlohmann::json::parse_error &e) {
-		std::cerr << "[ERROR] JSON parse error: " << e.what() << std::endl;
+		std::cerr << "[ERROR] JSON parse: " << e.what() << std::endl;
 		return 1;
 	}
 
-	// Project может выбрасывать исключения при инициализации
 	try {
 		Project proj(pJson);
-		TDEngine::Inner::MainManager mainManager(proj, 800, 600);
-		mainManager.run("map_1");
+		// Увеличили ширину для сайдбара
+		TDEngine::Inner::MainManager mainManager(proj, 850, 600);
+		mainManager.run(); // Запуск без конкретной карты
 	} catch (const std::exception &e) {
 		std::cerr << "[CRITICAL ERROR] " << e.what() << std::endl;
 		return 1;

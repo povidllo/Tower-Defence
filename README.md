@@ -16,3 +16,5 @@ lol
 Cthulhu
 
 yog sothoth
+
+"/System/Library/Fonts/Supplemental/Apple\ Chancery.ttf"

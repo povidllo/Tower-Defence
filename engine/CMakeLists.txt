@@ -50,9 +50,7 @@ add_executable(engine
         src/display/RendererGame.h
         src/display/MainManager.cpp
         src/display/MainManager.h
-        src/display/TextureCache.h
-        src/display/TextureCache.cpp
-        src/display/TextureCache.h
+        src/display/TextureCache.h 
 )
 
 target_compile_options(engine PRIVATE -include valarray)
