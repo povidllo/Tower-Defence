@@ -14,6 +14,7 @@ namespace TDEngine {
         void TowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
             if (storage.setUpgradingTo.has_value()) {
                 upgradeTower(engineStorage);
+                storage.setUpgradingTo.reset();
             }
             else {
             	if (storage.getFireRate() > 0) {
@@ -67,9 +68,9 @@ namespace TDEngine {
             						return;
             					}
             				}
-            				break;
             			}
             		}
+
             	}
             }
         }
