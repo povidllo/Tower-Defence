@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
 #include <math.h>
+#include <memory>
 #include <string>
 #include <utility>
-#include <memory>
 
 namespace TDEngine {
 	namespace Inner {
@@ -55,4 +55,3 @@ namespace TDEngine {
 		};
 	} // namespace Inner
 } // namespace TDEngine
-

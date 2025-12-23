@@ -1,35 +1,57 @@
-//
-// Created by Mikle on 13.12.2025.
-//
+#pragma once
 
-#ifndef MAINMANAGER_H
-#define MAINMANAGER_H
-
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <cstdlib>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <memory>
+#include <queue>
+#include <vector>
 
 #include "../inner/core/Engine.h"
+#include "../inner/player_actions/TowerUpgradeAction.h"
 #include "Project.h"
 #include "RendererGame.h"
 
-namespace TDEngine {
-	namespace Inner {
-		class MainManager {
-		public:
-			sf::RenderWindow window;
-			Project &project;
-			unsigned int width;
-			unsigned int height;
-			Engine engine;
-			RendererGame renderer;
+// Предполагаем, что TowerActions наследуется от MapObject
+// Если нет, замените MapObject на нужный базовый класс
+#include "../inner/game_objects/MapObject.h"
 
-			MainManager(Project &proj, unsigned int width, unsigned int height);
-			void mainLoop(std::string mapName);
-			std::string getMapBackgroundImgPath(std::string mapName);
-		};
-	} // namespace Inner
-} // namespace TDEngine
+namespace TDEngine::Inner {
 
+	// Структура для кнопки улучшения
+	struct UpgradeOption {
+		const sf::Texture *texture; // Указатель на текстуру (не владеем ей)
+		std::string name; // Имя улучшения (например, "MegaTower")
+		sf::FloatRect bounds; // Прямоугольник для проверки клика (x, y, width, height)
+	};
 
-#endif // MAINMANAGER_H
+	class MainManager {
+	public:
+		MainManager(Project &proj, unsigned int width, unsigned int height);
+		void run(const std::string &mapName);
+
+	private:
+		void processEvents();
+		void update(sf::Time dt);
+		void render();
+		void handleMouseClick(int mouseX, int mouseY);
+		std::string getMapBackgroundImgPath(const std::string &mapName);
+
+		sf::RenderWindow window;
+		Project &project;
+		Engine engine;
+		RendererGame renderer;
+
+		std::shared_ptr<GameStatus> gameStatus;
+		sf::Sprite backgroundSprite;
+
+		// --- НОВЫЕ ПОЛЯ ---
+		// Храним указатель на выбранную башню.
+		// Используем weak_ptr или shared_ptr в зависимости от архитектуры,
+		// но shared_ptr безопаснее, если объект может удалиться.
+		std::shared_ptr<TowerUpgradeAction> playerAction;
+		std::shared_ptr<MapObject> selectedTower;
+
+		// Список текущих кнопок апгрейда
+		std::vector<UpgradeOption> currentUpgradeOptions;
+	};
+} // namespace TDEngine::Inner
