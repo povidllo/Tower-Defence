@@ -73,7 +73,7 @@ namespace TDEngine {
 
 				window.display();
 
-				gameStatus = engine.gameStep();
+				gameStatus = engine.gameStep(nullptr);
 			}
 		}
 
