@@ -58,13 +58,19 @@ namespace TDEngine {
         void TowerActions::upgradeTower(std::shared_ptr<EngineStorage> engineStorage) {
             if (storage.setUpgradingTo.has_value()) {
             	if (storage.getCost() <= engineStorage->curGameStatus->currentGold) {
-            		for (auto sample : engineStorage->curProject->getTowers()) {
-            			if (sample->getName() == storage.setUpgradingTo) {
-            				setSample(sample);
-            				storage.timeAfterLastShot = 0;
-            				storage.setUpgradingTo = std::nullopt;
+            		for (auto possibleUpgrade : storage.getUpgradeNames()) {
+            			if (possibleUpgrade == storage.setUpgradingTo) {
+            				for (auto sample : engineStorage->curProject->getTowers()) {
+            					if (sample->getName() == storage.setUpgradingTo) {
+            						setSample(sample);
+            						storage.timeAfterLastShot = 0;
+            						storage.setUpgradingTo = std::nullopt;
+            						return;
+            					}
+            				}
             			}
             		}
+
             	}
             }
         }
