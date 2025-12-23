@@ -7,7 +7,6 @@
 
 
 int main(int argc, char *argv[]) {
-	// Используем std::filesystem для проверки путей (C++17)
 	namespace fs = std::filesystem;
 	const std::string projectFile = "project.json";
 

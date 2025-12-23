@@ -12,16 +12,10 @@ namespace TDEngine::Inner {
 		if (!gameStat)
 			return;
 
-		// Оптимизация: вместо создания спрайта в цикле, используем один и меняем его свойства
 		for (const auto &obj: gameStat->mapObjects) {
-			// Если у вас есть порядок отрисовки (земля -> башни -> враги -> пули),
-			// его лучше обеспечить сортировкой вектора mapObjects в Engine,
-			// либо здесь, но один раз.
 
 			const auto &texture = textureCache.getTexture(obj->texturePath);
-			spriteCache.setTexture(texture, true); // true сбрасывает rect текстуры
-
-			// Позиционирование
+			spriteCache.setTexture(texture, true);
 			spriteCache.setPosition(static_cast<float>(obj->positionCoordinates.first) * TILE_SIZE,
 									static_cast<float>(obj->positionCoordinates.second) * TILE_SIZE);
 
