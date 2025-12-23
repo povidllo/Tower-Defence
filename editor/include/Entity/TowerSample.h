@@ -61,6 +61,10 @@ public:
 
 	void setCost(const double cost);
 
+	double getFireDistance() const;
+
+	void setFireDistance(const double fireDistance);
+
 private:
 	std::string name;
 	double damage{0};
@@ -69,6 +73,7 @@ private:
 	double x{0};
 	double y{0};
 	double projectileSpeed{0};
+	double fireDistance{0};
 	std::string towerTexturePath;
 	std::string projectileTexturePath;
 	std::vector<std::string> nextUpgrade;
