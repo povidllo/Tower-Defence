@@ -247,11 +247,11 @@
         {
             "name": "tower",
             "damage": 5.0,
-            "fireRate": 3.0,
+            "fireRate": 0.4,
             "cost": 10.0,
             "x": 0.0,
             "y": 0.0,
-            "projectileSpeed": 1.0,
+            "projectileSpeed": 10.0,
             "towerTexturePath": "resources/tower_1.png",
             "projectileTexturePath": "resources/projectile_1.png",
             "nextUpgrade": [
@@ -263,11 +263,11 @@
         {
             "name": "tower_1",
             "damage": 5.0,
-            "fireRate": 2.0,
+            "fireRate": 0.3,
             "cost": 11.0,
             "x": 0.0,
             "y": 0.0,
-            "projectileSpeed": 1.0,
+            "projectileSpeed": 10.0,
             "towerTexturePath": "resources/tower_2.png",
             "projectileTexturePath": "resources/projectile_2.png",
             "nextUpgrade": [
@@ -277,11 +277,11 @@
         {
             "name": "tower_2",
             "damage": 6.0,
-            "fireRate": 2000.0,
+            "fireRate": 0.3,
             "cost": 12.0,
             "x": 0.0,
             "y": 0.0,
-            "projectileSpeed": 1.0,
+            "projectileSpeed": 10.0,
             "towerTexturePath": "resources/tower_3.png",
             "projectileTexturePath": "resources/projectile_1.png",
             "nextUpgrade": [
@@ -291,11 +291,11 @@
         {
             "name": "tower_3",
             "damage": 5.0,
-            "fireRate": 2.0,
+            "fireRate": 0.2,
             "cost": 13.0,
             "x": 0.0,
             "y": 0.0,
-            "projectileSpeed": 1.0,
+            "projectileSpeed": 10.0,
             "towerTexturePath": "resources/tower_4.png",
             "projectileTexturePath": "resources/projectile_2.png",
             "nextUpgrade": [
@@ -306,11 +306,11 @@
         {
             "name": "tower_4",
             "damage": 10.0,
-            "fireRate": 3.0,
+            "fireRate": 0.4,
             "cost": 14.0,
             "x": 0.0,
             "y": 0.0,
-            "projectileSpeed": 2.0,
+            "projectileSpeed": 10.0,
             "towerTexturePath": "resources/tower_5.png",
             "projectileTexturePath": "resources/projectile_1.png",
             "nextUpgrade": []
@@ -322,7 +322,7 @@
             "cost": 15.0,
             "x": 0.0,
             "y": 0.0,
-            "projectileSpeed": 2.0,
+            "projectileSpeed": 10.0,
             "towerTexturePath": "resources/tower_6.png",
             "projectileTexturePath": "resources/projectile_1.png",
             "nextUpgrade": []
@@ -334,7 +334,7 @@
             "cost": 16.0,
             "x": 0.0,
             "y": 0.0,
-            "projectileSpeed": 2.3,
+            "projectileSpeed": 10.0,
             "towerTexturePath": "resources/tower_7.png",
             "projectileTexturePath": "resources/projectile_1.png",
             "nextUpgrade": []
@@ -347,7 +347,7 @@
             "damage": 10.0,
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
-            "speed": 0.0,
+            "speed": 2.0,
             "enemyTexturePath": "resources/enemy_1.png"
         },
         {
@@ -356,7 +356,7 @@
             "damage": 10.0,
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
-            "speed": 0.0,
+            "speed": 2.0,
             "enemyTexturePath": "resources/enemy_2.png"
         },
         {
@@ -365,7 +365,7 @@
             "damage": 10.0,
             "moneyFallsOut": 13.0,
             "moneyFallsOutPercentage": 100.0,
-            "speed": 0.0,
+            "speed": 1.0,
             "enemyTexturePath": "resources/enemy_3.png"
         }
     ]

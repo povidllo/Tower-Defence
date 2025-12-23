@@ -33,8 +33,7 @@ namespace TDEngine {
         }
 
         void TowerActions::attack(std::shared_ptr<EnemyActions> enemy, std::shared_ptr<EngineStorage> engineStorage) {
-            double projectileSpeed = 1; //Вероятно, стоит добавить в параметры башни
-            Projectile newProjectile = Projectile(projectileSpeed, storage.getDamage(), enemy,
+            Projectile newProjectile = Projectile(storage.getProjectileSpeed(), storage.getDamage(), enemy,
             	positionCoordinates, storage.getProjectileTexturePath());
             engineStorage->addProjectile(std::make_shared<Projectile>(newProjectile));
             storage.timeAfterLastShot = 0;
@@ -51,10 +50,8 @@ namespace TDEngine {
         }
 
         void TowerActions::setSample(std::shared_ptr<TowerSample> sample) {
-            storage.setName(sample->getName());
-            storage.setDamage(sample->getDamage());
-            storage.setFireRate(sample->getFireRate());
-            storage.setTowerTexturePath(sample->getTowerTexturePath());
+            storage = Tower(*sample);
+        	texturePath = sample->getTowerTexturePath();
         }
 
         void TowerActions::upgradeTower(std::shared_ptr<EngineStorage> engineStorage) {
@@ -64,6 +61,7 @@ namespace TDEngine {
             			if (sample->getName() == storage.setUpgradingTo) {
             				setSample(sample);
             				storage.timeAfterLastShot = 0;
+            				storage.setUpgradingTo = std::nullopt;
             			}
             		}
             	}
