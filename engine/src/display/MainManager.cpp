@@ -33,6 +33,10 @@ namespace TDEngine::Inner {
 
 		// Игровой цикл
 		while (window.isOpen()) {
+			if (gameStatus->status == gameStatus->LOST && gameStatus->status == gameStatus->WON) {
+				std::cout << "cong\n";
+				break;
+			}
 			sf::Time dt = clock.restart(); // Время, прошедшее с прошлого кадра
 
 			processEvents();
