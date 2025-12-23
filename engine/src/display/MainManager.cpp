@@ -71,7 +71,8 @@ namespace TDEngine::Inner {
 							  << selectedTower->positionCoordinates.second << "}"
 							  << " wants to upgrade to: " << option.name << std::endl;
 					TowerUpgradeAction newUpgrade(option.name, std::static_pointer_cast<TowerActions>(selectedTower));
-					*playerAction = newUpgrade;
+					playerAction = std::make_shared<TowerUpgradeAction>(
+							option.name, std::static_pointer_cast<TowerActions>(selectedTower));
 
 					// Здесь можно вызвать логику апгрейда:
 					// engine.upgradeTower(selectedTower, option.name);
