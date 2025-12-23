@@ -7,7 +7,7 @@ namespace TDEngine {
         TowerActions::TowerActions(TowerSample sample, std::pair<double, double> startPosition)
             : MapObject(sample.getTowerTexturePath(), startPosition.first, startPosition.second, MapObjectTypes::Tower),
     		storage(std::move(sample)) {
-            storage.setUpgradingTo = std::nullopt;
+            storage.setUpgradingTo = std::nullopt;//storage.getUpgradeNames()[0];//
             storage.timeAfterLastShot = UINT64_MAX;
         }
 
@@ -42,7 +42,8 @@ namespace TDEngine {
         std::shared_ptr<EnemyActions> TowerActions::findTarget(std::shared_ptr<EngineStorage> engineStorage) {
             std::shared_ptr<EnemyActions> ans = nullptr;
             for (auto enemyPtr : engineStorage->activeEnemies) {
-                if (ans == nullptr || getDistanceTo(enemyPtr) < getDistanceTo(ans)) {
+                if ((ans == nullptr || getDistanceTo(enemyPtr) < getDistanceTo(ans))
+                	&& getDistanceTo(enemyPtr) <= storage.getFireDistance()) {
                     ans = enemyPtr;
                 }
             }
