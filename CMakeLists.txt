@@ -8,7 +8,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(nlohmann_json REQUIRED)
 
 add_subdirectory(editor)
-add_subdirectory(engine)
+#add_subdirectory(engine)
 
 add_library(editor_common STATIC
         editor/src/Entity/EnemySample.cpp
