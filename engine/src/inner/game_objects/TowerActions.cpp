@@ -50,17 +50,22 @@ namespace TDEngine {
             return ans;
         }
 
-        void TowerActions::setSample(TowerSample sample) {
-            storage.setName(sample.getName());
-            storage.setDamage(sample.getDamage());
-            storage.setFireRate(sample.getFireRate());
-            storage.setTowerTexturePath(sample.getTowerTexturePath());
+        void TowerActions::setSample(std::shared_ptr<TowerSample> sample) {
+            storage.setName(sample->getName());
+            storage.setDamage(sample->getDamage());
+            storage.setFireRate(sample->getFireRate());
+            storage.setTowerTexturePath(sample->getTowerTexturePath());
         }
 
         void TowerActions::upgradeTower(std::shared_ptr<EngineStorage> engineStorage) {
             if (storage.setUpgradingTo.has_value()) {
             	if (storage.getCost() <= engineStorage->curGameStatus->currentGold) {
-            		setSample(storage.setUpgradingTo.value());
+            		for (auto sample : engineStorage->curProject->getTowers()) {
+            			if (sample->getName() == storage.setUpgradingTo) {
+            				setSample(sample);
+            				storage.timeAfterLastShot = 0;
+            			}
+            		}
             	}
             }
         }

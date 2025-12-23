@@ -10,8 +10,10 @@ namespace TDEngine {
         {
         }
 
-        std::shared_ptr<GameStatus> Engine::gameStep() {
-                // while (solveNextAction());
+        std::shared_ptr<GameStatus> Engine::gameStep(std::shared_ptr<IPlayerAction> action) {
+                if (action != nullptr) {
+	                action->MakeAction();
+                }
                 tickGen.tick(storage);
                 storage->cleanMap();
 				return storage->curGameStatus;
@@ -50,14 +52,6 @@ namespace TDEngine {
         void Engine::endGame() {
         }
 
-        // bool Engine::solveNextAction() {
-        //     std::optional<std::shared_ptr<IPlayerAction>> action = boundaryDT->extractPlayerAction();
-        //     if (action.has_value()) {
-        //         action.value()->MakeAction();
-        //         return true;
-        //     }
-        //     return false;
-        // }
 
     	bool Engine::isPlaying() {
 	        return storage->isPlaying;
