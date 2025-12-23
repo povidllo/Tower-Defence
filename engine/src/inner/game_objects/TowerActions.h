@@ -14,7 +14,7 @@ namespace TDEngine {
             void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
             void attack(std::shared_ptr<EnemyActions> enemy, std::shared_ptr<EngineStorage> engineStorage);
             std::shared_ptr<EnemyActions> findTarget(std::shared_ptr<EngineStorage> engineStorage);
-            void setSample(TowerSample sample);
+            void setSample(std::shared_ptr<TowerSample> sample);
             void upgradeTower(std::shared_ptr<EngineStorage> engineStorage);
 
             Tower storage;

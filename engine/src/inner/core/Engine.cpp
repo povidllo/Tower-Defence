@@ -10,10 +10,13 @@ namespace TDEngine {
         {
         }
 
-        std::shared_ptr<GameStatus> Engine::gameStep() {
-                // while (solveNextAction());
+        std::shared_ptr<GameStatus> Engine::gameStep(std::shared_ptr<IPlayerAction> action) {
+                if (action != nullptr) {
+	                action->MakeAction();
+                }
                 tickGen.tick(storage);
                 storage->cleanMap();
+        		checkForVictory();
 				return storage->curGameStatus;
         }
 
@@ -30,7 +33,6 @@ namespace TDEngine {
 
     	void Engine::initMap() {
         	storage->curWave = 0;
-        	storage->isPlaying = true;
 	        storage->activeAbilities.clear();
         	storage->activeEnemies.clear();
         	storage->activeProjectiles.clear();
@@ -39,6 +41,7 @@ namespace TDEngine {
         	storage->curGameStatus->mapObjects.clear();
 			storage->curGameStatus->currentGold = storage->curMap->getStartCurrency();
         	storage->curGameStatus->currentHp = storage->curMap->getHp();
+        	storage->curGameStatus->status = GameStatus::PLAYING;
 
         	for (const auto& tower : storage->curMap->getSpots()) {
         		storage->addTower(std::make_shared<TowerActions>(
@@ -47,20 +50,11 @@ namespace TDEngine {
         	storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
         }
 
-        void Engine::endGame() {
-        }
-
-        // bool Engine::solveNextAction() {
-        //     std::optional<std::shared_ptr<IPlayerAction>> action = boundaryDT->extractPlayerAction();
-        //     if (action.has_value()) {
-        //         action.value()->MakeAction();
-        //         return true;
-        //     }
-        //     return false;
-        // }
-
-    	bool Engine::isPlaying() {
-	        return storage->isPlaying;
+        void Engine::checkForVictory() {
+			if (storage->activeWaves.size() == 0 &&
+				storage->activeEnemies.size() == 0) {
+				storage->curGameStatus->status = GameStatus::WON;
+			}
         }
 
 

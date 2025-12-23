@@ -6,7 +6,7 @@ namespace TDEngine {
         public:
             explicit Tower(TowerSample sample)
             : TowerSample(std::move(sample)) {}
-            std::optional<TowerSample> setUpgradingTo;
+            std::optional<std::string> setUpgradingTo;
             uint64_t timeAfterLastShot;
         };
     } // Inner

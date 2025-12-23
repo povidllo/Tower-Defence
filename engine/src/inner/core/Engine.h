@@ -11,12 +11,10 @@ namespace TDEngine {
         class Engine {
         public:
             Engine(std::shared_ptr<Project> pSample);
-            std::shared_ptr<GameStatus> gameStep();
+            std::shared_ptr<GameStatus> gameStep(std::shared_ptr<IPlayerAction> action);
             std::shared_ptr<GameStatus> startGame(const std::string& mapName);
         	void initMap();
-            void endGame();
-            bool solveNextAction();
-        	bool isPlaying();
+            void checkForVictory();
         private:
             std::shared_ptr<EngineStorage> storage;
             std::shared_ptr<BoundaryDataTransfer> boundaryDT;

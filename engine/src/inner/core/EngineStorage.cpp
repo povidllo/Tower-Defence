@@ -5,7 +5,7 @@ namespace TDEngine {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
         EngineStorage::EngineStorage(std::shared_ptr<Project> project)
             : curGameStatus(std::make_shared<GameStatus>(GameStatus(0, 0))), curMap(nullptr),
-    		curProject(project), curWave(0), isPlaying(false)
+    		curProject(project), curWave(0)
         {
         }
 
@@ -21,10 +21,6 @@ namespace TDEngine {
             return actings;
         }
 
-        // std::vector<std::shared_ptr<MapObject>> EngineStorage::getAllMapObjects() {
-        //     return mapObjects;
-        // }
-
         void EngineStorage::cleanMap() {
             for (int i = 0; i < activeProjectiles.size(); i++) {
             	auto projectilePtr = activeProjectiles[i];
@@ -32,12 +28,18 @@ namespace TDEngine {
                     removeProjectile(projectilePtr);
                 }
             }
-            for (int i = 0; i < activeEnemies.size(); i++) {
-            	auto enemyPtr = activeEnemies[i];
-                if (!enemyPtr->storage.isAlive) {
-                    removeEnemy(enemyPtr);
-                }
-            }
+        	for (int i = 0; i < activeEnemies.size(); i++) {
+        		auto enemyPtr = activeEnemies[i];
+        		if (!enemyPtr->storage.isAlive) {
+        			removeEnemy(enemyPtr);
+        		}
+        	}
+        	for (int i = 0; i < activeWaves.size(); i++) {
+        		auto wavePtr = activeWaves[i];
+        		if (wavePtr->storage.spawningIndex == wavePtr->storage.getEnemies().size()) {
+        			removeWave(wavePtr);
+        		}
+        	}
         }
 
         void EngineStorage::addProjectile(const std::shared_ptr<Projectile> &projectile) {

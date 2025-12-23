@@ -2,7 +2,7 @@
 
 namespace TDEngine {
     namespace Inner {
-        TowerUpgradeAction::TowerUpgradeAction(TowerSample upgradeTo, std::shared_ptr<TowerActions> tower)
+        TowerUpgradeAction::TowerUpgradeAction(std::string upgradeTo, std::shared_ptr<TowerActions> tower)
             : upgradeTo(upgradeTo), tower(tower) {}
 
         void TowerUpgradeAction::MakeAction() {
