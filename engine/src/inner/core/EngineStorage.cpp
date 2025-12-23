@@ -26,12 +26,14 @@ namespace TDEngine {
         // }
 
         void EngineStorage::cleanMap() {
-            for (auto projectilePtr : activeProjectiles) {
+            for (int i = 0; i < activeProjectiles.size(); i++) {
+            	auto projectilePtr = activeProjectiles[i];
                 if (!projectilePtr->target->storage.isAlive || !projectilePtr->isActive) {
                     removeProjectile(projectilePtr);
                 }
             }
-            for (auto enemyPtr : activeEnemies) {
+            for (int i = 0; i < activeEnemies.size(); i++) {
+            	auto enemyPtr = activeEnemies[i];
                 if (!enemyPtr->storage.isAlive) {
                     removeEnemy(enemyPtr);
                 }

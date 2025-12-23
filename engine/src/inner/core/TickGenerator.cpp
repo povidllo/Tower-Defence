@@ -11,11 +11,14 @@ namespace TDEngine {
             uint64_t tickIntervalTImeMillis =
                 std::chrono::duration_cast<std::chrono::milliseconds>(curTickTime - lastTickTime).count();
 
-            for (auto & acting : engineStorage->getEverythingActing()) {
-                acting->act(tickIntervalTImeMillis, engineStorage);
-            }
+        	if (tickIntervalTImeMillis >= 10) {
+        		// std::cout << "tick interval (millis) : " << tickIntervalTImeMillis << std::endl;
+        		for (auto & acting : engineStorage->getEverythingActing()) {
+        			acting->act(tickIntervalTImeMillis, engineStorage);
+        		}
 
-            lastTickTime = curTickTime;
+        		lastTickTime = curTickTime;
+        	}
         }
 
         void TickGenerator::resetTime(std::chrono::time_point<std::chrono::steady_clock> cur) {
