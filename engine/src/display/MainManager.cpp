@@ -161,6 +161,7 @@ namespace TDEngine::Inner {
 
 		while (timeAccumulator > TIME_PER_FRAME) {
 			gameStatus = engine.gameStep(playerAction);
+			playerAction = nullptr;
 			timeAccumulator -= TIME_PER_FRAME;
 		}
 	}
