@@ -1,30 +1,29 @@
-//
-// Created by Mikle on 13.12.2025.
-//
-
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <iostream>
+#include <SFML/Graphics/Sprite.hpp>
+#include <memory>
 #include "TextureCache.h"
-#include "../inner/game_objects/MapObject.h"
-#include "../inner/game_objects/GameStatus.h"
-
-namespace TDEngine {
-	namespace Inner {
-		class RendererGame {
-		public:
-			TextureCache textureCache;
-			void renderFrame(const std::shared_ptr<GameStatus> &gameStat);
-			RendererGame(sf::RenderWindow &window);
-
-		private:
-			sf::RenderWindow &window;
-		};
-	}
+// Forward declaration, чтобы не тянуть тяжелые хедеры сюда
+namespace TDEngine::Inner {
+	struct GameStatus;
 }
 
+namespace TDEngine::Inner {
+	class RendererGame {
+	public:
+		static constexpr float TILE_SIZE = 32.0f; // Глобальная константа для визуализации
 
-#endif //RENDERER_H
+		explicit RendererGame(sf::RenderWindow &window);
+
+		void renderFrame(const std::shared_ptr<GameStatus> &gameStat);
+
+		// Метод для получения текстуры (прокси к кэшу)
+		const sf::Texture &getTexture(const std::string &path);
+
+	private:
+		sf::RenderWindow &window;
+		TextureCache textureCache;
+		sf::Sprite spriteCache; // Один спрайт для переиспользования (оптимизация)
+	};
+} // namespace TDEngine::Inner

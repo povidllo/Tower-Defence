@@ -1,81 +1,187 @@
-//
-// Created by Mikle on 13.12.2025.
-//
-
 #include "MainManager.h"
-#include <SFML/Graphics/Texture.hpp>
+#include <iostream>
+#include <memory>
 
-namespace TDEngine {
-	namespace Inner {
+namespace TDEngine::Inner {
 
-		std::string MainManager::getMapBackgroundImgPath(const std::string mapName) {
-			for (const auto &map: project.getMaps()) {
-				if (map->getName() == mapName) {
-					return map->getFinalMapImagePath();
+	MainManager::MainManager(Project &proj, unsigned int width, unsigned int height) :
+		project(proj),
+		// Создаем Engine через shared_ptr, как было у вас, но лучше хранить сам объект или unique_ptr
+		engine(std::make_shared<Project>(project)),
+		window(sf::VideoMode(width, height), "Tower Defence", sf::Style::Titlebar | sf::Style::Close),
+		renderer(window) {
+		window.setFramerateLimit(60); // Ограничим FPS, чтобы не жарить CPU
+	}
+
+	std::string MainManager::getMapBackgroundImgPath(const std::string &mapName) {
+		for (const auto &map: project.getMaps()) {
+			if (map->getName() == mapName) {
+				return map->getFinalMapImagePath();
+			}
+		}
+		return "";
+	}
+
+	void MainManager::run(const std::string &mapName) {
+		gameStatus = engine.startGame(mapName);
+
+		// Загрузка фона
+		std::string bgPath = getMapBackgroundImgPath(mapName);
+		backgroundSprite.setTexture(renderer.getTexture(bgPath));
+
+		sf::Clock clock;
+
+		// Игровой цикл
+		while (window.isOpen()) {
+			sf::Time dt = clock.restart(); // Время, прошедшее с прошлого кадра
+
+			processEvents();
+			update(dt);
+			render();
+		}
+	}
+
+	void MainManager::processEvents() {
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
+				window.close();
+			} else if (event.type == sf::Event::MouseButtonPressed) {
+				if (event.mouseButton.button == sf::Mouse::Left) {
+					handleMouseClick(event.mouseButton.x, event.mouseButton.y);
 				}
 			}
+		}
+	}
 
-			return "";
+	void MainManager::handleMouseClick(int mouseX, int mouseY) {
+		// 1. Преобразуем координаты мыши в мировые (важно, если камера будет двигаться)
+		// Для UI, который "приклеен" к экрану, можно использовать mouseX/mouseY напрямую,
+		// но mapPixelToCoords универсальнее.
+		sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
+
+		// --- ШАГ 1: Проверка клика по кнопкам улучшения (UI) ---
+		// Проверяем UI ПЕРЕД проверкой карты, так как UI обычно рисуется поверх.
+		if (selectedTower) {
+			for (const auto &option: currentUpgradeOptions) {
+				if (option.bounds.contains(worldPos)) {
+
+					// ВЫВОД В ТЕРМИНАЛ (То, что вы просили)
+					std::cout << "[ACTION] Tower at {" << selectedTower->positionCoordinates.first << ";"
+							  << selectedTower->positionCoordinates.second << "}"
+							  << " wants to upgrade to: " << option.name << std::endl;
+					TowerUpgradeAction newUpgrade(option.name, std::static_pointer_cast<TowerActions>(selectedTower));
+					playerAction = std::make_shared<TowerUpgradeAction>(
+							option.name, std::static_pointer_cast<TowerActions>(selectedTower));
+
+					// Здесь можно вызвать логику апгрейда:
+					// engine.upgradeTower(selectedTower, option.name);
+
+					// После апгрейда можно сбросить выделение или обновить список
+					// selectedTower = nullptr;
+					// currentUpgradeOptions.clear();
+
+					return; // Прерываем функцию, чтобы не кликнуть сквозь кнопку на карту
+				}
+			}
 		}
 
-		MainManager::MainManager(Project &proj, unsigned int width, unsigned int height) :
-			project(proj), width(width), height(height), engine(std::make_shared<Project>(project)),
-			window(sf::RenderWindow(sf::VideoMode(width, height), "Tower Defence")), renderer(window) {
-			std::cout << "main manager init\n";
-		}
+		// --- ШАГ 2: Проверка клика по карте (выбор башни) ---
+		bool clickedOnTower = false;
 
-		void MainManager::mainLoop(std::string mapName) {
-			std::shared_ptr<GameStatus> gameStatus;
-			gameStatus = engine.startGame(mapName);
-			sf::Sprite mapBackground(renderer.textureCache.getTexture(getMapBackgroundImgPath(mapName)));
-			mapBackground.setPosition(0, 0);
+		for (const auto &obj: gameStatus->mapObjects) {
+			if (obj->type != MapObjectTypes::Tower)
+				continue;
 
-			while (window.isOpen()) {
-				sf::Event event;
-				while (window.pollEvent(event)) {
+			// Рассчитываем позицию объекта на экране
+			float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
+			float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
 
-					if (event.type == sf::Event::Closed)
-						window.close();
+			// Создаем прямоугольник коллизии
+			sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
 
-					if (event.type == sf::Event::MouseButtonPressed) {
-						if (event.mouseButton.button == sf::Mouse::Left) {
+			if (objBounds.contains(worldPos)) {
+				// Мы нашли башню!
+				selectedTower = obj; // Запоминаем её
+				clickedOnTower = true;
 
-							sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-							sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+				std::cout << "Selected tower at " << obj->positionCoordinates.first << ":"
+						  << obj->positionCoordinates.second << std::endl;
 
+				// Очищаем старые кнопки
+				currentUpgradeOptions.clear();
 
-							for (const auto &obj: gameStatus->mapObjects) {
-								if (obj->type != MapObjectTypes::Tower)
-									continue;
+				// Получаем доступ к методам башни (приведение типов)
+				// В вашем коде это было std::static_pointer_cast<TowerActions>
+				// Убедитесь, что MapObject имеет виртуальный деструктор для безопасности!
+				auto towerPtr = std::static_pointer_cast<TowerActions>(obj);
 
-								if (worldPos.x > obj->positionCoordinates.first * 32 &&
-									worldPos.x < obj->positionCoordinates.first * 32 + 32 &&
-									worldPos.y > obj->positionCoordinates.second * 32 &&
-									worldPos.y < obj->positionCoordinates.second * 32 + 32) {
-									std::cout << "tower: " << obj << "\n";
-									std::cout << "by x: " << obj->positionCoordinates.first * 32 + 16
-											  << " | y: " << obj->positionCoordinates.second * 32 + 16 << std::endl;
-									std::cout << "you can upgrade it to \n";
-									auto towerPtr = std::static_pointer_cast<TowerActions>(obj);
-									for (const auto &upg: towerPtr->storage.getUpgradeNames())
-										std::cout << upg << std::endl;
-									break;
-								}
-							}
+				// Формируем список кнопок
+				int index = 0;
+				float uiStartX = 600.0f; // Координата X меню справа
+
+				for (const auto &upgName: towerPtr->storage.getUpgradeNames()) {
+					for (const auto &towerConfig: project.getTowers()) {
+						if (towerConfig->getName() == upgName) {
+
+							// Рассчитываем позицию кнопки
+							float btnY = static_cast<float>(index) * 40.0f; // Шаг 40 пикселей
+							sf::FloatRect btnRect(uiStartX, btnY, 32.0f, 32.0f);
+
+							// Добавляем опцию с готовыми координатами
+							currentUpgradeOptions.push_back(
+									{&renderer.getTexture(towerConfig->getTowerTexturePath()), upgName, btnRect});
+
+							index++;
+							break;
 						}
 					}
 				}
-
-				window.clear();
-
-				window.draw(mapBackground);
-				renderer.renderFrame(gameStatus);
-
-				window.display();
-
-				gameStatus = engine.gameStep(nullptr);
+				return; // Выходим, так как нашли башню
 			}
 		}
 
-	} // namespace Inner
-} // namespace TDEngine
+		// --- ШАГ 3: Клик в пустоту ---
+		// Если кликнули не по UI и не по башне — снимаем выделение
+		if (!clickedOnTower) {
+			selectedTower = nullptr;
+			currentUpgradeOptions.clear();
+			std::cout << "Selection cleared." << std::endl;
+		}
+	}
+
+	void MainManager::update(sf::Time dt) {
+		// Здесь передаем dt в движок, если он поддерживает (gameStep(dt)).
+		// Если движок дискретный (шаговый), то вызываем gameStep раз в N времени.
+		// Пример для пошагового вызова:
+
+		static sf::Time timeAccumulator = sf::Time::Zero;
+		timeAccumulator += dt;
+		const sf::Time TIME_PER_FRAME = sf::seconds(1.f / 60.f); // Логика на 60 гц
+
+		while (timeAccumulator > TIME_PER_FRAME) {
+			gameStatus = engine.gameStep(playerAction);
+			timeAccumulator -= TIME_PER_FRAME;
+		}
+	}
+
+	void MainManager::render() {
+		window.clear(); // Цвет очистки (например, черный)
+
+		window.draw(backgroundSprite);
+		renderer.renderFrame(gameStatus);
+
+		// Отрисовка UI
+		sf::Sprite uiSprite;
+		for (const auto &opt: currentUpgradeOptions) {
+			if (opt.texture) {
+				uiSprite.setTexture(*opt.texture);
+				// Используем координаты из сохраненного bounds
+				uiSprite.setPosition(opt.bounds.left, opt.bounds.top);
+				window.draw(uiSprite);
+			}
+		}
+
+		window.display();
+	}
+} // namespace TDEngine::Inner

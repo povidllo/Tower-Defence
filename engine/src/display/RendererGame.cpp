@@ -1,43 +1,31 @@
-//
-// Created by Mikle on 13.12.2025.
-//
-
 #include "RendererGame.h"
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Sprite.hpp>
+#include "../inner/game_objects/GameStatus.h"
+#include "../inner/game_objects/MapObject.h"
 
-#include "../inner/core/Engine.h"
+namespace TDEngine::Inner {
 
-namespace TDEngine {
-	namespace Inner {
-		RendererGame::RendererGame(sf::RenderWindow &window) : window(window) { std::cout << "It is init\n"; }
+	RendererGame::RendererGame(sf::RenderWindow &window) : window(window) { std::cout << "Renderer initialized\n"; }
 
-		void RendererGame::renderFrame(const std::shared_ptr<GameStatus> &gameStat) {
+	const sf::Texture &RendererGame::getTexture(const std::string &path) { return textureCache.getTexture(path); }
 
-			for (const auto neededType: std::vector<MapObjectTypes>{MapObjectTypes::Tower, MapObjectTypes::Enemy,
-																	MapObjectTypes::Projectile}) {
-				for (const auto &obj: gameStat->mapObjects) {
+	void RendererGame::renderFrame(const std::shared_ptr<GameStatus> &gameStat) {
+		if (!gameStat)
+			return;
 
-					if (obj->type != neededType) {
-						continue;
-					}
+		// Оптимизация: вместо создания спрайта в цикле, используем один и меняем его свойства
+		for (const auto &obj: gameStat->mapObjects) {
+			// Если у вас есть порядок отрисовки (земля -> башни -> враги -> пули),
+			// его лучше обеспечить сортировкой вектора mapObjects в Engine,
+			// либо здесь, но один раз.
 
-					// ВАЖНО: textureCache должен быть доступен
-					sf::Sprite sprite(textureCache.getTexture(obj->texturePath));
+			const auto &texture = textureCache.getTexture(obj->texturePath);
+			spriteCache.setTexture(texture, true); // true сбрасывает rect текстуры
 
-					// ВРЕМЕННО: Создаем заглушку, если textureCache не подключен в этом примере
-					// sf::RectangleShape sprite({32.f, 32.f});
-					// sprite.setFillColor(sf::Color::Red);
+			// Позиционирование
+			spriteCache.setPosition(static_cast<float>(obj->positionCoordinates.first) * TILE_SIZE,
+									static_cast<float>(obj->positionCoordinates.second) * TILE_SIZE);
 
-					sprite.setPosition((float) obj->positionCoordinates.first * 32.0f,
-									   (float) obj->positionCoordinates.second * 32.0f);
-					window.draw(sprite);
-				}
-			}
-
-			// 3. (Опционально) Если нужно рисовать UI поверх черных полос или поверх карты:
-			// window.setView(window.getDefaultView());
-			// drawUI();
+			window.draw(spriteCache);
 		}
-	} // namespace Inner
-} // namespace TDEngine
+	}
+} // namespace TDEngine::Inner
