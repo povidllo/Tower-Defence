@@ -16,6 +16,7 @@ namespace TDEngine {
                 }
                 tickGen.tick(storage);
                 storage->cleanMap();
+        		checkForVictory();
 				return storage->curGameStatus;
         }
 
@@ -32,7 +33,6 @@ namespace TDEngine {
 
     	void Engine::initMap() {
         	storage->curWave = 0;
-        	storage->isPlaying = true;
 	        storage->activeAbilities.clear();
         	storage->activeEnemies.clear();
         	storage->activeProjectiles.clear();
@@ -41,6 +41,7 @@ namespace TDEngine {
         	storage->curGameStatus->mapObjects.clear();
 			storage->curGameStatus->currentGold = storage->curMap->getStartCurrency();
         	storage->curGameStatus->currentHp = storage->curMap->getHp();
+        	storage->curGameStatus->status = GameStatus::PLAYING;
 
         	for (const auto& tower : storage->curMap->getSpots()) {
         		storage->addTower(std::make_shared<TowerActions>(
@@ -49,12 +50,11 @@ namespace TDEngine {
         	storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
         }
 
-        void Engine::endGame() {
-        }
-
-
-    	bool Engine::isPlaying() {
-	        return storage->isPlaying;
+        void Engine::checkForVictory() {
+			if (storage->activeWaves.size() == 0 &&
+				storage->activeEnemies.size() == 0) {
+				storage->curGameStatus->status = GameStatus::WON;
+			}
         }
 
 
