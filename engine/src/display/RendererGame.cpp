@@ -14,7 +14,6 @@ namespace TDEngine::Inner {
 	const sf::Texture &RendererGame::getTexture(const std::string &path) { return textureCache.getTexture(path); }
 
 	void RendererGame::loadFont() {
-		// Расширенный список путей к шрифтам
 		std::vector<std::string> fontPaths = {"../../../example_project/Manrope-VariableFont_wght.ttf"};
 
 		for (const auto &path: fontPaths) {
@@ -28,7 +27,6 @@ namespace TDEngine::Inner {
 	}
 
 	sf::Vector2f RendererGame::getMapOffset(const sf::Vector2u &windowSize, const sf::Vector2u &bgSize) {
-		// Зона карты (между сайдбаром и топбаром) с учетом паддингов
 		float startX = UI_PADDING;
 		float startY = UI_TOP_BAR_HEIGHT + UI_PADDING;
 		float areaW = UI_SIDEBAR_X - 2 * UI_PADDING;
@@ -43,40 +41,38 @@ namespace TDEngine::Inner {
 		return {std::floor(offsetX), std::floor(offsetY)};
 	}
 
-	// --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ СКРУГЛЕННЫХ ПРЯМОУГОЛЬНИКОВ ---
 	void RendererGame::drawRoundedBox(float x, float y, float w, float h, sf::Color fillColor, sf::Color outlineColor,
 									  const std::string &title) {
-		// Создаем ConvexShape для скругленного прямоугольника
 		sf::ConvexShape rRect;
-		rRect.setPointCount(40); // Чем больше, тем плавнее углы
+		rRect.setPointCount(40);
 
 		float r = CORNER_RADIUS;
-		// Если прямоугольник слишком маленький, уменьшаем радиус
+
 		if (w < 2 * r)
 			r = w / 2;
 		if (h < 2 * r)
 			r = h / 2;
 
 		int idx = 0;
-		// Верхний правый угол
+
 		for (int i = 0; i < 10; ++i) {
 			float ang = 0 + i * (90.0f / 9.0f);
 			float rad = ang * 3.14159f / 180.0f;
 			rRect.setPoint(idx++, {x + w - r + r * std::cos(rad), y + r + r * std::sin(rad - 3.14159f / 2)});
 		}
-		// Нижний правый
+
 		for (int i = 0; i < 10; ++i) {
 			float ang = 90 + i * (90.0f / 9.0f);
 			float rad = ang * 3.14159f / 180.0f;
 			rRect.setPoint(idx++, {x + w - r + r * std::cos(rad), y + h - r + r * std::sin(rad - 3.14159f / 2)});
 		}
-		// Нижний левый
+
 		for (int i = 0; i < 10; ++i) {
 			float ang = 180 + i * (90.0f / 9.0f);
 			float rad = ang * 3.14159f / 180.0f;
 			rRect.setPoint(idx++, {x + r + r * std::cos(rad), y + h - r + r * std::sin(rad - 3.14159f / 2)});
 		}
-		// Верхний левый
+
 		for (int i = 0; i < 10; ++i) {
 			float ang = 270 + i * (90.0f / 9.0f);
 			float rad = ang * 3.14159f / 180.0f;
@@ -88,7 +84,6 @@ namespace TDEngine::Inner {
 		rRect.setOutlineThickness(2.0f);
 		window.draw(rRect);
 
-		// Рисуем заголовок, если есть
 		if (!title.empty() && fontLoaded) {
 			textCache.setFont(font);
 			textCache.setString(title);
@@ -99,7 +94,6 @@ namespace TDEngine::Inner {
 			textCache.setPosition(x + w / 2.0f, y + 8.0f);
 			window.draw(textCache);
 
-			// Линия под заголовком (укороченная)
 			sf::RectangleShape line(sf::Vector2f(w - 30, 1));
 			line.setPosition(x + 15, y + 35);
 			line.setFillColor(sf::Color(100, 100, 100));
@@ -110,17 +104,13 @@ namespace TDEngine::Inner {
 	void RendererGame::renderScene(const std::shared_ptr<GameStatus> &gameStat, const sf::Sprite &background) {
 		window.setView(window.getDefaultView());
 
-		// 1. Рисуем "Контейнер" игровой зоны (рамка)
 		float zoneX = UI_PADDING;
 		float zoneY = UI_TOP_BAR_HEIGHT + UI_PADDING;
 		float zoneW = UI_SIDEBAR_X - 2 * UI_PADDING;
 		float zoneH = static_cast<float>(window.getSize().y) - UI_TOP_BAR_HEIGHT - 2 * UI_PADDING;
 
-		// Темный фон под картой
 		drawRoundedBox(zoneX, zoneY, zoneW, zoneH, sf::Color(25, 25, 30), sf::Color(60, 60, 65));
 
-		// 2. Рисуем карту с клиппингом (через glScissor или просто центрируя)
-		// Для простоты просто рисуем карту поверх, предполагая, что она влезает или обрезается окном
 		sf::Vector2u bgSize = background.getTexture() ? background.getTexture()->getSize() : sf::Vector2u(0, 0);
 		sf::Vector2f offset = getMapOffset(window.getSize(), bgSize);
 
@@ -165,9 +155,8 @@ namespace TDEngine::Inner {
 			textCache.setCharacterSize(22);
 			textCache.setStyle(sf::Text::Bold);
 
-			// HP
 			textCache.setString("HP: " + std::to_string(gameStat->currentHp));
-			// Выравнивание текста по вертикали (центрирование относительно бара)
+
 			sf::FloatRect hpBounds = textCache.getLocalBounds();
 			textCache.setOrigin(0, hpBounds.top + hpBounds.height / 2.0f);
 			textCache.setPosition(statX + 20.f, statY + statH / 2.0f);
@@ -175,7 +164,6 @@ namespace TDEngine::Inner {
 			textCache.setFillColor(sf::Color(235, 80, 80));
 			window.draw(textCache);
 
-			// Gold
 			float nextX = statX + 40.f + hpBounds.width + 20.0f;
 			textCache.setString("Gold: " + std::to_string(gameStat->currentGold));
 
@@ -187,7 +175,6 @@ namespace TDEngine::Inner {
 			window.draw(textCache);
 		}
 
-		// --- 2. Right Sidebar ---
 		float sideX = UI_SIDEBAR_X + UI_PADDING;
 		float sideY = UI_PADDING;
 		float sideW = winW - UI_SIDEBAR_X - 2 * UI_PADDING;
@@ -195,28 +182,23 @@ namespace TDEngine::Inner {
 
 		drawRoundedBox(sideX, sideY, sideW, sideH, sf::Color(35, 37, 43), sf::Color(80, 80, 90), "ACTIONS");
 
-		// Отрисовка кнопок внутри Sidebar
 		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 		sf::Vector2f worldMouse = window.mapPixelToCoords(mousePos);
 
 		for (const auto &opt: upgradeOptions) {
 			bool hover = opt.bounds.contains(worldMouse);
 
-			// Цвета для кнопки
 			sf::Color bodyColor = hover ? sf::Color(70, 80, 100) : sf::Color(55, 55, 60);
 			sf::Color borderColor = hover ? sf::Color::White : sf::Color(120, 120, 130);
 
-			// Рисуем кнопку как скругленный прямоугольник (всю область)
 			drawRoundedBox(opt.bounds.left, opt.bounds.top, opt.bounds.width, opt.bounds.height, bodyColor, borderColor,
 						   "");
 
 			float paddingInside = 5.0f;
 			float iconSize = opt.bounds.height - (paddingInside * 2);
 
-			// Иконка (слева внутри кнопки)
 			if (opt.texture) {
 				sf::Sprite icon(*opt.texture);
-				// Масштабируем иконку, чтобы она вписалась в квадрат слева
 				float scaleX = iconSize / opt.texture->getSize().x;
 				float scaleY = iconSize / opt.texture->getSize().y;
 				icon.setScale(scaleX, scaleY);
@@ -224,19 +206,16 @@ namespace TDEngine::Inner {
 				window.draw(icon);
 			}
 
-			// Текст кнопки (справа от иконки, внутри кнопки)
 			if (fontLoaded) {
 				textCache.setString(opt.name);
-				textCache.setCharacterSize(14); // Чуть меньше шрифт, чтобы влезало
+				textCache.setCharacterSize(14);
 				textCache.setStyle(sf::Text::Regular);
 				textCache.setFillColor(sf::Color(220, 220, 220));
 
 				sf::FloatRect textBounds = textCache.getLocalBounds();
 
-				// Центрируем текст по вертикали относительно кнопки
 				textCache.setOrigin(0, textBounds.top + textBounds.height / 2.0f);
 
-				// Позиция: отступ слева (padding + icon + отступ)
 				float textX = opt.bounds.left + paddingInside + iconSize + 10.0f;
 				float textY = opt.bounds.top + opt.bounds.height / 2.0f;
 
@@ -249,7 +228,6 @@ namespace TDEngine::Inner {
 		window.setView(window.getDefaultView());
 		window.clear(sf::Color(30, 32, 36));
 
-		// Заголовок
 		if (fontLoaded) {
 			textCache.setFont(font);
 			textCache.setString("SELECT MAP");
@@ -262,24 +240,20 @@ namespace TDEngine::Inner {
 			window.draw(textCache);
 		}
 
-		// Кнопки
 		for (const auto &btn: buttons) {
-			// Рисуем скругленную кнопку меню
 			sf::Color fill = btn.isHovered ? sf::Color(70, 90, 120) : sf::Color(50, 55, 60);
 			sf::Color outline = btn.isHovered ? sf::Color::White : sf::Color(100, 100, 100);
 
 			drawRoundedBox(btn.bounds.left, btn.bounds.top, btn.bounds.width, btn.bounds.height, fill, outline, "");
 
-			// Рисуем текст
 			if (fontLoaded) {
 				textCache.setFont(font);
 				textCache.setString(btn.text);
 				textCache.setCharacterSize(24);
-				textCache.setFillColor(sf::Color::White); // Явный белый цвет
+				textCache.setFillColor(sf::Color::White);
 				textCache.setStyle(sf::Text::Regular);
 
 				sf::FloatRect bTextRect = textCache.getLocalBounds();
-				// Центрирование текста внутри кнопки
 				textCache.setOrigin(bTextRect.left + bTextRect.width / 2.0f, bTextRect.top + bTextRect.height / 2.0f);
 				textCache.setPosition(btn.bounds.left + btn.bounds.width / 2.0f,
 									  btn.bounds.top + btn.bounds.height / 2.0f);

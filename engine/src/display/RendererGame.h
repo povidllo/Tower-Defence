@@ -25,13 +25,11 @@ namespace TDEngine::Inner {
 	public:
 		static constexpr float TILE_SIZE = 32.0f;
 
-		// Логические границы (для расчетов кликов)
 		static constexpr float UI_SIDEBAR_X = 600.0f;
-		static constexpr float UI_TOP_BAR_HEIGHT = 60.0f; // Чуть увеличим для красоты
+		static constexpr float UI_TOP_BAR_HEIGHT = 60.0f;
 
-		// Визуальные настройки
-		static constexpr float UI_PADDING = 10.0f; // Отступ между панелями
-		static constexpr float CORNER_RADIUS = 15.0f; // Радиус скругления
+		static constexpr float UI_PADDING = 10.0f;
+		static constexpr float CORNER_RADIUS = 15.0f;
 
 		explicit RendererGame(sf::RenderWindow &window);
 
@@ -55,7 +53,6 @@ namespace TDEngine::Inner {
 
 		void loadFont();
 
-		// Новый метод для рисования красивых скругленных панелей
 		void drawRoundedBox(float x, float y, float w, float h, sf::Color fillColor, sf::Color outlineColor,
 							const std::string &title = "");
 	};

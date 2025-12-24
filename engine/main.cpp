@@ -28,9 +28,9 @@ int main(int argc, char *argv[]) {
 
 	try {
 		Project proj(pJson);
-		// Увеличили ширину для сайдбара
+
 		TDEngine::Inner::MainManager mainManager(proj, 850, 600);
-		mainManager.run(); // Запуск без конкретной карты
+		mainManager.run();
 	} catch (const std::exception &e) {
 		std::cerr << "[CRITICAL ERROR] " << e.what() << std::endl;
 		return 1;
