@@ -14,7 +14,8 @@ namespace TDEngine::Inner {
 	const sf::Texture &RendererGame::getTexture(const std::string &path) { return textureCache.getTexture(path); }
 
 	void RendererGame::loadFont() {
-		std::vector<std::string> fontPaths = {"../../../example_project/Manrope-VariableFont_wght.ttf"};
+	std::vector<std::string> fontPaths = {"../../../example_project/Manrope-VariableFont_wght.ttf"};
+
 
 		for (const auto &path: fontPaths) {
 			if (std::filesystem::exists(path) && font.loadFromFile(path)) {

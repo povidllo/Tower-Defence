@@ -13,15 +13,21 @@ namespace TDEngine {
         }
 
         void WaveActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
+        	if (storage.spawningIndex == storage.getEnemies().size() - 1 &&
+				storage.enemiesSpawned == storage.getEnemies()[storage.spawningIndex].second) {
+        			if (storage.timeAfterLastSpawn >= storage.getTimeForWave() * 1000){
+        				summonNextWave(engineStorage);
+        			}
+        			else {
+        				storage.timeAfterLastSpawn += timePassedMillis;
+        			}
+        		return;
+				}
             if (storage.timeAfterLastSpawn < storage.getEnemySpawnInterval() * 1000) {
                 storage.timeAfterLastSpawn += timePassedMillis;
             }
             if (storage.timeAfterLastSpawn >= storage.getEnemySpawnInterval() * 1000 && storage.spawningIndex < storage.getEnemies().size()) {
-                if (storage.spawningIndex == storage.getEnemies().size() - 1 &&
-                    storage.enemiesSpawned == storage.getEnemies()[storage.spawningIndex].second) {
-                    summonNextWave(engineStorage);
-                    return;
-                }
+
 
                 if (storage.enemiesSpawned == storage.getEnemies()[storage.spawningIndex].second) {
                     storage.spawningIndex++;

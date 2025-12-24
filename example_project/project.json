@@ -1,7 +1,7 @@
 {
     "name": "testTDproject",
     "path": "/home/maksim/testTDproject",
-    "lastSaveDate": 1766207049,
+    "lastSaveDate": 1766505835,
     "maps": [
         {
             "name": "map_1",
@@ -246,6 +246,79 @@
                 }
             ],
             "finalMapImagePath": "map_map_1.png"
+        },
+        {
+            "name": "map_2",
+            "height": 10,
+            "width": 10,
+            "startCurrency": 0.0,
+            "hp": 0.0,
+            "waves": [],
+            "spots": [
+                {
+                    "name": "spot",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 6.0,
+                    "y": 1.0,
+                    "projectileSpeed": 0.0,
+                    "fireDistance": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower"
+                    ]
+                },
+                {
+                    "name": "spot_1",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 3.0,
+                    "y": 7.0,
+                    "projectileSpeed": 0.0,
+                    "fireDistance": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower_2",
+                        "tower"
+                    ]
+                },
+                {
+                    "name": "spot_2",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 9.0,
+                    "y": 5.0,
+                    "projectileSpeed": 0.0,
+                    "fireDistance": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower_3",
+                        "tower_2"
+                    ]
+                },
+                {
+                    "name": "spot_3",
+                    "damage": 0.0,
+                    "fireRate": 0.0,
+                    "cost": 0.0,
+                    "x": 7.0,
+                    "y": 9.0,
+                    "projectileSpeed": 0.0,
+                    "fireDistance": 0.0,
+                    "towerTexturePath": "resources/87.png",
+                    "projectileTexturePath": "",
+                    "nextUpgrade": [
+                        "tower_3"
+                    ]
+                }
+            ],
+            "finalMapImagePath": "map_map_2.png"
         }
     ],
     "towers": [
@@ -256,7 +329,11 @@
             "cost": 10.0,
             "x": 0.0,
             "y": 0.0,
+<<<<<<< Updated upstream
             "projectileSpeed": 6.0,
+=======
+            "projectileSpeed": 5.0,
+>>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_1.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -273,7 +350,11 @@
             "cost": 11.0,
             "x": 0.0,
             "y": 0.0,
+<<<<<<< Updated upstream
             "projectileSpeed": 6.0,
+=======
+            "projectileSpeed": 5.0,
+>>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_2.png",
             "projectileTexturePath": "resources/projectile_2.png",
@@ -288,7 +369,11 @@
             "cost": 12.0,
             "x": 0.0,
             "y": 0.0,
+<<<<<<< Updated upstream
             "projectileSpeed": 6.0,
+=======
+            "projectileSpeed": 5.0,
+>>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_3.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -303,7 +388,11 @@
             "cost": 13.0,
             "x": 0.0,
             "y": 0.0,
+<<<<<<< Updated upstream
             "projectileSpeed": 6.0,
+=======
+            "projectileSpeed": 5.0,
+>>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_4.png",
             "projectileTexturePath": "resources/projectile_2.png",
@@ -319,7 +408,11 @@
             "cost": 14.0,
             "x": 0.0,
             "y": 0.0,
+<<<<<<< Updated upstream
             "projectileSpeed": 6.0,
+=======
+            "projectileSpeed": 7.0,
+>>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_5.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -332,7 +425,11 @@
             "cost": 15.0,
             "x": 0.0,
             "y": 0.0,
+<<<<<<< Updated upstream
             "projectileSpeed": 6.0,
+=======
+            "projectileSpeed": 7.0,
+>>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_6.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -345,7 +442,11 @@
             "cost": 16.0,
             "x": 0.0,
             "y": 0.0,
+<<<<<<< Updated upstream
             "projectileSpeed": 6.0,
+=======
+            "projectileSpeed": 8.0,
+>>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_7.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -359,7 +460,11 @@
             "damage": 10.0,
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
+<<<<<<< Updated upstream
             "speed": 1.5,
+=======
+            "speed": 2.0,
+>>>>>>> Stashed changes
             "enemyTexturePath": "resources/enemy_1.png"
         },
         {
@@ -368,7 +473,11 @@
             "damage": 10.0,
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
+<<<<<<< Updated upstream
             "speed": 3.0,
+=======
+            "speed": 2.0,
+>>>>>>> Stashed changes
             "enemyTexturePath": "resources/enemy_2.png"
         },
         {
@@ -377,7 +486,11 @@
             "damage": 10.0,
             "moneyFallsOut": 13.0,
             "moneyFallsOutPercentage": 100.0,
+<<<<<<< Updated upstream
             "speed": 2.5,
+=======
+            "speed": 2.0,
+>>>>>>> Stashed changes
             "enemyTexturePath": "resources/enemy_3.png"
         }
     ]
