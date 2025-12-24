@@ -15,7 +15,7 @@ namespace TDEngine::Inner {
 
 	void RendererGame::loadFont() {
 		// Расширенный список путей к шрифтам
-		std::vector<std::string> fontPaths = {"../../../example_project/Manrope-VariableFont_wght.ttf"};
+		std::vector<std::string> fontPaths = {"../../example_project/Manrope-VariableFont_wght.ttf"};
 
 		for (const auto &path: fontPaths) {
 			if (std::filesystem::exists(path) && font.loadFromFile(path)) {
