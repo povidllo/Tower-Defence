@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <algorithm>
 
 #include "ProjectController.h"
 #include "TextureManager.h"
@@ -39,6 +40,10 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	connect(ui->editSpotButton, &QPushButton::clicked, this, &MapEditor::onEditSpotButtonClicked);
 
 	connect(ui->editCurrentWavePathButton, &QPushButton::clicked, this, &MapEditor::onEditPathButtonClicked);
+
+	connect(ui->enableOnlineCheckBox, &QCheckBox::toggled, this, &MapEditor::onEnableOnlineCheckBoxToggled);
+	connect(ui->maxPlayersSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MapEditor::onMaxPlayersSpinBoxChanged);
+	connect(ui->saveOnlineSettingsButton, &QPushButton::clicked, this, &MapEditor::onSaveOnlineSettingsButtonClicked);
 
 	ui->editorStack->setCurrentIndex(0);
 	ui->modeList->setCurrentRow(0);
@@ -138,6 +143,43 @@ void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 	} else if (mode == "Settings") {
 		ui->editorStack->setCurrentIndex(3);
 		fillPropertiesForm();
+	} else if (mode == "Online options") {
+		ui->editorStack->setCurrentIndex(4);
+		
+		auto currentMap = mapController->getCurrentMap();
+		if (currentMap) {
+			bool onlineEnabled = currentMap->isOnlineEnabled();
+			int maxPlayers = currentMap->getMaxPlayers();
+			
+			ui->enableOnlineCheckBox->blockSignals(true);
+			ui->enableOnlineCheckBox->setChecked(onlineEnabled);
+			ui->enableOnlineCheckBox->blockSignals(false);
+			
+			ui->maxPlayersSpinBox->blockSignals(true);
+			ui->maxPlayersSpinBox->setValue(maxPlayers);
+			ui->maxPlayersSpinBox->blockSignals(false);
+
+			ui->maxPlayersSpinBox->setEnabled(onlineEnabled);
+			ui->playerSpotsLabel->setEnabled(onlineEnabled);
+			ui->playerSpotsScrollArea->setEnabled(onlineEnabled);
+			
+			if (onlineEnabled) {
+				onMaxPlayersSpinBoxChanged(maxPlayers);
+				
+				const auto &playerSpots = currentMap->getPlayerSpots();
+				for (int playerIdx = 0; playerIdx < playerSpots.size() && playerIdx < playerSpotCheckboxes.size(); ++playerIdx) {
+					for (int spotIdx = 0; spotIdx < playerSpotCheckboxes[playerIdx].size(); ++spotIdx) {
+						if (spotIdx < currentMap->getSpots().size()) {
+							const auto &spotName = currentMap->getSpots()[spotIdx]->getName();
+							bool isSelected = std::find(playerSpots[playerIdx].begin(), 
+													   playerSpots[playerIdx].end(), 
+													   spotName) != playerSpots[playerIdx].end();
+							playerSpotCheckboxes[playerIdx][spotIdx]->setChecked(isSelected);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -899,4 +941,96 @@ void MapEditor::onSaveMapSettingsButtonClicked() {
 
 	qDebug() << "Map settings saved: HP =" << currentMap->getHp()
 			<< "Start Currency =" << currentMap->getStartCurrency();
+}
+
+void MapEditor::onEnableOnlineCheckBoxToggled(bool checked) {
+	ui->maxPlayersSpinBox->setEnabled(checked);
+	ui->playerSpotsLabel->setEnabled(checked);
+	ui->playerSpotsScrollArea->setEnabled(checked);
+	
+	if (checked) {
+		onMaxPlayersSpinBoxChanged(ui->maxPlayersSpinBox->value());
+	} else {
+		playerSpotCheckboxes.clear();
+		QLayoutItem *item;
+		while ((item = ui->playerSpotsContainer->layout()->takeAt(0)) != nullptr) {
+			delete item->widget();
+			delete item;
+		}
+	}
+}
+
+void MapEditor::onMaxPlayersSpinBoxChanged(int value) {
+	if (!ui->enableOnlineCheckBox->isChecked()) return;
+
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) return;
+
+	const auto &spots = currentMap->getSpots();
+	
+	playerSpotCheckboxes.clear();
+	QLayoutItem *item;
+	while ((item = ui->playerSpotsContainer->layout()->takeAt(0)) != nullptr) {
+		delete item->widget();
+		delete item;
+	}
+
+	playerSpotCheckboxes.resize(value);
+
+	for (int playerIdx = 0; playerIdx < value; ++playerIdx) {
+		QGroupBox *playerGroup = new QGroupBox(QString("Player %1 Spots").arg(playerIdx + 1));
+		QVBoxLayout *playerLayout = new QVBoxLayout(playerGroup);
+
+		playerSpotCheckboxes[playerIdx].resize(spots.size());
+
+		for (int spotIdx = 0; spotIdx < spots.size(); ++spotIdx) {
+			const auto &spot = spots[spotIdx];
+			QString spotName = QString::fromStdString(spot->getName());
+
+			QCheckBox *checkbox = new QCheckBox(spotName);
+			playerLayout->addWidget(checkbox);
+			playerSpotCheckboxes[playerIdx][spotIdx] = checkbox;
+		}
+
+		ui->playerSpotsContainer->layout()->addWidget(playerGroup);
+	}
+
+	auto layout = qobject_cast<QVBoxLayout*>(ui->playerSpotsContainer->layout());
+	if (layout) {
+		layout->addStretch();
+	}
+}
+
+void MapEditor::onSaveOnlineSettingsButtonClicked() {
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) return;
+
+	bool onlineEnabled = ui->enableOnlineCheckBox->isChecked();
+	int maxPlayers = ui->maxPlayersSpinBox->value();
+
+	currentMap->setOnlineEnabled(onlineEnabled);
+	currentMap->setMaxPlayers(maxPlayers);
+
+	std::vector<std::vector<std::string>> playerSpots;
+	playerSpots.resize(maxPlayers);
+
+	for (int playerIdx = 0; playerIdx < maxPlayers; ++playerIdx) {
+		for (int spotIdx = 0; spotIdx < playerSpotCheckboxes[playerIdx].size(); ++spotIdx) {
+			if (playerSpotCheckboxes[playerIdx][spotIdx]->isChecked()) {
+				const auto &allSpots = currentMap->getSpots();
+				if (spotIdx < allSpots.size()) {
+					playerSpots[playerIdx].push_back(allSpots[spotIdx]->getName());
+				}
+			}
+		}
+	}
+
+	currentMap->setPlayerSpots(playerSpots);
+
+	QMessageBox::information(this, "Success", 
+		QString("Online settings saved!\nOnline: %1\nMax Players: %2")
+			.arg(onlineEnabled ? "Enabled" : "Disabled")
+			.arg(maxPlayers));
+
+	qDebug() << "Online settings saved for map:" << QString::fromStdString(currentMap->getName());
 }

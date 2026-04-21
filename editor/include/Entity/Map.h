@@ -1,6 +1,8 @@
 #ifndef TOWERDEFENCE_MAP_H
 #define TOWERDEFENCE_MAP_H
 #include <utility>
+#include <vector>
+#include <string>
 
 #include "Serializable.h"
 #include "TowerSample.h"
@@ -48,6 +50,18 @@ public:
 
 	std::string getFinalMapImagePath();
 
+	bool isOnlineEnabled() const { return onlineEnabled; }
+
+	void setOnlineEnabled(bool enabled) { onlineEnabled = enabled; }
+
+	int getMaxPlayers() const { return maxPlayers; }
+
+	void setMaxPlayers(int count) { maxPlayers = count; }
+
+	std::vector<std::vector<std::string>> &getPlayerSpots() { return playerSpots; }
+
+	void setPlayerSpots(const std::vector<std::vector<std::string>> &spots) { playerSpots = spots; }
+
 private:
 	std::string name;
 	int height{0};
@@ -60,6 +74,10 @@ private:
 	std::vector<std::shared_ptr<WaveSample> > waves;
 	std::vector<std::shared_ptr<TowerSample> > spots;
 	std::vector<std::vector<int> > tiles;
+
+	bool onlineEnabled{false};
+	int maxPlayers{1};
+	std::vector<std::vector<std::string>> playerSpots; // playerSpots[playerIndex] = list of spot names
 };
 
 #endif // TOWERDEFENCE_MAP_H

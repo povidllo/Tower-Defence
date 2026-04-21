@@ -1,6 +1,7 @@
 #ifndef TOWERDEFENCE_MAPEDITOR_H
 #define TOWERDEFENCE_MAPEDITOR_H
 
+#include <QCheckBox>
 #include <QWidget>
 #include <qgraphicsitem.h>
 
@@ -56,6 +57,12 @@ private slots:
 
 	void onSaveMapSettingsButtonClicked();
 
+	void onEnableOnlineCheckBoxToggled(bool checked);
+
+	void onMaxPlayersSpinBoxChanged(int value);
+
+	void onSaveOnlineSettingsButtonClicked();
+
 	// void onDeleteTextureButtonClicked();
 
 private:
@@ -80,6 +87,8 @@ private:
 	std::vector<QGraphicsItem *> pathGraphicsItems;
 
 	QMap<QString, QWidget *> m_propertyEditors;
+
+	std::vector<std::vector<QCheckBox *>> playerSpotCheckboxes;
 
 protected:
 	bool eventFilter(QObject *obj, QEvent *event) override;

@@ -2,6 +2,7 @@
 
 Map::Map(std::string name, const int height, const int width) : name(std::move(name)), height(height), width(width),
 																tiles(height, std::vector<int>(width, 0)) {
+	playerSpots.resize(1);
 }
 
 Map::Map(const json &j) { Map::fromJson(j); }
@@ -22,6 +23,21 @@ json Map::toJson() const {
 		spotArrays.push_back(spot->toJson());
 	}
 
+	json onlineConfig = {
+		{"enabled", onlineEnabled},
+		{"maxPlayers", maxPlayers}
+	};
+
+	json playerSpotsArray = json::array();
+	for (const auto &playerSpotList : playerSpots) {
+		json spotsForPlayer = json::array();
+		for (const auto &spotName : playerSpotList) {
+			spotsForPlayer.push_back(spotName);
+		}
+		playerSpotsArray.push_back(spotsForPlayer);
+	}
+	onlineConfig["playerSpots"] = playerSpotsArray;
+
 	return {
 		{"name", name},
 		{"height", height},
@@ -30,7 +46,8 @@ json Map::toJson() const {
 		{"hp", hp},
 		{"waves", wavesArray},
 		{"spots", spotArrays},
-		{"tiles", tileArray}
+		{"tiles", tileArray},
+		{"online", onlineConfig}
 	};
 }
 
@@ -70,6 +87,28 @@ void Map::fromJson(const json &j) {
 			auto spot = std::make_shared<TowerSample>(spotJson);
 			spots.push_back(spot);
 		}
+	}
+
+	if (j.contains("online") && j["online"].is_object()) {
+		const auto &onlineJson = j["online"];
+		onlineEnabled = onlineJson.value("enabled", false);
+		maxPlayers = onlineJson.value("maxPlayers", 1);
+
+		playerSpots.clear();
+		if (onlineJson.contains("playerSpots") && onlineJson["playerSpots"].is_array()) {
+			for (const auto &playerSpotsJson : onlineJson["playerSpots"]) {
+				std::vector<std::string> spotsForPlayer;
+				if (playerSpotsJson.is_array()) {
+					for (const auto &spotName : playerSpotsJson) {
+						spotsForPlayer.push_back(spotName.get<std::string>());
+					}
+				}
+				playerSpots.push_back(spotsForPlayer);
+			}
+		}
+	} else {
+		playerSpots.clear();
+		playerSpots.resize(maxPlayers);
 	}
 }
 
