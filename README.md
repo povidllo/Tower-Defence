@@ -11,10 +11,4 @@ project/
 в гейм статус нужно добавить сигналы, игра упала, игра завершилась победой/поражением
 создать заглушку в TextureCache
 
-lol
-
-Cthulhu
-
-yog sothoth
-
 "/System/Library/Fonts/Supplemental/Apple\ Chancery.ttf"
