@@ -241,7 +241,7 @@ void ProjectEditor::openProjectClicked() {
 		projectController = std::make_shared<ProjectController>(path.toStdString());
 	} catch (const std::filesystem::filesystem_error &e) {
 		std::cerr << e.what() << std::endl;
-		qDebug() << "Ooops, some mistakes with file system " << path.toStdString();
+		qDebug() << "Ooops, some mistakes with file system " << path;
 	}
 	qDebug() << "created project";
 	commonSetUp();

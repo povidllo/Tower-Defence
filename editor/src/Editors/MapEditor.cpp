@@ -7,6 +7,7 @@
 #include <QCheckBox>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDialogButtonBox>
 #include <QPushButton>
 
 #include "ProjectController.h"
@@ -114,7 +115,7 @@ void MapEditor::onMapItemClicked(const int index) {
 		return;
 	}
 	const std::string mapName = ui->mapComboBox->currentText().toStdString();
-	qDebug() << "map name: " << mapName;
+	qDebug() << "map name: " << QString::fromStdString(mapName);
 	qDebug() << "item clicked";
 	mapController->setCurrentMap(mapName);
 
@@ -127,7 +128,7 @@ void MapEditor::onMapItemClicked(const int index) {
 
 void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 	const std::string mode = item->text().toStdString();
-	qDebug() << "mode: " << mode;
+	qDebug() << "mode: " << QString::fromStdString(mode);
 	if (mode == "Tiles") {
 		ui->editorStack->setCurrentIndex(0);
 	} else if (mode == "Waves & Paths") {
@@ -218,7 +219,7 @@ void MapEditor::onAddWaveButtonClicked() {
 }
 
 void MapEditor::onDeleteWaveButtonClicked() {
-	qDebug() << "deleting wave " << currentWaveName;
+	qDebug() << "deleting wave " << QString::fromStdString(currentWaveName);
 	if (currentWaveName == "") {
 		return;
 	}
@@ -229,7 +230,7 @@ void MapEditor::onDeleteWaveButtonClicked() {
 
 void MapEditor::onWaveItemClicked(QListWidgetItem *item) {
 	auto waveName = item->text().toStdString();
-	qDebug() << "wave " << waveName;
+	qDebug() << "wave " << QString::fromStdString(waveName);
 
 	if (waveName != "") {
 		currentWaveName = waveName;
@@ -668,7 +669,7 @@ void MapEditor::onSpotItemClicked(QListWidgetItem *item) {
 		return;
 	}
 	const std::string spotName = item->text().toStdString();
-	qDebug() << "spot name: " << spotName;
+	qDebug() << "spot name: " << QString::fromStdString(spotName);
 	qDebug() << "item clicked";
 
 	currentSpot = spotName;

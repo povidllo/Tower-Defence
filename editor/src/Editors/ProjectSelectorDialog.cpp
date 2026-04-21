@@ -46,7 +46,7 @@ void ProjectSelectorDialog::createProject(const QString &path, const QString &na
 		this->close();
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << std::endl;
-		qDebug() << "Ooops, some mistakes" << path.toStdString();
+		qDebug() << "Ooops, some mistakes" << path;
 	}
 }
 
@@ -58,6 +58,6 @@ void ProjectSelectorDialog::loadProject(const QString &path) {
 		this->close();
 	} catch (const std::filesystem::filesystem_error &e) {
 		std::cerr << e.what() << std::endl;
-		qDebug() << "Ooops, some mistakes with file system " << path.toStdString();
+		qDebug() << "Ooops, some mistakes with file system " << path;
 	}
 }

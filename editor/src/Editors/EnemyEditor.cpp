@@ -41,7 +41,7 @@ void EnemyEditor::addEnemy() const {
 
 void EnemyEditor::onItemClicked(const QListWidgetItem *item) {
 	const std::string enemyName = item->text().toStdString();
-	qDebug() << "enemy name: " << enemyName;
+	qDebug() << "enemy name: " << QString::fromStdString(enemyName);
 	qDebug() << "item clicked";
 	enemyController->setCurrentEnemy(enemyName);
 
@@ -82,7 +82,7 @@ void EnemyEditor::onSaveButtonClicked() {
 
 	auto enemies = enemyController->getEnemyNames();
 	for (const auto &name: enemies) {
-		qDebug() << "   enemy name: " << name;
+		qDebug() << "   enemy name: " << QString::fromStdString(name);
 	}
 
 	updateEnemyList();

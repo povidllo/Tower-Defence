@@ -1,6 +1,7 @@
 #include "TowerEditor.h"
 #include <QCheckBox>
 #include <QDoubleSpinBox>
+#include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QLineEdit>
 #include <QMessageBox>
@@ -57,7 +58,7 @@ void TowerEditor::onAddTowerButtonClicked() {
 
 void TowerEditor::onItemClicked(const QListWidgetItem *item) {
 	const std::string towerName = item->text().toStdString();
-	qDebug() << "tower name: " << towerName;
+	qDebug() << "tower name: " << QString::fromStdString(towerName);
 	qDebug() << "item clicked";
 	towerController->setCurrentTower(towerName);
 
@@ -88,7 +89,7 @@ void TowerEditor::onSaveButtonClicked() {
 
 	auto towers = towerController->getTowerNames();
 	for (const auto &name: towers) {
-		qDebug() << "   tower name: " << name;
+		qDebug() << "   tower name: " << QString::fromStdString(name);
 	}
 
 	updateTowerList();
