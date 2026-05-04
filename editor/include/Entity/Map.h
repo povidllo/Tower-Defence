@@ -1,14 +1,14 @@
 #ifndef TOWERDEFENCE_MAP_H
 #define TOWERDEFENCE_MAP_H
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
-#include <string>
 
 #include "Serializable.h"
+#include "Team.h"
 #include "TowerSample.h"
 #include "WaveSample.h"
-
-class QWidget;
 
 class Map : protected ISerializable {
 public:
@@ -62,7 +62,21 @@ public:
 
 	void setPlayerSpots(const std::vector<std::vector<std::string>> &spots) { playerSpots = spots; }
 
+	std::vector<std::shared_ptr<Team> > &getTeams() { return teams; }
+
+	const std::vector<std::shared_ptr<Team> > &getTeams() const { return teams; }
+
+	void syncOnlineTeamsWithPlayerCount(int effectiveMaxPlayers, bool resizePlayerSpots);
+
+	[[nodiscard]] int findTeamIndexForPlayer(const std::string &playerId) const;
+
+	void applyPlayerTeamAssignments(const std::vector<int> &playerIndexToTeamIndex);
+
+	static constexpr int getMaxOnlineTeams() { return 5; }
+
 private:
+	void clampTeamsToMax();
+
 	std::string name;
 	int height{0};
 	int width{0};
@@ -78,6 +92,7 @@ private:
 	bool onlineEnabled{false};
 	int maxPlayers{1};
 	std::vector<std::vector<std::string>> playerSpots; // playerSpots[playerIndex] = list of spot names
+	std::vector<std::shared_ptr<Team> > teams;
 };
 
 #endif // TOWERDEFENCE_MAP_H

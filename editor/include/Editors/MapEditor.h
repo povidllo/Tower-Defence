@@ -2,6 +2,7 @@
 #define TOWERDEFENCE_MAPEDITOR_H
 
 #include <QCheckBox>
+#include <QComboBox>
 #include <QWidget>
 #include <qgraphicsitem.h>
 
@@ -63,6 +64,8 @@ private slots:
 
 	void onSaveOnlineSettingsButtonClicked();
 
+	void onAddTeamButtonClicked();
+
 	// void onDeleteTextureButtonClicked();
 
 private:
@@ -89,6 +92,12 @@ private:
 	QMap<QString, QWidget *> m_propertyEditors;
 
 	std::vector<std::vector<QCheckBox *>> playerSpotCheckboxes;
+
+	std::vector<QComboBox *> playerTeamCombos;
+
+	void rebuildPlayerTeamAssignmentRows();
+
+	void updateAddTeamButtonState();
 
 protected:
 	bool eventFilter(QObject *obj, QEvent *event) override;

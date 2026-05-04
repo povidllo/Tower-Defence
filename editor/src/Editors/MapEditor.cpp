@@ -9,9 +9,14 @@
 #include <QMessageBox>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QComboBox>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <algorithm>
 
+#include "Map.h"
 #include "ProjectController.h"
+#include "Team.h"
 #include "TextureManager.h"
 #include "TowerController.h"
 #include "WaveEditor.h"
@@ -44,6 +49,7 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	connect(ui->enableOnlineCheckBox, &QCheckBox::toggled, this, &MapEditor::onEnableOnlineCheckBoxToggled);
 	connect(ui->maxPlayersSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MapEditor::onMaxPlayersSpinBoxChanged);
 	connect(ui->saveOnlineSettingsButton, &QPushButton::clicked, this, &MapEditor::onSaveOnlineSettingsButtonClicked);
+	connect(ui->addTeamButton, &QPushButton::clicked, this, &MapEditor::onAddTeamButtonClicked);
 
 	ui->editorStack->setCurrentIndex(0);
 	ui->modeList->setCurrentRow(0);
@@ -160,6 +166,9 @@ void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 			ui->maxPlayersSpinBox->blockSignals(false);
 
 			ui->maxPlayersSpinBox->setEnabled(onlineEnabled);
+			ui->teamsLabel->setEnabled(onlineEnabled);
+			ui->teamAssignmentContainer->setEnabled(onlineEnabled);
+			updateAddTeamButtonState();
 			ui->playerSpotsLabel->setEnabled(onlineEnabled);
 			ui->playerSpotsScrollArea->setEnabled(onlineEnabled);
 			
@@ -178,6 +187,8 @@ void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 						}
 					}
 				}
+			} else {
+				rebuildPlayerTeamAssignmentRows();
 			}
 		}
 	}
@@ -945,9 +956,18 @@ void MapEditor::onSaveMapSettingsButtonClicked() {
 
 void MapEditor::onEnableOnlineCheckBoxToggled(bool checked) {
 	ui->maxPlayersSpinBox->setEnabled(checked);
+	ui->teamsLabel->setEnabled(checked);
+	ui->teamAssignmentContainer->setEnabled(checked);
 	ui->playerSpotsLabel->setEnabled(checked);
 	ui->playerSpotsScrollArea->setEnabled(checked);
-	
+
+	if (auto m = mapController->getCurrentMap()) {
+		m->setOnlineEnabled(checked);
+		if (checked) {
+			m->syncOnlineTeamsWithPlayerCount(ui->maxPlayersSpinBox->value(), false);
+		}
+	}
+
 	if (checked) {
 		onMaxPlayersSpinBoxChanged(ui->maxPlayersSpinBox->value());
 	} else {
@@ -957,7 +977,9 @@ void MapEditor::onEnableOnlineCheckBoxToggled(bool checked) {
 			delete item->widget();
 			delete item;
 		}
+		rebuildPlayerTeamAssignmentRows();
 	}
+	updateAddTeamButtonState();
 }
 
 void MapEditor::onMaxPlayersSpinBoxChanged(int value) {
@@ -965,6 +987,8 @@ void MapEditor::onMaxPlayersSpinBoxChanged(int value) {
 
 	auto currentMap = mapController->getCurrentMap();
 	if (!currentMap) return;
+
+	currentMap->syncOnlineTeamsWithPlayerCount(value, false);
 
 	const auto &spots = currentMap->getSpots();
 	
@@ -999,6 +1023,8 @@ void MapEditor::onMaxPlayersSpinBoxChanged(int value) {
 	if (layout) {
 		layout->addStretch();
 	}
+
+	rebuildPlayerTeamAssignmentRows();
 }
 
 void MapEditor::onSaveOnlineSettingsButtonClicked() {
@@ -1010,6 +1036,18 @@ void MapEditor::onSaveOnlineSettingsButtonClicked() {
 
 	currentMap->setOnlineEnabled(onlineEnabled);
 	currentMap->setMaxPlayers(maxPlayers);
+
+	if (onlineEnabled) {
+		currentMap->syncOnlineTeamsWithPlayerCount(maxPlayers, true);
+		if (static_cast<int>(playerTeamCombos.size()) == maxPlayers) {
+			std::vector<int> teamPick;
+			teamPick.reserve(maxPlayers);
+			for (int i = 0; i < maxPlayers; ++i) {
+				teamPick.push_back(playerTeamCombos[static_cast<size_t>(i)]->currentIndex());
+			}
+			currentMap->applyPlayerTeamAssignments(teamPick);
+		}
+	}
 
 	std::vector<std::vector<std::string>> playerSpots;
 	playerSpots.resize(maxPlayers);
@@ -1033,4 +1071,64 @@ void MapEditor::onSaveOnlineSettingsButtonClicked() {
 			.arg(maxPlayers));
 
 	qDebug() << "Online settings saved for map:" << QString::fromStdString(currentMap->getName());
+}
+
+void MapEditor::onAddTeamButtonClicked() {
+	auto m = mapController->getCurrentMap();
+	if (!m || !ui->enableOnlineCheckBox->isChecked()) {
+		return;
+	}
+	if (static_cast<int>(m->getTeams().size()) >= Map::getMaxOnlineTeams()) {
+		return;
+	}
+	const int next = static_cast<int>(m->getTeams().size()) + 1;
+	m->getTeams().push_back(std::make_shared<Team>("Team " + std::to_string(next)));
+	rebuildPlayerTeamAssignmentRows();
+}
+
+void MapEditor::rebuildPlayerTeamAssignmentRows() {
+	QLayoutItem *it;
+	while ((it = ui->teamAssignmentLayout->takeAt(0)) != nullptr) {
+		if (it->widget() != nullptr) {
+			delete it->widget();
+		}
+		delete it;
+	}
+	playerTeamCombos.clear();
+
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap || !ui->enableOnlineCheckBox->isChecked()) {
+		return;
+	}
+
+	const int n = ui->maxPlayersSpinBox->value();
+	const auto &tlist = currentMap->getTeams();
+	for (int i = 0; i < n; ++i) {
+		auto *row = new QWidget(ui->teamAssignmentContainer);
+		auto *hl = new QHBoxLayout(row);
+		hl->setContentsMargins(0, 0, 0, 0);
+		hl->addWidget(new QLabel(QStringLiteral("Player %1").arg(i + 1), row));
+		auto *combo = new QComboBox(row);
+		for (const auto &team : tlist) {
+			combo->addItem(QString::fromStdString(team->getTeamName()));
+		}
+		if (combo->count() > 0) {
+			const std::string pid = "player_" + std::to_string(i + 1);
+			const int ti = currentMap->findTeamIndexForPlayer(pid);
+			const int maxIdx = combo->count() - 1;
+			combo->setCurrentIndex(std::clamp(ti, 0, maxIdx));
+		}
+		hl->addWidget(combo, 1);
+		ui->teamAssignmentLayout->addWidget(row);
+		playerTeamCombos.push_back(combo);
+	}
+
+	updateAddTeamButtonState();
+}
+
+void MapEditor::updateAddTeamButtonState() {
+	auto *m = mapController->getCurrentMap().get();
+	const bool online = ui->enableOnlineCheckBox->isChecked();
+	const bool canAdd = online && m != nullptr && static_cast<int>(m->getTeams().size()) < Map::getMaxOnlineTeams();
+	ui->addTeamButton->setEnabled(canAdd);
 }
