@@ -11,6 +11,7 @@ public:
 
 	Player(std::string playerName, const double startCurrency, const double hp) :
 		playerName{std::move(playerName)}, startCurrency{startCurrency}, hp{hp} {}
+	Player(const json &j);
 
 	json toJson() const override;
 	void fromJson(const json &j) override;

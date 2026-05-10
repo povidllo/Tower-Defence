@@ -1,12 +1,19 @@
 #include "MapController.h"
 #include "ProjectController.h"
 
+namespace {
+std::shared_ptr<TowerSample> findProjectTower(ProjectController *projectController, const std::string &towerName) {
+	for (const auto &t : projectController->getTowers()) {
+		if (t->getName() == towerName) {
+			return t;
+		}
+	}
+	return nullptr;
+}
+} // namespace
+
 MapController::MapController(ProjectController *projectController) : projectController(projectController),
 																	currentMap(nullptr) {
-}
-
-ProjectController *MapController::getProjectController() {
-	return projectController;
 }
 
 void MapController::setCurrentMap(const std::string &name) {
@@ -153,12 +160,23 @@ std::shared_ptr<WaveSample> MapController::getWave(const std::string &name) {
 	return nullptr;
 }
 
-void MapController::addSpot(const std::string &name, int tx, int ty) {
+bool MapController::addSpot(const std::string &instanceName, const std::string &towerTemplateName, int tx, int ty) {
+	const auto tmpl = findProjectTower(projectController, towerTemplateName);
+	if (!tmpl) {
+		return false;
+	}
+	auto spot = std::make_shared<TowerSample>(instanceName, tx, ty);
+	spot->setTowerTemplateName(towerTemplateName);
+	spot->applyTemplate(*tmpl);
 	auto &spots = currentMap->getSpots();
-	spots.push_back(std::make_shared<TowerSample>(name, tx, ty));
+	spots.push_back(spot);
+	return true;
 }
 
 bool MapController::spotExist(const std::string &name) {
+	if (!currentMap) {
+		return false;
+	}
 	const auto &spots = currentMap->getSpots();
 	for (const auto &spot: spots) {
 		if (spot->getName() == name) {
@@ -169,7 +187,7 @@ bool MapController::spotExist(const std::string &name) {
 }
 
 bool MapController::removeSpot(const std::string &name) {
-	if (!spotExist(name)) {
+	if (!currentMap || !spotExist(name)) {
 		return false;
 	}
 	auto &spots = currentMap->getSpots();
@@ -183,6 +201,9 @@ bool MapController::removeSpot(const std::string &name) {
 }
 
 std::shared_ptr<TowerSample> MapController::getSpot(const std::string &name) {
+	if (!currentMap) {
+		return nullptr;
+	}
 	auto &spots = currentMap->getSpots();
 	for (const auto &spot: spots) {
 		if (spot->getName() == name) {

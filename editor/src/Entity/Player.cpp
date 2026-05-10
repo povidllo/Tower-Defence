@@ -1,5 +1,9 @@
 #include "Player.h"
 
+Player::Player(const json &j) {
+	fromJson(j);
+}
+
 Player::json Player::toJson() const {
 	return {
 		{"playerName", playerName},

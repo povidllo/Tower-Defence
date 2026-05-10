@@ -74,6 +74,8 @@ public:
 
 	static constexpr int getMaxOnlineTeams() { return 5; }
 
+	void hydrateSpotTemplates(const std::vector<std::shared_ptr<TowerSample> > &projectTowers);
+
 private:
 	void clampTeamsToMax();
 

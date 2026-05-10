@@ -40,6 +40,8 @@ public:
 
 	void updateUpgradesAfterRemoving(const std::string &name);
 
+	void rehydrateMapSpotsFromTemplates() const;
+
 private:
 	ProjectController *projectController;
 	std::shared_ptr<TowerSample> currentTower;

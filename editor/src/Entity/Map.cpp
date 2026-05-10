@@ -173,7 +173,7 @@ void Map::syncOnlineTeamsWithPlayerCount(const int effectiveMaxPlayers, const bo
 		int occurrences = 0;
 		for (const auto &t : teams) {
 			for (const auto &p : t->getPlayers()) {
-				if (p == id) {
+				if (p.getPlayerName() == id) {
 					++occurrences;
 				}
 			}
@@ -195,7 +195,7 @@ void Map::syncOnlineTeamsWithPlayerCount(const int effectiveMaxPlayers, const bo
 int Map::findTeamIndexForPlayer(const std::string &playerId) const {
 	for (size_t ti = 0; ti < teams.size(); ++ti) {
 		for (const auto &p : teams[ti]->getPlayers()) {
-			if (p == playerId) {
+			if (p.getPlayerName() == playerId) {
 				return static_cast<int>(ti);
 			}
 		}
@@ -228,13 +228,13 @@ void Map::clampTeamsToMax() {
 		for (const auto &pid : from->getPlayers()) {
 			bool already = false;
 			for (const auto &p : into->getPlayers()) {
-				if (p == pid) {
+				if (p.getPlayerName() == pid.getPlayerName()) {
 					already = true;
 					break;
 				}
 			}
 			if (!already) {
-				into->addPlayer(pid);
+				into->addPlayer(pid.getPlayerName());
 			}
 		}
 		teams.pop_back();
@@ -273,4 +273,18 @@ void Map::setStartCurrency(double currency) {
 
 std::string Map::getFinalMapImagePath() {
 	return finalMapImagePath;
+}
+
+void Map::hydrateSpotTemplates(const std::vector<std::shared_ptr<TowerSample> > &projectTowers) {
+	for (auto &spot : spots) {
+		if (!spot->isMapSpotReference()) {
+			continue;
+		}
+		for (const auto &t : projectTowers) {
+			if (t->getName() == spot->getTowerTemplateName()) {
+				spot->applyTemplate(*t);
+				break;
+			}
+		}
+	}
 }
