@@ -65,6 +65,10 @@ public:
 
 	void removeTowersFromSpots(const std::string &towerName);
 
+	void renameTowerTemplateOnMapSpots(const std::string &oldName, const std::string &newName) const;
+
+	void rehydrateAllMapSpots() const;
+
 	std::shared_ptr<Project> getCurrentProject() const;
 
 private:

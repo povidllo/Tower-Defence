@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="widget">
      <layout class="QVBoxLayout" name="leftLayout">
       <property name="spacing">
        <number>0</number>
@@ -60,7 +60,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="rightPanel" native="true">
+    <widget class="QWidget" name="rightPanel">
      <layout class="QVBoxLayout" name="rightLayout">
       <property name="spacing">
        <number>0</number>
@@ -94,7 +94,7 @@
            <bool>true</bool>
           </property>
           <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
+          <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -111,7 +111,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="widget">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
@@ -177,10 +177,10 @@
           <item>
            <layout class="QFormLayout" name="propertiesForm">
             <property name="labelAlignment">
-             <set>Qt::AlignmentFlag::AlignRight</set>
+             <set>Qt::AlignRight</set>
             </property>
             <property name="formAlignment">
-             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
             </property>
            </layout>
           </item>
@@ -220,9 +220,9 @@
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0">
+          <property name="sizeHint">
            <size>
             <width>40</width>
             <height>20</height>

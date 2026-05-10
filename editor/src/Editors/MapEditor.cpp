@@ -9,8 +9,14 @@
 #include <QMessageBox>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QComboBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <algorithm>
 
+#include "Map.h"
 #include "ProjectController.h"
+#include "Team.h"
 #include "TextureManager.h"
 #include "TowerController.h"
 #include "WaveEditor.h"
@@ -39,6 +45,11 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	connect(ui->editSpotButton, &QPushButton::clicked, this, &MapEditor::onEditSpotButtonClicked);
 
 	connect(ui->editCurrentWavePathButton, &QPushButton::clicked, this, &MapEditor::onEditPathButtonClicked);
+
+	connect(ui->enableOnlineCheckBox, &QCheckBox::toggled, this, &MapEditor::onEnableOnlineCheckBoxToggled);
+	connect(ui->maxPlayersSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MapEditor::onMaxPlayersSpinBoxChanged);
+	connect(ui->saveOnlineSettingsButton, &QPushButton::clicked, this, &MapEditor::onSaveOnlineSettingsButtonClicked);
+	connect(ui->addTeamButton, &QPushButton::clicked, this, &MapEditor::onAddTeamButtonClicked);
 
 	ui->editorStack->setCurrentIndex(0);
 	ui->modeList->setCurrentRow(0);
@@ -138,6 +149,48 @@ void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 	} else if (mode == "Settings") {
 		ui->editorStack->setCurrentIndex(3);
 		fillPropertiesForm();
+	} else if (mode == "Online options") {
+		ui->editorStack->setCurrentIndex(4);
+		
+		auto currentMap = mapController->getCurrentMap();
+		if (currentMap) {
+			bool onlineEnabled = currentMap->isOnlineEnabled();
+			int maxPlayers = currentMap->getMaxPlayers();
+			
+			ui->enableOnlineCheckBox->blockSignals(true);
+			ui->enableOnlineCheckBox->setChecked(onlineEnabled);
+			ui->enableOnlineCheckBox->blockSignals(false);
+			
+			ui->maxPlayersSpinBox->blockSignals(true);
+			ui->maxPlayersSpinBox->setValue(maxPlayers);
+			ui->maxPlayersSpinBox->blockSignals(false);
+
+			ui->maxPlayersSpinBox->setEnabled(onlineEnabled);
+			ui->teamsLabel->setEnabled(onlineEnabled);
+			ui->teamAssignmentContainer->setEnabled(onlineEnabled);
+			updateAddTeamButtonState();
+			ui->playerSpotsLabel->setEnabled(onlineEnabled);
+			ui->playerSpotsScrollArea->setEnabled(onlineEnabled);
+			
+			if (onlineEnabled) {
+				onMaxPlayersSpinBoxChanged(maxPlayers);
+				
+				const auto &playerSpots = currentMap->getPlayerSpots();
+				for (int playerIdx = 0; playerIdx < playerSpots.size() && playerIdx < playerSpotCheckboxes.size(); ++playerIdx) {
+					for (int spotIdx = 0; spotIdx < playerSpotCheckboxes[playerIdx].size(); ++spotIdx) {
+						if (spotIdx < currentMap->getSpots().size()) {
+							const auto &spotName = currentMap->getSpots()[spotIdx]->getName();
+							bool isSelected = std::find(playerSpots[playerIdx].begin(), 
+													   playerSpots[playerIdx].end(), 
+													   spotName) != playerSpots[playerIdx].end();
+							playerSpotCheckboxes[playerIdx][spotIdx]->setChecked(isSelected);
+						}
+					}
+				}
+			} else {
+				rebuildPlayerTeamAssignmentRows();
+			}
+		}
 	}
 }
 
@@ -264,36 +317,50 @@ void MapEditor::onAddSpotButtonClicked() {
 		QMessageBox::warning(this, "Error", "No map selected!");
 		return;
 	}
+	const auto towerNames = mapController->getAvailableTowers();
+	if (towerNames.empty()) {
+		QMessageBox::warning(this, tr("Error"),
+							tr("Create at least one tower in the Tower editor before placing map spots."));
+		return;
+	}
+
 	std::string baseName = "spot";
 	int counter = 1;
-
 	while (mapController->spotExist(baseName)) {
 		baseName = "spot_" + std::to_string(counter);
 		counter++;
 	}
 
 	QDialog dialog(this);
-	dialog.setWindowTitle("Add Spot");
+	dialog.setWindowTitle(tr("Add spot"));
 
-	QVBoxLayout *layout = new QVBoxLayout(&dialog);
+	auto *layout = new QVBoxLayout(&dialog);
 
-	QHBoxLayout *xLayout = new QHBoxLayout();
-	QLabel *xLabel = new QLabel("X (tile):");
-	QSpinBox *xSpin = new QSpinBox();
+	auto *towerLabel = new QLabel(tr("Tower (from project):"), &dialog);
+	auto *towerCombo = new QComboBox(&dialog);
+	for (const auto &tn : towerNames) {
+		towerCombo->addItem(QString::fromStdString(tn));
+	}
+	layout->addWidget(towerLabel);
+	layout->addWidget(towerCombo);
+
+	auto *xLayout = new QHBoxLayout();
+	auto *xLabel = new QLabel(tr("X (tile):"), &dialog);
+	auto *xSpin = new QSpinBox(&dialog);
 	xSpin->setRange(0, currentMap->getWidth() - 1);
 	xLayout->addWidget(xLabel);
 	xLayout->addWidget(xSpin);
 	layout->addLayout(xLayout);
 
-	QHBoxLayout *yLayout = new QHBoxLayout();
-	QLabel *yLabel = new QLabel("Y (tile):");
-	QSpinBox *ySpin = new QSpinBox();
+	auto *yLayout = new QHBoxLayout();
+	auto *yLabel = new QLabel(tr("Y (tile):"), &dialog);
+	auto *ySpin = new QSpinBox(&dialog);
 	ySpin->setRange(0, currentMap->getHeight() - 1);
 	yLayout->addWidget(yLabel);
 	yLayout->addWidget(ySpin);
 	layout->addLayout(yLayout);
 
-	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+	auto *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
 	connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
 	connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
 	layout->addWidget(buttonBox);
@@ -302,27 +369,30 @@ void MapEditor::onAddSpotButtonClicked() {
 		return;
 	}
 
-	int x = xSpin->value();
-	int y = ySpin->value();
+	const int x = xSpin->value();
+	const int y = ySpin->value();
+	const std::string templateName = towerCombo->currentText().toStdString();
 
 	if (y < 0 || y >= currentMap->getHeight() || x < 0 || x >= currentMap->getWidth()) {
 		return;
 	}
 	const auto &spots = currentMap->getSpots();
-	auto it = std::find_if(spots.begin(), spots.end(),
-							[x, y, this](const std::shared_ptr<TowerSample> &s) {
-								return s->getX() == x && s->getY() == y && s->getName() != currentWaveName;
-							});
-
+	const auto it = std::find_if(spots.begin(), spots.end(), [x, y](const std::shared_ptr<TowerSample> &s) {
+		return s->getX() == x && s->getY() == y;
+	});
 	if (it != spots.end()) {
 		QMessageBox::warning(this, "Error", "Spot already exists at this position!");
 		return;
 	}
 
-	mapController->addSpot(baseName, x, y);
+	if (!mapController->addSpot(baseName, templateName, x, y)) {
+		QMessageBox::warning(this, tr("Error"), tr("Tower template not found."));
+		return;
+	}
 	refreshMapView();
 	updateSpotList();
-	qDebug() << "Added spot at (" << x << "," << y << ") with tower:" << QString::fromStdString(baseName);
+	qDebug() << "Added spot at (" << x << "," << y << ") instance" << QString::fromStdString(baseName)
+			<< "tower" << QString::fromStdString(templateName);
 }
 
 void MapEditor::updateSpotList() {
@@ -333,7 +403,12 @@ void MapEditor::updateSpotList() {
 
 	for (const auto &spot: currentMap->getSpots()) {
 		QString text = QString::fromStdString(spot->getName());
-		ui->spotsList->addItem(text);
+		if (spot->isMapSpotReference()) {
+			text += QStringLiteral(" [") + QString::fromStdString(spot->getTowerTemplateName()) + QStringLiteral("]");
+		}
+		auto *listItem = new QListWidgetItem(text);
+		listItem->setData(Qt::UserRole, QString::fromStdString(spot->getName()));
+		ui->spotsList->addItem(listItem);
 	}
 }
 
@@ -353,8 +428,91 @@ void MapEditor::onEditSpotButtonClicked() {
 	}
 
 	auto spot = mapController->getSpot(currentSpot);
+	if (!spot) {
+		QMessageBox::warning(this, tr("Error"), tr("Spot not found (internal id). Reselect the spot in the list."));
+		return;
+	}
 	int currentX = spot->getX();
 	int currentY = spot->getY();
+
+	if (spot->isMapSpotReference()) {
+		QDialog refDialog(this);
+		refDialog.setWindowTitle(tr("Edit map spot"));
+		refDialog.resize(420, 320);
+		auto *layout = new QVBoxLayout(&refDialog);
+
+		auto *info = new QLabel(
+			tr("This spot references a tower from the project. Stats come from the Tower editor; here you can change position and which tower is used."),
+			&refDialog);
+		info->setWordWrap(true);
+		layout->addWidget(info);
+
+		auto *xLayout = new QHBoxLayout();
+		auto *xLabel = new QLabel(tr("X (tile):"), &refDialog);
+		auto *xSpin = new QSpinBox(&refDialog);
+		xSpin->setRange(0, mapController->getCurrentMap()->getWidth() - 1);
+		xSpin->setValue(currentX);
+		xLayout->addWidget(xLabel);
+		xLayout->addWidget(xSpin);
+		layout->addLayout(xLayout);
+
+		auto *yLayout = new QHBoxLayout();
+		auto *yLabel = new QLabel(tr("Y (tile):"), &refDialog);
+		auto *ySpin = new QSpinBox(&refDialog);
+		ySpin->setRange(0, mapController->getCurrentMap()->getHeight() - 1);
+		ySpin->setValue(currentY);
+		yLayout->addWidget(yLabel);
+		yLayout->addWidget(ySpin);
+		layout->addLayout(yLayout);
+
+		auto *towerLabel = new QLabel(tr("Tower:"), &refDialog);
+		auto *towerCombo = new QComboBox(&refDialog);
+		const auto names = mapController->getAvailableTowers();
+		for (size_t i = 0; i < names.size(); ++i) {
+			towerCombo->addItem(QString::fromStdString(names[i]));
+			if (names[i] == spot->getTowerTemplateName()) {
+				towerCombo->setCurrentIndex(static_cast<int>(i));
+			}
+		}
+		layout->addWidget(towerLabel);
+		layout->addWidget(towerCombo);
+
+		auto *bb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &refDialog);
+		connect(bb, &QDialogButtonBox::accepted, &refDialog, &QDialog::accept);
+		connect(bb, &QDialogButtonBox::rejected, &refDialog, &QDialog::reject);
+		layout->addWidget(bb);
+
+		if (refDialog.exec() != QDialog::Accepted) {
+			return;
+		}
+
+		const int newX = xSpin->value();
+		const int newY = ySpin->value();
+		const auto &spotsCheck = mapController->getCurrentMap()->getSpots();
+		const auto clash = std::find_if(spotsCheck.begin(), spotsCheck.end(),
+										[newX, newY, this](const std::shared_ptr<TowerSample> &s) {
+											return s->getX() == newX && s->getY() == newY && s->getName() != currentSpot;
+										});
+		if (clash != spotsCheck.end()) {
+			QMessageBox::warning(this, "Error", "Spot already exists at this position!");
+			return;
+		}
+
+		spot->setX(newX);
+		spot->setY(newY);
+		const std::string newTpl = towerCombo->currentText().toStdString();
+		spot->setTowerTemplateName(newTpl);
+		for (const auto &t : mapController->getProjectController()->getTowers()) {
+			if (t->getName() == newTpl) {
+				spot->applyTemplate(*t);
+				break;
+			}
+		}
+
+		refreshMapView();
+		updateSpotList();
+		return;
+	}
 
 	QDialog dialog(this);
 	dialog.setWindowTitle("Edit Spot");
@@ -640,7 +798,11 @@ void MapEditor::refreshMapView() {
 						tileSize * 2 / 3, tileSize * 2 / 3,
 						QPen(Qt::blue, 4), QBrush(QColor(0, 0, 255, 80)));
 
-		QGraphicsTextItem *text = scene->addText(QString::fromStdString(spot->getName()));
+		QString spotLabel = QString::fromStdString(spot->getName());
+		if (spot->isMapSpotReference()) {
+			spotLabel += QStringLiteral("\n[") + QString::fromStdString(spot->getTowerTemplateName()) + QStringLiteral("]");
+		}
+		QGraphicsTextItem *text = scene->addText(spotLabel);
 		text->setDefaultTextColor(Qt::white);
 		QFont font = text->font();
 		font.setBold(true);
@@ -668,11 +830,9 @@ void MapEditor::onSpotItemClicked(QListWidgetItem *item) {
 	if (!item) {
 		return;
 	}
-	const std::string spotName = item->text().toStdString();
-	qDebug() << "spot name: " << QString::fromStdString(spotName);
-	qDebug() << "item clicked";
-
-	currentSpot = spotName;
+	const QString id = item->data(Qt::UserRole).toString();
+	currentSpot = id.isEmpty() ? item->text().toStdString() : id.toStdString();
+	qDebug() << "spot id: " << QString::fromStdString(currentSpot);
 }
 
 void MapEditor::updateTextureList() {
@@ -854,30 +1014,64 @@ void MapEditor::fillPropertiesForm() {
 
 	BaseEditor::clearPropertiesForm(ui->propertiesForm, m_propertyEditors);
 
-	{
-		QString key = "hp";
-		QString label = "HP:";
+	if (currentMap->isOnlineEnabled()) {
+		for (auto &team : currentMap->getTeams()) {
+			for (auto &player : team->getPlayers()) {
+				{
+					QString key = QString("%1_hp").arg(QString::fromStdString(player.getPlayerName()));
+					QString label = QString("%1 HP:").arg(QString::fromStdString(player.getPlayerName()));
 
-		QDoubleSpinBox *spin = new QDoubleSpinBox(this);
-		spin->setRange(1.0, 10000.0);
-		spin->setDecimals(1);
-		spin->setValue(currentMap->getHp());
+					auto *spin = new QDoubleSpinBox(this);
+					spin->setRange(1.0, 10000.0);
+					spin->setDecimals(1);
+					spin->setValue(player.getHp());
 
-		ui->propertiesForm->addRow(label, spin);
-		m_propertyEditors[key] = spin;
-	}
+					ui->propertiesForm->addRow(label, spin);
+					m_propertyEditors[key] = spin;
+				}
 
-	{
-		QString key = "startCurrency";
-		QString label = "Start Currency:";
+				{
+					QString key = QString("%1_gold").arg(QString::fromStdString(player.getPlayerName()));
+					QString label = QString("%1 Gold:")
+						.arg(QString::fromStdString(player.getPlayerName()));
+					auto *spin = new QDoubleSpinBox(this);
+					spin->setRange(0.0, 100000.0);
+					spin->setDecimals(0);
+					spin->setValue(player.getStartCurrency());
 
-		QDoubleSpinBox *spin = new QDoubleSpinBox(this);
-		spin->setRange(0.0, 100000.0);
-		spin->setDecimals(0);
-		spin->setValue(currentMap->getStartCurrency());
+					ui->propertiesForm->addRow(label, spin);
+					m_propertyEditors[key] = spin;
+				}
 
-		ui->propertiesForm->addRow(label, spin);
-		m_propertyEditors[key] = spin;
+			}
+
+		}
+	} else {
+		{
+			QString key = "hp";
+			QString label = "HP:";
+
+			QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+			spin->setRange(1.0, 10000.0);
+			spin->setDecimals(1);
+			spin->setValue(currentMap->getHp());
+
+			ui->propertiesForm->addRow(label, spin);
+			m_propertyEditors[key] = spin;
+		}
+
+		{
+			QString key = "startCurrency";
+			QString label = "Start Currency:";
+
+			QDoubleSpinBox *spin = new QDoubleSpinBox(this);
+			spin->setRange(0.0, 100000.0);
+			spin->setDecimals(0);
+			spin->setValue(currentMap->getStartCurrency());
+
+			ui->propertiesForm->addRow(label, spin);
+			m_propertyEditors[key] = spin;
+		}
 	}
 }
 
@@ -885,18 +1079,223 @@ void MapEditor::onSaveMapSettingsButtonClicked() {
 	auto currentMap = mapController->getCurrentMap();
 	if (!currentMap) return;
 
-	if (m_propertyEditors.contains("hp")) {
-		if (const auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors["hp"])) {
-			currentMap->setHp(spin->value());
+	if (currentMap->isOnlineEnabled()) {
+
+		for (auto &team : currentMap->getTeams()) {
+			for (auto &player : team->getPlayers()) {
+
+				QString name = QString::fromStdString(player.getPlayerName());
+
+				// HP
+				QString hpKey = name + "_hp";
+				if (m_propertyEditors.contains(hpKey)) {
+					if (auto *spin = qobject_cast<QDoubleSpinBox*>(m_propertyEditors[hpKey])) {
+						player.setHp(spin->value());
+					}
+				}
+
+				// GOLD
+				QString goldKey = name + "_gold";
+				if (m_propertyEditors.contains(goldKey)) {
+					if (auto *spin = qobject_cast<QDoubleSpinBox*>(m_propertyEditors[goldKey])) {
+						player.setStartCurrency(spin->value());
+					}
+				}
+			}
+		}
+	} else {
+		if (m_propertyEditors.contains("hp")) {
+			if (const auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors["hp"])) {
+				currentMap->setHp(spin->value());
+			}
+		}
+
+		if (m_propertyEditors.contains("startCurrency")) {
+			if (const auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors["startCurrency"])) {
+				currentMap->setStartCurrency(spin->value());
+			}
+		}
+
+		qDebug() << "Map settings saved: HP =" << currentMap->getHp()
+				<< "Start Currency =" << currentMap->getStartCurrency();
+	}
+}
+
+void MapEditor::onEnableOnlineCheckBoxToggled(bool checked) {
+	ui->maxPlayersSpinBox->setEnabled(checked);
+	ui->teamsLabel->setEnabled(checked);
+	ui->teamAssignmentContainer->setEnabled(checked);
+	ui->playerSpotsLabel->setEnabled(checked);
+	ui->playerSpotsScrollArea->setEnabled(checked);
+
+	if (auto m = mapController->getCurrentMap()) {
+		m->setOnlineEnabled(checked);
+		if (checked) {
+			m->syncOnlineTeamsWithPlayerCount(ui->maxPlayersSpinBox->value(), false);
 		}
 	}
 
-	if (m_propertyEditors.contains("startCurrency")) {
-		if (const auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors["startCurrency"])) {
-			currentMap->setStartCurrency(spin->value());
+	if (checked) {
+		onMaxPlayersSpinBoxChanged(ui->maxPlayersSpinBox->value());
+	} else {
+		playerSpotCheckboxes.clear();
+		QLayoutItem *item;
+		while ((item = ui->playerSpotsContainer->layout()->takeAt(0)) != nullptr) {
+			delete item->widget();
+			delete item;
+		}
+		rebuildPlayerTeamAssignmentRows();
+	}
+	updateAddTeamButtonState();
+}
+
+void MapEditor::onMaxPlayersSpinBoxChanged(int value) {
+	if (!ui->enableOnlineCheckBox->isChecked()) return;
+
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) return;
+
+	currentMap->syncOnlineTeamsWithPlayerCount(value, false);
+
+	const auto &spots = currentMap->getSpots();
+	
+	playerSpotCheckboxes.clear();
+	QLayoutItem *item;
+	while ((item = ui->playerSpotsContainer->layout()->takeAt(0)) != nullptr) {
+		delete item->widget();
+		delete item;
+	}
+
+	playerSpotCheckboxes.resize(value);
+
+	for (int playerIdx = 0; playerIdx < value; ++playerIdx) {
+		QGroupBox *playerGroup = new QGroupBox(QString("Player %1 Spots").arg(playerIdx + 1));
+		QVBoxLayout *playerLayout = new QVBoxLayout(playerGroup);
+
+		playerSpotCheckboxes[playerIdx].resize(spots.size());
+
+		for (int spotIdx = 0; spotIdx < spots.size(); ++spotIdx) {
+			const auto &spot = spots[spotIdx];
+			QString spotName = QString::fromStdString(spot->getName());
+
+			QCheckBox *checkbox = new QCheckBox(spotName);
+			playerLayout->addWidget(checkbox);
+			playerSpotCheckboxes[playerIdx][spotIdx] = checkbox;
+		}
+
+		ui->playerSpotsContainer->layout()->addWidget(playerGroup);
+	}
+
+	auto layout = qobject_cast<QVBoxLayout*>(ui->playerSpotsContainer->layout());
+	if (layout) {
+		layout->addStretch();
+	}
+
+	rebuildPlayerTeamAssignmentRows();
+}
+
+void MapEditor::onSaveOnlineSettingsButtonClicked() {
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap) return;
+
+	bool onlineEnabled = ui->enableOnlineCheckBox->isChecked();
+	int maxPlayers = ui->maxPlayersSpinBox->value();
+
+	currentMap->setOnlineEnabled(onlineEnabled);
+	currentMap->setMaxPlayers(maxPlayers);
+
+	if (onlineEnabled) {
+		currentMap->syncOnlineTeamsWithPlayerCount(maxPlayers, true);
+		if (static_cast<int>(playerTeamCombos.size()) == maxPlayers) {
+			std::vector<int> teamPick;
+			teamPick.reserve(maxPlayers);
+			for (int i = 0; i < maxPlayers; ++i) {
+				teamPick.push_back(playerTeamCombos[static_cast<size_t>(i)]->currentIndex());
+			}
+			currentMap->applyPlayerTeamAssignments(teamPick);
 		}
 	}
 
-	qDebug() << "Map settings saved: HP =" << currentMap->getHp()
-			<< "Start Currency =" << currentMap->getStartCurrency();
+	std::vector<std::vector<std::string>> playerSpots;
+	playerSpots.resize(maxPlayers);
+
+	for (int playerIdx = 0; playerIdx < maxPlayers; ++playerIdx) {
+		for (int spotIdx = 0; spotIdx < playerSpotCheckboxes[playerIdx].size(); ++spotIdx) {
+			if (playerSpotCheckboxes[playerIdx][spotIdx]->isChecked()) {
+				const auto &allSpots = currentMap->getSpots();
+				if (spotIdx < allSpots.size()) {
+					playerSpots[playerIdx].push_back(allSpots[spotIdx]->getName());
+				}
+			}
+		}
+	}
+
+	currentMap->setPlayerSpots(playerSpots);
+
+	QMessageBox::information(this, "Success", 
+		QString("Online settings saved!\nOnline: %1\nMax Players: %2")
+			.arg(onlineEnabled ? "Enabled" : "Disabled")
+			.arg(maxPlayers));
+
+	qDebug() << "Online settings saved for map:" << QString::fromStdString(currentMap->getName());
+}
+
+void MapEditor::onAddTeamButtonClicked() {
+	auto m = mapController->getCurrentMap();
+	if (!m || !ui->enableOnlineCheckBox->isChecked()) {
+		return;
+	}
+	if (static_cast<int>(m->getTeams().size()) >= Map::getMaxOnlineTeams()) {
+		return;
+	}
+	const int next = static_cast<int>(m->getTeams().size()) + 1;
+	m->getTeams().push_back(std::make_shared<Team>("Team " + std::to_string(next)));
+	rebuildPlayerTeamAssignmentRows();
+}
+
+void MapEditor::rebuildPlayerTeamAssignmentRows() {
+	QLayoutItem *it;
+	while ((it = ui->teamAssignmentLayout->takeAt(0)) != nullptr) {
+		if (it->widget() != nullptr) {
+			delete it->widget();
+		}
+		delete it;
+	}
+	playerTeamCombos.clear();
+
+	auto currentMap = mapController->getCurrentMap();
+	if (!currentMap || !ui->enableOnlineCheckBox->isChecked()) {
+		return;
+	}
+
+	const int n = ui->maxPlayersSpinBox->value();
+	const auto &tlist = currentMap->getTeams();
+	for (int i = 0; i < n; ++i) {
+		auto *row = new QWidget(ui->teamAssignmentContainer);
+		auto *hl = new QHBoxLayout(row);
+		hl->setContentsMargins(0, 0, 0, 0);
+		hl->addWidget(new QLabel(QStringLiteral("Player %1").arg(i + 1), row));
+		auto *combo = new QComboBox(row);
+		for (const auto &team : tlist) {
+			combo->addItem(QString::fromStdString(team->getTeamName()));
+		}
+		if (combo->count() > 0) {
+			const std::string pid = "player_" + std::to_string(i + 1);
+			const int ti = currentMap->findTeamIndexForPlayer(pid);
+			const int maxIdx = combo->count() - 1;
+			combo->setCurrentIndex(std::clamp(ti, 0, maxIdx));
+		}
+		hl->addWidget(combo, 1);
+		ui->teamAssignmentLayout->addWidget(row);
+		playerTeamCombos.push_back(combo);
+	}
+
+	updateAddTeamButtonState();
+}
+
+void MapEditor::updateAddTeamButtonState() {
+	auto *m = mapController->getCurrentMap().get();
+	const bool online = ui->enableOnlineCheckBox->isChecked();
+	const bool canAdd = online && m != nullptr && static_cast<int>(m->getTeams().size()) < Map::getMaxOnlineTeams();
+	ui->addTeamButton->setEnabled(canAdd);
 }

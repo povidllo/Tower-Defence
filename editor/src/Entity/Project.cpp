@@ -45,6 +45,14 @@ void Project::fromJson(const json &j) {
 	path = j.value("path", "");
 	lastSaveDate = j.value("lastSaveDate", std::time(nullptr));
 
+	if (j.contains("towers")) {
+		towers.clear();
+		for (const auto &towerJson: j["towers"]) {
+			auto tower = std::make_shared<TowerSample>(towerJson);
+			towers.push_back(tower);
+		}
+	}
+
 	if (j.contains("maps")) {
 		maps.clear();
 		for (const auto &mapJson: j["maps"]) {
@@ -53,12 +61,8 @@ void Project::fromJson(const json &j) {
 		}
 	}
 
-	if (j.contains("towers")) {
-		towers.clear();
-		for (const auto &towerJson: j["towers"]) {
-			auto tower = std::make_shared<TowerSample>(towerJson);
-			towers.push_back(tower);
-		}
+	for (const auto &map : maps) {
+		map->hydrateSpotTemplates(towers);
 	}
 
 	if (j.contains("enemies")) {

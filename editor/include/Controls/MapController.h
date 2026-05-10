@@ -8,7 +8,7 @@ class MapController {
 public:
 	explicit MapController(ProjectController *projectController);
 
-	ProjectController *getProjectController();
+	ProjectController *getProjectController() const { return projectController; }
 
 	void setCurrentMap(const std::string &name);
 
@@ -42,7 +42,8 @@ public:
 
 	std::shared_ptr<WaveSample> getWave(const std::string &name);
 
-	void addSpot(const std::string &name, int tx, int ty);
+	/** Map spot instance id + project tower template name (see towers[] in project JSON). */
+	bool addSpot(const std::string &instanceName, const std::string &towerTemplateName, int tx, int ty);
 
 	bool spotExist(const std::string &name);
 

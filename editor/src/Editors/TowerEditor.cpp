@@ -85,6 +85,8 @@ void TowerEditor::onSaveButtonClicked() {
 
 	tower->fromJson(j);
 
+	towerController->rehydrateMapSpotsFromTemplates();
+
 	BaseEditor::flashSaveButton(ui->saveButton);
 
 	auto towers = towerController->getTowerNames();

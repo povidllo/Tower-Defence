@@ -1,12 +1,14 @@
 #ifndef TOWERDEFENCE_MAP_H
 #define TOWERDEFENCE_MAP_H
+#include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "Serializable.h"
+#include "Team.h"
 #include "TowerSample.h"
 #include "WaveSample.h"
-
-class QWidget;
 
 class Map : protected ISerializable {
 public:
@@ -48,7 +50,35 @@ public:
 
 	std::string getFinalMapImagePath();
 
+	bool isOnlineEnabled() const { return onlineEnabled; }
+
+	void setOnlineEnabled(bool enabled) { onlineEnabled = enabled; }
+
+	int getMaxPlayers() const { return maxPlayers; }
+
+	void setMaxPlayers(int count) { maxPlayers = count; }
+
+	std::vector<std::vector<std::string>> &getPlayerSpots() { return playerSpots; }
+
+	void setPlayerSpots(const std::vector<std::vector<std::string>> &spots) { playerSpots = spots; }
+
+	std::vector<std::shared_ptr<Team> > &getTeams() { return teams; }
+
+	const std::vector<std::shared_ptr<Team> > &getTeams() const { return teams; }
+
+	void syncOnlineTeamsWithPlayerCount(int effectiveMaxPlayers, bool resizePlayerSpots);
+
+	[[nodiscard]] int findTeamIndexForPlayer(const std::string &playerId) const;
+
+	void applyPlayerTeamAssignments(const std::vector<int> &playerIndexToTeamIndex);
+
+	static constexpr int getMaxOnlineTeams() { return 5; }
+
+	void hydrateSpotTemplates(const std::vector<std::shared_ptr<TowerSample> > &projectTowers);
+
 private:
+	void clampTeamsToMax();
+
 	std::string name;
 	int height{0};
 	int width{0};
@@ -60,6 +90,11 @@ private:
 	std::vector<std::shared_ptr<WaveSample> > waves;
 	std::vector<std::shared_ptr<TowerSample> > spots;
 	std::vector<std::vector<int> > tiles;
+
+	bool onlineEnabled{false};
+	int maxPlayers{1};
+	std::vector<std::vector<std::string>> playerSpots; // playerSpots[playerIndex] = list of spot names
+	std::vector<std::shared_ptr<Team> > teams;
 };
 
 #endif // TOWERDEFENCE_MAP_H

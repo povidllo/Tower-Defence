@@ -1,4 +1,5 @@
 #include "ProjectController.h"
+#include <algorithm>
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -135,9 +136,32 @@ void ProjectController::removeEnemiesFromWaves(std::string enemyName) const {
 
 void ProjectController::removeTowersFromSpots(const std::string &towerName) {
 	for (auto &map: currentProject->getMaps()) {
-		for (auto &spot: map->getSpots()) {
+		auto &spots = map->getSpots();
+		spots.erase(std::remove_if(spots.begin(), spots.end(),
+									[&towerName](const std::shared_ptr<TowerSample> &spot) {
+										return spot->isMapSpotReference() && spot->getTowerTemplateName() == towerName;
+									}),
+					spots.end());
+		for (auto &spot: spots) {
 			spot->removeNextUpgrade(towerName);
 		}
+	}
+}
+
+void ProjectController::renameTowerTemplateOnMapSpots(const std::string &oldName, const std::string &newName) const {
+	for (auto &map: currentProject->getMaps()) {
+		for (auto &spot: map->getSpots()) {
+			if (spot->isMapSpotReference() && spot->getTowerTemplateName() == oldName) {
+				spot->setTowerTemplateName(newName);
+			}
+		}
+	}
+}
+
+void ProjectController::rehydrateAllMapSpots() const {
+	auto &towers = currentProject->getTowers();
+	for (auto &map: currentProject->getMaps()) {
+		map->hydrateSpotTemplates(towers);
 	}
 }
 

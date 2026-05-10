@@ -100,7 +100,7 @@
           <bool>true</bool>
          </property>
          <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -134,10 +134,10 @@
          <item>
           <layout class="QFormLayout" name="propertiesForm">
            <property name="labelAlignment">
-            <set>Qt::AlignmentFlag::AlignRight</set>
+            <set>Qt::AlignRight</set>
            </property>
            <property name="formAlignment">
-            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
            </property>
           </layout>
          </item>
@@ -170,9 +170,9 @@
        <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
+          <enum>Horizontal</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+        <property name="sizeHint">
           <size>
            <width>40</width>
            <height>20</height>

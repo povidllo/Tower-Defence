@@ -81,6 +81,7 @@ std::string TowerController::getCurrentNextUpgrade() const {
 }
 
 void TowerController::updateUpgradesNameAfterRename(const std::string &oldName, const std::string &newName) {
+	projectController->renameTowerTemplateOnMapSpots(oldName, newName);
 	auto &towers = projectController->getTowers();
 	for (auto &tower: towers) {
 		if (tower->removeNextUpgrade(oldName)) {
@@ -94,4 +95,8 @@ void TowerController::updateUpgradesAfterRemoving(const std::string &name) {
 	for (auto &tower: towers) {
 		tower->removeNextUpgrade(name);
 	}
+}
+
+void TowerController::rehydrateMapSpotsFromTemplates() const {
+	projectController->rehydrateAllMapSpots();
 }

@@ -8,6 +8,14 @@ TowerSample::TowerSample(std::string name, const int x, const int y) : name(std:
 TowerSample::TowerSample(const json &j) { TowerSample::fromJson(j); }
 
 TowerSample::json TowerSample::toJson() const {
+	if (!towerTemplateName.empty()) {
+		return {
+			{"name", name},
+			{"tower", towerTemplateName},
+			{"x", x},
+			{"y", y},
+		};
+	}
 	json upgradeArray = json::array();
 	for (const auto &name: nextUpgrade) {
 		upgradeArray.push_back(name);
@@ -26,6 +34,17 @@ TowerSample::json TowerSample::toJson() const {
 }
 
 void TowerSample::fromJson(const json &j) {
+	const bool refMode = j.contains("tower") && j["tower"].is_string() &&
+						 !(j.contains("damage") && j["damage"].is_number());
+	if (refMode) {
+		name = j.value("name", name);
+		towerTemplateName = j["tower"].get<std::string>();
+		x = j.value("x", x);
+		y = j.value("y", y);
+		return;
+	}
+
+	towerTemplateName.clear();
 	name = j.value("name", name);
 	damage = j.value("damage", damage);
 	fireRate = j.value("fireRate", fireRate);
@@ -98,3 +117,14 @@ double TowerSample::getCost() const { return cost; }
 void TowerSample::setCost(const double cost) { this->cost = cost; }
 double TowerSample::getFireDistance() const { return fireDistance; }
 void TowerSample::setFireDistance(const double fireDistance) { this->fireDistance = fireDistance; }
+
+void TowerSample::applyTemplate(const TowerSample &src) {
+	damage = src.getDamage();
+	fireRate = src.getFireRate();
+	cost = src.getCost();
+	projectileSpeed = src.getProjectileSpeed();
+	fireDistance = src.getFireDistance();
+	towerTexturePath = src.getTowerTexturePath();
+	projectileTexturePath = src.getProjectileTexturePath();
+	nextUpgrade = src.getUpgradeNames();
+}

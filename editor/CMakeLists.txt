@@ -53,6 +53,10 @@ add_executable(editor
         src/Editors/WaveEditor.cpp
         include/Editors/WaveEditor.h
         src/Editors/WaveEditor.ui
+        src/Entity/Player.cpp
+        include/Entity/Player.h
+        src/Entity/Team.cpp
+        include/Entity/Team.h
 )
 #file(GLOB SRC_CONTROLS CONFIGURE_DEPENDS src/Controls/*.cpp)
 #file(GLOB SRC_EDITORS CONFIGURE_DEPENDS src/Editors/*.cpp src/Editors/*.ui)
