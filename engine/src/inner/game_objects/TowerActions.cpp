@@ -9,6 +9,8 @@ namespace TDEngine {
     		storage(std::move(sample)) {
             storage.setUpgradingTo = std::nullopt;//storage.getUpgradeNames()[0];//
             storage.timeAfterLastShot = UINT64_MAX;
+
+        	storage.effectCreatorsOnHit.push_back(createTestEffectCreatorSample());
         }
 
         void TowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
@@ -34,7 +36,7 @@ namespace TDEngine {
 
         void TowerActions::attack(std::shared_ptr<EnemyActions> enemy, std::shared_ptr<EngineStorage> engineStorage) {
             Projectile newProjectile = Projectile(storage.getProjectileSpeed(), storage.getDamage(), enemy,
-            	positionCoordinates, storage.getProjectileTexturePath());
+            	positionCoordinates, storage.getProjectileTexturePath(), storage.effectCreatorsOnHit);
             engineStorage->addProjectile(std::make_shared<Projectile>(newProjectile));
             storage.timeAfterLastShot = 0;
         }
@@ -53,6 +55,7 @@ namespace TDEngine {
         void TowerActions::setSample(std::shared_ptr<TowerSample> sample) {
             storage = Tower(*sample);
         	texturePath = sample->getTowerTexturePath();
+        	storage.effectCreatorsOnHit.push_back(createTestEffectCreatorSample());
         }
 
         void TowerActions::upgradeTower(std::shared_ptr<EngineStorage> engineStorage) {
@@ -71,6 +74,27 @@ namespace TDEngine {
             		}
             	}
             }
+        }
+
+    	EffectCreatorSample TowerActions::createTestEffectCreatorSample() {
+
+        	EffectOnEnemySample effectSample;
+        	effectSample.duration = 3;
+        	effectSample.period = 0.5;
+        	effectSample.canStack = true;
+        	effectSample.periodicHealth = -10;
+        	effectSample.initialHealth = 0;
+        	effectSample.initialSpeedPercent = 20;
+        	effectSample.periodicSpeedPercent = 0;
+
+        	EffectCreatorSample effectCreator;
+        	effectCreator.initialEnemyEffects.push_back(effectSample);
+        	effectCreator.radius = 0;
+        	effectCreator.duration = 0;
+        	effectCreator.period = 0;
+        	effectCreator.attachment = EffectAttachment::MapObject;
+        	effectCreator.targetType = EffectTargetType::Enemies;
+        	return  effectCreator;
         }
     } // Inner
 } // TDEngine
