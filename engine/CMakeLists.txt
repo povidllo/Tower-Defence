@@ -19,8 +19,6 @@ add_executable(engine
         src/inner/core/Engine.h
         src/inner/core/TickGenerator.cpp
         src/inner/core/TickGenerator.h
-        src/inner/core/BoundaryDataTransfer.cpp
-        src/inner/core/BoundaryDataTransfer.h
         src/inner/core/EngineStorage.cpp
         src/inner/core/EngineStorage.h
         src/inner/game_objects/IActing.h

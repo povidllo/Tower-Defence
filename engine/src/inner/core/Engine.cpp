@@ -5,7 +5,6 @@ namespace TDEngine {
     namespace Inner {
         Engine::Engine(std::shared_ptr<Project> project)
             : storage(std::make_shared<EngineStorage>(project)),
-            // boundaryDT(std::make_shared<BoundaryDataTransfer>(this, storage->curProject)),
             tickGen(std::chrono::steady_clock::now())
         {
         }

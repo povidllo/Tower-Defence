@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "TextureCache.h"
+#include "../inner/game_objects/EnemyActions.h"
 
 namespace TDEngine::Inner {
 	struct GameStatus;
@@ -55,5 +56,7 @@ namespace TDEngine::Inner {
 
 		void drawRoundedBox(float x, float y, float w, float h, sf::Color fillColor, sf::Color outlineColor,
 							const std::string &title = "");
+
+		void drawHealthBar(float x, float y, float width, float height, float healthPercent);
 	};
 } // namespace TDEngine::Inner
