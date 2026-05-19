@@ -225,20 +225,32 @@ namespace TDEngine::Inner {
 			}
 		}
 	}
-	void RendererGame::renderMenu(const std::vector<MenuButton> &buttons) {
+	void RendererGame::renderMenu(const std::vector<MenuButton> &buttons, const std::string &title,
+								  const std::string &subtitle) {
 		window.setView(window.getDefaultView());
 		window.clear(sf::Color(30, 32, 36));
 
 		if (fontLoaded) {
 			textCache.setFont(font);
-			textCache.setString("SELECT MAP");
+			textCache.setString(title);
 			textCache.setCharacterSize(40);
 			textCache.setFillColor(sf::Color::White);
 			textCache.setStyle(sf::Text::Bold);
 			sf::FloatRect tr = textCache.getLocalBounds();
 			textCache.setOrigin(tr.left + tr.width / 2.0f, tr.top + tr.height / 2.0f);
-			textCache.setPosition(window.getSize().x / 2.0f, 100.0f);
+			textCache.setPosition(window.getSize().x / 2.0f, subtitle.empty() ? 100.0f : 75.0f);
 			window.draw(textCache);
+
+			if (!subtitle.empty()) {
+				textCache.setString(subtitle);
+				textCache.setCharacterSize(18);
+				textCache.setFillColor(sf::Color(200, 205, 210));
+				textCache.setStyle(sf::Text::Regular);
+				sf::FloatRect subRect = textCache.getLocalBounds();
+				textCache.setOrigin(subRect.left + subRect.width / 2.0f, subRect.top + subRect.height / 2.0f);
+				textCache.setPosition(window.getSize().x / 2.0f, 120.0f);
+				window.draw(textCache);
+			}
 		}
 
 		for (const auto &btn: buttons) {

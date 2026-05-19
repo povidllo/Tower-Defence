@@ -1,8 +1,23 @@
 #include "MainManager.h"
+#include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <memory>
 
 namespace TDEngine::Inner {
+	namespace {
+		constexpr unsigned short DEFAULT_LAN_PORT = 5501;
+		constexpr sf::Uint8 PACKET_JOIN = 1;
+		constexpr sf::Uint8 PACKET_WELCOME = 2;
+		constexpr sf::Uint8 PACKET_START = 3;
+		constexpr sf::Uint8 PACKET_UPGRADE = 4;
+		constexpr sf::Uint8 PACKET_SNAPSHOT = 5;
+		constexpr int SNAPSHOT_INTERVAL_MS = 80;
+
+		int clampInt(int value, int minValue, int maxValue) {
+			return std::max(minValue, std::min(value, maxValue));
+		}
+	}
 
 	MainManager::MainManager(Project &proj, unsigned int width, unsigned int height) :
 		project(proj), engine(std::make_shared<Project>(project)),
@@ -18,11 +33,13 @@ namespace TDEngine::Inner {
 
 		float btnWidth = 300.0f;
 		float btnHeight = 60.0f;
-		float startY = 200.0f;
+		float startY = 170.0f;
 		float spacing = 25.0f;
 		float centerX = (window.getSize().x - btnWidth) / 2.0f;
 
-		int index = 0;
+		menuButtons.push_back({"LAN GAME", sf::FloatRect(centerX, startY, btnWidth, btnHeight), false});
+
+		int index = 1;
 		for (const auto &map: maps) {
 			std::string name = map->getName();
 			sf::FloatRect rect(centerX, startY + index * (btnHeight + spacing), btnWidth, btnHeight);
@@ -31,7 +48,51 @@ namespace TDEngine::Inner {
 		}
 	}
 
+	void MainManager::initNetworkMenu() {
+		networkButtons.clear();
+
+		float btnWidth = 360.0f;
+		float btnHeight = 50.0f;
+		float startY = 145.0f;
+		float spacing = 12.0f;
+		float centerX = (window.getSize().x - btnWidth) / 2.0f;
+
+		int index = 0;
+		for (const auto &map: project.getMaps()) {
+			if (!map->isOnlineEnabled()) {
+				continue;
+			}
+			const std::string prefix = map->getName() == selectedNetworkMapName ? "MAP: " : "SELECT MAP: ";
+			networkButtons.push_back({prefix + map->getName(),
+									  sf::FloatRect(centerX, startY + index * (btnHeight + spacing), btnWidth,
+													btnHeight),
+									  false});
+			index++;
+		}
+
+		networkButtons.push_back({"HOST SELECTED MAP",
+								  sf::FloatRect(centerX, startY + index * (btnHeight + spacing), btnWidth, btnHeight),
+								  false});
+		index++;
+		networkButtons.push_back({"JOIN " + joinAddress + ":" + std::to_string(networkPort),
+								  sf::FloatRect(centerX, startY + index * (btnHeight + spacing), btnWidth, btnHeight),
+								  false});
+		index++;
+		networkButtons.push_back({(editingNetworkField == "ip" ? "EDIT IP*: " : "EDIT IP: ") + joinAddress,
+								  sf::FloatRect(centerX, startY + index * (btnHeight + spacing), btnWidth, btnHeight),
+								  false});
+		index++;
+		networkButtons.push_back({(editingNetworkField == "port" ? "PORT*: " : "PORT: ") + std::to_string(networkPort),
+								  sf::FloatRect(centerX, startY + index * (btnHeight + spacing), btnWidth, btnHeight),
+								  false});
+		index++;
+		networkButtons.push_back({"BACK", sf::FloatRect(centerX, startY + index * (btnHeight + spacing), btnWidth,
+														btnHeight),
+								  false});
+	}
+
 	void MainManager::startGameLevel(const std::string &mapName) {
+		stopNetwork();
 		std::cout << "[INFO] Loading map: " << mapName << std::endl;
 		gameStatus = engine.startGame(mapName);
 		std::string bgPath = getMapBackgroundImgPath(mapName);
@@ -43,6 +104,62 @@ namespace TDEngine::Inner {
 		state = AppState::GAME;
 	}
 
+	void MainManager::startNetworkHost(const std::string &mapName) {
+		if (mapName.empty()) {
+			networkStatus = "Select online map first";
+			state = AppState::NETWORK_MENU;
+			return;
+		}
+		stopNetwork();
+		networkRole = NetworkRole::HOST;
+		localPlayerIndex = 0;
+		networkMapName = mapName;
+		listener = std::make_unique<sf::TcpListener>();
+		if (listener->listen(networkPort) != sf::Socket::Done) {
+			networkStatus = "Cannot host on port " + std::to_string(networkPort);
+			networkRole = NetworkRole::NONE;
+			listener.reset();
+			return;
+		}
+		listener->setBlocking(false);
+		networkStatus = "Hosting " + mapName + " on port " + std::to_string(networkPort);
+
+		std::cout << "[INFO] Hosting LAN game: " << mapName << std::endl;
+		gameStatus = engine.startGame(mapName);
+		std::string bgPath = getMapBackgroundImgPath(mapName);
+		backgroundSprite.setTexture(renderer.getTexture(bgPath));
+		selectedTower = nullptr;
+		currentUpgradeOptions.clear();
+		playerAction = nullptr;
+		wasVictory = false;
+		state = AppState::GAME;
+	}
+
+	void MainManager::startNetworkClient() {
+		stopNetwork();
+		networkRole = NetworkRole::CLIENT;
+		serverSocket = std::make_unique<sf::TcpSocket>();
+		serverSocket->setBlocking(true);
+		networkStatus = "Connecting to " + joinAddress + ":" + std::to_string(networkPort) + "...";
+		if (serverSocket->connect(joinAddress, networkPort, sf::seconds(3.0f)) != sf::Socket::Done) {
+			networkStatus = "Connection failed: " + joinAddress + ":" + std::to_string(networkPort);
+			serverSocket.reset();
+			networkRole = NetworkRole::NONE;
+			state = AppState::NETWORK_MENU;
+			return;
+		}
+		serverSocket->setBlocking(false);
+		sf::Packet joinPacket;
+		joinPacket << PACKET_JOIN;
+		serverSocket->send(joinPacket);
+		gameStatus = std::make_shared<GameStatus>(0, 0);
+		selectedTower = nullptr;
+		currentUpgradeOptions.clear();
+		networkTowerInfos.clear();
+		networkStatus = "Connected. Waiting for host...";
+		state = AppState::NETWORK_MENU;
+	}
+
 	std::string MainManager::getMapBackgroundImgPath(const std::string &mapName) {
 		for (const auto &map: project.getMaps()) {
 			if (map->getName() == mapName) {
@@ -50,6 +167,15 @@ namespace TDEngine::Inner {
 			}
 		}
 		return "";
+	}
+
+	std::shared_ptr<Map> MainManager::getMapByName(const std::string &mapName) {
+		for (const auto &map: project.getMaps()) {
+			if (map->getName() == mapName) {
+				return map;
+			}
+		}
+		return nullptr;
 	}
 
 	void MainManager::run() {
@@ -71,16 +197,78 @@ namespace TDEngine::Inner {
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (state == AppState::MENU) {
 						handleMenuClick(event.mouseButton.x, event.mouseButton.y);
+					} else if (state == AppState::NETWORK_MENU) {
+						sf::Vector2f worldPos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+						for (const auto &btn: networkButtons) {
+							if (!btn.bounds.contains(worldPos)) {
+								continue;
+							}
+							if (btn.text.rfind("MAP: ", 0) == 0) {
+								selectedNetworkMapName = btn.text.substr(5);
+								updateNetworkSettingsForSelectedMap();
+								initNetworkMenu();
+							} else if (btn.text.rfind("SELECT MAP: ", 0) == 0) {
+								selectedNetworkMapName = btn.text.substr(12);
+								updateNetworkSettingsForSelectedMap();
+								initNetworkMenu();
+							} else if (btn.text == "HOST SELECTED MAP") {
+								startNetworkHost(selectedNetworkMapName);
+							} else if (btn.text.rfind("JOIN ", 0) == 0) {
+								startNetworkClient();
+							} else if (btn.text.rfind("EDIT IP", 0) == 0) {
+								editingNetworkField = editingNetworkField == "ip" ? "" : "ip";
+								initNetworkMenu();
+							} else if (btn.text.rfind("PORT", 0) == 0) {
+								editingNetworkField = editingNetworkField == "port" ? "" : "port";
+								initNetworkMenu();
+							} else if (btn.text == "BACK") {
+								stopNetwork();
+								state = AppState::MENU;
+							}
+							return;
+						}
 					} else if (state == AppState::GAME) {
 						handleGameClick(event.mouseButton.x, event.mouseButton.y);
 					} else if (state == AppState::GAME_OVER) {
 						handleGameOverClick();
 					}
 				}
-			} else if (event.type == sf::Event::MouseMoved && state == AppState::MENU) {
-				sf::Vector2f mousePos = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
-				for (auto &btn: menuButtons) {
-					btn.isHovered = btn.bounds.contains(mousePos);
+			} else if (event.type == sf::Event::TextEntered && state == AppState::NETWORK_MENU) {
+				if (event.text.unicode == '\b') {
+					if (editingNetworkField == "ip" && !joinAddress.empty()) {
+						joinAddress.pop_back();
+					} else if (editingNetworkField == "port") {
+						std::string portText = std::to_string(networkPort);
+						if (!portText.empty()) {
+							portText.pop_back();
+						}
+						networkPort =
+								static_cast<unsigned short>(portText.empty() ? DEFAULT_LAN_PORT : std::stoi(portText));
+					}
+				} else if ((event.text.unicode >= '0' && event.text.unicode <= '9') || event.text.unicode == '.') {
+					if (editingNetworkField == "ip" && joinAddress.size() < 15) {
+						joinAddress.push_back(static_cast<char>(event.text.unicode));
+					} else if (editingNetworkField == "port" && event.text.unicode != '.') {
+						std::string portText = std::to_string(networkPort);
+						if (portText == std::to_string(DEFAULT_LAN_PORT)) {
+							portText.clear();
+						}
+						if (portText.size() < 5) {
+							portText.push_back(static_cast<char>(event.text.unicode));
+							const int parsedPort = clampInt(std::stoi(portText), 1, 65535);
+							networkPort = static_cast<unsigned short>(parsedPort);
+						}
+					}
+				}
+				initNetworkMenu();
+			} else if (event.type == sf::Event::MouseMoved) {
+				if (state == AppState::MENU) {
+					sf::Vector2f mousePos = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
+					for (auto &btn: menuButtons) {
+						btn.isHovered = btn.bounds.contains(mousePos);
+					}
+				} else if (state == AppState::NETWORK_MENU) {
+					rebuildNetworkButtonsHover(event.mouseMove.x, event.mouseMove.y);
 				}
 			}
 		}
@@ -90,6 +278,12 @@ namespace TDEngine::Inner {
 		sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
 		for (const auto &btn: menuButtons) {
 			if (btn.bounds.contains(worldPos)) {
+				if (btn.text == "LAN GAME") {
+					rebuildNetworkMenu();
+					initNetworkMenu();
+					state = AppState::NETWORK_MENU;
+					return;
+				}
 				startGameLevel(btn.text);
 				return;
 			}
@@ -97,6 +291,7 @@ namespace TDEngine::Inner {
 	}
 
 	void MainManager::handleGameOverClick() {
+		stopNetwork();
 		state = AppState::MENU;
 		gameStatus = nullptr;
 	}
@@ -109,8 +304,13 @@ namespace TDEngine::Inner {
 			if (selectedTower) {
 				for (const auto &option: currentUpgradeOptions) {
 					if (option.bounds.contains(worldPos)) {
-						playerAction = std::make_shared<TowerUpgradeAction>(
-								option.name, std::static_pointer_cast<TowerActions>(selectedTower));
+						if (networkRole == NetworkRole::CLIENT) {
+							sendUpgradeRequest(selectedTower->positionCoordinates.first,
+											   selectedTower->positionCoordinates.second, option.name);
+						} else {
+							applyUpgradeAt(selectedTower->positionCoordinates.first,
+										   selectedTower->positionCoordinates.second, option.name, localPlayerIndex);
+						}
 						selectedTower = nullptr;
 						currentUpgradeOptions.clear();
 						return;
@@ -146,11 +346,16 @@ namespace TDEngine::Inner {
 				sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
 
 				if (objBounds.contains(localX, localY)) {
+					if (!canPlayerUseTower(localPlayerIndex, obj->positionCoordinates.first,
+										   obj->positionCoordinates.second)) {
+						selectedTower = nullptr;
+						currentUpgradeOptions.clear();
+						return;
+					}
 					selectedTower = obj;
 					clickedOnTower = true;
 					currentUpgradeOptions.clear();
 
-					auto towerPtr = std::static_pointer_cast<TowerActions>(obj);
 					int index = 0;
 
 					// --- ИСПРАВЛЕНИЕ ЛОГИКИ РАЗМЕЩЕНИЯ КНОПОК ---
@@ -166,7 +371,7 @@ namespace TDEngine::Inner {
 					float startX = RendererGame::UI_SIDEBAR_X + RendererGame::UI_PADDING + btnMarginX;
 					float startY = 80.0f; // Отступ сверху (под заголовком)
 
-					for (const auto &upgName: towerPtr->storage.getUpgradeNames()) {
+					for (const auto &upgName: getUpgradeNamesForTower(obj)) {
 						for (const auto &towerConfig: project.getTowers()) {
 							if (towerConfig->getName() == upgName) {
 								float btnY = startY + (index * (btnHeight + 10.0f)); // 10.0f - отступ между кнопками
@@ -191,8 +396,22 @@ namespace TDEngine::Inner {
 	}
 
 	void MainManager::update(sf::Time dt) {
+		updateNetwork();
+
+		if (state == AppState::NETWORK_MENU) {
+			return;
+		}
+
 		if (state != AppState::GAME)
 			return;
+
+		if (networkRole == NetworkRole::CLIENT) {
+			if (gameStatus && (gameStatus->status == gameStatus->LOST || gameStatus->status == gameStatus->WON)) {
+				wasVictory = (gameStatus->status == gameStatus->WON);
+				state = AppState::GAME_OVER;
+			}
+			return;
+		}
 
 		static sf::Time timeAccumulator = sf::Time::Zero;
 		timeAccumulator += dt;
@@ -211,11 +430,20 @@ namespace TDEngine::Inner {
 			playerAction = nullptr;
 			timeAccumulator -= TIME_PER_FRAME;
 		}
+
+		if (networkRole == NetworkRole::HOST &&
+			snapshotClock.getElapsedTime() >= sf::milliseconds(SNAPSHOT_INTERVAL_MS)) {
+			sendSnapshotToClients();
+			snapshotClock.restart();
+		}
 	}
 
 	void MainManager::render() {
 		if (state == AppState::MENU) {
 			renderer.renderMenu(menuButtons);
+			window.display();
+		} else if (state == AppState::NETWORK_MENU) {
+			renderer.renderMenu(networkButtons, "LAN GAME", "IP: " + joinAddress + "    " + networkStatus);
 			window.display();
 		} else if (state == AppState::GAME) {
 			window.clear(sf::Color(20, 20, 25));
@@ -228,6 +456,338 @@ namespace TDEngine::Inner {
 			renderer.renderUI(gameStatus, currentUpgradeOptions);
 			renderer.renderGameOver(wasVictory);
 			window.display();
+		}
+	}
+
+	void MainManager::updateNetwork() {
+		if (networkRole == NetworkRole::HOST) {
+			updateHostNetwork();
+		} else if (networkRole == NetworkRole::CLIENT) {
+			updateClientNetwork();
+		}
+	}
+
+	void MainManager::updateHostNetwork() {
+		if (!listener) {
+			return;
+		}
+
+		while (true) {
+			auto socket = std::make_unique<sf::TcpSocket>();
+			socket->setBlocking(false);
+			const sf::Socket::Status status = listener->accept(*socket);
+			if (status == sf::Socket::NotReady) {
+				break;
+			}
+			if (status != sf::Socket::Done) {
+				break;
+			}
+
+			const auto map = getMapByName(networkMapName);
+			const int maxPlayers = map ? std::max(1, map->getMaxPlayers()) : 1;
+			if (static_cast<int>(clients.size()) + 1 >= maxPlayers) {
+				socket->disconnect();
+				continue;
+			}
+
+			NetworkClient client;
+			client.playerIndex = static_cast<int>(clients.size()) + 1;
+			client.socket = std::move(socket);
+			sendStartToClient(client);
+			clients.push_back(std::move(client));
+			networkStatus = "Clients: " + std::to_string(clients.size());
+		}
+
+		for (auto it = clients.begin(); it != clients.end();) {
+			sf::Packet packet;
+			const sf::Socket::Status status = it->socket->receive(packet);
+			if (status == sf::Socket::Done) {
+				processClientPacket(*it, packet);
+				++it;
+			} else if (status == sf::Socket::Disconnected || status == sf::Socket::Error) {
+				it = clients.erase(it);
+				networkStatus = "Clients: " + std::to_string(clients.size());
+			} else {
+				++it;
+			}
+		}
+	}
+
+	void MainManager::updateClientNetwork() {
+		if (!serverSocket) {
+			return;
+		}
+
+		while (true) {
+			sf::Packet packet;
+			const sf::Socket::Status status = serverSocket->receive(packet);
+			if (status == sf::Socket::Done) {
+				processServerPacket(packet);
+			} else if (status == sf::Socket::Disconnected || status == sf::Socket::Error) {
+				networkStatus = "Disconnected from host";
+				stopNetwork();
+				state = AppState::NETWORK_MENU;
+				initNetworkMenu();
+				break;
+			} else {
+				break;
+			}
+		}
+	}
+
+	void MainManager::stopNetwork() {
+		if (listener) {
+			listener->close();
+		}
+		listener.reset();
+		clients.clear();
+		if (serverSocket) {
+			serverSocket->disconnect();
+		}
+		serverSocket.reset();
+		networkRole = NetworkRole::NONE;
+		localPlayerIndex = 0;
+		networkMapName.clear();
+		networkTowerInfos.clear();
+	}
+
+	void MainManager::sendStartToClient(NetworkClient &client) {
+		if (!client.socket) {
+			return;
+		}
+		sf::Packet welcome;
+		welcome << PACKET_WELCOME << static_cast<sf::Int32>(client.playerIndex);
+		client.socket->send(welcome);
+
+		sf::Packet start;
+		start << PACKET_START << networkMapName;
+		client.socket->send(start);
+	}
+
+	void MainManager::sendSnapshotToClients() {
+		if (!gameStatus || clients.empty()) {
+			return;
+		}
+
+		sf::Packet packet;
+		packet << PACKET_SNAPSHOT << static_cast<sf::Uint32>(gameStatus->currentHp)
+			   << static_cast<sf::Uint32>(gameStatus->currentGold) << static_cast<sf::Int32>(gameStatus->status)
+			   << static_cast<sf::Uint32>(gameStatus->mapObjects.size());
+
+		std::vector<std::shared_ptr<MapObject>> towers;
+		for (const auto &obj: gameStatus->mapObjects) {
+			packet << static_cast<sf::Int32>(obj->type) << obj->texturePath << obj->positionCoordinates.first
+				   << obj->positionCoordinates.second;
+			if (obj->type == MapObjectTypes::Tower) {
+				towers.push_back(obj);
+			}
+		}
+
+		packet << static_cast<sf::Uint32>(towers.size());
+		for (const auto &towerObj: towers) {
+			const auto tower = std::static_pointer_cast<TowerActions>(towerObj);
+			packet << tower->positionCoordinates.first << tower->positionCoordinates.second;
+			const auto upgrades = tower->storage.getUpgradeNames();
+			packet << static_cast<sf::Uint32>(upgrades.size());
+			for (const auto &name: upgrades) {
+				packet << name;
+			}
+		}
+
+		for (auto it = clients.begin(); it != clients.end();) {
+			const sf::Socket::Status status = it->socket->send(packet);
+			if (status == sf::Socket::Disconnected || status == sf::Socket::Error) {
+				it = clients.erase(it);
+			} else {
+				++it;
+			}
+		}
+	}
+
+	void MainManager::processClientPacket(NetworkClient &client, sf::Packet &packet) {
+		sf::Uint8 type = 0;
+		packet >> type;
+		if (type == PACKET_UPGRADE) {
+			double x = 0.0;
+			double y = 0.0;
+			std::string upgradeName;
+			packet >> x >> y >> upgradeName;
+			applyUpgradeAt(x, y, upgradeName, client.playerIndex);
+		}
+	}
+
+	void MainManager::processServerPacket(sf::Packet &packet) {
+		sf::Uint8 type = 0;
+		packet >> type;
+		if (type == PACKET_WELCOME) {
+			sf::Int32 playerIndex = 0;
+			packet >> playerIndex;
+			localPlayerIndex = playerIndex;
+			networkStatus = "Connected as player " + std::to_string(localPlayerIndex + 1);
+			return;
+		}
+		if (type == PACKET_START) {
+			packet >> networkMapName;
+			backgroundSprite.setTexture(renderer.getTexture(getMapBackgroundImgPath(networkMapName)));
+			gameStatus = std::make_shared<GameStatus>(0, 0);
+			selectedTower = nullptr;
+			currentUpgradeOptions.clear();
+			state = AppState::GAME;
+			return;
+		}
+		if (type != PACKET_SNAPSHOT) {
+			return;
+		}
+
+		sf::Uint32 hp = 0;
+		sf::Uint32 gold = 0;
+		sf::Int32 status = 0;
+		sf::Uint32 objectCount = 0;
+		packet >> hp >> gold >> status >> objectCount;
+
+		auto snapshot = std::make_shared<GameStatus>(hp, gold);
+		snapshot->status = static_cast<GameStatus::Status>(status);
+		for (sf::Uint32 i = 0; i < objectCount; ++i) {
+			sf::Int32 typeValue = 0;
+			std::string texturePath;
+			double x = 0.0;
+			double y = 0.0;
+			packet >> typeValue >> texturePath >> x >> y;
+			snapshot->mapObjects.push_back(
+					std::make_shared<MapObject>(texturePath, x, y, static_cast<MapObjectTypes>(typeValue)));
+		}
+
+		networkTowerInfos.clear();
+		sf::Uint32 towerCount = 0;
+		packet >> towerCount;
+		for (sf::Uint32 i = 0; i < towerCount; ++i) {
+			NetworkTowerInfo info;
+			sf::Uint32 upgradeCount = 0;
+			packet >> info.x >> info.y >> upgradeCount;
+			for (sf::Uint32 j = 0; j < upgradeCount; ++j) {
+				std::string name;
+				packet >> name;
+				info.upgradeNames.push_back(name);
+			}
+			networkTowerInfos.push_back(info);
+		}
+		gameStatus = snapshot;
+	}
+
+	void MainManager::sendUpgradeRequest(double x, double y, const std::string &upgradeName) {
+		if (!serverSocket) {
+			return;
+		}
+		sf::Packet packet;
+		packet << PACKET_UPGRADE << x << y << upgradeName;
+		serverSocket->send(packet);
+	}
+
+	void MainManager::applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex) {
+		if (!canPlayerUseTower(playerIndex, x, y)) {
+			return;
+		}
+		const auto tower = findTowerAt(x, y);
+		if (!tower) {
+			return;
+		}
+		playerAction = std::make_shared<TowerUpgradeAction>(upgradeName, tower);
+	}
+
+	std::shared_ptr<TowerActions> MainManager::findTowerAt(double x, double y) {
+		if (!gameStatus) {
+			return nullptr;
+		}
+		for (const auto &obj: gameStatus->mapObjects) {
+			if (obj->type != MapObjectTypes::Tower) {
+				continue;
+			}
+			if (std::fabs(obj->positionCoordinates.first - x) < 0.001 &&
+				std::fabs(obj->positionCoordinates.second - y) < 0.001) {
+				return std::static_pointer_cast<TowerActions>(obj);
+			}
+		}
+		return nullptr;
+	}
+
+	std::vector<std::string> MainManager::getUpgradeNamesForTower(const std::shared_ptr<MapObject> &tower) const {
+		if (!tower) {
+			return {};
+		}
+		if (networkRole != NetworkRole::CLIENT) {
+			return std::static_pointer_cast<TowerActions>(tower)->storage.getUpgradeNames();
+		}
+		for (const auto &info: networkTowerInfos) {
+			if (std::fabs(info.x - tower->positionCoordinates.first) < 0.001 &&
+				std::fabs(info.y - tower->positionCoordinates.second) < 0.001) {
+				return info.upgradeNames;
+			}
+		}
+		return {};
+	}
+
+	bool MainManager::canPlayerUseTower(int playerIndex, double x, double y) {
+		if (networkRole == NetworkRole::NONE || networkMapName.empty()) {
+			return true;
+		}
+		std::shared_ptr<Map> map;
+		for (const auto &candidate: project.getMaps()) {
+			if (candidate->getName() == networkMapName) {
+				map = candidate;
+				break;
+			}
+		}
+		if (!map || !map->isOnlineEnabled()) {
+			return true;
+		}
+
+		const auto &playerSpots = map->getPlayerSpots();
+		if (playerIndex < 0 || static_cast<size_t>(playerIndex) >= playerSpots.size()) {
+			return false;
+		}
+
+		std::string spotName;
+		for (const auto &spot: map->getSpots()) {
+			if (std::fabs(spot->getX() - x) < 0.001 && std::fabs(spot->getY() - y) < 0.001) {
+				spotName = spot->getName();
+				break;
+			}
+		}
+		if (spotName.empty()) {
+			return false;
+		}
+
+		const auto &allowedSpots = playerSpots[static_cast<size_t>(playerIndex)];
+		if (allowedSpots.empty()) {
+			return true;
+		}
+		return std::find(allowedSpots.begin(), allowedSpots.end(), spotName) != allowedSpots.end();
+	}
+
+	void MainManager::rebuildNetworkButtonsHover(int mouseX, int mouseY) {
+		sf::Vector2f mousePos = window.mapPixelToCoords({mouseX, mouseY});
+		for (auto &btn: networkButtons) {
+			btn.isHovered = btn.bounds.contains(mousePos);
+		}
+	}
+
+	void MainManager::rebuildNetworkMenu() {
+		if (selectedNetworkMapName.empty()) {
+			for (const auto &map: project.getMaps()) {
+				if (map->isOnlineEnabled()) {
+					selectedNetworkMapName = map->getName();
+					break;
+				}
+			}
+		}
+		updateNetworkSettingsForSelectedMap();
+		initNetworkMenu();
+	}
+
+	void MainManager::updateNetworkSettingsForSelectedMap() {
+		const auto map = getMapByName(selectedNetworkMapName);
+		if (!map) {
+			return;
 		}
 	}
 } // namespace TDEngine::Inner

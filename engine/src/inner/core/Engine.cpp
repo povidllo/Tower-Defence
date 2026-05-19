@@ -47,7 +47,9 @@ namespace TDEngine {
         		storage->addTower(std::make_shared<TowerActions>(
         			TowerActions(*tower, {tower->getX(), tower->getY()})));
         	}
-        	storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
+        	if (!storage->curMap->getWaves().empty()) {
+        		storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
+        	}
         }
 
         void Engine::checkForVictory() {

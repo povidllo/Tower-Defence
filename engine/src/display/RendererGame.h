@@ -36,7 +36,8 @@ namespace TDEngine::Inner {
 		void renderScene(const std::shared_ptr<GameStatus> &gameStat, const sf::Sprite &background);
 		void renderUI(const std::shared_ptr<GameStatus> &gameStat, const std::vector<UpgradeOption> &upgradeOptions);
 		void renderGameOver(bool victory);
-		void renderMenu(const std::vector<MenuButton> &buttons);
+		void renderMenu(const std::vector<MenuButton> &buttons, const std::string &title = "SELECT MAP",
+						const std::string &subtitle = "");
 
 		[[nodiscard]] const sf::Texture &getTexture(const std::string &path);
 

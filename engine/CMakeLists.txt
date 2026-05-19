@@ -4,7 +4,7 @@ project(engine)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 
 #list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/freetype")
-find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system CONFIG)
+find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system network CONFIG)
 
 #set(CMAKE_CXX_COMPILER /usr/bin/g++-14)
 set(CMAKE_AUTOMOC ON)
@@ -59,4 +59,5 @@ target_link_libraries(engine PRIVATE
         editor_common
         sfml-graphics 
         sfml-window 
-        sfml-system)
+        sfml-system
+        sfml-network)
