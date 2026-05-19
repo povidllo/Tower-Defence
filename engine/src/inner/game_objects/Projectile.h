@@ -10,9 +10,11 @@ namespace TDEngine {
         public:
             Projectile(double moveSpeed, double damage,
             std::shared_ptr<EnemyActions> target, std::pair<double, double> positionCoordinates,
-            std::string texturePath, std::vector<EffectCreatorSample> effectCreatorsOnHit);
+            std::string texturePath, std::vector<EffectCreatorSample> effectCreatorsOnHit,
+				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers);
             void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
             std::shared_ptr<EnemyActions> target;
+
 
         	bool isActive;
         private:
@@ -21,6 +23,7 @@ namespace TDEngine {
             double moveSpeed;
             double damage;
         	std::vector<EffectCreatorSample> effectCreatorsOnHit;
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
         };
     } // Inner
 } // TDEngine

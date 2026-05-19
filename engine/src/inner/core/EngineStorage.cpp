@@ -4,7 +4,7 @@ namespace TDEngine {
     namespace Inner {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
         EngineStorage::EngineStorage(std::shared_ptr<Project> project)
-            : curGameStatus(std::make_shared<GameStatus>(GameStatus(0, 0))), curMap(nullptr),
+            : curGameStatus(std::make_shared<GameStatus>(GameStatus())), curMap(nullptr),
     		curProject(project), curWave(0)
         {
         }
@@ -21,6 +21,16 @@ namespace TDEngine {
             actings.insert(actings.end(), activeEnemyEffects.begin(), activeEnemyEffects.end());
 
             return actings;
+        }
+
+    	std::vector<std::shared_ptr<EnginePlayer>> EngineStorage::getAllPlayers() {
+	        std::vector<std::shared_ptr<EnginePlayer>> players;
+        	for (auto team : curGameStatus->teams) {
+				for (auto player : team->teamPlayers) {
+					players.push_back(player);
+				}
+        	}
+        	return players;
         }
 
         void EngineStorage::cleanMap() {

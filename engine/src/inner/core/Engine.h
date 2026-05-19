@@ -15,6 +15,8 @@ namespace TDEngine {
             std::shared_ptr<GameStatus> startGame(const std::string& mapName);
         	void initMap();
             void checkForVictory();
+        	std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
+
         private:
             std::shared_ptr<EngineStorage> storage;
             TickGenerator tickGen;

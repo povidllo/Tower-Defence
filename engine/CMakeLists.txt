@@ -64,6 +64,8 @@ add_executable(engine
         src/inner/game_objects/EffectCreatorActions.h
         src/inner/game_objects/entities/EffectOnEnemy.h
         src/inner/game_objects/entities/EffectCreator.h
+        src/inner/game_objects/entities/EngineTeam.h
+        src/inner/game_objects/entities/EnginePlayer.h
 )
 
 target_compile_options(engine PRIVATE -include valarray)

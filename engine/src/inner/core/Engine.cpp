@@ -40,13 +40,24 @@ namespace TDEngine {
         	storage->activeEnemyEffects.clear();
         	storage->activeEffectCreators.clear();
         	storage->curGameStatus->mapObjects.clear();
-			storage->curGameStatus->currentGold = storage->curMap->getStartCurrency();
-        	storage->curGameStatus->currentHp = storage->curMap->getHp();
-        	storage->curGameStatus->status = GameStatus::PLAYING;
+        	storage->curGameStatus->teams.clear();
+
+        	for (const auto& team : storage->curMap->getTeams()) {
+        		EngineTeam engineTeam(*team);
+        		for (const auto& player : team->getPlayers()) {
+        			EnginePlayer enginePlayer(player);
+        			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
+        			enginePlayer.currentHp = enginePlayer.getHp();
+        			enginePlayer.status = EnginePlayer::PLAYING;
+        			enginePlayer.team = std::make_shared<EngineTeam>(engineTeam);
+        			engineTeam.teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
+        		}
+        		storage->curGameStatus->teams.push_back(std::make_shared<EngineTeam>(engineTeam));
+        	}
 
         	for (const auto& tower : storage->curMap->getSpots()) {
         		storage->addTower(std::make_shared<TowerActions>(
-        			TowerActions(*tower, {tower->getX(), tower->getY()})));
+        			TowerActions(*tower, {tower->getX(), tower->getY()}, getAllPlayers())));
         	}
         	if (!storage->curMap->getWaves().empty()) {
         		storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
@@ -56,9 +67,15 @@ namespace TDEngine {
         void Engine::checkForVictory() {
 			if (storage->activeWaves.size() == 0 &&
 				storage->activeEnemies.size() == 0) {
-				storage->curGameStatus->status = GameStatus::WON;
+				for (auto player : getAllPlayers()) {
+					player->status = EnginePlayer::WON;
+				}
 			}
         }
+
+    	std::vector<std::shared_ptr<EnginePlayer>> Engine::getAllPlayers() {
+        	return storage->getAllPlayers();
+		}
 
 
 

@@ -8,10 +8,12 @@ namespace TDEngine {
     namespace Inner {
         class TowerUpgradeAction : public IPlayerAction {
         public:
-            TowerUpgradeAction(std::string upgradeTo, std::shared_ptr<TowerActions> tower);
+            TowerUpgradeAction(std::string upgradeTo, std::shared_ptr<TowerActions> tower,
+            	std::shared_ptr<EnginePlayer> player);
             void MakeAction() override;
             std::string upgradeTo;
             std::shared_ptr<TowerActions> tower;
+        	std::shared_ptr<EnginePlayer> player;
         };
     } // Inner
 } // TDEngine
