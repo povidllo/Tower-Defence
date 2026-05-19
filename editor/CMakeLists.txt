@@ -18,6 +18,27 @@ add_executable(editor
         src/Entity/Project.cpp
         include/Entity/Project.h
         include/Utils/Serializable.h
+        src/Entity/AbilitySample.cpp
+        include/Entity/AbilitySample.h
+        src/Entity/EffectCreatorSample.cpp
+        include/Entity/EffectCreatorSample.h
+        src/Entity/EffectSample.cpp
+        include/Entity/EffectSample.h
+        src/Controls/AbilityController.cpp
+        include/Controls/AbilityController.h
+        src/Controls/EffectCreatorController.cpp
+        include/Controls/EffectCreatorController.h
+        src/Controls/EffectController.cpp
+        include/Controls/EffectController.h
+        src/Editors/AbilityEditor.cpp
+        include/Editors/AbilityEditor.h
+        src/Editors/AbilityEditor.ui
+        src/Editors/EffectCreatorEditor.cpp
+        include/Editors/EffectCreatorEditor.h
+        src/Editors/EffectCreatorEditor.ui
+        src/Editors/EffectEditor.cpp
+        include/Editors/EffectEditor.h
+        src/Editors/EffectEditor.ui
         src/Controls/ProjectController.cpp
         include/Controls/ProjectController.h
         include/Utils/BaseController.h

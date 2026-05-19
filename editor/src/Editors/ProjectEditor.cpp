@@ -33,6 +33,9 @@ ProjectEditor::~ProjectEditor() { delete ui; }
 void ProjectEditor::connectQtElements() {
 	connect(ui->actionTower_editor, &QAction::triggered, this, &ProjectEditor::openTowerEditor);
 	connect(ui->actionEnemy_editor, &QAction::triggered, this, &ProjectEditor::openEnemyEditor);
+	connect(ui->actionEffect_editor, &QAction::triggered, this, &ProjectEditor::openEffectEditor);
+	connect(ui->actionEffect_creator_editor, &QAction::triggered, this, &ProjectEditor::openEffectCreatorEditor);
+	connect(ui->actionAbility_editor, &QAction::triggered, this, &ProjectEditor::openAbilityEditor);
 	connect(ui->actionMap_editor, &QAction::triggered, this, &ProjectEditor::openMapEditor);
 	connect(ui->actionSave_project, &QAction::triggered, this, &ProjectEditor::onSaveProjectClicked);
 	connect(ui->actionCompile_project, &QAction::triggered, this, &ProjectEditor::compileProjectClicked);
@@ -42,6 +45,9 @@ void ProjectEditor::connectQtElements() {
 void ProjectEditor::commonSetUp() {
 	towerEditor = std::make_unique<TowerEditor>(projectController->getTowerController());
 	enemyEditor = std::make_unique<EnemyEditor>(projectController->getEnemyController());
+	effectEditor = std::make_unique<EffectEditor>(projectController->getEffectController());
+	effectCreatorEditor = std::make_unique<EffectCreatorEditor>(projectController->getEffectCreatorController());
+	abilityEditor = std::make_unique<AbilityEditor>(projectController->getAbilityController());
 	mapEditor = std::make_unique<MapEditor>(projectController->getMapController());
 
 	ui->stackedWidget = new QStackedWidget(this);
@@ -49,6 +55,9 @@ void ProjectEditor::commonSetUp() {
 
 	ui->stackedWidget->addWidget(towerEditor.get());
 	ui->stackedWidget->addWidget(enemyEditor.get());
+	ui->stackedWidget->addWidget(effectEditor.get());
+	ui->stackedWidget->addWidget(effectCreatorEditor.get());
+	ui->stackedWidget->addWidget(abilityEditor.get());
 	ui->stackedWidget->addWidget(mapEditor.get());
 
 	QDir::setCurrent(projectController->getCurrentProject()->getPath().data());
@@ -62,6 +71,21 @@ void ProjectEditor::openTowerEditor() {
 void ProjectEditor::openEnemyEditor() {
 	qDebug() << "opening enemy editor " << enemyEditor->metaObject();
 	ui->stackedWidget->setCurrentWidget(enemyEditor.get());
+}
+
+void ProjectEditor::openEffectEditor() {
+	qDebug() << "opening effect editor " << effectEditor->metaObject();
+	ui->stackedWidget->setCurrentWidget(effectEditor.get());
+}
+
+void ProjectEditor::openEffectCreatorEditor() {
+	qDebug() << "opening effect creator editor " << effectCreatorEditor->metaObject();
+	ui->stackedWidget->setCurrentWidget(effectCreatorEditor.get());
+}
+
+void ProjectEditor::openAbilityEditor() {
+	qDebug() << "opening ability editor " << abilityEditor->metaObject();
+	ui->stackedWidget->setCurrentWidget(abilityEditor.get());
 }
 
 void ProjectEditor::openMapEditor() {
@@ -103,6 +127,12 @@ void ProjectEditor::compileProject() {
 	for (const auto &enemy: projectController->getEnemies()) {
 		if (!enemy->getEnemyTexturePath().empty()) {
 			usedTextures.insert(QString::fromStdString(enemy->getEnemyTexturePath()));
+		}
+	}
+
+	for (const auto &effect: projectController->getEffects()) {
+		if (!effect->getVisualTexturePath().empty()) {
+			usedTextures.insert(QString::fromStdString(effect->getVisualTexturePath()));
 		}
 	}
 
@@ -204,10 +234,24 @@ void ProjectEditor::compileProject() {
 		compiledEnemies.push_back(std::move(enemyObj));
 	}
 
+	json compiledEffects = json::array();
+	for (const auto &effect: projectController->getEffects()) {
+		json effectObj = effect->toJson();
+
+		if (effectObj.contains("visualTexturePath") && !effect->getVisualTexturePath().empty()) {
+			QString oldPath = QString::fromStdString(effect->getVisualTexturePath());
+			QFileInfo info(oldPath);
+			effectObj["visualTexturePath"] = ("resources/" + info.fileName()).toStdString();
+		}
+
+		compiledEffects.push_back(std::move(effectObj));
+	}
+
 	json finalProject = projectController->getCurrentProject()->toJson();
 	finalProject["maps"] = compiledMaps;
 	finalProject["towers"] = compiledTowers;
 	finalProject["enemies"] = compiledEnemies;
+	finalProject["effects"] = compiledEffects;
 	finalProject.erase("textures");
 
 	QString jsonPath = dir.filePath("project.json");

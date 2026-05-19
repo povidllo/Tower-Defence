@@ -2,6 +2,7 @@
 #define TOWERDEFENCE_TOWEREDITOR_H
 
 #include <QListWidgetItem>
+#include <QListWidget>
 #include <memory>
 
 #include "BaseEditor.h"
@@ -42,12 +43,22 @@ private slots:
 
 	void onProjectileSettingsButtonClicked();
 
+	void onAddBaseEffectCreatorButtonClicked();
+
+	void onRemoveBaseEffectCreatorButtonClicked();
+
+	void onAddAttackEffectCreatorButtonClicked();
+
+	void onRemoveAttackEffectCreatorButtonClicked();
+
 private:
 	Ui::TowerEditor *ui;
 
 	void updateTowerList() const;
 
 	void updateUpgradeList() const;
+
+	void updateEffectCreatorLists() const;
 
 	void fillPropertiesForm(const std::shared_ptr<TowerSample> &tower);
 
@@ -58,6 +69,8 @@ private:
 	std::shared_ptr<TowerController> towerController;
 	QMap<QString, QWidget *> m_propertyEditors;
 	std::vector<std::string> doNotShowThisFields{"x", "y"};
+	QListWidget *baseEffectCreatorList{};
+	QListWidget *attackEffectCreatorList{};
 };
 
 #endif // TOWERDEFENCE_TOWEREDITOR_H

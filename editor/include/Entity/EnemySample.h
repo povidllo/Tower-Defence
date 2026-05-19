@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 #include "Serializable.h"
 
 class EnemySample : protected ISerializable {
@@ -45,6 +46,28 @@ public:
 
 	void setMoneyFallsOutPercentage(double moneyFallsOutPercentage);
 
+	std::vector<std::string> getBaseEffectCreatorNames() const;
+
+	void addBaseEffectCreator(const std::string &name);
+
+	bool removeBaseEffectCreator(const std::string &name);
+
+	std::vector<std::string> getDamageTakenEffectCreatorNames() const;
+
+	void addDamageTakenEffectCreator(const std::string &name);
+
+	bool removeDamageTakenEffectCreator(const std::string &name);
+
+	std::vector<std::string> getDamageDealtEffectCreatorNames() const;
+
+	void addDamageDealtEffectCreator(const std::string &name);
+
+	bool removeDamageDealtEffectCreator(const std::string &name);
+
+	void renameEffectCreatorReference(const std::string &oldName, const std::string &newName);
+
+	void removeEffectCreatorReference(const std::string &name);
+
 private:
 	std::string name;
 	double health{0};
@@ -53,6 +76,9 @@ private:
 	double moneyFallsOutPercentage{0};
 	double speed{0};
 	std::string enemyTexturePath;
+	std::vector<std::string> baseEffectCreators;
+	std::vector<std::string> damageTakenEffectCreators;
+	std::vector<std::string> damageDealtEffectCreators;
 };
 
 #endif //TOWERDEFENCE_ENEMYSAMPLE_H

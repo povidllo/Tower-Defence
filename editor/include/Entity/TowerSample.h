@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 #include "Serializable.h"
 
 class TowerSample : protected ISerializable {
@@ -36,6 +37,22 @@ public:
 	std::string getTowerTexturePath() const;
 
 	std::vector<std::string> getUpgradeNames() const;
+
+	std::vector<std::string> getBaseEffectCreatorNames() const;
+
+	void addBaseEffectCreator(const std::string &name);
+
+	bool removeBaseEffectCreator(const std::string &name);
+
+	std::vector<std::string> getAttackEffectCreatorNames() const;
+
+	void addAttackEffectCreator(const std::string &name);
+
+	bool removeAttackEffectCreator(const std::string &name);
+
+	void renameEffectCreatorReference(const std::string &oldName, const std::string &newName);
+
+	void removeEffectCreatorReference(const std::string &name);
 
 	void addNextUpgrade(const std::string &name);
 
@@ -87,6 +104,8 @@ private:
 	std::string towerTexturePath;
 	std::string projectileTexturePath;
 	std::vector<std::string> nextUpgrade;
+	std::vector<std::string> baseEffectCreators;
+	std::vector<std::string> attackEffectCreators;
 	std::string towerTemplateName;
 };
 

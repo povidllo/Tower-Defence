@@ -1,5 +1,8 @@
 #ifndef EDITOR_PROJECT_H
 #define EDITOR_PROJECT_H
+#include "AbilitySample.h"
+#include "EffectCreatorSample.h"
+#include "EffectSample.h"
 #include "EnemySample.h"
 #include "Map.h"
 #include "Serializable.h"
@@ -45,6 +48,12 @@ public:
 
 	[[nodiscard]] std::vector<std::shared_ptr<EnemySample> > &getEnemies();
 
+	[[nodiscard]] std::vector<std::shared_ptr<EffectSample> > &getEffects();
+
+	[[nodiscard]] std::vector<std::shared_ptr<EffectCreatorSample> > &getEffectCreators();
+
+	[[nodiscard]] std::vector<std::shared_ptr<AbilitySample> > &getAbilities();
+
 	[[nodiscard]] std::vector<std::shared_ptr<Map> > &getMaps();
 
 private:
@@ -52,6 +61,9 @@ private:
 	std::string path;
 	std::time_t lastSaveDate;
 	std::vector<std::shared_ptr<EnemySample> > enemies;
+	std::vector<std::shared_ptr<EffectSample> > effects;
+	std::vector<std::shared_ptr<EffectCreatorSample> > effectCreators;
+	std::vector<std::shared_ptr<AbilitySample> > abilities;
 	std::vector<std::shared_ptr<TowerSample> > towers;
 	std::vector<std::shared_ptr<Map> > maps;
 };

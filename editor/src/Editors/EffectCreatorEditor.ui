@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EffectCreatorEditor</class>
+ <widget class="QWidget" name="EffectCreatorEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1050</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="leftPanel">
+      <layout class="QVBoxLayout" name="leftLayout">
+       <item>
+        <widget class="QPushButton" name="addButton">
+         <property name="text">
+          <string>Add effect creator</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="effectCreatorList"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="rightPanel">
+      <layout class="QVBoxLayout" name="rightLayout">
+       <item>
+        <widget class="QLabel" name="editorTitle">
+         <property name="text">
+          <string>Effect creator properties</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QFormLayout" name="propertiesForm">
+         <item row="0" column="0"><widget class="QLabel" name="nameLabel"><property name="text"><string>Name:</string></property></widget></item>
+         <item row="0" column="1"><widget class="QLineEdit" name="nameEdit"/></item>
+         <item row="1" column="0"><widget class="QLabel" name="radiusLabel"><property name="text"><string>Radius:</string></property></widget></item>
+         <item row="1" column="1"><widget class="QDoubleSpinBox" name="radiusSpin"/></item>
+         <item row="2" column="0"><widget class="QLabel" name="durationLabel"><property name="text"><string>Duration seconds:</string></property></widget></item>
+         <item row="2" column="1"><widget class="QDoubleSpinBox" name="durationSpin"/></item>
+         <item row="3" column="0"><widget class="QLabel" name="periodLabel"><property name="text"><string>Period seconds:</string></property></widget></item>
+         <item row="3" column="1"><widget class="QDoubleSpinBox" name="periodSpin"/></item>
+         <item row="4" column="0"><widget class="QLabel" name="targetRelationLabel"><property name="text"><string>Target relation:</string></property></widget></item>
+         <item row="4" column="1"><widget class="QComboBox" name="targetRelationCombo"/></item>
+         <item row="5" column="0"><widget class="QLabel" name="attachmentPreferenceLabel"><property name="text"><string>Attachment:</string></property></widget></item>
+         <item row="5" column="1"><widget class="QComboBox" name="attachmentPreferenceCombo"/></item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="effectsLayout">
+         <item>
+          <widget class="QGroupBox" name="startGroup">
+           <property name="title">
+            <string>Start effects</string>
+           </property>
+           <layout class="QVBoxLayout" name="startLayout">
+            <item><widget class="QListWidget" name="startEffectsList"/></item>
+            <item>
+             <layout class="QHBoxLayout" name="startButtons">
+              <item><widget class="QPushButton" name="addStartButton"><property name="text"><string>Add</string></property></widget></item>
+              <item><widget class="QPushButton" name="removeStartButton"><property name="text"><string>Remove</string></property></widget></item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="periodicGroup">
+           <property name="title">
+            <string>Periodic effects</string>
+           </property>
+           <layout class="QVBoxLayout" name="periodicLayout">
+            <item><widget class="QListWidget" name="periodicEffectsList"/></item>
+            <item>
+             <layout class="QHBoxLayout" name="periodicButtons">
+              <item><widget class="QPushButton" name="addPeriodicButton"><property name="text"><string>Add</string></property></widget></item>
+              <item><widget class="QPushButton" name="removePeriodicButton"><property name="text"><string>Remove</string></property></widget></item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="bottomButtons">
+         <item><widget class="QPushButton" name="saveButton"><property name="text"><string>Save</string></property></widget></item>
+         <item><widget class="QPushButton" name="deleteButton"><property name="text"><string>Delete</string></property></widget></item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

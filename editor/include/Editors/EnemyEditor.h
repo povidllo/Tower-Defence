@@ -1,6 +1,7 @@
 #ifndef TOWERDEFENCE_ENEMYEDITOR_H
 #define TOWERDEFENCE_ENEMYEDITOR_H
 
+#include <QListWidget>
 #include <QWidget>
 
 #include "BaseEditor.h"
@@ -34,10 +35,24 @@ private slots:
 
 	void onChooseTextureButtonClicked();
 
+	void onAddBaseEffectCreatorButtonClicked();
+
+	void onRemoveBaseEffectCreatorButtonClicked();
+
+	void onAddDamageTakenEffectCreatorButtonClicked();
+
+	void onRemoveDamageTakenEffectCreatorButtonClicked();
+
+	void onAddDamageDealtEffectCreatorButtonClicked();
+
+	void onRemoveDamageDealtEffectCreatorButtonClicked();
+
 private:
 	Ui::EnemyEditor *ui;
 
 	void updateEnemyList() const;
+
+	void updateEffectCreatorLists() const;
 
 	void fillPropertiesForm(const std::shared_ptr<EnemySample> &enemy);
 
@@ -46,6 +61,9 @@ private:
 	std::shared_ptr<EnemyController> enemyController;
 	QMap<QString, QWidget *> m_propertyEditors;
 	std::vector<std::string> doNotShowThisFields{};
+	QListWidget *baseEffectCreatorList{};
+	QListWidget *damageTakenEffectCreatorList{};
+	QListWidget *damageDealtEffectCreatorList{};
 };
 
 #endif // TOWERDEFENCE_ENEMYEDITOR_H

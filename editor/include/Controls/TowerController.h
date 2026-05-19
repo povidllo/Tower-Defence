@@ -34,6 +34,8 @@ public:
 
 	std::vector<std::string> getNextUpgradeNames() const;
 
+	std::vector<std::string> getEffectCreatorNames() const;
+
 	std::string getCurrentNextUpgrade() const;
 
 	void updateUpgradesNameAfterRename(const std::string &oldName, const std::string &newName);

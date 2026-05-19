@@ -98,6 +98,14 @@ std::shared_ptr<TowerController> ProjectController::getTowerController() { retur
 
 std::shared_ptr<EnemyController> ProjectController::getEnemyController() { return enemyController; }
 
+std::shared_ptr<EffectController> ProjectController::getEffectController() { return effectController; }
+
+std::shared_ptr<EffectCreatorController> ProjectController::getEffectCreatorController() {
+	return effectCreatorController;
+}
+
+std::shared_ptr<AbilityController> ProjectController::getAbilityController() { return abilityController; }
+
 std::shared_ptr<MapController> ProjectController::getMapController() { return mapController; }
 
 json ProjectController::toJson() const { return currentProject->toJson(); }
@@ -120,6 +128,18 @@ std::vector<std::shared_ptr<TowerSample> > &ProjectController::getTowers() const
 
 std::vector<std::shared_ptr<EnemySample> > &ProjectController::getEnemies() const {
 	return currentProject->getEnemies();
+}
+
+std::vector<std::shared_ptr<EffectSample> > &ProjectController::getEffects() const {
+	return currentProject->getEffects();
+}
+
+std::vector<std::shared_ptr<EffectCreatorSample> > &ProjectController::getEffectCreators() const {
+	return currentProject->getEffectCreators();
+}
+
+std::vector<std::shared_ptr<AbilitySample> > &ProjectController::getAbilities() const {
+	return currentProject->getAbilities();
 }
 
 void ProjectController::removeEnemiesFromWaves(std::string enemyName) const {
@@ -158,6 +178,50 @@ void ProjectController::renameTowerTemplateOnMapSpots(const std::string &oldName
 	}
 }
 
+void ProjectController::renameEffectCreatorReferences(const std::string &oldName, const std::string &newName) const {
+	for (const auto &tower: currentProject->getTowers()) {
+		tower->renameEffectCreatorReference(oldName, newName);
+	}
+	for (const auto &enemy: currentProject->getEnemies()) {
+		enemy->renameEffectCreatorReference(oldName, newName);
+	}
+	for (const auto &ability: currentProject->getAbilities()) {
+		ability->renameEffectCreatorReference(oldName, newName);
+	}
+}
+
+void ProjectController::removeEffectCreatorReferences(const std::string &name) const {
+	for (const auto &tower: currentProject->getTowers()) {
+		tower->removeEffectCreatorReference(name);
+	}
+	for (const auto &enemy: currentProject->getEnemies()) {
+		enemy->removeEffectCreatorReference(name);
+	}
+	for (const auto &ability: currentProject->getAbilities()) {
+		ability->removeEffectCreatorReference(name);
+	}
+}
+
+void ProjectController::renameAbilityReferences(const std::string &oldName, const std::string &newName) const {
+	for (const auto &map: currentProject->getMaps()) {
+		for (const auto &team: map->getTeams()) {
+			for (auto &player: team->getPlayers()) {
+				player.renameAbilityReference(oldName, newName);
+			}
+		}
+	}
+}
+
+void ProjectController::removeAbilityReferences(const std::string &name) const {
+	for (const auto &map: currentProject->getMaps()) {
+		for (const auto &team: map->getTeams()) {
+			for (auto &player: team->getPlayers()) {
+				player.removeAbilityReference(name);
+			}
+		}
+	}
+}
+
 void ProjectController::rehydrateAllMapSpots() const {
 	auto &towers = currentProject->getTowers();
 	for (auto &map: currentProject->getMaps()) {
@@ -172,6 +236,9 @@ std::shared_ptr<Project> ProjectController::getCurrentProject() const {
 void ProjectController::loadControls() {
 	towerController = std::make_shared<TowerController>(this);
 	enemyController = std::make_shared<EnemyController>(this);
+	effectController = std::make_shared<EffectController>(this);
+	effectCreatorController = std::make_shared<EffectCreatorController>(this);
+	abilityController = std::make_shared<AbilityController>(this);
 	mapController = std::make_shared<MapController>(this);
 }
 

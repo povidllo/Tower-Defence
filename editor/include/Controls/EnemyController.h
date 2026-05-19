@@ -23,6 +23,8 @@ public:
 
 	bool enemyExists(const std::string &name) const;
 
+	std::vector<std::string> getEffectCreatorNames() const;
+
 	void setEnemyTexture(const std::string &path) const;
 
 private:

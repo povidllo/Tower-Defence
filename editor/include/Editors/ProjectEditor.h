@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include "AbilityEditor.h"
+#include "EffectCreatorEditor.h"
+#include "EffectEditor.h"
 #include "EnemyEditor.h"
 #include "MapEditor.h"
 #include "Project.h"
@@ -39,6 +42,9 @@ private:
 
 	std::unique_ptr<TowerEditor> towerEditor;
 	std::unique_ptr<EnemyEditor> enemyEditor;
+	std::unique_ptr<EffectEditor> effectEditor;
+	std::unique_ptr<EffectCreatorEditor> effectCreatorEditor;
+	std::unique_ptr<AbilityEditor> abilityEditor;
 	std::unique_ptr<MapEditor> mapEditor;
 
 	void commonSetUp();
@@ -47,6 +53,12 @@ private slots:
 	void openTowerEditor();
 
 	void openEnemyEditor();
+
+	void openEffectEditor();
+
+	void openEffectCreatorEditor();
+
+	void openAbilityEditor();
 
 	void openMapEditor();
 
