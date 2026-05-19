@@ -3,16 +3,54 @@
 #include <QDoubleSpinBox>
 #include <QDialogButtonBox>
 #include <QFileDialog>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QTimer>
+#include <QVBoxLayout>
 #include <qinputdialog.h>
 
 #include "ui_TowerEditor.h"
 
+namespace {
+	QStringList getAvailableNames(const std::vector<std::string> &allNames, const std::vector<std::string> &usedNames) {
+		QStringList available;
+		for (const auto &name: allNames) {
+			if (std::find(usedNames.begin(), usedNames.end(), name) == usedNames.end()) {
+				available << QString::fromStdString(name);
+			}
+		}
+		return available;
+	}
+}
+
 TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController, QWidget *parent) : QWidget(parent),
 	ui(new Ui::TowerEditor), towerController(towerController) {
 	ui->setupUi(this);
+
+	auto *effectCreatorGroup = new QGroupBox("Effect creators", this);
+	auto *effectCreatorLayout = new QHBoxLayout(effectCreatorGroup);
+	auto *baseLayout = new QVBoxLayout();
+	auto *attackLayout = new QVBoxLayout();
+	baseEffectCreatorList = new QListWidget(effectCreatorGroup);
+	attackEffectCreatorList = new QListWidget(effectCreatorGroup);
+	auto *addBaseButton = new QPushButton("Add base", effectCreatorGroup);
+	auto *removeBaseButton = new QPushButton("Remove base", effectCreatorGroup);
+	auto *addAttackButton = new QPushButton("Add attack", effectCreatorGroup);
+	auto *removeAttackButton = new QPushButton("Remove attack", effectCreatorGroup);
+	baseLayout->addWidget(new QLabel("On build", effectCreatorGroup));
+	baseLayout->addWidget(baseEffectCreatorList);
+	baseLayout->addWidget(addBaseButton);
+	baseLayout->addWidget(removeBaseButton);
+	attackLayout->addWidget(new QLabel("On attack hit", effectCreatorGroup));
+	attackLayout->addWidget(attackEffectCreatorList);
+	attackLayout->addWidget(addAttackButton);
+	attackLayout->addWidget(removeAttackButton);
+	effectCreatorLayout->addLayout(baseLayout);
+	effectCreatorLayout->addLayout(attackLayout);
+	ui->editorLayout->addWidget(effectCreatorGroup);
 
 	connect(ui->addTowerButton, &QPushButton::clicked, this, &TowerEditor::onAddTowerButtonClicked);
 	connect(ui->towerList, &QListWidget::itemClicked, this, &TowerEditor::onItemClicked);
@@ -24,6 +62,10 @@ TowerEditor::TowerEditor(const std::shared_ptr<TowerController> &towerController
 	connect(ui->removeNextTowerButton, &QPushButton::clicked, this, &TowerEditor::onRemoveNextUpgradeButtonClicked);
 
 	connect(ui->projectileSettings, &QPushButton::clicked, this, &TowerEditor::onProjectileSettingsButtonClicked);
+	connect(addBaseButton, &QPushButton::clicked, this, &TowerEditor::onAddBaseEffectCreatorButtonClicked);
+	connect(removeBaseButton, &QPushButton::clicked, this, &TowerEditor::onRemoveBaseEffectCreatorButtonClicked);
+	connect(addAttackButton, &QPushButton::clicked, this, &TowerEditor::onAddAttackEffectCreatorButtonClicked);
+	connect(removeAttackButton, &QPushButton::clicked, this, &TowerEditor::onRemoveAttackEffectCreatorButtonClicked);
 
 	updateTowerList();
 	rightPanelView(false);
@@ -37,6 +79,7 @@ void TowerEditor::rightPanelView(bool what) {
 	BaseEditor::clearPropertiesForm(ui->propertiesForm, m_propertyEditors);
 	if (what) {
 		fillPropertiesForm(towerController->getCurrentTower());
+		updateEffectCreatorLists();
 	}
 }
 
@@ -66,6 +109,7 @@ void TowerEditor::onItemClicked(const QListWidgetItem *item) {
 
 	rightPanelView(true);
 	updateUpgradeList();
+	updateEffectCreatorLists();
 }
 
 void TowerEditor::onSaveButtonClicked() {
@@ -287,6 +331,74 @@ void TowerEditor::onProjectileSettingsButtonClicked() {
 	qDebug() << "Projectile settings updated for tower:" << QString::fromStdString(currentTower->getName());
 }
 
+void TowerEditor::onAddBaseEffectCreatorButtonClicked() {
+	auto currentTower = towerController->getCurrentTower();
+	if (!currentTower) {
+		return;
+	}
+
+	const auto availableNames = getAvailableNames(
+		towerController->getEffectCreatorNames(),
+		currentTower->getBaseEffectCreatorNames()
+	);
+	if (availableNames.isEmpty()) {
+		QMessageBox::information(this, "No Effect Creators", "No available effect creators to add.");
+		return;
+	}
+
+	bool ok = false;
+	const auto selected = QInputDialog::getItem(this, tr("Add Effect Creator"), tr("Choose effect creator:"),
+												availableNames, 0, false, &ok);
+	if (ok && !selected.isEmpty()) {
+		currentTower->addBaseEffectCreator(selected.toStdString());
+		updateEffectCreatorLists();
+	}
+}
+
+void TowerEditor::onRemoveBaseEffectCreatorButtonClicked() {
+	auto currentTower = towerController->getCurrentTower();
+	auto *item = baseEffectCreatorList->currentItem();
+	if (!currentTower || !item) {
+		return;
+	}
+	currentTower->removeBaseEffectCreator(item->text().toStdString());
+	updateEffectCreatorLists();
+}
+
+void TowerEditor::onAddAttackEffectCreatorButtonClicked() {
+	auto currentTower = towerController->getCurrentTower();
+	if (!currentTower) {
+		return;
+	}
+
+	const auto availableNames = getAvailableNames(
+		towerController->getEffectCreatorNames(),
+		currentTower->getAttackEffectCreatorNames()
+	);
+	if (availableNames.isEmpty()) {
+		QMessageBox::information(this, "No Effect Creators", "No available effect creators to add.");
+		return;
+	}
+
+	bool ok = false;
+	const auto selected = QInputDialog::getItem(this, tr("Add Effect Creator"), tr("Choose effect creator:"),
+												availableNames, 0, false, &ok);
+	if (ok && !selected.isEmpty()) {
+		currentTower->addAttackEffectCreator(selected.toStdString());
+		updateEffectCreatorLists();
+	}
+}
+
+void TowerEditor::onRemoveAttackEffectCreatorButtonClicked() {
+	auto currentTower = towerController->getCurrentTower();
+	auto *item = attackEffectCreatorList->currentItem();
+	if (!currentTower || !item) {
+		return;
+	}
+	currentTower->removeAttackEffectCreator(item->text().toStdString());
+	updateEffectCreatorLists();
+}
+
 void TowerEditor::updateTowerList() const {
 	qDebug() << "Tower list updated";
 
@@ -297,6 +409,17 @@ void TowerEditor::updateTowerList() const {
 
 void TowerEditor::updateUpgradeList() const {
 	BaseEditor::fillListWidget(ui->nextTowerList, towerController->getNextUpgradeNames());
+}
+
+void TowerEditor::updateEffectCreatorLists() const {
+	const auto currentTower = towerController->getCurrentTower();
+	if (!currentTower) {
+		baseEffectCreatorList->clear();
+		attackEffectCreatorList->clear();
+		return;
+	}
+	BaseEditor::fillListWidget(baseEffectCreatorList, currentTower->getBaseEffectCreatorNames());
+	BaseEditor::fillListWidget(attackEffectCreatorList, currentTower->getAttackEffectCreatorNames());
 }
 
 void TowerEditor::fillPropertiesForm(const std::shared_ptr<TowerSample> &tower) {

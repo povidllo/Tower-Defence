@@ -1,5 +1,52 @@
 #include "../../include/Entity/TowerSample.h"
 
+#include <algorithm>
+
+namespace {
+	TowerSample::json stringVectorToJson(const std::vector<std::string> &values) {
+		auto result = TowerSample::json::array();
+		for (const auto &value: values) {
+			result.push_back(value);
+		}
+		return result;
+	}
+
+	void loadStringVector(const TowerSample::json &j, const char *key, std::vector<std::string> &target) {
+		if (!j.contains(key) || !j[key].is_array()) {
+			return;
+		}
+		target.clear();
+		for (const auto &item: j[key]) {
+			if (item.is_string()) {
+				target.push_back(item.get<std::string>());
+			}
+		}
+	}
+
+	void addUnique(std::vector<std::string> &values, const std::string &name) {
+		if (std::find(values.begin(), values.end(), name) == values.end()) {
+			values.push_back(name);
+		}
+	}
+
+	bool removeValue(std::vector<std::string> &values, const std::string &name) {
+		auto it = std::remove(values.begin(), values.end(), name);
+		if (it == values.end()) {
+			return false;
+		}
+		values.erase(it, values.end());
+		return true;
+	}
+
+	void renameValue(std::vector<std::string> &values, const std::string &oldName, const std::string &newName) {
+		for (auto &value: values) {
+			if (value == oldName) {
+				value = newName;
+			}
+		}
+	}
+}
+
 TowerSample::TowerSample(std::string name) : name(std::move(name)) {
 }
 
@@ -16,10 +63,6 @@ TowerSample::json TowerSample::toJson() const {
 			{"y", y},
 		};
 	}
-	json upgradeArray = json::array();
-	for (const auto &name: nextUpgrade) {
-		upgradeArray.push_back(name);
-	}
 	return {{"name", name},
 			{"damage", damage},
 			{"fireRate", fireRate},
@@ -30,7 +73,9 @@ TowerSample::json TowerSample::toJson() const {
 			{"fireDistance", fireDistance},
 			{"towerTexturePath", towerTexturePath},
 			{"projectileTexturePath", projectileTexturePath},
-			{"nextUpgrade", upgradeArray}};
+			{"nextUpgrade", stringVectorToJson(nextUpgrade)},
+			{"baseEffectCreators", stringVectorToJson(baseEffectCreators)},
+			{"attackEffectCreators", stringVectorToJson(attackEffectCreators)}};
 }
 
 void TowerSample::fromJson(const json &j) {
@@ -54,14 +99,9 @@ void TowerSample::fromJson(const json &j) {
 	projectileSpeed = j.value("projectileSpeed", projectileSpeed);
 	fireDistance = j.value("fireDistance", fireDistance);
 
-	if (j.contains("nextUpgrade") && j["nextUpgrade"].is_array()) {
-		nextUpgrade.clear();
-		for (const auto &item: j["nextUpgrade"]) {
-			if (item.is_string()) {
-				nextUpgrade.push_back(item.get<std::string>());
-			}
-		}
-	}
+	loadStringVector(j, "nextUpgrade", nextUpgrade);
+	loadStringVector(j, "baseEffectCreators", baseEffectCreators);
+	loadStringVector(j, "attackEffectCreators", attackEffectCreators);
 
 	x = j.value("x", x);
 	y = j.value("y", y);
@@ -84,6 +124,32 @@ void TowerSample::setTowerTexturePath(const std::string &texPath) { towerTexture
 std::string TowerSample::getTowerTexturePath() const { return towerTexturePath; }
 
 std::vector<std::string> TowerSample::getUpgradeNames() const { return nextUpgrade; }
+
+std::vector<std::string> TowerSample::getBaseEffectCreatorNames() const { return baseEffectCreators; }
+
+void TowerSample::addBaseEffectCreator(const std::string &name) { addUnique(baseEffectCreators, name); }
+
+bool TowerSample::removeBaseEffectCreator(const std::string &name) {
+	return removeValue(baseEffectCreators, name);
+}
+
+std::vector<std::string> TowerSample::getAttackEffectCreatorNames() const { return attackEffectCreators; }
+
+void TowerSample::addAttackEffectCreator(const std::string &name) { addUnique(attackEffectCreators, name); }
+
+bool TowerSample::removeAttackEffectCreator(const std::string &name) {
+	return removeValue(attackEffectCreators, name);
+}
+
+void TowerSample::renameEffectCreatorReference(const std::string &oldName, const std::string &newName) {
+	renameValue(baseEffectCreators, oldName, newName);
+	renameValue(attackEffectCreators, oldName, newName);
+}
+
+void TowerSample::removeEffectCreatorReference(const std::string &name) {
+	removeValue(baseEffectCreators, name);
+	removeValue(attackEffectCreators, name);
+}
 
 void TowerSample::addNextUpgrade(const std::string &name) { nextUpgrade.push_back(name); }
 
@@ -127,4 +193,6 @@ void TowerSample::applyTemplate(const TowerSample &src) {
 	towerTexturePath = src.getTowerTexturePath();
 	projectileTexturePath = src.getProjectileTexturePath();
 	nextUpgrade = src.getUpgradeNames();
+	baseEffectCreators = src.getBaseEffectCreatorNames();
+	attackEffectCreators = src.getAttackEffectCreatorNames();
 }

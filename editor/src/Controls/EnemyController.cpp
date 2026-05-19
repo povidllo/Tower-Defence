@@ -57,6 +57,14 @@ bool EnemyController::enemyExists(const std::string &name) const {
 	return false;
 }
 
+std::vector<std::string> EnemyController::getEffectCreatorNames() const {
+	std::vector<std::string> names;
+	for (const auto &effectCreator: projectController->getEffectCreators()) {
+		names.push_back(effectCreator->getName());
+	}
+	return names;
+}
+
 void EnemyController::setEnemyTexture(const std::string &path) const {
 	if (!TextureUtils::isPngBySignature(path)) {
 		throw std::invalid_argument("Enemy texture does not have .png format");

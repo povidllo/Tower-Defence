@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AbilityEditor</class>
+ <widget class="QWidget" name="AbilityEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1050</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="leftPanel">
+      <layout class="QVBoxLayout" name="leftLayout">
+       <item><widget class="QPushButton" name="addAbilityButton"><property name="text"><string>Add ability</string></property></widget></item>
+       <item><widget class="QListWidget" name="abilityList"/></item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="rightPanel">
+      <layout class="QVBoxLayout" name="rightLayout">
+       <item><widget class="QLabel" name="editorTitle"><property name="text"><string>Ability properties</string></property></widget></item>
+       <item>
+        <layout class="QFormLayout" name="propertiesForm">
+         <item row="0" column="0"><widget class="QLabel" name="nameLabel"><property name="text"><string>Name:</string></property></widget></item>
+         <item row="0" column="1"><widget class="QLineEdit" name="nameEdit"/></item>
+         <item row="1" column="0"><widget class="QLabel" name="targetSelectionLabel"><property name="text"><string>Target selection:</string></property></widget></item>
+         <item row="1" column="1"><widget class="QComboBox" name="targetSelectionCombo"/></item>
+         <item row="2" column="0"><widget class="QLabel" name="chargesLabel"><property name="text"><string>Charges:</string></property></widget></item>
+         <item row="2" column="1"><widget class="QSpinBox" name="chargesSpin"/></item>
+         <item row="3" column="0"><widget class="QLabel" name="chargeCooldownLabel"><property name="text"><string>Charge cooldown seconds:</string></property></widget></item>
+         <item row="3" column="1"><widget class="QDoubleSpinBox" name="chargeCooldownSpin"/></item>
+         <item row="4" column="0"><widget class="QLabel" name="fullCooldownLabel"><property name="text"><string>Full cooldown seconds:</string></property></widget></item>
+         <item row="4" column="1"><widget class="QDoubleSpinBox" name="fullCooldownSpin"/></item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="effectCreatorsGroup">
+         <property name="title">
+          <string>Effect creators on cast</string>
+         </property>
+         <layout class="QVBoxLayout" name="effectCreatorsLayout">
+          <item><widget class="QListWidget" name="effectCreatorsOnCastList"/></item>
+          <item>
+           <layout class="QHBoxLayout" name="effectCreatorButtons">
+            <item><widget class="QPushButton" name="addEffectCreatorButton"><property name="text"><string>Add</string></property></widget></item>
+            <item><widget class="QPushButton" name="removeEffectCreatorButton"><property name="text"><string>Remove</string></property></widget></item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="bottomButtons">
+         <item><widget class="QPushButton" name="saveButton"><property name="text"><string>Save</string></property></widget></item>
+         <item><widget class="QPushButton" name="deleteButton"><property name="text"><string>Delete</string></property></widget></item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

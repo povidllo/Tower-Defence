@@ -25,6 +25,9 @@
      <widget class="QStackedWidget" name="stackedWidget">
       <widget class="QWidget" name="towerEditorPage"/>
       <widget class="QWidget" name="enemyEditorPage"/>
+      <widget class="QWidget" name="effectEditorPage"/>
+      <widget class="QWidget" name="effectCreatorEditorPage"/>
+      <widget class="QWidget" name="abilityEditorPage"/>
       <widget class="QWidget" name="mapEditorPage"/>
      </widget>
     </item>
@@ -53,6 +56,9 @@
     </property>
     <addaction name="actionTower_editor"/>
     <addaction name="actionEnemy_editor"/>
+    <addaction name="actionEffect_editor"/>
+    <addaction name="actionEffect_creator_editor"/>
+    <addaction name="actionAbility_editor"/>
     <addaction name="actionMap_editor"/>
    </widget>
    <addaction name="menuFile"/>
@@ -77,6 +83,21 @@
   <action name="actionEnemy_editor">
    <property name="text">
     <string>Enemy editor</string>
+   </property>
+  </action>
+  <action name="actionEffect_editor">
+   <property name="text">
+    <string>Effect editor</string>
+   </property>
+  </action>
+  <action name="actionEffect_creator_editor">
+   <property name="text">
+    <string>Effect creator editor</string>
+   </property>
+  </action>
+  <action name="actionAbility_editor">
+   <property name="text">
+    <string>Ability editor</string>
    </property>
   </action>
   <action name="actionMap_editor">

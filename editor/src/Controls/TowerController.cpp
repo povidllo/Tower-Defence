@@ -76,6 +76,14 @@ std::vector<std::string> TowerController::getNextUpgradeNames() const {
 	return currentTower->getUpgradeNames();
 }
 
+std::vector<std::string> TowerController::getEffectCreatorNames() const {
+	std::vector<std::string> names;
+	for (const auto &effectCreator: projectController->getEffectCreators()) {
+		names.push_back(effectCreator->getName());
+	}
+	return names;
+}
+
 std::string TowerController::getCurrentNextUpgrade() const {
 	return currentNextUpgrade;
 }

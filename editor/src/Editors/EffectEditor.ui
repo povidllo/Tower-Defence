@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EffectEditor</class>
+ <widget class="QWidget" name="EffectEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1050</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="leftPanel">
+      <layout class="QVBoxLayout" name="leftLayout">
+       <item>
+        <widget class="QPushButton" name="addEffectButton">
+         <property name="text">
+          <string>Add effect</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="effectList"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="rightPanel">
+      <layout class="QVBoxLayout" name="rightLayout">
+       <item>
+        <widget class="QLabel" name="editorTitle">
+         <property name="text">
+          <string>Effect properties</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QFormLayout" name="propertiesForm">
+         <item row="0" column="0">
+          <widget class="QLabel" name="nameLabel">
+           <property name="text">
+            <string>Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="nameEdit"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="targetTypeLabel">
+           <property name="text">
+            <string>Target type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="targetTypeCombo"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="durationLabel">
+           <property name="text">
+            <string>Duration seconds:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="durationSpin"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="periodLabel">
+           <property name="text">
+            <string>Period seconds:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QDoubleSpinBox" name="periodSpin"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="stackableLabel">
+           <property name="text">
+            <string>Stackable:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="stackableCheck"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="visualTextureLabel">
+           <property name="text">
+            <string>Visual texture:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <layout class="QHBoxLayout" name="textureLayout">
+           <item>
+            <widget class="QLineEdit" name="visualTexturePathEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="chooseTextureButton">
+             <property name="text">
+              <string>Choose</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="visualPreview">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>96</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string>border: 1px solid gray; background: white;</string>
+         </property>
+         <property name="text">
+          <string>No preview</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="unitGroup">
+         <property name="title">
+          <string>Unit impact</string>
+         </property>
+         <layout class="QFormLayout" name="unitForm">
+          <item row="0" column="0"><widget class="QLabel" name="startHealthImpactLabel"><property name="text"><string>Start HP impact:</string></property></widget></item>
+          <item row="0" column="1"><widget class="QDoubleSpinBox" name="startHealthImpactSpin"/></item>
+          <item row="1" column="0"><widget class="QLabel" name="startSpeedImpactLabel"><property name="text"><string>Start speed impact %:</string></property></widget></item>
+          <item row="1" column="1"><widget class="QDoubleSpinBox" name="startSpeedImpactSpin"/></item>
+          <item row="2" column="0"><widget class="QLabel" name="periodicHealthImpactLabel"><property name="text"><string>Periodic HP impact:</string></property></widget></item>
+          <item row="2" column="1"><widget class="QDoubleSpinBox" name="periodicHealthImpactSpin"/></item>
+          <item row="3" column="0"><widget class="QLabel" name="periodicSpeedImpactLabel"><property name="text"><string>Periodic speed impact %:</string></property></widget></item>
+          <item row="3" column="1"><widget class="QDoubleSpinBox" name="periodicSpeedImpactSpin"/></item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="towerGroup">
+         <property name="title">
+          <string>Tower impact</string>
+         </property>
+         <layout class="QFormLayout" name="towerForm">
+          <item row="0" column="0"><widget class="QLabel" name="startDamageFlatImpactLabel"><property name="text"><string>Start damage flat:</string></property></widget></item>
+          <item row="0" column="1"><widget class="QDoubleSpinBox" name="startDamageFlatImpactSpin"/></item>
+          <item row="1" column="0"><widget class="QLabel" name="startDamagePercentImpactLabel"><property name="text"><string>Start damage %:</string></property></widget></item>
+          <item row="1" column="1"><widget class="QDoubleSpinBox" name="startDamagePercentImpactSpin"/></item>
+          <item row="2" column="0"><widget class="QLabel" name="startAttackSpeedPercentImpactLabel"><property name="text"><string>Start attack speed %:</string></property></widget></item>
+          <item row="2" column="1"><widget class="QDoubleSpinBox" name="startAttackSpeedPercentImpactSpin"/></item>
+          <item row="3" column="0"><widget class="QLabel" name="periodicDamageFlatImpactLabel"><property name="text"><string>Periodic damage flat:</string></property></widget></item>
+          <item row="3" column="1"><widget class="QDoubleSpinBox" name="periodicDamageFlatImpactSpin"/></item>
+          <item row="4" column="0"><widget class="QLabel" name="periodicDamagePercentImpactLabel"><property name="text"><string>Periodic damage %:</string></property></widget></item>
+          <item row="4" column="1"><widget class="QDoubleSpinBox" name="periodicDamagePercentImpactSpin"/></item>
+          <item row="5" column="0"><widget class="QLabel" name="periodicAttackSpeedPercentImpactLabel"><property name="text"><string>Periodic attack speed %:</string></property></widget></item>
+          <item row="5" column="1"><widget class="QDoubleSpinBox" name="periodicAttackSpeedPercentImpactSpin"/></item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="afterFinishGroup">
+         <property name="title">
+          <string>Effects after finish</string>
+         </property>
+         <layout class="QVBoxLayout" name="afterFinishLayout">
+          <item><widget class="QListWidget" name="effectsAfterFinishList"/></item>
+          <item>
+           <layout class="QHBoxLayout" name="afterFinishButtons">
+            <item><widget class="QPushButton" name="addAfterFinishButton"><property name="text"><string>Add</string></property></widget></item>
+            <item><widget class="QPushButton" name="removeAfterFinishButton"><property name="text"><string>Remove</string></property></widget></item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="bottomButtons">
+         <item><widget class="QPushButton" name="saveButton"><property name="text"><string>Save</string></property></widget></item>
+         <item><widget class="QPushButton" name="deleteButton"><property name="text"><string>Delete</string></property></widget></item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

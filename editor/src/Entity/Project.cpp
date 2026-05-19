@@ -35,6 +35,24 @@ Project::json Project::toJson() const {
 	}
 	j["enemies"] = enemiesArray;
 
+	json effectsArray = json::array();
+	for (const auto &effect: effects) {
+		effectsArray.push_back(effect->toJson());
+	}
+	j["effects"] = effectsArray;
+
+	json effectCreatorsArray = json::array();
+	for (const auto &effectCreator: effectCreators) {
+		effectCreatorsArray.push_back(effectCreator->toJson());
+	}
+	j["effectCreators"] = effectCreatorsArray;
+
+	json abilitiesArray = json::array();
+	for (const auto &ability: abilities) {
+		abilitiesArray.push_back(ability->toJson());
+	}
+	j["abilities"] = abilitiesArray;
+
 	j["textures"] = TextureManager::instance().toJson();
 
 	return j;
@@ -73,6 +91,30 @@ void Project::fromJson(const json &j) {
 		}
 	}
 
+	if (j.contains("effects")) {
+		effects.clear();
+		for (const auto &effectJson: j["effects"]) {
+			auto effect = std::make_shared<EffectSample>(effectJson);
+			effects.push_back(effect);
+		}
+	}
+
+	if (j.contains("effectCreators")) {
+		effectCreators.clear();
+		for (const auto &effectCreatorJson: j["effectCreators"]) {
+			auto effectCreator = std::make_shared<EffectCreatorSample>(effectCreatorJson);
+			effectCreators.push_back(effectCreator);
+		}
+	}
+
+	if (j.contains("abilities")) {
+		abilities.clear();
+		for (const auto &abilityJson: j["abilities"]) {
+			auto ability = std::make_shared<AbilitySample>(abilityJson);
+			abilities.push_back(ability);
+		}
+	}
+
 	if (j.contains("textures")) {
 		TextureManager::instance().fromJson(j["textures"]);
 	}
@@ -93,5 +135,11 @@ void Project::setLastSaveDate(std::time_t last_save_date) { lastSaveDate = last_
 std::vector<std::shared_ptr<TowerSample> > &Project::getTowers() { return towers; }
 
 std::vector<std::shared_ptr<EnemySample> > &Project::getEnemies() { return enemies; }
+
+std::vector<std::shared_ptr<EffectSample> > &Project::getEffects() { return effects; }
+
+std::vector<std::shared_ptr<EffectCreatorSample> > &Project::getEffectCreators() { return effectCreators; }
+
+std::vector<std::shared_ptr<AbilitySample> > &Project::getAbilities() { return abilities; }
 
 std::vector<std::shared_ptr<Map> > &Project::getMaps() { return maps; }
