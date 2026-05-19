@@ -16,7 +16,7 @@ namespace TDEngine {
             std::shared_ptr<EnemyActions> findTarget(std::shared_ptr<EngineStorage> engineStorage);
             void setSample(std::shared_ptr<TowerSample> sample);
             void upgradeTower(std::shared_ptr<EngineStorage> engineStorage);
-
+        	EffectCreatorSample createTestEffectCreatorSample();
             Tower storage;
         };
     } // Inner

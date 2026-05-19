@@ -43,3 +43,5 @@
 cmake-build-debug/*
 build/*
 .cache/*
+
+example_project/*

@@ -5,7 +5,6 @@ namespace TDEngine {
     namespace Inner {
         Engine::Engine(std::shared_ptr<Project> project)
             : storage(std::make_shared<EngineStorage>(project)),
-            // boundaryDT(std::make_shared<BoundaryDataTransfer>(this, storage->curProject)),
             tickGen(std::chrono::steady_clock::now())
         {
         }
@@ -33,11 +32,13 @@ namespace TDEngine {
 
     	void Engine::initMap() {
         	storage->curWave = 0;
-	        storage->activeAbilities.clear();
+	        // storage->activeAbilities.clear();
         	storage->activeEnemies.clear();
         	storage->activeProjectiles.clear();
         	storage->activeTowers.clear();
         	storage->activeWaves.clear();
+        	storage->activeEnemyEffects.clear();
+        	storage->activeEffectCreators.clear();
         	storage->curGameStatus->mapObjects.clear();
 			storage->curGameStatus->currentGold = storage->curMap->getStartCurrency();
         	storage->curGameStatus->currentHp = storage->curMap->getHp();

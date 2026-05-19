@@ -1,8 +1,9 @@
 #pragma once
+#include "../../../../editor/include/Entity/EnemySample.h"
+#include "EffectOnEnemyActions.h"
 #include "IActing.h"
 #include "MapObject.h"
 #include "entities/Enemy.h"
-#include "../../../../editor/include/Entity/EnemySample.h"
 
 namespace TDEngine {
     namespace Inner {
@@ -12,8 +13,7 @@ namespace TDEngine {
             explicit EnemyActions(EnemySample sample, std::shared_ptr<Wave> wave);
             void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
             void attack(std::shared_ptr<EngineStorage> engineStorage);
-            void killed(std::shared_ptr<EngineStorage> engineStorage);
-
+        	void killed(std::shared_ptr<EngineStorage> engineStorage);
 
             Enemy storage;
         };

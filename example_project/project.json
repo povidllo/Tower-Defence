@@ -325,15 +325,11 @@
         {
             "name": "tower",
             "damage": 5.0,
-            "fireRate": 0.3,
+            "fireRate": 3.0,
             "cost": 10.0,
             "x": 0.0,
             "y": 0.0,
-<<<<<<< Updated upstream
-            "projectileSpeed": 6.0,
-=======
             "projectileSpeed": 5.0,
->>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_1.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -346,15 +342,11 @@
         {
             "name": "tower_1",
             "damage": 5.0,
-            "fireRate": 0.3,
+            "fireRate": 2.0,
             "cost": 11.0,
             "x": 0.0,
             "y": 0.0,
-<<<<<<< Updated upstream
-            "projectileSpeed": 6.0,
-=======
             "projectileSpeed": 5.0,
->>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_2.png",
             "projectileTexturePath": "resources/projectile_2.png",
@@ -365,15 +357,11 @@
         {
             "name": "tower_2",
             "damage": 6.0,
-            "fireRate": 0.3,
+            "fireRate": 2000.0,
             "cost": 12.0,
             "x": 0.0,
             "y": 0.0,
-<<<<<<< Updated upstream
-            "projectileSpeed": 6.0,
-=======
             "projectileSpeed": 5.0,
->>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_3.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -384,15 +372,11 @@
         {
             "name": "tower_3",
             "damage": 5.0,
-            "fireRate": 0.3,
+            "fireRate": 2.0,
             "cost": 13.0,
             "x": 0.0,
             "y": 0.0,
-<<<<<<< Updated upstream
-            "projectileSpeed": 6.0,
-=======
             "projectileSpeed": 5.0,
->>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_4.png",
             "projectileTexturePath": "resources/projectile_2.png",
@@ -404,15 +388,11 @@
         {
             "name": "tower_4",
             "damage": 10.0,
-            "fireRate": 0.3,
+            "fireRate": 3.0,
             "cost": 14.0,
             "x": 0.0,
             "y": 0.0,
-<<<<<<< Updated upstream
-            "projectileSpeed": 6.0,
-=======
             "projectileSpeed": 7.0,
->>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_5.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -421,15 +401,11 @@
         {
             "name": "tower_5",
             "damage": 12.0,
-            "fireRate": 0.3,
+            "fireRate": 3.0,
             "cost": 15.0,
             "x": 0.0,
             "y": 0.0,
-<<<<<<< Updated upstream
-            "projectileSpeed": 6.0,
-=======
             "projectileSpeed": 7.0,
->>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_6.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -438,15 +414,11 @@
         {
             "name": "tower_6",
             "damage": 20.0,
-            "fireRate": 0.3,
+            "fireRate": 2.0,
             "cost": 16.0,
             "x": 0.0,
             "y": 0.0,
-<<<<<<< Updated upstream
-            "projectileSpeed": 6.0,
-=======
             "projectileSpeed": 8.0,
->>>>>>> Stashed changes
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_7.png",
             "projectileTexturePath": "resources/projectile_1.png",
@@ -456,41 +428,29 @@
     "enemies": [
         {
             "name": "enemy",
-            "health": 20.0,
+            "health": 200.0,
             "damage": 10.0,
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
-<<<<<<< Updated upstream
-            "speed": 1.5,
-=======
             "speed": 2.0,
->>>>>>> Stashed changes
             "enemyTexturePath": "resources/enemy_1.png"
         },
         {
             "name": "enemy_1",
-            "health": 20.0,
+            "health": 200.0,
             "damage": 10.0,
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
-<<<<<<< Updated upstream
-            "speed": 3.0,
-=======
             "speed": 2.0,
->>>>>>> Stashed changes
             "enemyTexturePath": "resources/enemy_2.png"
         },
         {
             "name": "enemy_2",
-            "health": 13.0,
+            "health": 130.0,
             "damage": 10.0,
             "moneyFallsOut": 13.0,
             "moneyFallsOutPercentage": 100.0,
-<<<<<<< Updated upstream
-            "speed": 2.5,
-=======
             "speed": 2.0,
->>>>>>> Stashed changes
             "enemyTexturePath": "resources/enemy_3.png"
         }
     ]

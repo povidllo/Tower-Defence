@@ -7,7 +7,7 @@
 
 namespace TDEngine {
 	namespace Inner {
-		enum class MapObjectTypes { Tower, Enemy, Projectile };
+		enum class MapObjectTypes { Tower, Enemy, Projectile, EffectCreator, Point };
 		class MapObject {
 		public:
 			MapObject(std::string texturePath, double x, double y, MapObjectTypes type) {

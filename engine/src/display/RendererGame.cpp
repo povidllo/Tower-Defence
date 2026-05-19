@@ -102,6 +102,42 @@ namespace TDEngine::Inner {
 		}
 	}
 
+	void RendererGame::drawHealthBar(float x, float y, float width, float height, float healthPercent) {
+		if (healthPercent < 0) {
+			healthPercent = 0;
+		}
+		else if (healthPercent > 1) {
+			healthPercent = 1;
+		}
+
+		// Создание полоски здоровья с цветом в зависимости от доли здоровья
+		sf::RectangleShape background(sf::Vector2f(width, height));
+		background.setPosition(x, y);
+		background.setFillColor(sf::Color(60, 20, 20));
+		window.draw(background);
+
+		sf::RectangleShape healthBar(sf::Vector2f(width * healthPercent, height));
+		healthBar.setPosition(x, y);
+
+		if (healthPercent > 0.6f) {
+			healthBar.setFillColor(sf::Color(50, 205, 50)); // Зелёный
+		} else if (healthPercent > 0.3f) {
+			healthBar.setFillColor(sf::Color(255, 200, 50)); // Жёлтый
+		} else {
+			healthBar.setFillColor(sf::Color(220, 50, 50)); // Красный
+		}
+
+		window.draw(healthBar);
+
+		// Рамка вокруг полоски
+		sf::RectangleShape border(sf::Vector2f(width, height));
+		border.setPosition(x, y);
+		border.setFillColor(sf::Color::Transparent);
+		border.setOutlineColor(sf::Color(40, 40, 45));
+		border.setOutlineThickness(1.0f);
+		window.draw(border);
+	}
+
 	void RendererGame::renderScene(const std::shared_ptr<GameStatus> &gameStat, const sf::Sprite &background) {
 		window.setView(window.getDefaultView());
 
@@ -131,6 +167,25 @@ namespace TDEngine::Inner {
 
 			spriteCache.setPosition(drawX, drawY);
 			window.draw(spriteCache);
+
+			if (obj->type == MapObjectTypes::Enemy) {
+				auto enemy = std::static_pointer_cast<EnemyActions>(obj);
+
+				double currentHP = enemy->storage.currentHP;
+				double maxHealth = enemy->storage.getHealth();
+
+				if (maxHealth > 0) {
+					float healthPercent = static_cast<float>(currentHP / maxHealth);
+
+					// Параметры полоски здоровья
+					float barWidth = TILE_SIZE * 0.8f;
+					float barHeight = 6.0f;
+					float barX = drawX + (TILE_SIZE - barWidth) / 2.0f;  // Центрируем над спрайтом
+					float barY = drawY - barHeight - 2.0f;
+
+					drawHealthBar(barX, barY, barWidth, barHeight, healthPercent);
+				}
+			}
 		}
 	}
 

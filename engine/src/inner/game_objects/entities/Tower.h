@@ -1,5 +1,6 @@
 #pragma once
 #include "../../../../../editor/include/Entity/TowerSample.h"
+#include "../samples//EffectCreatorSample.h"
 namespace TDEngine {
     namespace Inner {
         class Tower : public TowerSample{
@@ -8,6 +9,7 @@ namespace TDEngine {
             : TowerSample(std::move(sample)) {}
             std::optional<std::string> setUpgradingTo;
             uint64_t timeAfterLastShot;
+        	std::vector<EffectCreatorSample> effectCreatorsOnHit;
         };
     } // Inner
 } // TDEngine

@@ -32,7 +32,8 @@ namespace TDEngine {
                     }
                     }
 
-                moveTo(storage.associatedWave->getPath()[storage.targetIndex], storage.curSpeed, timePassedMillis);
+                moveTo(storage.associatedWave->getPath()[storage.targetIndex],
+                	(storage.curSpeed > 0 ? storage.curSpeed : 0), timePassedMillis);
             }
         }
 
@@ -57,7 +58,6 @@ namespace TDEngine {
         	}
 			storage.isAlive = false;
         }
-
 
     } // Inner
 } // TDEngine
