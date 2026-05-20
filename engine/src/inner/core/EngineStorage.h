@@ -23,6 +23,7 @@ namespace TDEngine {
             // std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
         	std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
 
+        	void reloadMapPlayers();
             void cleanMap();
             void addProjectile(const std::shared_ptr<Projectile> &projectile);
             void removeProjectile(const std::shared_ptr<Projectile> &projectile);

@@ -40,12 +40,14 @@ namespace TDEngine {
 
 
         void EnemyActions::killed(std::shared_ptr<EngineStorage> engineStorage) {
-            storage.isAlive = false;
+        	std::cout << "[INFO] enemy killed: " << storage.getName() << " by players: " << storage.lastHitPlayers.size() << std::endl;
 
+            storage.isAlive = false;
         	// Инициализация генератора случайных чисел
         	std::srand(static_cast<unsigned int>(std::time(nullptr)));
         	double randomValue = static_cast<double>(std::rand()) / RAND_MAX;
 			double finalReward = storage.getMoneyFallsOut() / storage.lastHitPlayers.size();
+        	std::cout << "[INFO] final reward " << finalReward << std::endl;
         	if (randomValue < storage.getMoneyFallsOutPercentage() / 100) {
         		for (auto player : storage.lastHitPlayers) {
         			player->currentCurrency += finalReward;

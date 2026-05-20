@@ -10,13 +10,16 @@ namespace TDEngine {
         }
 
         std::shared_ptr<GameStatus> Engine::gameStep(std::shared_ptr<IPlayerAction> action) {
+        		// std::cout << "[INFO] Game step started" << std::endl;
                 if (action != nullptr) {
+                	std::cout << "[INFO] Engine makes action" << std::endl;
 	                action->MakeAction();
                 }
                 tickGen.tick(storage);
                 storage->cleanMap();
         		checkForVictory();
 				return storage->curGameStatus;
+        		// std::cout << "[INFO] Game step ended" << std::endl;
         }
 
         std::shared_ptr<GameStatus> Engine::startGame(const std::string& mapName) {
@@ -24,6 +27,7 @@ namespace TDEngine {
         		if (map->getName() == mapName) {
         			storage->curMap = map;
         			initMap();
+        			std::cout << "[INFO] Loading complete" << std::endl;
 					return storage->curGameStatus;
         		}
         	}
@@ -42,23 +46,15 @@ namespace TDEngine {
         	storage->curGameStatus->mapObjects.clear();
         	storage->curGameStatus->teams.clear();
 
-        	for (const auto& team : storage->curMap->getTeams()) {
-        		EngineTeam engineTeam(*team);
-        		for (const auto& player : team->getPlayers()) {
-        			EnginePlayer enginePlayer(player);
-        			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
-        			enginePlayer.currentHp = enginePlayer.getHp();
-        			enginePlayer.status = EnginePlayer::PLAYING;
-        			enginePlayer.team = std::make_shared<EngineTeam>(engineTeam);
-        			engineTeam.teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
-        		}
-        		storage->curGameStatus->teams.push_back(std::make_shared<EngineTeam>(engineTeam));
-        	}
+        	storage->reloadMapPlayers();
 
+        	std::cout << "[INFO] Loading towers" << std::endl;
         	for (const auto& tower : storage->curMap->getSpots()) {
+        		std::cout << "[INFO] Creating tower for players: " << getAllPlayers().size() << std::endl;
         		storage->addTower(std::make_shared<TowerActions>(
         			TowerActions(*tower, {tower->getX(), tower->getY()}, getAllPlayers())));
         	}
+
         	if (!storage->curMap->getWaves().empty()) {
         		storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
         	}

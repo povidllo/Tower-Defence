@@ -8,6 +8,7 @@ namespace TDEngine {
 
         void TowerUpgradeAction::MakeAction() {
             tower->storage.setUpgradingTo = upgradeTo;
+        	tower->storage.setUpgradingByPlayer = player;
         }
 
     } // Inner

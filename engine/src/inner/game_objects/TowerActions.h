@@ -18,6 +18,7 @@ namespace TDEngine {
             void setSample(std::shared_ptr<TowerSample> sample);
             void upgradeTower(std::shared_ptr<EngineStorage> engineStorage);
         	EffectCreatorSample createTestEffectCreatorSample();
+        	bool checkOwnership(std::shared_ptr<EnginePlayer> player, std::vector<std::shared_ptr<EnginePlayer>> totalPlayers);
             Tower storage;
         };
     } // Inner

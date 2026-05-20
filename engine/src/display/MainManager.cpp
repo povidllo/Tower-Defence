@@ -194,6 +194,7 @@ namespace TDEngine::Inner {
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			} else if (event.type == sf::Event::MouseButtonPressed) {
+        		std::cout << "[INFO] Processing event: MouseButtonPressed" << std::endl;
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (state == AppState::MENU) {
 						handleMenuClick(event.mouseButton.x, event.mouseButton.y);
@@ -304,6 +305,7 @@ namespace TDEngine::Inner {
 			if (selectedTower) {
 				for (const auto &option: currentUpgradeOptions) {
 					if (option.bounds.contains(worldPos)) {
+        				std::cout << "[INFO] Processing event: tower upgrade" << std::endl;
 						if (networkRole == NetworkRole::CLIENT) {
 							sendUpgradeRequest(selectedTower->positionCoordinates.first,
 											   selectedTower->positionCoordinates.second, option.name);
@@ -706,9 +708,13 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 
 	void MainManager::applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex) {
 		const auto tower = findTowerAt(x, y);
+		std::cout << "[INFO] Tower finding: ";
 		if (!tower || playerIndex >= engine.getAllPlayers().size()) {
+			std::cout << "fail" << std::endl;
 			return;
 		}
+		std::cout << "success" << std::endl;
+
 		const auto player = getLocalPlayer();
 		if (!canPlayerUseTower(player, tower)) {
 			return;
@@ -752,12 +758,8 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		if (networkRole == NetworkRole::NONE || networkMapName.empty()) {
 			return true;
 		}
-		for (auto ownerPlayer : tower->storage.ownerPlayers) {
-			if (ownerPlayer == player) {
-				return true;
-			}
-		}
-		return false;
+
+		return tower->checkOwnership(player, engine.getAllPlayers());
 	}
 
 	void MainManager::rebuildNetworkButtonsHover(int mouseX, int mouseY) {
@@ -788,7 +790,8 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 	}
 
 	std::shared_ptr<EnginePlayer> MainManager::getLocalPlayer() {
-		if (localPlayerIndex < 0 || engine.getAllPlayers().size() >= localPlayerIndex) {
+		if (localPlayerIndex < 0 || engine.getAllPlayers().size() <= localPlayerIndex) {
+		std::cerr << "[ERROR] could not find local player " << localPlayerIndex  << std::endl;
 			return nullptr;
 		}
 		return engine.getAllPlayers()[localPlayerIndex];

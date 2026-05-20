@@ -33,6 +33,44 @@ namespace TDEngine {
         	return players;
         }
 
+    	void EngineStorage::reloadMapPlayers() {
+        	curGameStatus->teams.clear();
+
+        	std::cout << "[INFO] Loading players" << std::endl;
+        	if (curMap->getTeams().size() == 0) {
+        		Team teamSample(std::string("team 0"));
+        		curMap->getTeams().push_back(std::make_shared<Team>(teamSample));
+        		std::cout << "[INFO] Created team " << teamSample.getTeamName() << std::endl;
+        	}
+        	if (curMap->getTeams()[0]->getPlayers().size() == 0) {
+        		auto team = curMap->getTeams()[0];
+        		team->addPlayer("player 0");
+        		Player& playerSample = team->getPlayers()[0];
+        		playerSample.setHp(curMap->getHp());
+        		playerSample.setStartCurrency(curMap->getStartCurrency());
+        		std::cout << "[INFO] Created player " << team->getPlayers()[0].getPlayerName() << std::endl;
+        	}
+        	for (const auto& team : curMap->getTeams()) {
+        		EngineTeam engineTeam(*team);
+        		for (const auto& player : team->getPlayers()) {
+        			EnginePlayer enginePlayer(player);
+        			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
+        			enginePlayer.currentHp = enginePlayer.getHp();
+        			enginePlayer.status = EnginePlayer::PLAYING;
+        			enginePlayer.team = std::make_shared<EngineTeam>(engineTeam);
+        			engineTeam.teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
+        		}
+        		curGameStatus->teams.push_back(std::make_shared<EngineTeam>(engineTeam));
+        	}
+
+        	std::cout << "[INFO] Loaded players amount: " << getAllPlayers().size() << std::endl;
+        	std::cout << "[INFO] Loaded players: : ";
+        	for (auto player : getAllPlayers()) {
+        			std::cout <<  player->getPlayerName() << " ";
+        	}
+        		std::cout << std::endl;
+        }
+
         void EngineStorage::cleanMap() {
             for (int i = 0; i < activeProjectiles.size(); i++) {
             	auto projectilePtr = activeProjectiles[i];
