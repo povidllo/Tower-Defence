@@ -190,7 +190,8 @@ namespace TDEngine::Inner {
 	}
 
 	void RendererGame::renderUI(const std::shared_ptr<GameStatus> &gameStat,
-								const std::vector<UpgradeOption> &upgradeOptions) {
+								const std::vector<UpgradeOption> &upgradeOptions,
+								std::shared_ptr<EnginePlayer> currentPlayer) {
 		window.setView(window.getDefaultView());
 		if (!gameStat)
 			return;
@@ -211,7 +212,7 @@ namespace TDEngine::Inner {
 			textCache.setCharacterSize(22);
 			textCache.setStyle(sf::Text::Bold);
 
-			textCache.setString("HP: " + std::to_string(gameStat->currentHp));
+			textCache.setString("HP: " + std::to_string(currentPlayer->currentHp));
 
 			sf::FloatRect hpBounds = textCache.getLocalBounds();
 			textCache.setOrigin(0, hpBounds.top + hpBounds.height / 2.0f);
@@ -221,7 +222,7 @@ namespace TDEngine::Inner {
 			window.draw(textCache);
 
 			float nextX = statX + 40.f + hpBounds.width + 20.0f;
-			textCache.setString("Gold: " + std::to_string(gameStat->currentGold));
+			textCache.setString("Gold: " + std::to_string(currentPlayer->currentCurrency));
 
 			sf::FloatRect goldBounds = textCache.getLocalBounds();
 			textCache.setOrigin(0, goldBounds.top + goldBounds.height / 2.0f);

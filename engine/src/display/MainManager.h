@@ -65,10 +65,11 @@ namespace TDEngine::Inner {
 		void applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex);
 		std::shared_ptr<TowerActions> findTowerAt(double x, double y);
 		std::vector<std::string> getUpgradeNamesForTower(const std::shared_ptr<MapObject> &tower) const;
-		bool canPlayerUseTower(int playerIndex, double x, double y);
+		bool canPlayerUseTower(std::shared_ptr<EnginePlayer> player, const std::shared_ptr<TowerActions> &tower);
 		void rebuildNetworkButtonsHover(int mouseX, int mouseY);
 		void rebuildNetworkMenu();
 		void updateNetworkSettingsForSelectedMap();
+		std::shared_ptr<EnginePlayer> getLocalPlayer();
 
 		sf::RenderWindow window;
 		Project &project;

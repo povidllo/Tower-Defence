@@ -13,6 +13,7 @@ namespace TDEngine {
             storage.targetIndex = 0;
             storage.curSpeed = sample.getSpeed();
             storage.isAlive = true;
+        	storage.associatedTeam = nullptr;
         }
 
         void EnemyActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
@@ -39,22 +40,28 @@ namespace TDEngine {
 
 
         void EnemyActions::killed(std::shared_ptr<EngineStorage> engineStorage) {
-            storage.isAlive = false;
+        	std::cout << "[INFO] enemy killed: " << storage.getName() << " by players: " << storage.lastHitPlayers.size() << std::endl;
 
+            storage.isAlive = false;
         	// Инициализация генератора случайных чисел
         	std::srand(static_cast<unsigned int>(std::time(nullptr)));
         	double randomValue = static_cast<double>(std::rand()) / RAND_MAX;
-
+			double finalReward = storage.getMoneyFallsOut() / storage.lastHitPlayers.size();
+        	std::cout << "[INFO] final reward " << finalReward << std::endl;
         	if (randomValue < storage.getMoneyFallsOutPercentage() / 100) {
-        		engineStorage->curGameStatus->currentGold += storage.getMoneyFallsOut();
+        		for (auto player : storage.lastHitPlayers) {
+        			player->currentCurrency += finalReward;
+        		}
         	}
 
         }
 
         void EnemyActions::attack(std::shared_ptr<EngineStorage> engineStorage) {
-            engineStorage->curGameStatus->currentHp -= storage.getDamage();
-        	if (engineStorage->curGameStatus->currentHp <= 0) {
-        		engineStorage->curGameStatus->status = GameStatus::LOST;
+        	for (auto player : engineStorage->getAllPlayers()) {
+        		player->currentHp -= storage.getDamage();
+        		if (player->currentHp <= 0) {
+        			player->status = EnginePlayer::LOST;
+        		}
         	}
 			storage.isAlive = false;
         }

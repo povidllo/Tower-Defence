@@ -152,7 +152,7 @@ namespace TDEngine::Inner {
 		sf::Packet joinPacket;
 		joinPacket << PACKET_JOIN;
 		serverSocket->send(joinPacket);
-		gameStatus = std::make_shared<GameStatus>(0, 0);
+		gameStatus = std::make_shared<GameStatus>();
 		selectedTower = nullptr;
 		currentUpgradeOptions.clear();
 		networkTowerInfos.clear();
@@ -194,6 +194,7 @@ namespace TDEngine::Inner {
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			} else if (event.type == sf::Event::MouseButtonPressed) {
+        		std::cout << "[INFO] Processing event: MouseButtonPressed" << std::endl;
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (state == AppState::MENU) {
 						handleMenuClick(event.mouseButton.x, event.mouseButton.y);
@@ -304,6 +305,7 @@ namespace TDEngine::Inner {
 			if (selectedTower) {
 				for (const auto &option: currentUpgradeOptions) {
 					if (option.bounds.contains(worldPos)) {
+        				std::cout << "[INFO] Processing event: tower upgrade" << std::endl;
 						if (networkRole == NetworkRole::CLIENT) {
 							sendUpgradeRequest(selectedTower->positionCoordinates.first,
 											   selectedTower->positionCoordinates.second, option.name);
@@ -346,8 +348,7 @@ namespace TDEngine::Inner {
 				sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
 
 				if (objBounds.contains(localX, localY)) {
-					if (!canPlayerUseTower(localPlayerIndex, obj->positionCoordinates.first,
-										   obj->positionCoordinates.second)) {
+					if (!canPlayerUseTower(getLocalPlayer(), std::static_pointer_cast<TowerActions>(obj))) {
 						selectedTower = nullptr;
 						currentUpgradeOptions.clear();
 						return;
@@ -405,9 +406,10 @@ namespace TDEngine::Inner {
 		if (state != AppState::GAME)
 			return;
 
+		auto localPlayer = getLocalPlayer();
 		if (networkRole == NetworkRole::CLIENT) {
-			if (gameStatus && (gameStatus->status == gameStatus->LOST || gameStatus->status == gameStatus->WON)) {
-				wasVictory = (gameStatus->status == gameStatus->WON);
+			if (gameStatus && (localPlayer->status == EnginePlayer::LOST || localPlayer->status == EnginePlayer::WON)) {
+				wasVictory = (localPlayer->status == EnginePlayer::WON);
 				state = AppState::GAME_OVER;
 			}
 			return;
@@ -417,8 +419,8 @@ namespace TDEngine::Inner {
 		timeAccumulator += dt;
 		const sf::Time TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
-		if (gameStatus && (gameStatus->status == gameStatus->LOST || gameStatus->status == gameStatus->WON)) {
-			wasVictory = (gameStatus->status == gameStatus->WON);
+		if (gameStatus && (localPlayer->status == EnginePlayer::LOST || localPlayer->status == EnginePlayer::WON)) {
+			wasVictory = (localPlayer->status == EnginePlayer::WON);
 			state = AppState::GAME_OVER;
 			return;
 		}
@@ -448,12 +450,12 @@ namespace TDEngine::Inner {
 		} else if (state == AppState::GAME) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			renderer.renderUI(gameStatus, currentUpgradeOptions);
+			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer());
 			window.display();
 		} else if (state == AppState::GAME_OVER) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			renderer.renderUI(gameStatus, currentUpgradeOptions);
+			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer());
 			renderer.renderGameOver(wasVictory);
 			window.display();
 		}
@@ -564,45 +566,51 @@ namespace TDEngine::Inner {
 		client.socket->send(start);
 	}
 
-	void MainManager::sendSnapshotToClients() {
-		if (!gameStatus || clients.empty()) {
-			return;
-		}
+void MainManager::sendSnapshotToClients() {
+    if (!gameStatus || clients.empty()) return;
 
-		sf::Packet packet;
-		packet << PACKET_SNAPSHOT << static_cast<sf::Uint32>(gameStatus->currentHp)
-			   << static_cast<sf::Uint32>(gameStatus->currentGold) << static_cast<sf::Int32>(gameStatus->status)
-			   << static_cast<sf::Uint32>(gameStatus->mapObjects.size());
+    sf::Packet packet;
+    packet << PACKET_SNAPSHOT;
 
-		std::vector<std::shared_ptr<MapObject>> towers;
-		for (const auto &obj: gameStatus->mapObjects) {
-			packet << static_cast<sf::Int32>(obj->type) << obj->texturePath << obj->positionCoordinates.first
-				   << obj->positionCoordinates.second;
-			if (obj->type == MapObjectTypes::Tower) {
-				towers.push_back(obj);
-			}
-		}
+    packet << static_cast<sf::Uint32>(gameStatus->teams.size());
+    for (const auto& team : gameStatus->teams) {
+        packet << static_cast<sf::Uint32>(team->teamPlayers.size());
+        for (const auto& player : team->teamPlayers) {
+            packet << static_cast<sf::Uint32>(player->currentHp)
+                   << static_cast<sf::Uint32>(player->currentCurrency)
+                   << static_cast<sf::Int32>(player->status);
+        }
+    }
 
-		packet << static_cast<sf::Uint32>(towers.size());
-		for (const auto &towerObj: towers) {
-			const auto tower = std::static_pointer_cast<TowerActions>(towerObj);
-			packet << tower->positionCoordinates.first << tower->positionCoordinates.second;
-			const auto upgrades = tower->storage.getUpgradeNames();
-			packet << static_cast<sf::Uint32>(upgrades.size());
-			for (const auto &name: upgrades) {
-				packet << name;
-			}
-		}
+    packet << static_cast<sf::Uint32>(gameStatus->mapObjects.size());
+    std::vector<std::shared_ptr<MapObject>> towers;
+    for (const auto& obj : gameStatus->mapObjects) {
+        packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
+               << obj->positionCoordinates.first << obj->positionCoordinates.second;
+        if (obj->type == MapObjectTypes::Tower) {
+            towers.push_back(obj);
+        }
+    }
 
-		for (auto it = clients.begin(); it != clients.end();) {
-			const sf::Socket::Status status = it->socket->send(packet);
-			if (status == sf::Socket::Disconnected || status == sf::Socket::Error) {
-				it = clients.erase(it);
-			} else {
-				++it;
-			}
-		}
-	}
+    packet << static_cast<sf::Uint32>(towers.size());
+    for (const auto& towerObj : towers) {
+        auto tower = std::static_pointer_cast<TowerActions>(towerObj);
+        packet << tower->positionCoordinates.first << tower->positionCoordinates.second;
+        const auto upgrades = tower->storage.getUpgradeNames();
+        packet << static_cast<sf::Uint32>(upgrades.size());
+        for (const auto& name : upgrades) {
+            packet << name;
+        }
+    }
+
+    for (auto it = clients.begin(); it != clients.end();) {
+        if (it->socket->send(packet) != sf::Socket::Done) {
+            it = clients.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
 
 	void MainManager::processClientPacket(NetworkClient &client, sf::Packet &packet) {
 		sf::Uint8 type = 0;
@@ -616,63 +624,78 @@ namespace TDEngine::Inner {
 		}
 	}
 
-	void MainManager::processServerPacket(sf::Packet &packet) {
-		sf::Uint8 type = 0;
-		packet >> type;
-		if (type == PACKET_WELCOME) {
-			sf::Int32 playerIndex = 0;
-			packet >> playerIndex;
-			localPlayerIndex = playerIndex;
-			networkStatus = "Connected as player " + std::to_string(localPlayerIndex + 1);
-			return;
-		}
-		if (type == PACKET_START) {
-			packet >> networkMapName;
-			backgroundSprite.setTexture(renderer.getTexture(getMapBackgroundImgPath(networkMapName)));
-			gameStatus = std::make_shared<GameStatus>(0, 0);
-			selectedTower = nullptr;
-			currentUpgradeOptions.clear();
-			state = AppState::GAME;
-			return;
-		}
-		if (type != PACKET_SNAPSHOT) {
-			return;
-		}
+void MainManager::processServerPacket(sf::Packet &packet) {
+    sf::Uint8 type = 0;
+    packet >> type;
+    if (type == PACKET_WELCOME) {
+        sf::Int32 idx;
+        packet >> idx;
+        localPlayerIndex = idx;
+        networkStatus = "Connected as player " + std::to_string(localPlayerIndex + 1);
+        return;
+    }
+    if (type == PACKET_START) {
+        packet >> networkMapName;
+        backgroundSprite.setTexture(renderer.getTexture(getMapBackgroundImgPath(networkMapName)));
+        gameStatus = std::make_shared<GameStatus>();
+        selectedTower = nullptr;
+        currentUpgradeOptions.clear();
+        state = AppState::GAME;
+        return;
+    }
+    if (type != PACKET_SNAPSHOT) return;
 
-		sf::Uint32 hp = 0;
-		sf::Uint32 gold = 0;
-		sf::Int32 status = 0;
-		sf::Uint32 objectCount = 0;
-		packet >> hp >> gold >> status >> objectCount;
+    // Читаем команды и игроков
+    auto newStatus = std::make_shared<GameStatus>();
+    sf::Uint32 teamCount = 0;
+    packet >> teamCount;
+    for (sf::Uint32 t = 0; t < teamCount; ++t) {
+        sf::Uint32 playerCount = 0;
+        packet >> playerCount;
+        // Создаём временную команду (нужен конструктор)
+    	auto team = std::make_shared<EngineTeam>(Team(std::string()));
+        for (sf::Uint32 p = 0; p < playerCount; ++p) {
+            sf::Uint32 hp, gold;
+            sf::Int32 status;
+            packet >> hp >> gold >> status;
+            auto player = std::make_shared<EnginePlayer>(Player("", 0, 0));
+            player->currentHp = hp;
+            player->currentCurrency = gold;
+            player->status = static_cast<EnginePlayer::Status>(status);
+            team->teamPlayers.push_back(player);
+        }
+        newStatus->teams.push_back(team);
+    }
 
-		auto snapshot = std::make_shared<GameStatus>(hp, gold);
-		snapshot->status = static_cast<GameStatus::Status>(status);
-		for (sf::Uint32 i = 0; i < objectCount; ++i) {
-			sf::Int32 typeValue = 0;
-			std::string texturePath;
-			double x = 0.0;
-			double y = 0.0;
-			packet >> typeValue >> texturePath >> x >> y;
-			snapshot->mapObjects.push_back(
-					std::make_shared<MapObject>(texturePath, x, y, static_cast<MapObjectTypes>(typeValue)));
-		}
+    // Читаем объекты карты (как раньше)
+    sf::Uint32 objectCount = 0;
+    packet >> objectCount;
+    for (sf::Uint32 i = 0; i < objectCount; ++i) {
+        sf::Int32 typeValue;
+        std::string texturePath;
+        double x, y;
+        packet >> typeValue >> texturePath >> x >> y;
+        newStatus->mapObjects.push_back(
+            std::make_shared<MapObject>(texturePath, x, y, static_cast<MapObjectTypes>(typeValue)));
+    }
 
-		networkTowerInfos.clear();
-		sf::Uint32 towerCount = 0;
-		packet >> towerCount;
-		for (sf::Uint32 i = 0; i < towerCount; ++i) {
-			NetworkTowerInfo info;
-			sf::Uint32 upgradeCount = 0;
-			packet >> info.x >> info.y >> upgradeCount;
-			for (sf::Uint32 j = 0; j < upgradeCount; ++j) {
-				std::string name;
-				packet >> name;
-				info.upgradeNames.push_back(name);
-			}
-			networkTowerInfos.push_back(info);
-		}
-		gameStatus = snapshot;
-	}
+    // Читаем башни и улучшения (как раньше)
+    networkTowerInfos.clear();
+    sf::Uint32 towerCount = 0;
+    packet >> towerCount;
+    for (sf::Uint32 i = 0; i < towerCount; ++i) {
+        NetworkTowerInfo info;
+        sf::Uint32 upgradeCount = 0;
+        packet >> info.x >> info.y >> upgradeCount;
+        for (sf::Uint32 j = 0; j < upgradeCount; ++j) {
+            std::string name;
+            packet >> name;
+            info.upgradeNames.push_back(name);
+        }
+        networkTowerInfos.push_back(info);
+    }
+    gameStatus = newStatus;
+}
 
 	void MainManager::sendUpgradeRequest(double x, double y, const std::string &upgradeName) {
 		if (!serverSocket) {
@@ -684,14 +707,19 @@ namespace TDEngine::Inner {
 	}
 
 	void MainManager::applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex) {
-		if (!canPlayerUseTower(playerIndex, x, y)) {
-			return;
-		}
 		const auto tower = findTowerAt(x, y);
-		if (!tower) {
+		std::cout << "[INFO] Tower finding: ";
+		if (!tower || playerIndex >= engine.getAllPlayers().size()) {
+			std::cout << "fail" << std::endl;
 			return;
 		}
-		playerAction = std::make_shared<TowerUpgradeAction>(upgradeName, tower);
+		std::cout << "success" << std::endl;
+
+		const auto player = getLocalPlayer();
+		if (!canPlayerUseTower(player, tower)) {
+			return;
+		}
+		playerAction = std::make_shared<TowerUpgradeAction>(upgradeName, tower, player);
 	}
 
 	std::shared_ptr<TowerActions> MainManager::findTowerAt(double x, double y) {
@@ -726,42 +754,12 @@ namespace TDEngine::Inner {
 		return {};
 	}
 
-	bool MainManager::canPlayerUseTower(int playerIndex, double x, double y) {
+	bool MainManager::canPlayerUseTower(std::shared_ptr<EnginePlayer> player, const std::shared_ptr<TowerActions> &tower) {
 		if (networkRole == NetworkRole::NONE || networkMapName.empty()) {
 			return true;
 		}
-		std::shared_ptr<Map> map;
-		for (const auto &candidate: project.getMaps()) {
-			if (candidate->getName() == networkMapName) {
-				map = candidate;
-				break;
-			}
-		}
-		if (!map || !map->isOnlineEnabled()) {
-			return true;
-		}
 
-		const auto &playerSpots = map->getPlayerSpots();
-		if (playerIndex < 0 || static_cast<size_t>(playerIndex) >= playerSpots.size()) {
-			return false;
-		}
-
-		std::string spotName;
-		for (const auto &spot: map->getSpots()) {
-			if (std::fabs(spot->getX() - x) < 0.001 && std::fabs(spot->getY() - y) < 0.001) {
-				spotName = spot->getName();
-				break;
-			}
-		}
-		if (spotName.empty()) {
-			return false;
-		}
-
-		const auto &allowedSpots = playerSpots[static_cast<size_t>(playerIndex)];
-		if (allowedSpots.empty()) {
-			return true;
-		}
-		return std::find(allowedSpots.begin(), allowedSpots.end(), spotName) != allowedSpots.end();
+		return tower->checkOwnership(player, engine.getAllPlayers());
 	}
 
 	void MainManager::rebuildNetworkButtonsHover(int mouseX, int mouseY) {
@@ -789,5 +787,13 @@ namespace TDEngine::Inner {
 		if (!map) {
 			return;
 		}
+	}
+
+	std::shared_ptr<EnginePlayer> MainManager::getLocalPlayer() {
+		if (localPlayerIndex < 0 || engine.getAllPlayers().size() <= localPlayerIndex) {
+		std::cerr << "[ERROR] could not find local player " << localPlayerIndex  << std::endl;
+			return nullptr;
+		}
+		return engine.getAllPlayers()[localPlayerIndex];
 	}
 } // namespace TDEngine::Inner
