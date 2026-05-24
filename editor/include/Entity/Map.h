@@ -8,6 +8,7 @@
 #include "Serializable.h"
 #include "Team.h"
 #include "TowerSample.h"
+#include "WaveChain.h"
 #include "WaveSample.h"
 
 class Map : protected ISerializable {
@@ -37,6 +38,14 @@ public:
 	int getWidth() const;
 
 	std::vector<std::shared_ptr<WaveSample> > &getWaves() { return waves; }
+
+	std::vector<std::shared_ptr<WaveChain> > &getStartWaves() { return startWaves; }
+
+	const std::vector<std::shared_ptr<WaveChain> > &getStartWaves() const { return startWaves; }
+
+	void removeWaveReferences(const std::string &waveName);
+
+	void renameWaveReferences(const std::string &oldName, const std::string &newName);
 
 	std::vector<std::shared_ptr<TowerSample> > &getSpots() { return spots; }
 
@@ -88,6 +97,7 @@ private:
 	std::string finalMapImagePath;
 
 	std::vector<std::shared_ptr<WaveSample> > waves;
+	std::vector<std::shared_ptr<WaveChain> > startWaves;
 	std::vector<std::shared_ptr<TowerSample> > spots;
 	std::vector<std::vector<int> > tiles;
 

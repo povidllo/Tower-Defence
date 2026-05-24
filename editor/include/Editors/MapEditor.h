@@ -48,6 +48,14 @@ private slots:
 
 	void onEditWaveButtonClicked();
 
+	void onAddStartWaveChainButtonClicked();
+
+	void onEditStartWaveChainButtonClicked();
+
+	void onDeleteStartWaveChainButtonClicked();
+
+	void onStartWaveChainItemClicked(QListWidgetItem *item);
+
 	void onAddSpotButtonClicked();
 
 	void updateSpotList();
@@ -78,6 +86,8 @@ private:
 	void updateMapList() const;
 
 	void updateWaveList() const;
+
+	void updateStartWaveChainList() const;
 
 	void drawCurrentWavePath();
 

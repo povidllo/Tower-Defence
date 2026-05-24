@@ -7,7 +7,9 @@
 #include <QMessageBox>
 #include <QPixmap>
 
+#include "EnemyEffectSample.h"
 #include "TextureUtils.h"
+#include "TowerEffectSample.h"
 #include "ui_EffectEditor.h"
 
 EffectEditor::EffectEditor(const std::shared_ptr<EffectController> &effectController, QWidget *parent)
@@ -15,9 +17,9 @@ EffectEditor::EffectEditor(const std::shared_ptr<EffectController> &effectContro
 	ui->setupUi(this);
 	configureUi();
 
-	connect(ui->addEffectButton, &QPushButton::clicked, this, &EffectEditor::onAddEffectClicked);
+	connect(ui->addEnemyEffectButton, &QPushButton::clicked, this, &EffectEditor::onAddEnemyEffectClicked);
+	connect(ui->addTowerEffectButton, &QPushButton::clicked, this, &EffectEditor::onAddTowerEffectClicked);
 	connect(ui->effectList, &QListWidget::itemClicked, this, &EffectEditor::onEffectClicked);
-	connect(ui->targetTypeCombo, &QComboBox::currentIndexChanged, this, &EffectEditor::onTargetTypeChanged);
 	connect(ui->deleteButton, &QPushButton::clicked, this, &EffectEditor::onDeleteEffectClicked);
 	connect(ui->saveButton, &QPushButton::clicked, this, &EffectEditor::onSaveEffectClicked);
 	connect(ui->chooseTextureButton, &QPushButton::clicked, this, &EffectEditor::onChooseTextureClicked);
@@ -33,9 +35,6 @@ EffectEditor::~EffectEditor() {
 }
 
 void EffectEditor::configureUi() const {
-	ui->targetTypeCombo->addItem("Unit", "unit");
-	ui->targetTypeCombo->addItem("Tower", "tower");
-
 	const auto configureIntSpin = [](QDoubleSpinBox *spin) {
 		spin->setRange(-1000000, 1000000);
 		spin->setDecimals(0);
@@ -63,14 +62,27 @@ void EffectEditor::configureUi() const {
 	ui->periodicSpeedImpactSpin->setMinimum(-100);
 }
 
-void EffectEditor::onAddEffectClicked() {
-	std::string baseName = "effect";
+void EffectEditor::onAddEnemyEffectClicked() {
+	std::string baseName = "enemy_effect";
 	int counter = 1;
 	while (effectController->effectExists(baseName)) {
-		baseName = "effect_" + std::to_string(counter);
+		baseName = "enemy_effect_" + std::to_string(counter);
 		counter++;
 	}
-	effectController->addEffect(baseName);
+	effectController->addEffect(baseName, EffectSample::Kind::Enemy);
+	updateEffectList();
+	setRightPanelVisible(true);
+	loadEffectToForm(effectController->getCurrentEffect());
+}
+
+void EffectEditor::onAddTowerEffectClicked() {
+	std::string baseName = "tower_effect";
+	int counter = 1;
+	while (effectController->effectExists(baseName)) {
+		baseName = "tower_effect_" + std::to_string(counter);
+		counter++;
+	}
+	effectController->addEffect(baseName, EffectSample::Kind::Tower);
 	updateEffectList();
 	setRightPanelVisible(true);
 	loadEffectToForm(effectController->getCurrentEffect());
@@ -184,12 +196,6 @@ void EffectEditor::onRemoveAfterFinishClicked() {
 	updateEffectsAfterFinishList();
 }
 
-void EffectEditor::onTargetTypeChanged(const int index) const {
-	const bool isTower = ui->targetTypeCombo->itemData(index).toString() == "tower";
-	ui->unitGroup->setVisible(!isTower);
-	ui->towerGroup->setVisible(isTower);
-}
-
 void EffectEditor::updateEffectList() const {
 	BaseEditor::fillListWidget(ui->effectList, effectController->getEffectNames());
 }
@@ -213,48 +219,59 @@ void EffectEditor::loadEffectToForm(const std::shared_ptr<EffectSample> &effect)
 
 	ui->editorTitle->setText("Editing: " + QString::fromStdString(effect->getName()));
 	ui->nameEdit->setText(QString::fromStdString(effect->getName()));
-	ui->targetTypeCombo->setCurrentIndex(effect->getTargetType() == EffectSample::TargetType::Tower ? 1 : 0);
+	ui->effectTypeValueLabel->setText(
+		effect->getKind() == EffectSample::Kind::Tower ? tr("Tower effect") : tr("Enemy effect"));
 	ui->durationSpin->setValue(effect->getDurationSeconds());
 	ui->periodSpin->setValue(effect->getPeriodSeconds());
 	ui->stackableCheck->setChecked(effect->isStackable());
 	ui->visualTexturePathEdit->setText(QString::fromStdString(effect->getVisualTexturePath()));
 	showVisualPreview(effect->getVisualTexturePath());
 
-	ui->startHealthImpactSpin->setValue(effect->getStartHealthImpact());
-	ui->startSpeedImpactSpin->setValue(effect->getStartSpeedImpactPercent());
-	ui->periodicHealthImpactSpin->setValue(effect->getPeriodicHealthImpact());
-	ui->periodicSpeedImpactSpin->setValue(effect->getPeriodicSpeedImpactPercent());
+	const bool isTower = effect->getKind() == EffectSample::Kind::Tower;
+	ui->unitGroup->setVisible(!isTower);
+	ui->towerGroup->setVisible(isTower);
 
-	ui->startDamageFlatImpactSpin->setValue(effect->getStartDamageFlatImpact());
-	ui->startDamagePercentImpactSpin->setValue(effect->getStartDamagePercentImpact());
-	ui->startAttackSpeedPercentImpactSpin->setValue(effect->getStartAttackSpeedPercentImpact());
-	ui->periodicDamageFlatImpactSpin->setValue(effect->getPeriodicDamageFlatImpact());
-	ui->periodicDamagePercentImpactSpin->setValue(effect->getPeriodicDamagePercentImpact());
-	ui->periodicAttackSpeedPercentImpactSpin->setValue(effect->getPeriodicAttackSpeedPercentImpact());
+	if (const auto enemyEffect = std::dynamic_pointer_cast<EnemyEffectSample>(effect)) {
+		ui->startHealthImpactSpin->setValue(enemyEffect->getStartHealthImpact());
+		ui->startSpeedImpactSpin->setValue(enemyEffect->getStartSpeedImpactPercent());
+		ui->periodicHealthImpactSpin->setValue(enemyEffect->getPeriodicHealthImpact());
+		ui->periodicSpeedImpactSpin->setValue(enemyEffect->getPeriodicSpeedImpactPercent());
+	}
+
+	if (const auto towerEffect = std::dynamic_pointer_cast<TowerEffectSample>(effect)) {
+		ui->startDamageFlatImpactSpin->setValue(towerEffect->getStartDamageFlatImpact());
+		ui->startDamagePercentImpactSpin->setValue(towerEffect->getStartDamagePercentImpact());
+		ui->startAttackSpeedPercentImpactSpin->setValue(towerEffect->getStartAttackSpeedPercentImpact());
+		ui->periodicDamageFlatImpactSpin->setValue(towerEffect->getPeriodicDamageFlatImpact());
+		ui->periodicDamagePercentImpactSpin->setValue(towerEffect->getPeriodicDamagePercentImpact());
+		ui->periodicAttackSpeedPercentImpactSpin->setValue(towerEffect->getPeriodicAttackSpeedPercentImpact());
+	}
 
 	updateEffectsAfterFinishList();
-	onTargetTypeChanged(ui->targetTypeCombo->currentIndex());
 }
 
 void EffectEditor::saveFormToEffect(const std::shared_ptr<EffectSample> &effect) const {
 	effect->setName(ui->nameEdit->text().toStdString());
-	effect->setTargetTypeString(ui->targetTypeCombo->currentData().toString().toStdString());
 	effect->setDurationSeconds(ui->durationSpin->value());
 	effect->setPeriodSeconds(ui->periodSpin->value());
 	effect->setStackable(ui->stackableCheck->isChecked());
 	effect->setVisualTexturePath(ui->visualTexturePathEdit->text().toStdString());
 
-	effect->setStartHealthImpact(static_cast<int>(ui->startHealthImpactSpin->value()));
-	effect->setStartSpeedImpactPercent(static_cast<int>(ui->startSpeedImpactSpin->value()));
-	effect->setPeriodicHealthImpact(static_cast<int>(ui->periodicHealthImpactSpin->value()));
-	effect->setPeriodicSpeedImpactPercent(static_cast<int>(ui->periodicSpeedImpactSpin->value()));
+	if (const auto enemyEffect = std::dynamic_pointer_cast<EnemyEffectSample>(effect)) {
+		enemyEffect->setStartHealthImpact(static_cast<int>(ui->startHealthImpactSpin->value()));
+		enemyEffect->setStartSpeedImpactPercent(static_cast<int>(ui->startSpeedImpactSpin->value()));
+		enemyEffect->setPeriodicHealthImpact(static_cast<int>(ui->periodicHealthImpactSpin->value()));
+		enemyEffect->setPeriodicSpeedImpactPercent(static_cast<int>(ui->periodicSpeedImpactSpin->value()));
+	}
 
-	effect->setStartDamageFlatImpact(static_cast<int>(ui->startDamageFlatImpactSpin->value()));
-	effect->setStartDamagePercentImpact(static_cast<int>(ui->startDamagePercentImpactSpin->value()));
-	effect->setStartAttackSpeedPercentImpact(static_cast<int>(ui->startAttackSpeedPercentImpactSpin->value()));
-	effect->setPeriodicDamageFlatImpact(static_cast<int>(ui->periodicDamageFlatImpactSpin->value()));
-	effect->setPeriodicDamagePercentImpact(static_cast<int>(ui->periodicDamagePercentImpactSpin->value()));
-	effect->setPeriodicAttackSpeedPercentImpact(static_cast<int>(ui->periodicAttackSpeedPercentImpactSpin->value()));
+	if (const auto towerEffect = std::dynamic_pointer_cast<TowerEffectSample>(effect)) {
+		towerEffect->setStartDamageFlatImpact(static_cast<int>(ui->startDamageFlatImpactSpin->value()));
+		towerEffect->setStartDamagePercentImpact(static_cast<int>(ui->startDamagePercentImpactSpin->value()));
+		towerEffect->setStartAttackSpeedPercentImpact(static_cast<int>(ui->startAttackSpeedPercentImpactSpin->value()));
+		towerEffect->setPeriodicDamageFlatImpact(static_cast<int>(ui->periodicDamageFlatImpactSpin->value()));
+		towerEffect->setPeriodicDamagePercentImpact(static_cast<int>(ui->periodicDamagePercentImpactSpin->value()));
+		towerEffect->setPeriodicAttackSpeedPercentImpact(static_cast<int>(ui->periodicAttackSpeedPercentImpactSpin->value()));
+	}
 }
 
 void EffectEditor::setRightPanelVisible(const bool visible) const {

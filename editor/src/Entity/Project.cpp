@@ -94,8 +94,7 @@ void Project::fromJson(const json &j) {
 	if (j.contains("effects")) {
 		effects.clear();
 		for (const auto &effectJson: j["effects"]) {
-			auto effect = std::make_shared<EffectSample>(effectJson);
-			effects.push_back(effect);
+			effects.push_back(createEffectFromJson(effectJson));
 		}
 	}
 

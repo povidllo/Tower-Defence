@@ -25,6 +25,8 @@ public:
 private:
 	void fillWaveSettingsForm();
 
+	void updateBelongsList();
+
 	void updateEnemyList();
 
 	void onAddEnemyClicked();
@@ -40,6 +42,7 @@ private:
 	std::shared_ptr<MapController> mapController;
 
 	QMap<QString, QWidget *> waveSettingsEditors;
+	QListWidget *belongsListWidget{nullptr};
 };
 
 #endif // TOWERDEFENCE_WAVEEDITOR_H

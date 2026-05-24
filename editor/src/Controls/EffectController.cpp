@@ -20,8 +20,8 @@ std::shared_ptr<EffectSample> EffectController::getCurrentEffect() {
 	return currentEffect;
 }
 
-void EffectController::addEffect(const std::string &name) {
-	auto effect = std::make_shared<EffectSample>(name);
+void EffectController::addEffect(const std::string &name, const EffectSample::Kind kind) {
+	auto effect = createEffect(name, kind);
 	currentEffect = effect;
 	projectController->getEffects().push_back(effect);
 }

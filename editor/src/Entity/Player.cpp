@@ -14,7 +14,6 @@ Player::json Player::toJson() const {
 	return {
 		{"playerName", playerName},
 		{"startCurrency", startCurrency},
-		{"hp", hp},
 		{"abilities", abilities},
 	};
 }
@@ -22,7 +21,6 @@ Player::json Player::toJson() const {
 void Player::fromJson(const json &j) {
 	playerName = j.value("playerName", playerName);
 	startCurrency = j.value("startCurrency", startCurrency);
-	hp = j.value("hp", hp);
 	if (j.contains("abilities") && j["abilities"].is_array()) {
 		abilityNames.clear();
 		for (const auto &abilityName: j["abilities"]) {

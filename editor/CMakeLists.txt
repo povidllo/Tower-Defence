@@ -24,6 +24,10 @@ add_executable(editor
         include/Entity/EffectCreatorSample.h
         src/Entity/EffectSample.cpp
         include/Entity/EffectSample.h
+        src/Entity/EnemyEffectSample.cpp
+        include/Entity/EnemyEffectSample.h
+        src/Entity/TowerEffectSample.cpp
+        include/Entity/TowerEffectSample.h
         src/Controls/AbilityController.cpp
         include/Controls/AbilityController.h
         src/Controls/EffectCreatorController.cpp
@@ -71,9 +75,14 @@ add_executable(editor
         include/Utils/TextureUtils.h
         src/Entity/WaveSample.cpp
         include/Entity/WaveSample.h
+        src/Entity/WaveChain.cpp
+        include/Entity/WaveChain.h
         src/Editors/WaveEditor.cpp
         include/Editors/WaveEditor.h
         src/Editors/WaveEditor.ui
+        src/Editors/WaveChainEditor.cpp
+        include/Editors/WaveChainEditor.h
+        src/Editors/WaveChainEditor.ui
         src/Entity/Player.cpp
         include/Entity/Player.h
         src/Entity/Team.cpp

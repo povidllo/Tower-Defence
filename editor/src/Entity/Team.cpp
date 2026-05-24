@@ -10,19 +10,25 @@ Team::json Team::toJson() const {
 
 	return {
 	        {"teamName", teamName},
+			{"hp", hp},
 			{"players", arr},
 		};
 }
 
 void Team::fromJson(const json &j) {
 	teamName = j.value("teamName", teamName);
+	const bool hasTeamHp = j.contains("hp");
+	hp = j.value("hp", hp);
 
 	players.clear();
 
 	if (j.contains("players") && j["players"].is_array()) {
 		for (const auto &item : j["players"]) {
 			if (item.is_object()) {
-				players.emplace_back(item); // Player(const json &)
+				if (!hasTeamHp && item.contains("hp")) {
+					hp = item.value("hp", hp);
+				}
+				players.emplace_back(item);
 			}
 		}
 	}

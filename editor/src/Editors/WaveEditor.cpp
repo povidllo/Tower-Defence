@@ -1,5 +1,7 @@
 #include "../../include/Editors/WaveEditor.h"
 
+#include <QCheckBox>
+#include <QListWidget>
 #include <QMessageBox>
 
 #include "MapController.h"
@@ -37,6 +39,10 @@ WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, cons
 		}
 
 		wave->setName(newName.toStdString());
+		if (newName.toStdString() != originalWaveName) {
+			this->mapController->renameWave(originalWaveName, newName.toStdString());
+			originalWaveName = newName.toStdString();
+		}
 
 		wave->clearEnemies();
 		for (int i = 0; i < ui->enemiesList->count(); ++i) {
@@ -59,6 +65,17 @@ WaveEditor::WaveEditor(const std::shared_ptr<MapController> &mapController, cons
 				wave->setEnemySpawnInterval(spin->value());
 			}
 		}
+
+		std::vector<std::string> belongs;
+		if (belongsListWidget) {
+			for (int i = 0; i < belongsListWidget->count(); ++i) {
+				auto *item = belongsListWidget->item(i);
+				if (item->checkState() == Qt::Checked) {
+					belongs.push_back(item->text().toStdString());
+				}
+			}
+		}
+		wave->setBelongs(belongs);
 
 		accept();
 	});
@@ -101,6 +118,39 @@ void WaveEditor::fillWaveSettingsForm() {
 		ui->propertiesForm->addRow("Spawn Interval:", spin);
 		waveSettingsEditors["enemySpawnInterval"] = spin;
 	}
+
+	updateBelongsList();
+}
+
+void WaveEditor::updateBelongsList() {
+	while (ui->propertiesForm->rowCount() > 2) {
+		ui->propertiesForm->removeRow(2);
+	}
+	belongsListWidget = nullptr;
+
+	auto wave = mapController->getWave(originalWaveName);
+	if (!wave) {
+		return;
+	}
+
+	belongsListWidget = new QListWidget(this);
+	belongsListWidget->setSelectionMode(QAbstractItemView::NoSelection);
+
+	const auto teamNames = mapController->getTeamNames();
+	if (teamNames.empty()) {
+		auto *placeholder = new QListWidgetItem(tr("No teams configured (enable Online options)"));
+		placeholder->setFlags(Qt::NoItemFlags);
+		belongsListWidget->addItem(placeholder);
+	} else {
+		for (const auto &teamName : teamNames) {
+			auto *item = new QListWidgetItem(QString::fromStdString(teamName));
+			item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+			item->setCheckState(wave->belongsToTeam(teamName) ? Qt::Checked : Qt::Unchecked);
+			belongsListWidget->addItem(item);
+		}
+	}
+
+	ui->propertiesForm->addRow("Belongs to teams:", belongsListWidget);
 }
 
 void WaveEditor::updateEnemyList() {

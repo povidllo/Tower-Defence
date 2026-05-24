@@ -1,6 +1,7 @@
 #ifndef TOWERDEFENCE_MAPCONTROLLER_H
 #define TOWERDEFENCE_MAPCONTROLLER_H
 #include "Map.h"
+#include "WaveChain.h"
 
 class ProjectController;
 
@@ -25,6 +26,18 @@ public:
 	void addWave(const std::string &name);
 
 	bool removeWave(const std::string &name);
+
+	void renameWave(const std::string &oldName, const std::string &newName);
+
+	std::vector<std::string> getTeamNames() const;
+
+	void addStartWaveChain();
+
+	bool removeStartWaveChain(size_t index);
+
+	std::shared_ptr<WaveChain> getStartWaveChain(size_t index);
+
+	size_t getStartWaveChainCount() const;
 
 	std::vector<std::string> getWavesNames() const;
 

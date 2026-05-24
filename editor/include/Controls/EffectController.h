@@ -17,7 +17,7 @@ public:
 
 	std::shared_ptr<EffectSample> getCurrentEffect();
 
-	void addEffect(const std::string &name);
+	void addEffect(const std::string &name, EffectSample::Kind kind);
 
 	bool removeEffect(const std::string &name) const;
 

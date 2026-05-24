@@ -19,11 +19,22 @@
      <widget class="QWidget" name="leftPanel">
       <layout class="QVBoxLayout" name="leftLayout">
        <item>
-        <widget class="QPushButton" name="addEffectButton">
-         <property name="text">
-          <string>Add effect</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="addEffectLayout">
+         <item>
+          <widget class="QPushButton" name="addEnemyEffectButton">
+           <property name="text">
+            <string>Add enemy effect</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addTowerEffectButton">
+           <property name="text">
+            <string>Add tower effect</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QListWidget" name="effectList"/>
@@ -54,12 +65,16 @@
          <item row="1" column="0">
           <widget class="QLabel" name="targetTypeLabel">
            <property name="text">
-            <string>Target type:</string>
+            <string>Effect type:</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QComboBox" name="targetTypeCombo"/>
+          <widget class="QLabel" name="effectTypeValueLabel">
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="durationLabel">

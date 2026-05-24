@@ -24,8 +24,11 @@ public:
 	const std::vector<Player> &getPlayers() const { return players; }
 
 	void addPlayer(const std::string &playerName) {
-		players.emplace_back(playerName, 0.0, 0.0);
+		players.emplace_back(playerName, 0.0);
 	}
+
+	double getHp() const { return hp; }
+	void setHp(const double value) { hp = value; }
 
 	bool removePlayer(const std::string &playerName);
 
@@ -33,6 +36,7 @@ public:
 
 private:
 	std::string teamName;
+	double hp{0};
 	std::vector<Player> players;
 };
 

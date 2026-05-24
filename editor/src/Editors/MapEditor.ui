@@ -263,6 +263,43 @@
              </layout>
             </widget>
            </item>
+           <item>
+            <widget class="QGroupBox" name="startWavesGroup">
+             <property name="title">
+              <string>Start Wave Chains</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_startWaves">
+              <item>
+               <widget class="QListWidget" name="startWavesList"/>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_startWaves">
+                <item>
+                 <widget class="QPushButton" name="addStartWaveChainButton">
+                  <property name="text">
+                   <string>Add Chain</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="editStartWaveChainButton">
+                  <property name="text">
+                   <string>Edit Chain</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="deleteStartWaveChainButton">
+                  <property name="text">
+                   <string>Delete</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="spotsEditorPage">

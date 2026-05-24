@@ -51,12 +51,25 @@ public:
 
 	void setEnemySpawnInterval(double spawnInterval);
 
+	const std::vector<std::string> &getBelongs() const;
+
+	std::vector<std::string> &getBelongs();
+
+	void setBelongs(std::vector<std::string> teams);
+
+	void addBelongsTeam(const std::string &teamName);
+
+	void removeBelongsTeam(const std::string &teamName);
+
+	bool belongsToTeam(const std::string &teamName) const;
+
 private:
 	std::string name;
 	double timeForWave{0};
 	double enemySpawnInterval{0};
 	std::vector<std::pair<std::string, int> > enemies;
 	std::vector<std::pair<int, int> > path;
+	std::vector<std::string> belongs;
 };
 
 #endif // TOWERDEFENCE_WAVESAMPLE_H

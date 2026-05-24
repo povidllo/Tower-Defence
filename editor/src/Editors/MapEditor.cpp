@@ -20,6 +20,7 @@
 #include "TextureManager.h"
 #include "TowerController.h"
 #include "WaveEditor.h"
+#include "WaveChainEditor.h"
 #include "ui_MapEditor.h"
 
 MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidget *parent) : QWidget(parent),
@@ -46,6 +47,11 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 
 	connect(ui->editCurrentWavePathButton, &QPushButton::clicked, this, &MapEditor::onEditPathButtonClicked);
 
+	connect(ui->addStartWaveChainButton, &QPushButton::clicked, this, &MapEditor::onAddStartWaveChainButtonClicked);
+	connect(ui->editStartWaveChainButton, &QPushButton::clicked, this, &MapEditor::onEditStartWaveChainButtonClicked);
+	connect(ui->deleteStartWaveChainButton, &QPushButton::clicked, this, &MapEditor::onDeleteStartWaveChainButtonClicked);
+	connect(ui->startWavesList, &QListWidget::itemClicked, this, &MapEditor::onStartWaveChainItemClicked);
+
 	connect(ui->enableOnlineCheckBox, &QCheckBox::toggled, this, &MapEditor::onEnableOnlineCheckBoxToggled);
 	connect(ui->maxPlayersSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MapEditor::onMaxPlayersSpinBoxChanged);
 	connect(ui->saveOnlineSettingsButton, &QPushButton::clicked, this, &MapEditor::onSaveOnlineSettingsButtonClicked);
@@ -57,6 +63,7 @@ MapEditor::MapEditor(const std::shared_ptr<MapController> &mapController, QWidge
 	updateMapList();
 	updateTextureList();
 	updateWaveList();
+	updateStartWaveChainList();
 	updateSpotList();
 }
 
@@ -133,6 +140,7 @@ void MapEditor::onMapItemClicked(const int index) {
 	refreshMapView();
 	updateTextureList();
 	updateWaveList();
+	updateStartWaveChainList();
 	updateSpotList();
 	currentWaveName = "";
 }
@@ -279,6 +287,7 @@ void MapEditor::onDeleteWaveButtonClicked() {
 	mapController->removeWave(currentWaveName);
 
 	updateWaveList();
+	updateStartWaveChainList();
 }
 
 void MapEditor::onWaveItemClicked(QListWidgetItem *item) {
@@ -306,6 +315,7 @@ void MapEditor::onEditWaveButtonClicked() {
 
 	if (dialog.exec() == QDialog::Accepted) {
 		updateWaveList();
+		updateStartWaveChainList();
 		refreshMapView();
 		qDebug() << "Wave" << QString::fromStdString(currentWaveName) << "was successfully edited";
 	}
@@ -705,6 +715,82 @@ void MapEditor::updateWaveList() const {
 	fillListWidget(ui->wavesList, waves);
 }
 
+void MapEditor::updateStartWaveChainList() const {
+	ui->startWavesList->clear();
+	if (!mapController->getCurrentMap()) {
+		return;
+	}
+
+	for (size_t i = 0; i < mapController->getStartWaveChainCount(); ++i) {
+		const auto chain = mapController->getStartWaveChain(i);
+		if (!chain) {
+			continue;
+		}
+
+		QString summary;
+		const auto &steps = chain->getChain();
+		const auto &delays = chain->getDelays();
+		for (size_t j = 0; j < steps.size(); ++j) {
+			if (j > 0) {
+				summary += " → ";
+			}
+			summary += QString::fromStdString(steps[j]);
+			if (j < delays.size()) {
+				summary += QString(" [%1s]").arg(delays[j], 0, 'f', 1);
+			}
+		}
+		if (summary.isEmpty()) {
+			summary = tr("Empty chain %1").arg(static_cast<int>(i + 1));
+		}
+
+		auto *item = new QListWidgetItem(summary);
+		item->setData(Qt::UserRole, static_cast<int>(i));
+		ui->startWavesList->addItem(item);
+	}
+}
+
+void MapEditor::onAddStartWaveChainButtonClicked() {
+	mapController->addStartWaveChain();
+	updateStartWaveChainList();
+	ui->startWavesList->setCurrentRow(static_cast<int>(mapController->getStartWaveChainCount()) - 1);
+	onEditStartWaveChainButtonClicked();
+}
+
+void MapEditor::onEditStartWaveChainButtonClicked() {
+	const auto *item = ui->startWavesList->currentItem();
+	if (!item) {
+		QMessageBox::information(this, "No Chain Selected", "Please select a wave chain first.");
+		return;
+	}
+
+	const size_t index = static_cast<size_t>(item->data(Qt::UserRole).toInt());
+	const auto chain = mapController->getStartWaveChain(index);
+	if (!chain) {
+		return;
+	}
+
+	WaveChainEditor dialog(mapController, chain, this);
+	if (dialog.exec() == QDialog::Accepted) {
+		updateStartWaveChainList();
+		ui->startWavesList->setCurrentRow(static_cast<int>(index));
+	}
+}
+
+void MapEditor::onDeleteStartWaveChainButtonClicked() {
+	const auto *item = ui->startWavesList->currentItem();
+	if (!item) {
+		return;
+	}
+
+	const size_t index = static_cast<size_t>(item->data(Qt::UserRole).toInt());
+	mapController->removeStartWaveChain(index);
+	updateStartWaveChainList();
+}
+
+void MapEditor::onStartWaveChainItemClicked(QListWidgetItem *item) {
+	Q_UNUSED(item);
+}
+
 bool MapEditor::eventFilter(QObject *obj, QEvent *event) {
 	if (obj == ui->mapView->scene() && event->type() == QEvent::GraphicsSceneMousePress) {
 		auto *mouseEvent = static_cast<QGraphicsSceneMouseEvent *>(event);
@@ -1016,35 +1102,30 @@ void MapEditor::fillPropertiesForm() {
 
 	if (currentMap->isOnlineEnabled()) {
 		for (auto &team : currentMap->getTeams()) {
-			for (auto &player : team->getPlayers()) {
-				{
-					QString key = QString("%1_hp").arg(QString::fromStdString(player.getPlayerName()));
-					QString label = QString("%1 HP:").arg(QString::fromStdString(player.getPlayerName()));
+			{
+				QString key = QString("%1_hp").arg(QString::fromStdString(team->getTeamName()));
+				QString label = QString("%1 HP:").arg(QString::fromStdString(team->getTeamName()));
 
-					auto *spin = new QDoubleSpinBox(this);
-					spin->setRange(1.0, 10000.0);
-					spin->setDecimals(1);
-					spin->setValue(player.getHp());
+				auto *spin = new QDoubleSpinBox(this);
+				spin->setRange(1.0, 10000.0);
+				spin->setDecimals(1);
+				spin->setValue(team->getHp());
 
-					ui->propertiesForm->addRow(label, spin);
-					m_propertyEditors[key] = spin;
-				}
-
-				{
-					QString key = QString("%1_gold").arg(QString::fromStdString(player.getPlayerName()));
-					QString label = QString("%1 Gold:")
-						.arg(QString::fromStdString(player.getPlayerName()));
-					auto *spin = new QDoubleSpinBox(this);
-					spin->setRange(0.0, 100000.0);
-					spin->setDecimals(0);
-					spin->setValue(player.getStartCurrency());
-
-					ui->propertiesForm->addRow(label, spin);
-					m_propertyEditors[key] = spin;
-				}
-
+				ui->propertiesForm->addRow(label, spin);
+				m_propertyEditors[key] = spin;
 			}
 
+			for (auto &player : team->getPlayers()) {
+				QString key = QString("%1_gold").arg(QString::fromStdString(player.getPlayerName()));
+				QString label = QString("%1 Gold:").arg(QString::fromStdString(player.getPlayerName()));
+				auto *spin = new QDoubleSpinBox(this);
+				spin->setRange(0.0, 100000.0);
+				spin->setDecimals(0);
+				spin->setValue(player.getStartCurrency());
+
+				ui->propertiesForm->addRow(label, spin);
+				m_propertyEditors[key] = spin;
+			}
 		}
 	} else {
 		{
@@ -1080,24 +1161,18 @@ void MapEditor::onSaveMapSettingsButtonClicked() {
 	if (!currentMap) return;
 
 	if (currentMap->isOnlineEnabled()) {
-
 		for (auto &team : currentMap->getTeams()) {
-			for (auto &player : team->getPlayers()) {
-
-				QString name = QString::fromStdString(player.getPlayerName());
-
-				// HP
-				QString hpKey = name + "_hp";
-				if (m_propertyEditors.contains(hpKey)) {
-					if (auto *spin = qobject_cast<QDoubleSpinBox*>(m_propertyEditors[hpKey])) {
-						player.setHp(spin->value());
-					}
+			QString teamHpKey = QString("%1_hp").arg(QString::fromStdString(team->getTeamName()));
+			if (m_propertyEditors.contains(teamHpKey)) {
+				if (auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors[teamHpKey])) {
+					team->setHp(spin->value());
 				}
+			}
 
-				// GOLD
-				QString goldKey = name + "_gold";
+			for (auto &player : team->getPlayers()) {
+				QString goldKey = QString("%1_gold").arg(QString::fromStdString(player.getPlayerName()));
 				if (m_propertyEditors.contains(goldKey)) {
-					if (auto *spin = qobject_cast<QDoubleSpinBox*>(m_propertyEditors[goldKey])) {
+					if (auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors[goldKey])) {
 						player.setStartCurrency(spin->value());
 					}
 				}

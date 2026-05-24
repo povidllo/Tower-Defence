@@ -46,6 +46,11 @@ json Map::toJson() const {
 	}
 	onlineConfig["teams"] = teamsArray;
 
+	json startWavesArray = json::array();
+	for (const auto &chain : startWaves) {
+		startWavesArray.push_back(chain->toJson());
+	}
+
 	return {
 		{"name", name},
 		{"height", height},
@@ -53,6 +58,7 @@ json Map::toJson() const {
 		{"startCurrency", startCurrency},
 		{"hp", hp},
 		{"waves", wavesArray},
+		{"startWaves", startWavesArray},
 		{"spots", spotArrays},
 		{"tiles", tileArray},
 		{"online", onlineConfig}
@@ -86,6 +92,13 @@ void Map::fromJson(const json &j) {
 		for (const auto &waveJson: j["waves"]) {
 			auto wave = std::make_shared<WaveSample>(waveJson);
 			waves.push_back(wave);
+		}
+	}
+
+	if (j.contains("startWaves") && j["startWaves"].is_array()) {
+		startWaves.clear();
+		for (const auto &chainJson : j["startWaves"]) {
+			startWaves.push_back(std::make_shared<WaveChain>(chainJson));
 		}
 	}
 
@@ -286,5 +299,22 @@ void Map::hydrateSpotTemplates(const std::vector<std::shared_ptr<TowerSample> > 
 				break;
 			}
 		}
+	}
+}
+
+void Map::removeWaveReferences(const std::string &waveName) {
+	for (auto it = startWaves.begin(); it != startWaves.end();) {
+		(*it)->removeWaveReference(waveName);
+		if ((*it)->getChain().empty()) {
+			it = startWaves.erase(it);
+		} else {
+			++it;
+		}
+	}
+}
+
+void Map::renameWaveReferences(const std::string &oldName, const std::string &newName) {
+	for (auto &chain : startWaves) {
+		chain->renameWaveReference(oldName, newName);
 	}
 }

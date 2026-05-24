@@ -31,7 +31,9 @@ public:
 	~EffectEditor() override;
 
 private slots:
-	void onAddEffectClicked();
+	void onAddEnemyEffectClicked();
+
+	void onAddTowerEffectClicked();
 
 	void onEffectClicked(const QListWidgetItem *item);
 
@@ -44,8 +46,6 @@ private slots:
 	void onAddAfterFinishClicked();
 
 	void onRemoveAfterFinishClicked();
-
-	void onTargetTypeChanged(int index) const;
 
 private:
 	Ui::EffectEditor *ui;
