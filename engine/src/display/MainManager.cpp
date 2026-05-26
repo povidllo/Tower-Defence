@@ -308,7 +308,7 @@ namespace TDEngine::Inner {
         				std::cout << "[INFO] Processing event: tower upgrade" << std::endl;
 						if (networkRole == NetworkRole::CLIENT) {
 							sendUpgradeRequest(selectedTower->positionCoordinates.first,
-											   selectedTower->positionCoordinates.second, option.name);
+											   selectedTower->positionCoordinates.second, option.name, localPlayerIndex);
 						} else {
 							applyUpgradeAt(selectedTower->positionCoordinates.first,
 										   selectedTower->positionCoordinates.second, option.name, localPlayerIndex);
@@ -348,11 +348,11 @@ namespace TDEngine::Inner {
 				sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
 
 				if (objBounds.contains(localX, localY)) {
-					if (!canPlayerUseTower(getLocalPlayer(), std::static_pointer_cast<TowerActions>(obj))) {
-						selectedTower = nullptr;
-						currentUpgradeOptions.clear();
-						return;
-					}
+					// if (!canPlayerUseTower(getLocalPlayer(), std::static_pointer_cast<TowerActions>(obj))) {
+					// 	selectedTower = nullptr;
+					// 	currentUpgradeOptions.clear();
+					// 	return;
+					// }
 					selectedTower = obj;
 					clickedOnTower = true;
 					currentUpgradeOptions.clear();
@@ -399,14 +399,13 @@ namespace TDEngine::Inner {
 	void MainManager::update(sf::Time dt) {
 		updateNetwork();
 
-		if (state == AppState::NETWORK_MENU) {
-			return;
-		}
-
 		if (state != AppState::GAME)
 			return;
 
 		auto localPlayer = getLocalPlayer();
+		if (!localPlayer) {
+			return;
+		}
 		if (networkRole == NetworkRole::CLIENT) {
 			if (gameStatus && (localPlayer->status == EnginePlayer::LOST || localPlayer->status == EnginePlayer::WON)) {
 				wasVictory = (localPlayer->status == EnginePlayer::WON);
@@ -422,6 +421,9 @@ namespace TDEngine::Inner {
 		if (gameStatus && (localPlayer->status == EnginePlayer::LOST || localPlayer->status == EnginePlayer::WON)) {
 			wasVictory = (localPlayer->status == EnginePlayer::WON);
 			state = AppState::GAME_OVER;
+			if (networkRole == NetworkRole::HOST) {
+				sendSnapshotToClients();
+			}
 			return;
 		}
 
@@ -578,7 +580,9 @@ void MainManager::sendSnapshotToClients() {
         for (const auto& player : team->teamPlayers) {
             packet << static_cast<sf::Uint32>(player->currentHp)
                    << static_cast<sf::Uint32>(player->currentCurrency)
+                   << player->getPlayerName()
                    << static_cast<sf::Int32>(player->status);
+
         }
     }
 
@@ -620,6 +624,7 @@ void MainManager::sendSnapshotToClients() {
 			double y = 0.0;
 			std::string upgradeName;
 			packet >> x >> y >> upgradeName;
+			std::cout << "[INFO] Server processing tower upgrade for: " << client.playerIndex;
 			applyUpgradeAt(x, y, upgradeName, client.playerIndex);
 		}
 	}
@@ -640,7 +645,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
         gameStatus = std::make_shared<GameStatus>();
         selectedTower = nullptr;
         currentUpgradeOptions.clear();
-        state = AppState::GAME;
+        // state = AppState::GAME;
         return;
     }
     if (type != PACKET_SNAPSHOT) return;
@@ -656,9 +661,10 @@ void MainManager::processServerPacket(sf::Packet &packet) {
     	auto team = std::make_shared<EngineTeam>(Team(std::string()));
         for (sf::Uint32 p = 0; p < playerCount; ++p) {
             sf::Uint32 hp, gold;
+        	std::string name;
             sf::Int32 status;
-            packet >> hp >> gold >> status;
-            auto player = std::make_shared<EnginePlayer>(Player("", 0, 0));
+            packet >> hp >> gold >> name >> status;
+            auto player = std::make_shared<EnginePlayer>(Player(name, 0, 0));
             player->currentHp = hp;
             player->currentCurrency = gold;
             player->status = static_cast<EnginePlayer::Status>(status);
@@ -695,14 +701,17 @@ void MainManager::processServerPacket(sf::Packet &packet) {
         networkTowerInfos.push_back(info);
     }
     gameStatus = newStatus;
+	if (state != AppState::GAME) {
+		state = AppState::GAME;
+	}
 }
 
-	void MainManager::sendUpgradeRequest(double x, double y, const std::string &upgradeName) {
+	void MainManager::sendUpgradeRequest(double x, double y, const std::string &upgradeName, int playerIndex) {
 		if (!serverSocket) {
 			return;
 		}
 		sf::Packet packet;
-		packet << PACKET_UPGRADE << x << y << upgradeName;
+		packet << PACKET_UPGRADE << x << y << upgradeName << playerIndex;
 		serverSocket->send(packet);
 	}
 
@@ -715,7 +724,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		}
 		std::cout << "success" << std::endl;
 
-		const auto player = getLocalPlayer();
+		const auto player = engine.getAllPlayers()[playerIndex];
 		if (!canPlayerUseTower(player, tower)) {
 			return;
 		}
@@ -759,7 +768,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 			return true;
 		}
 
-		return tower->checkOwnership(player, engine.getAllPlayers());
+		return tower->checkOwnership(player);
 	}
 
 	void MainManager::rebuildNetworkButtonsHover(int mouseX, int mouseY) {
@@ -790,10 +799,21 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 	}
 
 	std::shared_ptr<EnginePlayer> MainManager::getLocalPlayer() {
-		if (localPlayerIndex < 0 || engine.getAllPlayers().size() <= localPlayerIndex) {
-		std::cerr << "[ERROR] could not find local player " << localPlayerIndex  << std::endl;
+    auto players = getAllPlayers();
+	// std::cout << "[INFO] getting local player: " << localPlayerIndex << std::endl;
+	if (localPlayerIndex < 0 || players.size() <= localPlayerIndex) {
+		std::cerr << "[ERROR] localplayerindex not found: " << localPlayerIndex  << " allplayers: " << getAllPlayers().size() << std::endl;
 			return nullptr;
 		}
-		return engine.getAllPlayers()[localPlayerIndex];
+		return players[localPlayerIndex];
+	}
+	std::vector<std::shared_ptr<EnginePlayer>> MainManager::getAllPlayers() {
+		std::vector<std::shared_ptr<EnginePlayer>> players;
+		for (auto team : gameStatus->teams) {
+			for (auto player : team->teamPlayers) {
+				players.push_back(player);
+			}
+		}
+		return players;
 	}
 } // namespace TDEngine::Inner

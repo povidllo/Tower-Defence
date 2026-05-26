@@ -61,7 +61,7 @@ namespace TDEngine::Inner {
 		void sendStartToClient(NetworkClient &client);
 		void processClientPacket(NetworkClient &client, sf::Packet &packet);
 		void processServerPacket(sf::Packet &packet);
-		void sendUpgradeRequest(double x, double y, const std::string &upgradeName);
+		void sendUpgradeRequest(double x, double y, const std::string &upgradeName, int playerIndex);
 		void applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex);
 		std::shared_ptr<TowerActions> findTowerAt(double x, double y);
 		std::vector<std::string> getUpgradeNamesForTower(const std::shared_ptr<MapObject> &tower) const;
@@ -70,6 +70,7 @@ namespace TDEngine::Inner {
 		void rebuildNetworkMenu();
 		void updateNetworkSettingsForSelectedMap();
 		std::shared_ptr<EnginePlayer> getLocalPlayer();
+		std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
 
 		sf::RenderWindow window;
 		Project &project;

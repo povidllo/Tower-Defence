@@ -73,7 +73,7 @@ namespace TDEngine {
     			return;
     		}
 
-			if (checkOwnership(storage.setUpgradingByPlayer, engineStorage->getAllPlayers())) {
+			if (checkOwnership(storage.setUpgradingByPlayer)) {
             	for (const auto& possibleUpgrade : storage.getUpgradeNames()) {
             		if (possibleUpgrade == storage.setUpgradingTo) {
             			for (const auto& sample : engineStorage->curProject->getTowers()) {
@@ -116,18 +116,19 @@ namespace TDEngine {
         	return  effectCreator;
         }
 
-    	bool TowerActions::checkOwnership(std::shared_ptr<EnginePlayer> player, std::vector<std::shared_ptr<EnginePlayer>> totalPlayers) {
-    		if (totalPlayers.size() <= 1) {
-    		std::cout << "[INFO] Tower ownership check: success" << std::endl;
-    			return true;
-    		}
+    	bool TowerActions::checkOwnership(std::shared_ptr<EnginePlayer> player) {
     		for (auto ownerPlayer : storage.ownerPlayers) {
-    			if (ownerPlayer == player) {
-    			std::cout << "[INFO] Tower ownership check: success" << std::endl;
+    			if (ownerPlayer->getPlayerName() == player->getPlayerName()) {
+    				std::cout << "[INFO] Tower ownership check: success for player: " << player->getPlayerName() << std::endl;
+    				std::cout << "[INFO] Tower ownership check: owner players: ";
+    				for (auto printOwner : storage.ownerPlayers) {
+    					std::cout << printOwner->getPlayerName() << " ";
+    				}
+    				std::cout << std::endl;
     				return true;
     			}
     		}
-    		std::cout << "[INFO] Tower ownership check: fail" << std::endl;
+    		std::cout << "[INFO] Tower ownership check: fail for player: " << player->getPlayerName() << std::endl;
     		return false;
     	}
     } // Inner
