@@ -10,8 +10,10 @@ namespace TDEngine {
     namespace Inner {
         class TowerActions : public MapObject, public IActing {
         public:
-            explicit TowerActions(TowerSample sample, std::pair<double, double> startPosition,
-            	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers);
+        	explicit TowerActions(TowerSample sample, std::pair<double, double> startPosition,
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers);
+        	explicit TowerActions(std::string texturePath, std::pair<double, double> startPosition,
+				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::vector<std::string> upgrades);
             void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
             void attack(std::shared_ptr<EnemyActions> enemy, std::shared_ptr<EngineStorage> engineStorage);
             std::shared_ptr<EnemyActions> findTarget(std::shared_ptr<EngineStorage> engineStorage);

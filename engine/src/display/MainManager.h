@@ -18,12 +18,6 @@ namespace TDEngine::Inner {
 	enum class AppState { MENU, NETWORK_MENU, GAME, GAME_OVER };
 	enum class NetworkRole { NONE, HOST, CLIENT };
 
-	struct NetworkTowerInfo {
-		double x = 0.0;
-		double y = 0.0;
-		std::vector<std::string> upgradeNames;
-	};
-
 	struct NetworkClient {
 		std::unique_ptr<sf::TcpSocket> socket;
 		int playerIndex = 0;
@@ -100,7 +94,6 @@ namespace TDEngine::Inner {
 		std::string selectedNetworkMapName;
 		std::string editingNetworkField;
 		std::string networkStatus;
-		std::vector<NetworkTowerInfo> networkTowerInfos;
 		sf::Clock snapshotClock;
 	};
 } // namespace TDEngine::Inner

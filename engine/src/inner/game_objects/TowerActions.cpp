@@ -5,23 +5,23 @@
 #include "../core/EngineStorage.h"
 
 namespace TDEngine {
-    namespace Inner {
-    	TowerActions::TowerActions(TowerSample sample, std::pair<double, double> startPosition,
+	namespace Inner {
+		TowerActions::TowerActions(TowerSample sample, std::pair<double, double> startPosition,
 				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers)
-            : MapObject(sample.getTowerTexturePath(), startPosition.first, startPosition.second, MapObjectTypes::Tower),
-    		storage(std::move(sample)) {
-    		std::cout << "[INFO] tryingCreating tower for players: " << ownerPlayers.size() << std::endl;
-            storage.setUpgradingTo = std::nullopt;//storage.getUpgradeNames()[0];//
-            storage.timeAfterLastShot = UINT64_MAX;
-    		storage.ownerPlayers = std::move(ownerPlayers);
-    		std::cout << "[INFO] Tower created for players: " << storage.ownerPlayers.size() << " : ";
-    		for (auto player : ownerPlayers) {
-    			std::cout << player->getPlayerName() << " ";
-    		}
-    		std::cout << std::endl;
+			: MapObject(sample.getTowerTexturePath(), startPosition.first, startPosition.second, MapObjectTypes::Tower),
+			storage(std::move(sample)) {
+			storage.setUpgradingTo = std::nullopt;//storage.getUpgradeNames()[0];//
+			storage.timeAfterLastShot = UINT64_MAX;
+			storage.ownerPlayers = std::move(ownerPlayers);
 
-        	// storage.effectCreatorsOnHit.push_back(createTestEffectCreatorSample());
-        }
+			// storage.effectCreatorsOnHit.push_back(createTestEffectCreatorSample());
+		}
+		TowerActions::TowerActions(std::string texturePath, std::pair<double, double> startPosition,
+				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::vector<std::string> upgrades)
+			: MapObject(std::move(texturePath), startPosition.first, startPosition.second, MapObjectTypes::Tower),
+				storage(std::move(upgrades)){
+			storage.ownerPlayers = std::move(ownerPlayers);
+		}
 
         void TowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
             if (storage.setUpgradingTo.has_value() && storage.setUpgradingByPlayer != nullptr) {

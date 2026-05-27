@@ -60,5 +60,6 @@ namespace TDEngine::Inner {
 							const std::string &title = "");
 
 		void drawHealthBar(float x, float y, float width, float height, float healthPercent);
+		sf::Color getPlayerColorByName(const std::string &name);
 	};
 } // namespace TDEngine::Inner

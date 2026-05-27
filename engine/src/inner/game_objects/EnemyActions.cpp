@@ -15,6 +15,12 @@ namespace TDEngine {
             storage.isAlive = true;
         	storage.associatedTeam = nullptr;
         }
+    	EnemyActions::EnemyActions(std::string texturePath, std::pair<double, double> startPosition,
+    		double currentHp, double maxHp) : MapObject(texturePath,
+				startPosition.first, startPosition.second, MapObjectTypes::Enemy){
+			storage.currentHP = currentHp;
+        	storage.setHealth(maxHp);
+        }
 
         void EnemyActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
 

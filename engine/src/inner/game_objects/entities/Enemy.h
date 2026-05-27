@@ -8,8 +8,10 @@ namespace TDEngine {
     namespace Inner {
         class Enemy : public EnemySample{
         public:
-            explicit Enemy(EnemySample sample)
-                : EnemySample(std::move(sample)){}
+        	explicit Enemy(EnemySample sample)
+        	: EnemySample(std::move(sample)){}
+        	explicit Enemy()
+				: EnemySample(std::string("")){}
 
             double currentHP;
             std::shared_ptr<Wave> associatedWave;

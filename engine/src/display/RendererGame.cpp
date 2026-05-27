@@ -3,6 +3,7 @@
 #include <filesystem>
 #include "../inner/game_objects/GameStatus.h"
 #include "../inner/game_objects/MapObject.h"
+#include "../inner/game_objects/TowerActions.h"
 
 namespace TDEngine::Inner {
 
@@ -186,7 +187,37 @@ namespace TDEngine::Inner {
 					drawHealthBar(barX, barY, barWidth, barHeight, healthPercent);
 				}
 			}
+
+			if (obj->type == MapObjectTypes::Tower) {
+				auto tower = std::static_pointer_cast<const TowerActions>(obj);
+				if (tower && tower->storage.ownerPlayers.size() == 1) {
+					const auto& owner = tower->storage.ownerPlayers[0];
+					sf::Color color = getPlayerColorByName(owner->getPlayerName());
+
+					float centerX = drawX + TILE_SIZE / 2.0f;
+					float centerY = drawY + TILE_SIZE / 2.0f;
+					float radius = TILE_SIZE / 2.0f + 5.0f;
+
+					sf::CircleShape circle(radius);
+					circle.setPosition(centerX - radius, centerY - radius);
+					circle.setFillColor(sf::Color::Transparent);
+					circle.setOutlineColor(color);
+					circle.setOutlineThickness(2.0f);
+					window.draw(circle);
+				}
+			}
 		}
+	}
+
+	sf::Color RendererGame::getPlayerColorByName(const std::string &name) {
+		if (name == "player_1") {
+			return sf::Color::Red;
+		}
+		else if (name == "player_2") {
+			return sf::Color::Blue;
+		}
+
+		return sf::Color::Black;
 	}
 
 	void RendererGame::renderUI(const std::shared_ptr<GameStatus> &gameStat,

@@ -155,7 +155,6 @@ namespace TDEngine::Inner {
 		gameStatus = std::make_shared<GameStatus>();
 		selectedTower = nullptr;
 		currentUpgradeOptions.clear();
-		networkTowerInfos.clear();
 		networkStatus = "Connected. Waiting for host...";
 		state = AppState::NETWORK_MENU;
 	}
@@ -552,7 +551,6 @@ namespace TDEngine::Inner {
 		networkRole = NetworkRole::NONE;
 		localPlayerIndex = 0;
 		networkMapName.clear();
-		networkTowerInfos.clear();
 	}
 
 	void MainManager::sendStartToClient(NetworkClient &client) {
@@ -586,26 +584,50 @@ void MainManager::sendSnapshotToClients() {
         }
     }
 
-    packet << static_cast<sf::Uint32>(gameStatus->mapObjects.size());
-    std::vector<std::shared_ptr<MapObject>> towers;
-    for (const auto& obj : gameStatus->mapObjects) {
-        packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
-               << obj->positionCoordinates.first << obj->positionCoordinates.second;
-        if (obj->type == MapObjectTypes::Tower) {
-            towers.push_back(obj);
-        }
+    std::vector<std::shared_ptr<TowerActions>> towers;
+    std::vector<std::shared_ptr<EnemyActions>> enemies;
+	std::vector<std::shared_ptr<MapObject>> otherMapObjects;
+	for (const auto& obj : gameStatus->mapObjects) {
+		if (obj->type == MapObjectTypes::Tower) {
+			towers.push_back(std::static_pointer_cast<TowerActions>(obj));
+		}
+		else if (obj->type == MapObjectTypes::Enemy) {
+			enemies.push_back(std::static_pointer_cast<EnemyActions>(obj));
+		}
+		else {
+			otherMapObjects.push_back(obj);
+			packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
+				   << obj->positionCoordinates.first << obj->positionCoordinates.second;
+		}
     }
+    packet << static_cast<sf::Uint32>(otherMapObjects.size());
+	for (const auto& obj : otherMapObjects) {
+		packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
+			   << obj->positionCoordinates.first << obj->positionCoordinates.second;
+	}
 
     packet << static_cast<sf::Uint32>(towers.size());
-    for (const auto& towerObj : towers) {
-        auto tower = std::static_pointer_cast<TowerActions>(towerObj);
+    for (const auto& tower : towers) {
+    	packet << tower->texturePath;
         packet << tower->positionCoordinates.first << tower->positionCoordinates.second;
         const auto upgrades = tower->storage.getUpgradeNames();
         packet << static_cast<sf::Uint32>(upgrades.size());
         for (const auto& name : upgrades) {
             packet << name;
         }
+    	const auto owners = tower->storage.ownerPlayers;
+    	packet << static_cast<sf::Uint32>(owners.size());
+    	for (const auto& ownerPlayer : owners) {
+    		packet << ownerPlayer->getPlayerName();
+    	}
     }
+
+	packet << static_cast<sf::Uint32>(enemies.size());
+	for (const auto& enemy : enemies) {
+		packet << enemy->texturePath;
+		packet << enemy->positionCoordinates.first << enemy->positionCoordinates.second;
+		packet << enemy->storage.currentHP << enemy->storage.getHealth();
+	}
 
     for (auto it = clients.begin(); it != clients.end();) {
         if (it->socket->send(packet) != sf::Socket::Done) {
@@ -673,7 +695,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
         newStatus->teams.push_back(team);
     }
 
-    // Читаем объекты карты (как раньше)
+    // Читаем объекты карты кроме выделенных
     sf::Uint32 objectCount = 0;
     packet >> objectCount;
     for (sf::Uint32 i = 0; i < objectCount; ++i) {
@@ -685,21 +707,48 @@ void MainManager::processServerPacket(sf::Packet &packet) {
             std::make_shared<MapObject>(texturePath, x, y, static_cast<MapObjectTypes>(typeValue)));
     }
 
-    // Читаем башни и улучшения (как раньше)
-    networkTowerInfos.clear();
-    sf::Uint32 towerCount = 0;
-    packet >> towerCount;
-    for (sf::Uint32 i = 0; i < towerCount; ++i) {
-        NetworkTowerInfo info;
-        sf::Uint32 upgradeCount = 0;
-        packet >> info.x >> info.y >> upgradeCount;
-        for (sf::Uint32 j = 0; j < upgradeCount; ++j) {
-            std::string name;
-            packet >> name;
-            info.upgradeNames.push_back(name);
-        }
-        networkTowerInfos.push_back(info);
-    }
+	// Читаем башни
+	sf::Uint32 towerCount = 0;
+	packet >> towerCount;
+	for (sf::Uint32 i = 0; i < towerCount; ++i) {
+		std::string texturePath;
+		double x, y;
+		std::vector<std::string> upgrades;
+		std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
+		sf::Uint32 upgradeCount = 0;
+		sf::Uint32 ownersCount = 0;
+		packet >> texturePath >> x >> y >> upgradeCount;
+		for (sf::Uint32 j = 0; j < upgradeCount; ++j) {
+			std::string name;
+			packet >> name;
+			upgrades.push_back(name);
+		}
+		packet >> ownersCount;
+		for (sf::Uint32 j = 0; j < ownersCount; ++j) {
+			std::string ownerName;
+			packet >> ownerName;
+			auto player = std::make_shared<EnginePlayer>(Player(ownerName, 0, 0));
+			ownerPlayers.push_back(player);
+		}
+		auto towerObj = std::make_shared<TowerActions>(texturePath, std::pair<double, double>{x, y}, ownerPlayers, upgrades);
+		newStatus->mapObjects.push_back(towerObj);
+	}
+
+	// Читаем врагов
+	sf::Uint32 enemyCount = 0;
+	packet >> enemyCount;
+	for (sf::Uint32 i = 0; i < enemyCount; ++i) {
+		std::string texturePath;
+		double x, y;
+		std::vector<std::string> upgrades;
+		std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
+		double curHp, maxHp;
+		packet >> texturePath >> x >> y >> curHp >> maxHp;
+		auto enemyObj = std::make_shared<EnemyActions>(texturePath, std::pair<double, double>{x, y}, curHp, maxHp);
+		newStatus->mapObjects.push_back(enemyObj);
+	}
+
+
     gameStatus = newStatus;
 	if (state != AppState::GAME) {
 		state = AppState::GAME;
@@ -751,16 +800,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		if (!tower) {
 			return {};
 		}
-		if (networkRole != NetworkRole::CLIENT) {
-			return std::static_pointer_cast<TowerActions>(tower)->storage.getUpgradeNames();
-		}
-		for (const auto &info: networkTowerInfos) {
-			if (std::fabs(info.x - tower->positionCoordinates.first) < 0.001 &&
-				std::fabs(info.y - tower->positionCoordinates.second) < 0.001) {
-				return info.upgradeNames;
-			}
-		}
-		return {};
+		return std::static_pointer_cast<TowerActions>(tower)->storage.getUpgradeNames();
 	}
 
 	bool MainManager::canPlayerUseTower(std::shared_ptr<EnginePlayer> player, const std::shared_ptr<TowerActions> &tower) {
