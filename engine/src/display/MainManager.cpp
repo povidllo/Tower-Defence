@@ -807,7 +807,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		if (networkRole == NetworkRole::NONE || networkMapName.empty()) {
 			return true;
 		}
-
+    
 		return tower->checkOwnership(player);
 	}
 

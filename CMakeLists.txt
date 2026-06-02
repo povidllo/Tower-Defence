@@ -8,12 +8,13 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(nlohmann_json REQUIRED)
 
 add_subdirectory(editor)
-add_subdirectory(engine)
 
 add_library(editor_common STATIC
         editor/src/Entity/AbilitySample.cpp
         editor/src/Entity/EffectCreatorSample.cpp
         editor/src/Entity/EffectSample.cpp
+        editor/src/Entity/EnemyEffectSample.cpp
+        editor/src/Entity/TowerEffectSample.cpp
         editor/src/Entity/EnemySample.cpp
         editor/src/Entity/Map.cpp
         editor/src/Entity/Project.cpp
@@ -21,6 +22,7 @@ add_library(editor_common STATIC
         editor/src/Entity/Team.cpp
         editor/src/Entity/TowerSample.cpp
         editor/src/Entity/WaveSample.cpp
+        editor/src/Entity/WaveChain.cpp
         editor/src/Utils/BaseEditor.cpp
         editor/src/Utils/TextureManager.cpp
         editor/src/Utils/TextureUtils.cpp

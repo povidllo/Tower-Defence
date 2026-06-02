@@ -92,6 +92,18 @@ public:
 	/** Copies combat/visual fields from template; keeps instance name, position, towerTemplateName. */
 	void applyTemplate(const TowerSample &src);
 
+	const std::vector<std::string> &getBelongs() const;
+
+	std::vector<std::string> &getBelongs();
+
+	void setBelongs(std::vector<std::string> owners);
+
+	void addBelongsOwner(const std::string &ownerId);
+
+	void removeBelongsOwner(const std::string &ownerId);
+
+	bool belongsTo(const std::string &ownerId) const;
+
 private:
 	std::string name;
 	double damage{0};
@@ -107,6 +119,7 @@ private:
 	std::vector<std::string> baseEffectCreators;
 	std::vector<std::string> attackEffectCreators;
 	std::string towerTemplateName;
+	std::vector<std::string> belongs;
 };
 
 #endif //TOWERDEFENCE_TOWERSAMPLE_H

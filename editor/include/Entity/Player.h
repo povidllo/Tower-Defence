@@ -10,8 +10,8 @@ class Player : protected ISerializable {
 public:
 	using json = nlohmann::ordered_json;
 
-	Player(std::string playerName, const double startCurrency, const double hp) :
-		playerName{std::move(playerName)}, startCurrency{startCurrency}, hp{hp} {}
+	Player(std::string playerName, const double startCurrency) :
+		playerName{std::move(playerName)}, startCurrency{startCurrency} {}
 	Player(const json &j);
 
 	json toJson() const override;
@@ -22,8 +22,6 @@ public:
 
 	double getStartCurrency() const { return startCurrency; }
 	void setStartCurrency(const double start_currency) { startCurrency = start_currency; }
-	double getHp() const { return hp; }
-	void setHp(const double hp) { this->hp = hp; }
 
 	const std::vector<std::string> &getAbilityNames() const { return abilityNames; }
 	void setAbilityNames(std::vector<std::string> names) { abilityNames = std::move(names); }
@@ -35,7 +33,6 @@ public:
 private:
 	std::string playerName;
 	double startCurrency{0};
-	double hp{0};
 	std::vector<std::string> abilityNames;
 
 };

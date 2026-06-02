@@ -263,6 +263,43 @@
              </layout>
             </widget>
            </item>
+           <item>
+            <widget class="QGroupBox" name="startWavesGroup">
+             <property name="title">
+              <string>Start Wave Chains</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_startWaves">
+              <item>
+               <widget class="QListWidget" name="startWavesList"/>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_startWaves">
+                <item>
+                 <widget class="QPushButton" name="addStartWaveChainButton">
+                  <property name="text">
+                   <string>Add Chain</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="editStartWaveChainButton">
+                  <property name="text">
+                   <string>Edit Chain</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="deleteStartWaveChainButton">
+                  <property name="text">
+                   <string>Delete</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="spotsEditorPage">
@@ -402,37 +439,6 @@
                 <property name="text">
                  <string>Add team</string>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="playerSpotsLabel">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Player Spot Assignment:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QScrollArea" name="playerSpotsScrollArea">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="widgetResizable">
-                 <bool>true</bool>
-                </property>
-                <widget class="QWidget" name="playerSpotsContainer">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>439</width>
-                   <height>154</height>
-                  </rect>
-                 </property>
-                 <layout class="QVBoxLayout" name="playerSpotsContainerLayout"/>
-                </widget>
                </widget>
               </item>
              </layout>

@@ -3,9 +3,7 @@
 #include <algorithm>
 
 Map::Map(std::string name, const int height, const int width) : name(std::move(name)), height(height), width(width),
-																tiles(height, std::vector<int>(width, 0)) {
-	playerSpots.resize(1);
-}
+																tiles(height, std::vector<int>(width, 0)) {}
 
 Map::Map(const json &j) { Map::fromJson(j); }
 
@@ -30,21 +28,16 @@ json Map::toJson() const {
 		{"maxPlayers", maxPlayers}
 	};
 
-	json playerSpotsArray = json::array();
-	for (const auto &playerSpotList : playerSpots) {
-		json spotsForPlayer = json::array();
-		for (const auto &spotName : playerSpotList) {
-			spotsForPlayer.push_back(spotName);
-		}
-		playerSpotsArray.push_back(spotsForPlayer);
-	}
-	onlineConfig["playerSpots"] = playerSpotsArray;
-
 	json teamsArray = json::array();
 	for (const auto &team : teams) {
 		teamsArray.push_back(team->toJson());
 	}
 	onlineConfig["teams"] = teamsArray;
+
+	json startWavesArray = json::array();
+	for (const auto &chain : startWaves) {
+		startWavesArray.push_back(chain->toJson());
+	}
 
 	return {
 		{"name", name},
@@ -53,6 +46,7 @@ json Map::toJson() const {
 		{"startCurrency", startCurrency},
 		{"hp", hp},
 		{"waves", wavesArray},
+		{"startWaves", startWavesArray},
 		{"spots", spotArrays},
 		{"tiles", tileArray},
 		{"online", onlineConfig}
@@ -89,6 +83,13 @@ void Map::fromJson(const json &j) {
 		}
 	}
 
+	if (j.contains("startWaves") && j["startWaves"].is_array()) {
+		startWaves.clear();
+		for (const auto &chainJson : j["startWaves"]) {
+			startWaves.push_back(std::make_shared<WaveChain>(chainJson));
+		}
+	}
+
 	if (j.contains("spots") && j["spots"].is_array()) {
 		spots.clear();
 		for (const auto &spotJson: j["spots"]) {
@@ -97,12 +98,13 @@ void Map::fromJson(const json &j) {
 		}
 	}
 
+	std::vector<std::vector<std::string>> legacyPlayerSpots;
+
 	if (j.contains("online") && j["online"].is_object()) {
 		const auto &onlineJson = j["online"];
 		onlineEnabled = onlineJson.value("enabled", false);
 		maxPlayers = onlineJson.value("maxPlayers", 1);
 
-		playerSpots.clear();
 		if (onlineJson.contains("playerSpots") && onlineJson["playerSpots"].is_array()) {
 			for (const auto &playerSpotsJson : onlineJson["playerSpots"]) {
 				std::vector<std::string> spotsForPlayer;
@@ -111,7 +113,7 @@ void Map::fromJson(const json &j) {
 						spotsForPlayer.push_back(spotName.get<std::string>());
 					}
 				}
-				playerSpots.push_back(spotsForPlayer);
+				legacyPlayerSpots.push_back(spotsForPlayer);
 			}
 		}
 
@@ -123,24 +125,30 @@ void Map::fromJson(const json &j) {
 		}
 		clampTeamsToMax();
 	} else {
-		playerSpots.clear();
-		playerSpots.resize(maxPlayers);
 		teams.clear();
+	}
+
+	if (!legacyPlayerSpots.empty()) {
+		migrateLegacyPlayerSpots(legacyPlayerSpots);
 	}
 }
 
-void Map::syncOnlineTeamsWithPlayerCount(const int effectiveMaxPlayers, const bool resizePlayerSpots) {
+void Map::migrateLegacyPlayerSpots(const std::vector<std::vector<std::string>> &legacyPlayerSpots) {
+	for (size_t playerIdx = 0; playerIdx < legacyPlayerSpots.size(); ++playerIdx) {
+		const std::string ownerId = "player_" + std::to_string(playerIdx + 1);
+		for (const auto &spotName : legacyPlayerSpots[playerIdx]) {
+			for (auto &spot : spots) {
+				if (spot->getName() == spotName) {
+					spot->addBelongsOwner(ownerId);
+				}
+			}
+		}
+	}
+}
+
+void Map::syncOnlineTeamsWithPlayerCount(const int effectiveMaxPlayers) {
 	if (effectiveMaxPlayers < 1) {
 		return;
-	}
-
-	if (resizePlayerSpots) {
-		while (playerSpots.size() < static_cast<size_t>(effectiveMaxPlayers)) {
-			playerSpots.emplace_back();
-		}
-		while (playerSpots.size() > static_cast<size_t>(effectiveMaxPlayers)) {
-			playerSpots.pop_back();
-		}
 	}
 
 	if (!onlineEnabled) {
@@ -155,6 +163,9 @@ void Map::syncOnlineTeamsWithPlayerCount(const int effectiveMaxPlayers, const bo
 		const std::string excess = slotId(j);
 		for (auto &t : teams) {
 			t->removePlayer(excess);
+		}
+		for (auto &spot : spots) {
+			spot->removeBelongsOwner(excess);
 		}
 	}
 
@@ -286,5 +297,22 @@ void Map::hydrateSpotTemplates(const std::vector<std::shared_ptr<TowerSample> > 
 				break;
 			}
 		}
+	}
+}
+
+void Map::removeWaveReferences(const std::string &waveName) {
+	for (auto it = startWaves.begin(); it != startWaves.end();) {
+		(*it)->removeWaveReference(waveName);
+		if ((*it)->getChain().empty()) {
+			it = startWaves.erase(it);
+		} else {
+			++it;
+		}
+	}
+}
+
+void Map::renameWaveReferences(const std::string &oldName, const std::string &newName) {
+	for (auto &chain : startWaves) {
+		chain->renameWaveReference(oldName, newName);
 	}
 }

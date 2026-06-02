@@ -1,5 +1,7 @@
 #include "../../include/Entity/WaveSample.h"
 
+#include <algorithm>
+
 WaveSample::WaveSample(std::string name) : name(std::move(name)) {
 }
 
@@ -16,12 +18,18 @@ json WaveSample::toJson() const {
 		pathArray.push_back({{"x", x}, {"y", y}});
 	}
 
+	json belongsArray = json::array();
+	for (const auto &teamName : belongs) {
+		belongsArray.push_back(teamName);
+	}
+
 	json j = {
 		{"name", name},
 		{"timeForWave", timeForWave},
 		{"enemySpawnInterval", enemySpawnInterval},
 		{"enemies", enemiesArray},
-		{"path", pathArray}
+		{"path", pathArray},
+		{"belongs", belongsArray},
 	};
 
 	return j;
@@ -49,6 +57,15 @@ void WaveSample::fromJson(const json &j) {
 			int x = item.value("x", 0);
 			int y = item.value("y", 0);
 			path.emplace_back(x, y);
+		}
+	}
+
+	if (j.contains("belongs") && j["belongs"].is_array()) {
+		belongs.clear();
+		for (const auto &item : j["belongs"]) {
+			if (item.is_string()) {
+				belongs.push_back(item.get<std::string>());
+			}
 		}
 	}
 }
@@ -104,4 +121,30 @@ double WaveSample::getEnemySpawnInterval() {
 
 void WaveSample::setEnemySpawnInterval(double spawnInterval) {
 	this->enemySpawnInterval = spawnInterval;
+}
+
+const std::vector<std::string> &WaveSample::getBelongs() const {
+	return belongs;
+}
+
+std::vector<std::string> &WaveSample::getBelongs() {
+	return belongs;
+}
+
+void WaveSample::setBelongs(std::vector<std::string> teams) {
+	belongs = std::move(teams);
+}
+
+void WaveSample::addBelongsTeam(const std::string &teamName) {
+	if (!belongsToTeam(teamName)) {
+		belongs.push_back(teamName);
+	}
+}
+
+void WaveSample::removeBelongsTeam(const std::string &teamName) {
+	belongs.erase(std::remove(belongs.begin(), belongs.end(), teamName), belongs.end());
+}
+
+bool WaveSample::belongsToTeam(const std::string &teamName) const {
+	return std::find(belongs.begin(), belongs.end(), teamName) != belongs.end();
 }

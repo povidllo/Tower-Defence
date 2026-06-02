@@ -48,6 +48,14 @@ private slots:
 
 	void onEditWaveButtonClicked();
 
+	void onAddStartWaveChainButtonClicked();
+
+	void onEditStartWaveChainButtonClicked();
+
+	void onDeleteStartWaveChainButtonClicked();
+
+	void onStartWaveChainItemClicked(QListWidgetItem *item);
+
 	void onAddSpotButtonClicked();
 
 	void updateSpotList();
@@ -79,6 +87,8 @@ private:
 
 	void updateWaveList() const;
 
+	void updateStartWaveChainList() const;
+
 	void drawCurrentWavePath();
 
 	void fillPropertiesForm();
@@ -90,8 +100,6 @@ private:
 	std::vector<QGraphicsItem *> pathGraphicsItems;
 
 	QMap<QString, QWidget *> m_propertyEditors;
-
-	std::vector<std::vector<QCheckBox *>> playerSpotCheckboxes;
 
 	std::vector<QComboBox *> playerTeamCombos;
 

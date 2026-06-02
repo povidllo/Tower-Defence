@@ -72,11 +72,70 @@ void MapController::addWave(const std::string &name) {
 }
 
 bool MapController::removeWave(const std::string &name) {
+	if (!currentMap) {
+		return false;
+	}
 	auto &waves = currentMap->getWaves();
+	const auto before = waves.size();
 	waves.erase(std::remove_if(waves.begin(), waves.end(),
 								[&name](const std::shared_ptr<WaveSample> &wave) { return wave->getName() == name; }),
 				waves.end());
+	if (waves.size() == before) {
+		return false;
+	}
+	currentMap->removeWaveReferences(name);
 	return true;
+}
+
+void MapController::renameWave(const std::string &oldName, const std::string &newName) {
+	if (!currentMap || oldName == newName) {
+		return;
+	}
+	if (auto wave = getWave(oldName)) {
+		wave->setName(newName);
+		currentMap->renameWaveReferences(oldName, newName);
+	}
+}
+
+std::vector<std::string> MapController::getTeamNames() const {
+	std::vector<std::string> names;
+	if (!currentMap) {
+		return names;
+	}
+	for (const auto &team : currentMap->getTeams()) {
+		names.push_back(team->getTeamName());
+	}
+	return names;
+}
+
+void MapController::addStartWaveChain() {
+	if (!currentMap) {
+		return;
+	}
+	currentMap->getStartWaves().push_back(std::make_shared<WaveChain>());
+}
+
+bool MapController::removeStartWaveChain(const size_t index) {
+	if (!currentMap || index >= currentMap->getStartWaves().size()) {
+		return false;
+	}
+	auto &chains = currentMap->getStartWaves();
+	chains.erase(chains.begin() + static_cast<std::ptrdiff_t>(index));
+	return true;
+}
+
+std::shared_ptr<WaveChain> MapController::getStartWaveChain(const size_t index) {
+	if (!currentMap || index >= currentMap->getStartWaves().size()) {
+		return nullptr;
+	}
+	return currentMap->getStartWaves()[index];
+}
+
+size_t MapController::getStartWaveChainCount() const {
+	if (!currentMap) {
+		return 0;
+	}
+	return currentMap->getStartWaves().size();
 }
 
 std::vector<std::string> MapController::getWavesNames() const {
@@ -211,4 +270,15 @@ std::shared_ptr<TowerSample> MapController::getSpot(const std::string &name) {
 		}
 	}
 	return nullptr;
+}
+
+std::vector<std::string> MapController::getPlayerSlotIds() const {
+	std::vector<std::string> ids;
+	if (!currentMap) {
+		return ids;
+	}
+	for (int i = 1; i <= currentMap->getMaxPlayers(); ++i) {
+		ids.push_back("player_" + std::to_string(i));
+	}
+	return ids;
 }

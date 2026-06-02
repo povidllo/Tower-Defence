@@ -8,6 +8,7 @@
 #include "Serializable.h"
 #include "Team.h"
 #include "TowerSample.h"
+#include "WaveChain.h"
 #include "WaveSample.h"
 
 class Map : protected ISerializable {
@@ -38,6 +39,14 @@ public:
 
 	std::vector<std::shared_ptr<WaveSample> > &getWaves() { return waves; }
 
+	std::vector<std::shared_ptr<WaveChain> > &getStartWaves() { return startWaves; }
+
+	const std::vector<std::shared_ptr<WaveChain> > &getStartWaves() const { return startWaves; }
+
+	void removeWaveReferences(const std::string &waveName);
+
+	void renameWaveReferences(const std::string &oldName, const std::string &newName);
+
 	std::vector<std::shared_ptr<TowerSample> > &getSpots() { return spots; }
 
 	double getHp();
@@ -58,15 +67,11 @@ public:
 
 	void setMaxPlayers(int count) { maxPlayers = count; }
 
-	std::vector<std::vector<std::string>> &getPlayerSpots() { return playerSpots; }
-
-	void setPlayerSpots(const std::vector<std::vector<std::string>> &spots) { playerSpots = spots; }
-
 	std::vector<std::shared_ptr<Team> > &getTeams() { return teams; }
 
 	const std::vector<std::shared_ptr<Team> > &getTeams() const { return teams; }
 
-	void syncOnlineTeamsWithPlayerCount(int effectiveMaxPlayers, bool resizePlayerSpots);
+	void syncOnlineTeamsWithPlayerCount(int effectiveMaxPlayers);
 
 	[[nodiscard]] int findTeamIndexForPlayer(const std::string &playerId) const;
 
@@ -79,6 +84,8 @@ public:
 private:
 	void clampTeamsToMax();
 
+	void migrateLegacyPlayerSpots(const std::vector<std::vector<std::string>> &legacyPlayerSpots);
+
 	std::string name;
 	int height{0};
 	int width{0};
@@ -88,12 +95,12 @@ private:
 	std::string finalMapImagePath;
 
 	std::vector<std::shared_ptr<WaveSample> > waves;
+	std::vector<std::shared_ptr<WaveChain> > startWaves;
 	std::vector<std::shared_ptr<TowerSample> > spots;
 	std::vector<std::vector<int> > tiles;
 
 	bool onlineEnabled{false};
 	int maxPlayers{1};
-	std::vector<std::vector<std::string>> playerSpots; // playerSpots[playerIndex] = list of spot names
 	std::vector<std::shared_ptr<Team> > teams;
 };
 
