@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "TextureCache.h"
+#include "../inner/game_objects/EnemyActions.h"
 
 namespace TDEngine::Inner {
 	struct GameStatus;
@@ -34,7 +35,8 @@ namespace TDEngine::Inner {
 		explicit RendererGame(sf::RenderWindow &window);
 
 		void renderScene(const std::shared_ptr<GameStatus> &gameStat, const sf::Sprite &background);
-		void renderUI(const std::shared_ptr<GameStatus> &gameStat, const std::vector<UpgradeOption> &upgradeOptions);
+		void renderUI(const std::shared_ptr<GameStatus> &gameStat, const std::vector<UpgradeOption> &upgradeOptions,
+			std::shared_ptr<EnginePlayer> currentPlayer);
 		void renderGameOver(bool victory);
 		void renderMenu(const std::vector<MenuButton> &buttons, const std::string &title = "SELECT MAP",
 						const std::string &subtitle = "");
@@ -56,5 +58,8 @@ namespace TDEngine::Inner {
 
 		void drawRoundedBox(float x, float y, float w, float h, sf::Color fillColor, sf::Color outlineColor,
 							const std::string &title = "");
+
+		void drawHealthBar(float x, float y, float width, float height, float healthPercent);
+		sf::Color getPlayerColorByName(const std::string &name);
 	};
 } // namespace TDEngine::Inner

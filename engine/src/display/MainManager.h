@@ -18,12 +18,6 @@ namespace TDEngine::Inner {
 	enum class AppState { MENU, NETWORK_MENU, GAME, GAME_OVER };
 	enum class NetworkRole { NONE, HOST, CLIENT };
 
-	struct NetworkTowerInfo {
-		double x = 0.0;
-		double y = 0.0;
-		std::vector<std::string> upgradeNames;
-	};
-
 	struct NetworkClient {
 		std::unique_ptr<sf::TcpSocket> socket;
 		int playerIndex = 0;
@@ -61,14 +55,16 @@ namespace TDEngine::Inner {
 		void sendStartToClient(NetworkClient &client);
 		void processClientPacket(NetworkClient &client, sf::Packet &packet);
 		void processServerPacket(sf::Packet &packet);
-		void sendUpgradeRequest(double x, double y, const std::string &upgradeName);
+		void sendUpgradeRequest(double x, double y, const std::string &upgradeName, int playerIndex);
 		void applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex);
 		std::shared_ptr<TowerActions> findTowerAt(double x, double y);
 		std::vector<std::string> getUpgradeNamesForTower(const std::shared_ptr<MapObject> &tower) const;
-		bool canPlayerUseTower(int playerIndex, double x, double y);
+		bool canPlayerUseTower(std::shared_ptr<EnginePlayer> player, const std::shared_ptr<TowerActions> &tower);
 		void rebuildNetworkButtonsHover(int mouseX, int mouseY);
 		void rebuildNetworkMenu();
 		void updateNetworkSettingsForSelectedMap();
+		std::shared_ptr<EnginePlayer> getLocalPlayer();
+		std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
 
 		sf::RenderWindow window;
 		Project &project;
@@ -98,7 +94,6 @@ namespace TDEngine::Inner {
 		std::string selectedNetworkMapName;
 		std::string editingNetworkField;
 		std::string networkStatus;
-		std::vector<NetworkTowerInfo> networkTowerInfos;
 		sf::Clock snapshotClock;
 	};
 } // namespace TDEngine::Inner

@@ -3,6 +3,7 @@
 #include <filesystem>
 #include "../inner/game_objects/GameStatus.h"
 #include "../inner/game_objects/MapObject.h"
+#include "../inner/game_objects/TowerActions.h"
 
 namespace TDEngine::Inner {
 
@@ -102,6 +103,42 @@ namespace TDEngine::Inner {
 		}
 	}
 
+	void RendererGame::drawHealthBar(float x, float y, float width, float height, float healthPercent) {
+		if (healthPercent < 0) {
+			healthPercent = 0;
+		}
+		else if (healthPercent > 1) {
+			healthPercent = 1;
+		}
+
+		// Создание полоски здоровья с цветом в зависимости от доли здоровья
+		sf::RectangleShape background(sf::Vector2f(width, height));
+		background.setPosition(x, y);
+		background.setFillColor(sf::Color(60, 20, 20));
+		window.draw(background);
+
+		sf::RectangleShape healthBar(sf::Vector2f(width * healthPercent, height));
+		healthBar.setPosition(x, y);
+
+		if (healthPercent > 0.6f) {
+			healthBar.setFillColor(sf::Color(50, 205, 50)); // Зелёный
+		} else if (healthPercent > 0.3f) {
+			healthBar.setFillColor(sf::Color(255, 200, 50)); // Жёлтый
+		} else {
+			healthBar.setFillColor(sf::Color(220, 50, 50)); // Красный
+		}
+
+		window.draw(healthBar);
+
+		// Рамка вокруг полоски
+		sf::RectangleShape border(sf::Vector2f(width, height));
+		border.setPosition(x, y);
+		border.setFillColor(sf::Color::Transparent);
+		border.setOutlineColor(sf::Color(40, 40, 45));
+		border.setOutlineThickness(1.0f);
+		window.draw(border);
+	}
+
 	void RendererGame::renderScene(const std::shared_ptr<GameStatus> &gameStat, const sf::Sprite &background) {
 		window.setView(window.getDefaultView());
 
@@ -131,11 +168,61 @@ namespace TDEngine::Inner {
 
 			spriteCache.setPosition(drawX, drawY);
 			window.draw(spriteCache);
+
+			if (obj->type == MapObjectTypes::Enemy) {
+				auto enemy = std::static_pointer_cast<EnemyActions>(obj);
+
+				double currentHP = enemy->storage.currentHP;
+				double maxHealth = enemy->storage.getHealth();
+
+				if (maxHealth > 0) {
+					float healthPercent = static_cast<float>(currentHP / maxHealth);
+
+					// Параметры полоски здоровья
+					float barWidth = TILE_SIZE * 0.8f;
+					float barHeight = 6.0f;
+					float barX = drawX + (TILE_SIZE - barWidth) / 2.0f;  // Центрируем над спрайтом
+					float barY = drawY - barHeight - 2.0f;
+
+					drawHealthBar(barX, barY, barWidth, barHeight, healthPercent);
+				}
+			}
+
+			if (obj->type == MapObjectTypes::Tower) {
+				auto tower = std::static_pointer_cast<const TowerActions>(obj);
+				if (tower && tower->storage.ownerPlayers.size() == 1) {
+					const auto& owner = tower->storage.ownerPlayers[0];
+					sf::Color color = getPlayerColorByName(owner->getPlayerName());
+
+					float centerX = drawX + TILE_SIZE / 2.0f;
+					float centerY = drawY + TILE_SIZE / 2.0f;
+					float radius = TILE_SIZE / 2.0f + 5.0f;
+
+					sf::CircleShape circle(radius);
+					circle.setPosition(centerX - radius, centerY - radius);
+					circle.setFillColor(sf::Color::Transparent);
+					circle.setOutlineColor(color);
+					circle.setOutlineThickness(2.0f);
+					window.draw(circle);
+				}
+			}
 		}
 	}
 
+	sf::Color RendererGame::getPlayerColorByName(const std::string &name) {
+		if (name == "player_1") {
+			return sf::Color::Red;
+		}
+		else if (name == "player_2") {
+			return sf::Color::Blue;
+		}
+
+		return sf::Color::Black;
+	}
+
 	void RendererGame::renderUI(const std::shared_ptr<GameStatus> &gameStat,
-								const std::vector<UpgradeOption> &upgradeOptions) {
+								const std::vector<UpgradeOption> &upgradeOptions,
+								std::shared_ptr<EnginePlayer> currentPlayer) {
 		window.setView(window.getDefaultView());
 		if (!gameStat)
 			return;
@@ -156,7 +243,7 @@ namespace TDEngine::Inner {
 			textCache.setCharacterSize(22);
 			textCache.setStyle(sf::Text::Bold);
 
-			textCache.setString("HP: " + std::to_string(gameStat->currentHp));
+			textCache.setString("HP: " + std::to_string(currentPlayer->currentHp));
 
 			sf::FloatRect hpBounds = textCache.getLocalBounds();
 			textCache.setOrigin(0, hpBounds.top + hpBounds.height / 2.0f);
@@ -166,7 +253,7 @@ namespace TDEngine::Inner {
 			window.draw(textCache);
 
 			float nextX = statX + 40.f + hpBounds.width + 20.0f;
-			textCache.setString("Gold: " + std::to_string(gameStat->currentGold));
+			textCache.setString("Gold: " + std::to_string(currentPlayer->currentCurrency));
 
 			sf::FloatRect goldBounds = textCache.getLocalBounds();
 			textCache.setOrigin(0, goldBounds.top + goldBounds.height / 2.0f);

@@ -6,10 +6,11 @@
 #include "../game_objects/EnemyActions.h"
 #include "../game_objects/GameStatus.h"
 #include "../game_objects/IActing.h"
-#include "../game_objects/MapObject.h"
 #include "../game_objects/Projectile.h"
 #include "../game_objects/TowerActions.h"
 #include "../game_objects/WaveActions.h"
+#include "../game_objects/EffectOnEnemyActions.h"
+#include "../game_objects/EffectCreatorActions.h"
 #include "../../../../editor/include/Entity/Map.h"
 #include "../../../../editor/include/Entity/Project.h"
 
@@ -20,7 +21,9 @@ namespace TDEngine {
             explicit EngineStorage(std::shared_ptr<Project> project);
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
             // std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
+        	std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
 
+        	void reloadMapPlayers();
             void cleanMap();
             void addProjectile(const std::shared_ptr<Projectile> &projectile);
             void removeProjectile(const std::shared_ptr<Projectile> &projectile);
@@ -30,13 +33,19 @@ namespace TDEngine {
         	void removeEnemy(const std::shared_ptr<EnemyActions> &enemy);
         	void addWave(const std::shared_ptr<WaveActions> &wave);
         	void removeWave(const std::shared_ptr<WaveActions> &wave);
+        	void addEffectOnEnemy(const std::shared_ptr<EffectOnEnemyActions> &effect);
+        	void removeEffectOnEnemy(const std::shared_ptr<EffectOnEnemyActions> &effect);
+        	void addEffectCreator(const std::shared_ptr<EffectCreatorActions> &effectCreator);
+        	void removeEffectCreator(const std::shared_ptr<EffectCreatorActions> &effectCreator);
 
 
             std::vector<std::shared_ptr<Projectile>> activeProjectiles;
-            std::vector<std::shared_ptr<AbilityActions>> activeAbilities;
+            // std::vector<std::shared_ptr<AbilityActions>> activeAbilities;
             std::vector<std::shared_ptr<TowerActions>> activeTowers;
             std::vector<std::shared_ptr<EnemyActions>> activeEnemies;
             std::vector<std::shared_ptr<WaveActions>> activeWaves;
+            std::vector<std::shared_ptr<EffectOnEnemyActions>> activeEnemyEffects;
+            std::vector<std::shared_ptr<EffectCreatorActions>> activeEffectCreators;
             std::shared_ptr<GameStatus> curGameStatus;
             std::shared_ptr<Project> curProject;
 
