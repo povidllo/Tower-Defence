@@ -45,3 +45,5 @@ build/*
 .cache/*
 
 example_project/*
+
+.venv/*
