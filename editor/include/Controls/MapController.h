@@ -64,6 +64,8 @@ public:
 
 	std::shared_ptr<TowerSample> getSpot(const std::string &name);
 
+	[[nodiscard]] std::vector<std::string> getPlayerSlotIds() const;
+
 private:
 	ProjectController *projectController;
 	std::shared_ptr<Map> currentMap;

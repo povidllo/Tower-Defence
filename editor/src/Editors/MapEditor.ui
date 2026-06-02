@@ -441,37 +441,6 @@
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QLabel" name="playerSpotsLabel">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Player Spot Assignment:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QScrollArea" name="playerSpotsScrollArea">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="widgetResizable">
-                 <bool>true</bool>
-                </property>
-                <widget class="QWidget" name="playerSpotsContainer">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>439</width>
-                   <height>154</height>
-                  </rect>
-                 </property>
-                 <layout class="QVBoxLayout" name="playerSpotsContainerLayout"/>
-                </widget>
-               </widget>
-              </item>
              </layout>
             </widget>
            </item>

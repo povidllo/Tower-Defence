@@ -67,15 +67,11 @@ public:
 
 	void setMaxPlayers(int count) { maxPlayers = count; }
 
-	std::vector<std::vector<std::string>> &getPlayerSpots() { return playerSpots; }
-
-	void setPlayerSpots(const std::vector<std::vector<std::string>> &spots) { playerSpots = spots; }
-
 	std::vector<std::shared_ptr<Team> > &getTeams() { return teams; }
 
 	const std::vector<std::shared_ptr<Team> > &getTeams() const { return teams; }
 
-	void syncOnlineTeamsWithPlayerCount(int effectiveMaxPlayers, bool resizePlayerSpots);
+	void syncOnlineTeamsWithPlayerCount(int effectiveMaxPlayers);
 
 	[[nodiscard]] int findTeamIndexForPlayer(const std::string &playerId) const;
 
@@ -87,6 +83,8 @@ public:
 
 private:
 	void clampTeamsToMax();
+
+	void migrateLegacyPlayerSpots(const std::vector<std::vector<std::string>> &legacyPlayerSpots);
 
 	std::string name;
 	int height{0};
@@ -103,7 +101,6 @@ private:
 
 	bool onlineEnabled{false};
 	int maxPlayers{1};
-	std::vector<std::vector<std::string>> playerSpots; // playerSpots[playerIndex] = list of spot names
 	std::vector<std::shared_ptr<Team> > teams;
 };
 

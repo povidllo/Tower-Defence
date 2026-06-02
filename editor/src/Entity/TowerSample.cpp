@@ -56,14 +56,18 @@ TowerSample::TowerSample(const json &j) { TowerSample::fromJson(j); }
 
 TowerSample::json TowerSample::toJson() const {
 	if (!towerTemplateName.empty()) {
-		return {
+		json j = {
 			{"name", name},
 			{"tower", towerTemplateName},
 			{"x", x},
 			{"y", y},
 		};
+		if (!belongs.empty()) {
+			j["belongs"] = stringVectorToJson(belongs);
+		}
+		return j;
 	}
-	return {{"name", name},
+	json j = {{"name", name},
 			{"damage", damage},
 			{"fireRate", fireRate},
 			{"cost", cost},
@@ -76,6 +80,10 @@ TowerSample::json TowerSample::toJson() const {
 			{"nextUpgrade", stringVectorToJson(nextUpgrade)},
 			{"baseEffectCreators", stringVectorToJson(baseEffectCreators)},
 			{"attackEffectCreators", stringVectorToJson(attackEffectCreators)}};
+	if (!belongs.empty()) {
+		j["belongs"] = stringVectorToJson(belongs);
+	}
+	return j;
 }
 
 void TowerSample::fromJson(const json &j) {
@@ -86,6 +94,7 @@ void TowerSample::fromJson(const json &j) {
 		towerTemplateName = j["tower"].get<std::string>();
 		x = j.value("x", x);
 		y = j.value("y", y);
+		loadStringVector(j, "belongs", belongs);
 		return;
 	}
 
@@ -105,6 +114,31 @@ void TowerSample::fromJson(const json &j) {
 
 	x = j.value("x", x);
 	y = j.value("y", y);
+	loadStringVector(j, "belongs", belongs);
+}
+
+const std::vector<std::string> &TowerSample::getBelongs() const {
+	return belongs;
+}
+
+std::vector<std::string> &TowerSample::getBelongs() {
+	return belongs;
+}
+
+void TowerSample::setBelongs(std::vector<std::string> owners) {
+	belongs = std::move(owners);
+}
+
+void TowerSample::addBelongsOwner(const std::string &ownerId) {
+	addUnique(belongs, ownerId);
+}
+
+void TowerSample::removeBelongsOwner(const std::string &ownerId) {
+	removeValue(belongs, ownerId);
+}
+
+bool TowerSample::belongsTo(const std::string &ownerId) const {
+	return std::find(belongs.begin(), belongs.end(), ownerId) != belongs.end();
 }
 
 std::string TowerSample::getName() { return name; }

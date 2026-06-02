@@ -12,7 +12,49 @@
 #include <QComboBox>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QListWidget>
 #include <algorithm>
+
+namespace {
+QListWidget *createSpotBelongsList(QWidget *parent, const std::shared_ptr<MapController> &mapController,
+								   const std::shared_ptr<TowerSample> &spot) {
+	auto *list = new QListWidget(parent);
+	list->setSelectionMode(QAbstractItemView::NoSelection);
+
+	const auto currentMap = mapController->getCurrentMap();
+	if (!currentMap || !currentMap->isOnlineEnabled()) {
+		auto *placeholder = new QListWidgetItem(
+			QObject::tr("Enable Online options and set max players to assign spot owners."));
+		placeholder->setFlags(Qt::NoItemFlags);
+		list->addItem(placeholder);
+		return list;
+	}
+
+	for (const auto &ownerId : mapController->getPlayerSlotIds()) {
+		auto *item = new QListWidgetItem(QString::fromStdString(ownerId));
+		item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+		item->setCheckState(spot->belongsTo(ownerId) ? Qt::Checked : Qt::Unchecked);
+		list->addItem(item);
+	}
+
+	return list;
+}
+
+void applyBelongsFromList(QListWidget *list, const std::shared_ptr<TowerSample> &spot) {
+	if (!list || !spot) {
+		return;
+	}
+
+	std::vector<std::string> owners;
+	for (int i = 0; i < list->count(); ++i) {
+		auto *item = list->item(i);
+		if ((item->flags() & Qt::ItemIsUserCheckable) && item->checkState() == Qt::Checked) {
+			owners.push_back(item->text().toStdString());
+		}
+	}
+	spot->setBelongs(owners);
+}
+} // namespace
 
 #include "Map.h"
 #include "ProjectController.h"
@@ -177,24 +219,9 @@ void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 			ui->teamsLabel->setEnabled(onlineEnabled);
 			ui->teamAssignmentContainer->setEnabled(onlineEnabled);
 			updateAddTeamButtonState();
-			ui->playerSpotsLabel->setEnabled(onlineEnabled);
-			ui->playerSpotsScrollArea->setEnabled(onlineEnabled);
-			
+
 			if (onlineEnabled) {
-				onMaxPlayersSpinBoxChanged(maxPlayers);
-				
-				const auto &playerSpots = currentMap->getPlayerSpots();
-				for (int playerIdx = 0; playerIdx < playerSpots.size() && playerIdx < playerSpotCheckboxes.size(); ++playerIdx) {
-					for (int spotIdx = 0; spotIdx < playerSpotCheckboxes[playerIdx].size(); ++spotIdx) {
-						if (spotIdx < currentMap->getSpots().size()) {
-							const auto &spotName = currentMap->getSpots()[spotIdx]->getName();
-							bool isSelected = std::find(playerSpots[playerIdx].begin(), 
-													   playerSpots[playerIdx].end(), 
-													   spotName) != playerSpots[playerIdx].end();
-							playerSpotCheckboxes[playerIdx][spotIdx]->setChecked(isSelected);
-						}
-					}
-				}
+				rebuildPlayerTeamAssignmentRows();
 			} else {
 				rebuildPlayerTeamAssignmentRows();
 			}
@@ -416,6 +443,13 @@ void MapEditor::updateSpotList() {
 		if (spot->isMapSpotReference()) {
 			text += QStringLiteral(" [") + QString::fromStdString(spot->getTowerTemplateName()) + QStringLiteral("]");
 		}
+		if (!spot->getBelongs().empty()) {
+			QStringList owners;
+			for (const auto &owner : spot->getBelongs()) {
+				owners << QString::fromStdString(owner);
+			}
+			text += QStringLiteral(" {") + owners.join(QStringLiteral(", ")) + QStringLiteral("}");
+		}
 		auto *listItem = new QListWidgetItem(text);
 		listItem->setData(Qt::UserRole, QString::fromStdString(spot->getName()));
 		ui->spotsList->addItem(listItem);
@@ -448,7 +482,7 @@ void MapEditor::onEditSpotButtonClicked() {
 	if (spot->isMapSpotReference()) {
 		QDialog refDialog(this);
 		refDialog.setWindowTitle(tr("Edit map spot"));
-		refDialog.resize(420, 320);
+		refDialog.resize(420, 420);
 		auto *layout = new QVBoxLayout(&refDialog);
 
 		auto *info = new QLabel(
@@ -487,6 +521,11 @@ void MapEditor::onEditSpotButtonClicked() {
 		layout->addWidget(towerLabel);
 		layout->addWidget(towerCombo);
 
+		auto *ownersLabel = new QLabel(tr("Owners (players):"), &refDialog);
+		layout->addWidget(ownersLabel);
+		auto *belongsList = createSpotBelongsList(&refDialog, mapController, spot);
+		layout->addWidget(belongsList);
+
 		auto *bb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &refDialog);
 		connect(bb, &QDialogButtonBox::accepted, &refDialog, &QDialog::accept);
 		connect(bb, &QDialogButtonBox::rejected, &refDialog, &QDialog::reject);
@@ -518,6 +557,8 @@ void MapEditor::onEditSpotButtonClicked() {
 				break;
 			}
 		}
+
+		applyBelongsFromList(belongsList, spot);
 
 		refreshMapView();
 		updateSpotList();
@@ -1200,72 +1241,30 @@ void MapEditor::onEnableOnlineCheckBoxToggled(bool checked) {
 	ui->maxPlayersSpinBox->setEnabled(checked);
 	ui->teamsLabel->setEnabled(checked);
 	ui->teamAssignmentContainer->setEnabled(checked);
-	ui->playerSpotsLabel->setEnabled(checked);
-	ui->playerSpotsScrollArea->setEnabled(checked);
 
 	if (auto m = mapController->getCurrentMap()) {
 		m->setOnlineEnabled(checked);
 		if (checked) {
-			m->syncOnlineTeamsWithPlayerCount(ui->maxPlayersSpinBox->value(), false);
+			m->syncOnlineTeamsWithPlayerCount(ui->maxPlayersSpinBox->value());
 		}
 	}
 
-	if (checked) {
-		onMaxPlayersSpinBoxChanged(ui->maxPlayersSpinBox->value());
-	} else {
-		playerSpotCheckboxes.clear();
-		QLayoutItem *item;
-		while ((item = ui->playerSpotsContainer->layout()->takeAt(0)) != nullptr) {
-			delete item->widget();
-			delete item;
-		}
-		rebuildPlayerTeamAssignmentRows();
-	}
+	rebuildPlayerTeamAssignmentRows();
 	updateAddTeamButtonState();
 }
 
 void MapEditor::onMaxPlayersSpinBoxChanged(int value) {
-	if (!ui->enableOnlineCheckBox->isChecked()) return;
+	if (!ui->enableOnlineCheckBox->isChecked()) {
+		return;
+	}
 
 	auto currentMap = mapController->getCurrentMap();
-	if (!currentMap) return;
-
-	currentMap->syncOnlineTeamsWithPlayerCount(value, false);
-
-	const auto &spots = currentMap->getSpots();
-	
-	playerSpotCheckboxes.clear();
-	QLayoutItem *item;
-	while ((item = ui->playerSpotsContainer->layout()->takeAt(0)) != nullptr) {
-		delete item->widget();
-		delete item;
+	if (!currentMap) {
+		return;
 	}
 
-	playerSpotCheckboxes.resize(value);
-
-	for (int playerIdx = 0; playerIdx < value; ++playerIdx) {
-		QGroupBox *playerGroup = new QGroupBox(QString("Player %1 Spots").arg(playerIdx + 1));
-		QVBoxLayout *playerLayout = new QVBoxLayout(playerGroup);
-
-		playerSpotCheckboxes[playerIdx].resize(spots.size());
-
-		for (int spotIdx = 0; spotIdx < spots.size(); ++spotIdx) {
-			const auto &spot = spots[spotIdx];
-			QString spotName = QString::fromStdString(spot->getName());
-
-			QCheckBox *checkbox = new QCheckBox(spotName);
-			playerLayout->addWidget(checkbox);
-			playerSpotCheckboxes[playerIdx][spotIdx] = checkbox;
-		}
-
-		ui->playerSpotsContainer->layout()->addWidget(playerGroup);
-	}
-
-	auto layout = qobject_cast<QVBoxLayout*>(ui->playerSpotsContainer->layout());
-	if (layout) {
-		layout->addStretch();
-	}
-
+	currentMap->setMaxPlayers(value);
+	currentMap->syncOnlineTeamsWithPlayerCount(value);
 	rebuildPlayerTeamAssignmentRows();
 }
 
@@ -1280,7 +1279,7 @@ void MapEditor::onSaveOnlineSettingsButtonClicked() {
 	currentMap->setMaxPlayers(maxPlayers);
 
 	if (onlineEnabled) {
-		currentMap->syncOnlineTeamsWithPlayerCount(maxPlayers, true);
+		currentMap->syncOnlineTeamsWithPlayerCount(maxPlayers);
 		if (static_cast<int>(playerTeamCombos.size()) == maxPlayers) {
 			std::vector<int> teamPick;
 			teamPick.reserve(maxPlayers);
@@ -1290,22 +1289,6 @@ void MapEditor::onSaveOnlineSettingsButtonClicked() {
 			currentMap->applyPlayerTeamAssignments(teamPick);
 		}
 	}
-
-	std::vector<std::vector<std::string>> playerSpots;
-	playerSpots.resize(maxPlayers);
-
-	for (int playerIdx = 0; playerIdx < maxPlayers; ++playerIdx) {
-		for (int spotIdx = 0; spotIdx < playerSpotCheckboxes[playerIdx].size(); ++spotIdx) {
-			if (playerSpotCheckboxes[playerIdx][spotIdx]->isChecked()) {
-				const auto &allSpots = currentMap->getSpots();
-				if (spotIdx < allSpots.size()) {
-					playerSpots[playerIdx].push_back(allSpots[spotIdx]->getName());
-				}
-			}
-		}
-	}
-
-	currentMap->setPlayerSpots(playerSpots);
 
 	QMessageBox::information(this, "Success", 
 		QString("Online settings saved!\nOnline: %1\nMax Players: %2")

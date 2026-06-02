@@ -741,27 +741,24 @@ namespace TDEngine::Inner {
 			return true;
 		}
 
-		const auto &playerSpots = map->getPlayerSpots();
-		if (playerIndex < 0 || static_cast<size_t>(playerIndex) >= playerSpots.size()) {
+		if (playerIndex < 0) {
 			return false;
 		}
 
-		std::string spotName;
+		const std::string playerId = "player_" + std::to_string(playerIndex + 1);
+
 		for (const auto &spot: map->getSpots()) {
-			if (std::fabs(spot->getX() - x) < 0.001 && std::fabs(spot->getY() - y) < 0.001) {
-				spotName = spot->getName();
-				break;
+			if (std::fabs(spot->getX() - x) >= 0.001 || std::fabs(spot->getY() - y) >= 0.001) {
+				continue;
 			}
-		}
-		if (spotName.empty()) {
-			return false;
-		}
 
-		const auto &allowedSpots = playerSpots[static_cast<size_t>(playerIndex)];
-		if (allowedSpots.empty()) {
-			return true;
+			const auto &owners = spot->getBelongs();
+			if (owners.empty()) {
+				return true;
+			}
+			return std::find(owners.begin(), owners.end(), playerId) != owners.end();
 		}
-		return std::find(allowedSpots.begin(), allowedSpots.end(), spotName) != allowedSpots.end();
+		return false;
 	}
 
 	void MainManager::rebuildNetworkButtonsHover(int mouseX, int mouseY) {

@@ -271,3 +271,14 @@ std::shared_ptr<TowerSample> MapController::getSpot(const std::string &name) {
 	}
 	return nullptr;
 }
+
+std::vector<std::string> MapController::getPlayerSlotIds() const {
+	std::vector<std::string> ids;
+	if (!currentMap) {
+		return ids;
+	}
+	for (int i = 1; i <= currentMap->getMaxPlayers(); ++i) {
+		ids.push_back("player_" + std::to_string(i));
+	}
+	return ids;
+}
