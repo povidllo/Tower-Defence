@@ -137,6 +137,7 @@ namespace TDEngine::Inner {
 
 	void MainManager::startNetworkClient() {
 		stopNetwork();
+        std::cout << "[INFO] Connecting to host" << std::endl;
 		networkRole = NetworkRole::CLIENT;
 		serverSocket = std::make_unique<sf::TcpSocket>();
 		serverSocket->setBlocking(true);
@@ -157,6 +158,7 @@ namespace TDEngine::Inner {
 		currentUpgradeOptions.clear();
 		networkStatus = "Connected. Waiting for host...";
 		state = AppState::NETWORK_MENU;
+        std::cout << "[INFO] Connected!" << std::endl;
 	}
 
 	std::string MainManager::getMapBackgroundImgPath(const std::string &mapName) {
@@ -693,6 +695,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
             auto player = std::make_shared<EnginePlayer>(Player(name, 0));
             player->currentCurrency = gold;
             player->status = static_cast<EnginePlayer::Status>(status);
+        	player->team = team;
             team->teamPlayers.push_back(player);
         }
         newStatus->teams.push_back(team);

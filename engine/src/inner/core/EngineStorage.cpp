@@ -51,16 +51,16 @@ namespace TDEngine {
         		std::cout << "[INFO] Created player " << team->getPlayers()[0].getPlayerName() << std::endl;
         	}
         	for (const auto& team : curMap->getTeams()) {
-        		EngineTeam engineTeam(*team);
-        		engineTeam.currentHp = engineTeam.getHp();
+        		std::shared_ptr<EngineTeam> engineTeam = std::make_shared<EngineTeam>(EngineTeam(*team));
+        		engineTeam->currentHp = engineTeam->getHp();
         		for (const auto& player : team->getPlayers()) {
         			EnginePlayer enginePlayer(player);
         			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
         			enginePlayer.status = EnginePlayer::PLAYING;
-        			enginePlayer.team = std::make_shared<EngineTeam>(engineTeam);
-        			engineTeam.teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
+        			enginePlayer.team = engineTeam;
+        			engineTeam->teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
         		}
-        		curGameStatus->teams.push_back(std::make_shared<EngineTeam>(engineTeam));
+        		curGameStatus->teams.push_back(engineTeam);
         	}
 
         	std::cout << "[INFO] Loaded players amount: " << getAllPlayers().size() << std::endl;
