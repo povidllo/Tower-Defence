@@ -243,7 +243,7 @@ namespace TDEngine::Inner {
 			textCache.setCharacterSize(22);
 			textCache.setStyle(sf::Text::Bold);
 
-			textCache.setString("HP: " + std::to_string(currentPlayer->currentHp));
+			textCache.setString("HP: " + std::to_string(currentPlayer->team->currentHp));
 
 			sf::FloatRect hpBounds = textCache.getLocalBounds();
 			textCache.setOrigin(0, hpBounds.top + hpBounds.height / 2.0f);

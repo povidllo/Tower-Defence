@@ -63,10 +63,14 @@ namespace TDEngine {
         }
 
         void EnemyActions::attack(std::shared_ptr<EngineStorage> engineStorage) {
-        	for (auto player : engineStorage->getAllPlayers()) {
-        		player->currentHp -= storage.getDamage();
-        		if (player->currentHp <= 0) {
-        			player->status = EnginePlayer::LOST;
+        	for (auto team : engineStorage->curGameStatus->teams) {
+        		team->currentHp -= storage.getDamage();
+        		std::cout << "[INFO] enemy dealt damage: " << storage.getDamage() << "to team : "<< team->getTeamName()
+        		<<". New hp: " << team->currentHp << std::endl;
+        		if (team->currentHp <= 0) {
+        			for (auto player : team->teamPlayers) {
+        				player->status = EnginePlayer::LOST;
+        			}
         		}
         	}
 			storage.isAlive = false;

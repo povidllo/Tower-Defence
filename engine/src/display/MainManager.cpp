@@ -575,11 +575,12 @@ void MainManager::sendSnapshotToClients() {
     packet << static_cast<sf::Uint32>(gameStatus->teams.size());
     for (const auto& team : gameStatus->teams) {
         packet << static_cast<sf::Uint32>(team->teamPlayers.size());
+		packet << static_cast<sf::Uint32>(team->currentHp);
+    	packet << team->getTeamName();
         for (const auto& player : team->teamPlayers) {
-            packet << static_cast<sf::Uint32>(player->currentHp)
-                   << static_cast<sf::Uint32>(player->currentCurrency)
+            packet << static_cast<sf::Uint32>(player->currentCurrency)
                    << player->getPlayerName()
-                   << static_cast<sf::Int32>(player->status);
+                   << player->status;
 
         }
     }
@@ -678,16 +679,18 @@ void MainManager::processServerPacket(sf::Packet &packet) {
     packet >> teamCount;
     for (sf::Uint32 t = 0; t < teamCount; ++t) {
         sf::Uint32 playerCount = 0;
-        packet >> playerCount;
+    	sf::Uint32 hp;
+    	std::string teamName;
+        packet >> playerCount >> hp >> teamName;
         // Создаём временную команду (нужен конструктор)
-    	auto team = std::make_shared<EngineTeam>(Team(std::string()));
+    	auto team = std::make_shared<EngineTeam>(Team(teamName));
+    	team->currentHp = hp;
         for (sf::Uint32 p = 0; p < playerCount; ++p) {
-            sf::Uint32 hp, gold;
+            sf::Uint32  gold;
         	std::string name;
             sf::Int32 status;
-            packet >> hp >> gold >> name >> status;
-            auto player = std::make_shared<EnginePlayer>(Player(name, 0, 0));
-            player->currentHp = hp;
+            packet >> gold >> name >> status;
+            auto player = std::make_shared<EnginePlayer>(Player(name, 0));
             player->currentCurrency = gold;
             player->status = static_cast<EnginePlayer::Status>(status);
             team->teamPlayers.push_back(player);
@@ -727,7 +730,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		for (sf::Uint32 j = 0; j < ownersCount; ++j) {
 			std::string ownerName;
 			packet >> ownerName;
-			auto player = std::make_shared<EnginePlayer>(Player(ownerName, 0, 0));
+			auto player = std::make_shared<EnginePlayer>(Player(ownerName, 0));
 			ownerPlayers.push_back(player);
 		}
 		auto towerObj = std::make_shared<TowerActions>(texturePath, std::pair<double, double>{x, y}, ownerPlayers, upgrades);

@@ -39,6 +39,7 @@ namespace TDEngine {
         	std::cout << "[INFO] Loading players" << std::endl;
         	if (curMap->getTeams().size() == 0) {
         		Team teamSample(std::string("team 0"));
+        		teamSample.setHp(curMap->getHp());
         		curMap->getTeams().push_back(std::make_shared<Team>(teamSample));
         		std::cout << "[INFO] Created team " << teamSample.getTeamName() << std::endl;
         	}
@@ -46,16 +47,15 @@ namespace TDEngine {
         		auto team = curMap->getTeams()[0];
         		team->addPlayer("player 0");
         		Player& playerSample = team->getPlayers()[0];
-        		playerSample.setHp(curMap->getHp());
         		playerSample.setStartCurrency(curMap->getStartCurrency());
         		std::cout << "[INFO] Created player " << team->getPlayers()[0].getPlayerName() << std::endl;
         	}
         	for (const auto& team : curMap->getTeams()) {
         		EngineTeam engineTeam(*team);
+        		engineTeam.currentHp = engineTeam.getHp();
         		for (const auto& player : team->getPlayers()) {
         			EnginePlayer enginePlayer(player);
         			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
-        			enginePlayer.currentHp = enginePlayer.getHp();
         			enginePlayer.status = EnginePlayer::PLAYING;
         			enginePlayer.team = std::make_shared<EngineTeam>(engineTeam);
         			engineTeam.teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
