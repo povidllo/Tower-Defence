@@ -1,5 +1,6 @@
 #include "TowerActions.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "../core/EngineStorage.h"
@@ -73,24 +74,38 @@ namespace TDEngine {
     			return;
     		}
 
-			if (checkOwnership(storage.setUpgradingByPlayer)) {
-            	for (const auto& possibleUpgrade : storage.getUpgradeNames()) {
-            		if (possibleUpgrade == storage.setUpgradingTo) {
-            			for (const auto& sample : engineStorage->curProject->getTowers()) {
-            				if (sample->getName() == storage.setUpgradingTo && sample->getCost() <= storage.setUpgradingByPlayer->currentCurrency) {
-                				std::cout << "[INFO] Upgrading tower" << std::endl;
-            					storage.setUpgradingByPlayer->currentCurrency -= sample->getCost();
-            					auto playerT = storage.setUpgradingByPlayer;
-            					setSample(sample);
-            					storage.ownerPlayers.clear();
-            					storage.ownerPlayers.push_back(playerT);
-            					storage.timeAfterLastShot = 0;
-            					return;
-            				}
-            			}
-            		}
-            	}
-			}
+			if (!checkOwnership(storage.setUpgradingByPlayer)) {
+    			storage.setUpgradingTo.reset();
+    			storage.setUpgradingByPlayer = nullptr;
+    			return;
+    		}
+
+    		const std::string upgradeName = *storage.setUpgradingTo;
+    		const auto &upgradeOptions = storage.getUpgradeNames();
+    		if (std::find(upgradeOptions.begin(), upgradeOptions.end(), upgradeName) == upgradeOptions.end()) {
+    			storage.setUpgradingTo.reset();
+    			storage.setUpgradingByPlayer = nullptr;
+    			return;
+    		}
+
+    		for (const auto &sample : engineStorage->curProject->getTowers()) {
+    			if (sample->getName() != upgradeName) {
+    				continue;
+    			}
+    			if (sample->getCost() > storage.setUpgradingByPlayer->currentCurrency) {
+    				break;
+    			}
+    			std::cout << "[INFO] Upgrading tower to " << upgradeName << std::endl;
+    			const auto owners = storage.ownerPlayers;
+    			storage.setUpgradingByPlayer->currentCurrency -= sample->getCost();
+    			setSample(sample);
+    			storage.ownerPlayers = owners;
+    			storage.timeAfterLastShot = 0;
+    			storage.setUpgradingTo.reset();
+    			storage.setUpgradingByPlayer = nullptr;
+    			return;
+    		}
+
     		storage.setUpgradingTo.reset();
     		storage.setUpgradingByPlayer = nullptr;
         }

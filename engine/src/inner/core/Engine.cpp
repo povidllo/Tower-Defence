@@ -22,10 +22,11 @@ namespace TDEngine {
         		// std::cout << "[INFO] Game step ended" << std::endl;
         }
 
-        std::shared_ptr<GameStatus> Engine::startGame(const std::string& mapName) {
+        std::shared_ptr<GameStatus> Engine::startGame(const std::string& mapName, bool cooperativePlay) {
         	for (const auto& map : storage->curProject->getMaps()) {
         		if (map->getName() == mapName) {
         			storage->curMap = map;
+        			storage->setCooperativePlay(cooperativePlay);
         			initMap();
         			std::cout << "[INFO] Loading complete" << std::endl;
 					return storage->curGameStatus;
@@ -49,10 +50,12 @@ namespace TDEngine {
         	storage->reloadMapPlayers();
 
         	std::cout << "[INFO] Loading towers" << std::endl;
-        	for (const auto& tower : storage->curMap->getSpots()) {
-        		std::cout << "[INFO] Creating tower for players: " << getAllPlayers().size() << std::endl;
+        	for (const auto& spot : storage->curMap->getSpots()) {
+        		const auto owners = storage->resolveSpotOwnerPlayers(*spot);
+        		std::cout << "[INFO] Creating tower at (" << spot->getX() << ", " << spot->getY()
+        		          << ") for " << owners.size() << " owner(s)" << std::endl;
         		storage->addTower(std::make_shared<TowerActions>(
-        			TowerActions(*tower, {tower->getX(), tower->getY()}, getAllPlayers())));
+        			TowerActions(*spot, {spot->getX(), spot->getY()}, owners)));
         	}
 
         	if (!storage->curMap->getWaves().empty()) {
