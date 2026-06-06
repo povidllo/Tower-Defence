@@ -47,6 +47,7 @@ add_executable(engine
         src/display/RendererGame.cpp
         src/display/RendererGame.h
         src/display/MainManager.cpp
+        src/display/NetworkUtil.cpp
         src/display/MainManager.h
         src/display/TextureCache.h
         src/inner/game_objects/samples/EffectSample.h

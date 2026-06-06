@@ -16,6 +16,7 @@ tar -xzf "./example_project/rabota.tar.gz" -C "$TEMP_DIR"
 rsync -av --ignore-existing --remove-source-files "$TEMP_DIR/" "./build/Release/engine/"
 
 cp -nv ./stub.jpg ./build/Release/engine/
+cp -f ./example_project/project.json ./build/Release/engine/
 
 rm -rf "$TEMP_DIR"
 

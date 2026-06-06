@@ -13,6 +13,7 @@
 #include "../game_objects/EffectCreatorActions.h"
 #include "../../../../editor/include/Entity/Map.h"
 #include "../../../../editor/include/Entity/Project.h"
+#include "../../../../editor/include/Entity/TowerSample.h"
 
 namespace TDEngine {
     namespace Inner {
@@ -21,9 +22,13 @@ namespace TDEngine {
             explicit EngineStorage(std::shared_ptr<Project> project);
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
             // std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
-        	std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
+        	std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers() const;
 
         	void reloadMapPlayers();
+        	void setCooperativePlay(bool cooperative) { cooperativePlay = cooperative; }
+        	[[nodiscard]] bool isCooperativePlay() const { return cooperativePlay; }
+        	std::vector<std::shared_ptr<EnginePlayer>> resolveSpotOwnerPlayers(
+        		const TowerSample &spot) const;
             void cleanMap();
             void addProjectile(const std::shared_ptr<Projectile> &projectile);
             void removeProjectile(const std::shared_ptr<Projectile> &projectile);
@@ -51,6 +56,7 @@ namespace TDEngine {
 
             std::shared_ptr<Map> curMap;
         	int curWave;
+        	bool cooperativePlay{false};
 
         };
     } // Inner

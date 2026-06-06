@@ -15,6 +15,13 @@
 
 namespace TDEngine::Inner {
 
+	struct ClientInterpSample {
+		double x = 0;
+		double y = 0;
+		double targetX = 0;
+		double targetY = 0;
+	};
+
 	enum class AppState { MENU, NETWORK_MENU, GAME, GAME_OVER };
 	enum class NetworkRole { NONE, HOST, CLIENT };
 
@@ -55,6 +62,8 @@ namespace TDEngine::Inner {
 		void sendStartToClient(NetworkClient &client);
 		void processClientPacket(NetworkClient &client, sf::Packet &packet);
 		void processServerPacket(sf::Packet &packet);
+		void updateClientInterpolation(sf::Time dt);
+		sf::Packet buildSnapshotPacket() const;
 		void sendUpgradeRequest(double x, double y, const std::string &upgradeName, int playerIndex);
 		void applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex);
 		std::shared_ptr<TowerActions> findTowerAt(double x, double y);
@@ -95,5 +104,6 @@ namespace TDEngine::Inner {
 		std::string editingNetworkField;
 		std::string networkStatus;
 		sf::Clock snapshotClock;
+		std::vector<ClientInterpSample> clientEnemyInterp;
 	};
 } // namespace TDEngine::Inner

@@ -1,7 +1,7 @@
 {
-    "name": "testTDproject",
-    "path": "/home/maksim/testTDproject",
-    "lastSaveDate": 1766505835,
+    "name": "TowerDefence",
+    "path": "/home/maksim/Tower-Defence/build/Release/engine",
+    "lastSaveDate": 1748908800,
     "maps": [
         {
             "name": "map_1",
@@ -15,309 +15,153 @@
                     "timeForWave": 10.0,
                     "enemySpawnInterval": 1.0,
                     "enemies": [
-                        {
-                            "enemyName": "enemy",
-                            "count": 5
-                        },
-                        {
-                            "enemyName": "enemy_2",
-                            "count": 5
-                        },
-                        {
-                            "enemyName": "enemy_1",
-                            "count": 5
-                        }
+                        {"enemyName": "enemy", "count": 5},
+                        {"enemyName": "enemy_2", "count": 5},
+                        {"enemyName": "enemy_1", "count": 5}
                     ],
                     "path": [
-                        {
-                            "x": 0,
-                            "y": 8
-                        },
-                        {
-                            "x": 1,
-                            "y": 8
-                        },
-                        {
-                            "x": 1,
-                            "y": 2
-                        },
-                        {
-                            "x": 4,
-                            "y": 2
-                        },
-                        {
-                            "x": 4,
-                            "y": 8
-                        },
-                        {
-                            "x": 6,
-                            "y": 8
-                        },
-                        {
-                            "x": 6,
-                            "y": 3
-                        },
-                        {
-                            "x": 8,
-                            "y": 3
-                        },
-                        {
-                            "x": 8,
-                            "y": 8
-                        },
-                        {
-                            "x": 10,
-                            "y": 8
-                        },
-                        {
-                            "x": 10,
-                            "y": 4
-                        },
-                        {
-                            "x": 12,
-                            "y": 4
-                        },
-                        {
-                            "x": 12,
-                            "y": 8
-                        },
-                        {
-                            "x": 12,
-                            "y": 8
-                        },
-                        {
-                            "x": 13,
-                            "y": 8
-                        }
-                    ]
+                        {"x": 0, "y": 8},
+                        {"x": 1, "y": 8},
+                        {"x": 1, "y": 2},
+                        {"x": 4, "y": 2},
+                        {"x": 4, "y": 8},
+                        {"x": 6, "y": 8},
+                        {"x": 6, "y": 3},
+                        {"x": 8, "y": 3},
+                        {"x": 8, "y": 8},
+                        {"x": 10, "y": 8},
+                        {"x": 10, "y": 4},
+                        {"x": 12, "y": 4},
+                        {"x": 12, "y": 8},
+                        {"x": 13, "y": 8}
+                    ],
+                    "belongs": []
                 },
                 {
                     "name": "wave_1",
                     "timeForWave": 15.0,
                     "enemySpawnInterval": 1.0,
                     "enemies": [
-                        {
-                            "enemyName": "enemy_1",
-                            "count": 10
-                        },
-                        {
-                            "enemyName": "enemy_2",
-                            "count": 10
-                        }
+                        {"enemyName": "enemy_1", "count": 10},
+                        {"enemyName": "enemy_2", "count": 10}
                     ],
                     "path": [
-                        {
-                            "x": 0,
-                            "y": 8
-                        },
-                        {
-                            "x": 1,
-                            "y": 8
-                        },
-                        {
-                            "x": 1,
-                            "y": 2
-                        },
-                        {
-                            "x": 4,
-                            "y": 2
-                        },
-                        {
-                            "x": 4,
-                            "y": 8
-                        },
-                        {
-                            "x": 6,
-                            "y": 8
-                        },
-                        {
-                            "x": 6,
-                            "y": 3
-                        },
-                        {
-                            "x": 8,
-                            "y": 3
-                        },
-                        {
-                            "x": 8,
-                            "y": 8
-                        },
-                        {
-                            "x": 10,
-                            "y": 8
-                        },
-                        {
-                            "x": 10,
-                            "y": 4
-                        },
-                        {
-                            "x": 12,
-                            "y": 4
-                        },
-                        {
-                            "x": 12,
-                            "y": 8
-                        },
-                        {
-                            "x": 13,
-                            "y": 8
-                        }
-                    ]
+                        {"x": 0, "y": 8},
+                        {"x": 1, "y": 8},
+                        {"x": 1, "y": 2},
+                        {"x": 4, "y": 2},
+                        {"x": 4, "y": 8},
+                        {"x": 6, "y": 8},
+                        {"x": 6, "y": 3},
+                        {"x": 8, "y": 3},
+                        {"x": 8, "y": 8},
+                        {"x": 10, "y": 8},
+                        {"x": 10, "y": 4},
+                        {"x": 12, "y": 4},
+                        {"x": 12, "y": 8},
+                        {"x": 13, "y": 8}
+                    ],
+                    "belongs": []
+                }
+            ],
+            "startWaves": [
+                {
+                    "chain": ["wave", "wave_1"],
+                    "delays": [0.0, 5.0]
                 }
             ],
             "spots": [
-                {
-                    "name": "spot",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 2.0,
-                    "y": 4.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower",
-                        "tower_1",
-                        "tower_2"
-                    ]
-                },
-                {
-                    "name": "spot_1",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 3.0,
-                    "y": 6.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower_2",
-                        "tower"
-                    ]
-                },
-                {
-                    "name": "spot_2",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 5.0,
-                    "y": 5.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower_3"
-                    ]
-                },
-                {
-                    "name": "spot_3",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 7.0,
-                    "y": 7.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower"
-                    ]
-                },
-                {
-                    "name": "spot_4",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 11.0,
-                    "y": 5.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower_2"
-                    ]
-                }
+                {"name": "spot", "tower": "tower", "x": 2, "y": 4},
+                {"name": "spot_1", "tower": "tower", "x": 3, "y": 6, "belongs": ["player_1"]},
+                {"name": "spot_2", "tower": "tower_2", "x": 5, "y": 5},
+                {"name": "spot_3", "tower": "tower", "x": 7, "y": 7},
+                {"name": "spot_4", "tower": "tower_2", "x": 11, "y": 5}
             ],
+            "online": {
+                "enabled": false,
+                "maxPlayers": 1,
+                "teams": [
+                    {
+                        "teamName": "Team 1",
+                        "hp": 100.0,
+                        "players": [
+                            {
+                                "playerName": "player_1",
+                                "startCurrency": 30.0,
+                                "abilities": []
+                            }
+                        ]
+                    }
+                ]
+            },
             "finalMapImagePath": "map_map_1.png"
         },
         {
             "name": "map_2",
             "height": 10,
             "width": 10,
-            "startCurrency": 0.0,
-            "hp": 0.0,
-            "waves": [],
-            "spots": [
+            "startCurrency": 50.0,
+            "hp": 80.0,
+            "waves": [
                 {
-                    "name": "spot",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 6.0,
-                    "y": 1.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower"
-                    ]
-                },
-                {
-                    "name": "spot_1",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 3.0,
-                    "y": 7.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower_2",
-                        "tower"
-                    ]
-                },
-                {
-                    "name": "spot_2",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 9.0,
-                    "y": 5.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower_3",
-                        "tower_2"
-                    ]
-                },
-                {
-                    "name": "spot_3",
-                    "damage": 0.0,
-                    "fireRate": 0.0,
-                    "cost": 0.0,
-                    "x": 7.0,
-                    "y": 9.0,
-                    "projectileSpeed": 0.0,
-                    "fireDistance": 0.0,
-                    "towerTexturePath": "resources/87.png",
-                    "projectileTexturePath": "",
-                    "nextUpgrade": [
-                        "tower_3"
-                    ]
+                    "name": "wave",
+                    "timeForWave": 12.0,
+                    "enemySpawnInterval": 1.5,
+                    "enemies": [
+                        {"enemyName": "enemy", "count": 8},
+                        {"enemyName": "enemy_2", "count": 4}
+                    ],
+                    "path": [
+                        {"x": 0, "y": 5},
+                        {"x": 3, "y": 5},
+                        {"x": 3, "y": 2},
+                        {"x": 7, "y": 2},
+                        {"x": 7, "y": 7},
+                        {"x": 9, "y": 7}
+                    ],
+                    "belongs": []
                 }
             ],
+            "startWaves": [
+                {
+                    "chain": ["wave"],
+                    "delays": [0.0]
+                }
+            ],
+            "spots": [
+                {"name": "spot", "tower": "tower", "x": 6, "y": 1},
+                {"name": "spot_1", "tower": "tower_1", "x": 3, "y": 7},
+                {"name": "spot_2", "tower": "tower_3", "x": 9, "y": 5},
+                {"name": "spot_3", "tower": "tower_2", "x": 7, "y": 9}
+            ],
+            "online": {
+                "enabled": true,
+                "maxPlayers": 2,
+                "teams": [
+                    {
+                        "teamName": "Team 1",
+                        "hp": 80.0,
+                        "players": [
+                            {
+                                "playerName": "player_1",
+                                "startCurrency": 50.0,
+                                "abilities": []
+                            }
+                        ]
+                    },
+                    {
+                        "teamName": "Team 2",
+                        "hp": 80.0,
+                        "players": [
+                            {
+                                "playerName": "player_2",
+                                "startCurrency": 50.0,
+                                "abilities": []
+                            }
+                        ]
+                    }
+                ]
+            },
             "finalMapImagePath": "map_map_2.png"
         }
     ],
@@ -327,102 +171,105 @@
             "damage": 5.0,
             "fireRate": 3.0,
             "cost": 10.0,
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0,
+            "y": 0,
             "projectileSpeed": 5.0,
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_1.png",
             "projectileTexturePath": "resources/projectile_1.png",
-            "nextUpgrade": [
-                "tower_4",
-                "tower_5",
-                "tower_6"
-            ]
+            "nextUpgrade": ["tower_4", "tower_5", "tower_6"],
+            "baseEffectCreators": [],
+            "attackEffectCreators": []
         },
         {
             "name": "tower_1",
             "damage": 5.0,
             "fireRate": 2.0,
             "cost": 11.0,
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0,
+            "y": 0,
             "projectileSpeed": 5.0,
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_2.png",
             "projectileTexturePath": "resources/projectile_2.png",
-            "nextUpgrade": [
-                "tower_4"
-            ]
+            "nextUpgrade": ["tower_4"],
+            "baseEffectCreators": [],
+            "attackEffectCreators": []
         },
         {
             "name": "tower_2",
             "damage": 6.0,
-            "fireRate": 2000.0,
+            "fireRate": 2.0,
             "cost": 12.0,
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0,
+            "y": 0,
             "projectileSpeed": 5.0,
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_3.png",
             "projectileTexturePath": "resources/projectile_1.png",
-            "nextUpgrade": [
-                "tower_5"
-            ]
+            "nextUpgrade": ["tower_5"],
+            "baseEffectCreators": [],
+            "attackEffectCreators": []
         },
         {
             "name": "tower_3",
             "damage": 5.0,
             "fireRate": 2.0,
             "cost": 13.0,
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0,
+            "y": 0,
             "projectileSpeed": 5.0,
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_4.png",
             "projectileTexturePath": "resources/projectile_2.png",
-            "nextUpgrade": [
-                "tower_6",
-                "tower_4"
-            ]
+            "nextUpgrade": ["tower_6", "tower_4"],
+            "baseEffectCreators": [],
+            "attackEffectCreators": []
         },
         {
             "name": "tower_4",
             "damage": 10.0,
             "fireRate": 3.0,
             "cost": 14.0,
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0,
+            "y": 0,
             "projectileSpeed": 7.0,
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_5.png",
             "projectileTexturePath": "resources/projectile_1.png",
-            "nextUpgrade": []
+            "nextUpgrade": [],
+            "baseEffectCreators": [],
+            "attackEffectCreators": []
         },
         {
             "name": "tower_5",
             "damage": 12.0,
             "fireRate": 3.0,
             "cost": 15.0,
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0,
+            "y": 0,
             "projectileSpeed": 7.0,
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_6.png",
             "projectileTexturePath": "resources/projectile_1.png",
-            "nextUpgrade": []
+            "nextUpgrade": [],
+            "baseEffectCreators": [],
+            "attackEffectCreators": []
         },
         {
             "name": "tower_6",
             "damage": 20.0,
             "fireRate": 2.0,
             "cost": 16.0,
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0,
+            "y": 0,
             "projectileSpeed": 8.0,
             "fireDistance": 5.0,
             "towerTexturePath": "resources/tower_7.png",
             "projectileTexturePath": "resources/projectile_1.png",
-            "nextUpgrade": []
+            "nextUpgrade": [],
+            "baseEffectCreators": [],
+            "attackEffectCreators": []
         }
     ],
     "enemies": [
@@ -433,7 +280,10 @@
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
             "speed": 2.0,
-            "enemyTexturePath": "resources/enemy_1.png"
+            "enemyTexturePath": "resources/enemy_1.png",
+            "baseEffectCreators": [],
+            "damageTakenEffectCreators": [],
+            "damageDealtEffectCreators": []
         },
         {
             "name": "enemy_1",
@@ -442,7 +292,10 @@
             "moneyFallsOut": 3.0,
             "moneyFallsOutPercentage": 100.0,
             "speed": 2.0,
-            "enemyTexturePath": "resources/enemy_2.png"
+            "enemyTexturePath": "resources/enemy_2.png",
+            "baseEffectCreators": [],
+            "damageTakenEffectCreators": [],
+            "damageDealtEffectCreators": []
         },
         {
             "name": "enemy_2",
@@ -451,7 +304,13 @@
             "moneyFallsOut": 13.0,
             "moneyFallsOutPercentage": 100.0,
             "speed": 2.0,
-            "enemyTexturePath": "resources/enemy_3.png"
+            "enemyTexturePath": "resources/enemy_3.png",
+            "baseEffectCreators": [],
+            "damageTakenEffectCreators": [],
+            "damageDealtEffectCreators": []
         }
-    ]
+    ],
+    "effects": [],
+    "effectCreators": [],
+    "abilities": []
 }

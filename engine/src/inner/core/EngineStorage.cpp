@@ -1,7 +1,30 @@
 #include "EngineStorage.h"
 
+#include <algorithm>
+
 namespace TDEngine {
     namespace Inner {
+    	namespace {
+    		double effectiveTeamHp(const Team &team, Map &map) {
+    			if (team.getHp() > 0) {
+    				return team.getHp();
+    			}
+    			if (map.getHp() > 0) {
+    				return map.getHp();
+    			}
+    			return 100.0;
+    		}
+
+    		double effectiveStartCurrency(const Player &player, Map &map) {
+    			if (player.getStartCurrency() > 0) {
+    				return player.getStartCurrency();
+    			}
+    			if (map.getStartCurrency() > 0) {
+    				return map.getStartCurrency();
+    			}
+    			return 0.0;
+    		}
+    	}
         //Эту функцию необходимо реализовать с использованием нормального mapSample
         EngineStorage::EngineStorage(std::shared_ptr<Project> project)
             : curGameStatus(std::make_shared<GameStatus>(GameStatus())), curMap(nullptr),
@@ -23,7 +46,7 @@ namespace TDEngine {
             return actings;
         }
 
-    	std::vector<std::shared_ptr<EnginePlayer>> EngineStorage::getAllPlayers() {
+    	std::vector<std::shared_ptr<EnginePlayer>> EngineStorage::getAllPlayers() const {
 	        std::vector<std::shared_ptr<EnginePlayer>> players;
         	for (auto team : curGameStatus->teams) {
 				for (auto player : team->teamPlayers) {
@@ -33,34 +56,68 @@ namespace TDEngine {
         	return players;
         }
 
+    	std::vector<std::shared_ptr<EnginePlayer>> EngineStorage::resolveSpotOwnerPlayers(
+    		const TowerSample &spot) const {
+    		const auto allPlayers = getAllPlayers();
+    		if (!cooperativePlay) {
+    			return allPlayers;
+    		}
+    		const auto &belongs = spot.getBelongs();
+    		if (belongs.empty()) {
+    			return allPlayers;
+    		}
+
+    		std::vector<std::shared_ptr<EnginePlayer>> owners;
+    		owners.reserve(belongs.size());
+    		for (const auto &player : allPlayers) {
+    			if (spot.belongsTo(player->getPlayerName())) {
+    				owners.push_back(player);
+    			}
+    		}
+    		if (!owners.empty()) {
+    			return owners;
+    		}
+    		return allPlayers;
+    	}
+
     	void EngineStorage::reloadMapPlayers() {
         	curGameStatus->teams.clear();
 
         	std::cout << "[INFO] Loading players" << std::endl;
         	if (curMap->getTeams().size() == 0) {
-        		Team teamSample(std::string("team 0"));
-        		curMap->getTeams().push_back(std::make_shared<Team>(teamSample));
-        		std::cout << "[INFO] Created team " << teamSample.getTeamName() << std::endl;
+        		auto team = std::make_shared<Team>(std::string("Team 1"));
+        		if (curMap->getHp() > 0) {
+        			team->setHp(curMap->getHp());
+        		}
+        		curMap->getTeams().push_back(team);
+        		std::cout << "[INFO] Created team " << team->getTeamName() << std::endl;
         	}
         	if (curMap->getTeams()[0]->getPlayers().size() == 0) {
         		auto team = curMap->getTeams()[0];
-        		team->addPlayer("player 0");
-        		Player& playerSample = team->getPlayers()[0];
-        		playerSample.setHp(curMap->getHp());
-        		playerSample.setStartCurrency(curMap->getStartCurrency());
+        		if (team->getHp() <= 0 && curMap->getHp() > 0) {
+        			team->setHp(curMap->getHp());
+        		}
+        		team->addPlayer("player_1");
+        		Player &playerSample = team->getPlayers()[0];
+        		if (playerSample.getStartCurrency() <= 0 && curMap->getStartCurrency() > 0) {
+        			playerSample.setStartCurrency(curMap->getStartCurrency());
+        		}
         		std::cout << "[INFO] Created player " << team->getPlayers()[0].getPlayerName() << std::endl;
         	}
         	for (const auto& team : curMap->getTeams()) {
         		EngineTeam engineTeam(*team);
+        		const double teamHp = effectiveTeamHp(*team, *curMap);
         		for (const auto& player : team->getPlayers()) {
         			EnginePlayer enginePlayer(player);
-        			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
-        			enginePlayer.currentHp = enginePlayer.getHp();
+        			enginePlayer.currentCurrency = effectiveStartCurrency(player, *curMap);
+        			enginePlayer.currentHp = teamHp;
         			enginePlayer.status = EnginePlayer::PLAYING;
         			enginePlayer.team = std::make_shared<EngineTeam>(engineTeam);
         			engineTeam.teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
         		}
-        		curGameStatus->teams.push_back(std::make_shared<EngineTeam>(engineTeam));
+        		if (!engineTeam.teamPlayers.empty()) {
+        			curGameStatus->teams.push_back(std::make_shared<EngineTeam>(engineTeam));
+        		}
         	}
 
         	std::cout << "[INFO] Loaded players amount: " << getAllPlayers().size() << std::endl;
