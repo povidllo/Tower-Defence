@@ -33,6 +33,29 @@ namespace TDEngine {
         	return players;
         }
 
+    	std::vector<std::shared_ptr<EnginePlayer>> EngineStorage::resolveSpotOwnerPlayers(
+    			const TowerSample &spot) {
+        	auto allPlayers = getAllPlayers();
+        	if (allPlayers.size() == 1) {
+        		return allPlayers;
+        	}
+        	const auto &belongs = spot.getBelongs();
+        	if (belongs.empty()) {
+        		return allPlayers;
+        	}
+
+        	std::vector<std::shared_ptr<EnginePlayer>> owners;
+        	owners.reserve(belongs.size());
+        	for (const auto &player : allPlayers) {
+        		if (spot.belongsTo(player->getPlayerName())) {
+        			owners.push_back(player);
+        		}
+        	}
+        	if (!owners.empty()) {
+        		return owners;
+        	}
+        	return allPlayers;
+        }
     	void EngineStorage::reloadMapPlayers() {
         	curGameStatus->teams.clear();
 

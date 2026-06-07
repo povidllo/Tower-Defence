@@ -52,7 +52,7 @@ namespace TDEngine {
         	for (const auto& tower : storage->curMap->getSpots()) {
         		std::cout << "[INFO] Creating tower for players: " << getAllPlayers().size() << std::endl;
         		storage->addTower(std::make_shared<TowerActions>(
-        			TowerActions(*tower, {tower->getX(), tower->getY()}, getAllPlayers())));
+        			TowerActions(*tower, {tower->getX(), tower->getY()}, storage->resolveSpotOwnerPlayers(*tower))));
         	}
 
         	if (!storage->curMap->getWaves().empty()) {
