@@ -12,7 +12,8 @@ namespace TDEngine::Inner {
 		constexpr sf::Uint8 PACKET_START = 3;
 		constexpr sf::Uint8 PACKET_UPGRADE = 4;
 		constexpr sf::Uint8 PACKET_SNAPSHOT = 5;
-		constexpr int SNAPSHOT_INTERVAL_MS = 80;
+		constexpr int SNAPSHOT_INTERVAL_MS = 30;
+		constexpr float CLIENT_INTERP_SPEED = 14.f;
 
 		int clampInt(int value, int minValue, int maxValue) {
 			return std::max(minValue, std::min(value, maxValue));
@@ -599,10 +600,9 @@ void MainManager::sendSnapshotToClients() {
 		}
 		else {
 			otherMapObjects.push_back(obj);
-			packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
-				   << obj->positionCoordinates.first << obj->positionCoordinates.second;
 		}
     }
+
     packet << static_cast<sf::Uint32>(otherMapObjects.size());
 	for (const auto& obj : otherMapObjects) {
 		packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
