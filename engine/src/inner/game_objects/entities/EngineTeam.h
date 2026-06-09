@@ -12,6 +12,7 @@ namespace TDEngine {
 			: Team(std::move(sample)) {}
 
 			std::vector<std::shared_ptr<EnginePlayer>> teamPlayers;
+			double currentHp;
 		};
 	} // Inner
 } // TDEngine

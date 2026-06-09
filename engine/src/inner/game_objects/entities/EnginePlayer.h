@@ -1,7 +1,9 @@
 #pragma once
 #include "../../../../../editor/include/Entity/Player.h"
+#include "EngineTeam.h"
 namespace TDEngine {
 	namespace Inner {
+		class EngineTeam;
 		class EnginePlayer : public Player{
 		public:
 			enum Status { IDLE, PLAYING, LOST, WON };
@@ -9,8 +11,7 @@ namespace TDEngine {
 			: Player(std::move(sample)) {}
 
 			double currentCurrency;
-			double currentHp;
-			std::shared_ptr<Team> team;
+			std::shared_ptr<EngineTeam> team;
 			Status status;
 		};
 	} // Inner

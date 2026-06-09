@@ -22,8 +22,9 @@ namespace TDEngine {
             std::vector<std::shared_ptr<IActing>> getEverythingActing();
             // std::vector<std::shared_ptr<MapObject>> getAllMapObjects();
         	std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
+			[[nodiscard]] std::vector<std::shared_ptr<EnginePlayer>> resolveSpotOwnerPlayers(const TowerSample &spot);
 
-        	void reloadMapPlayers();
+			void reloadMapPlayers();
             void cleanMap();
             void addProjectile(const std::shared_ptr<Projectile> &projectile);
             void removeProjectile(const std::shared_ptr<Projectile> &projectile);

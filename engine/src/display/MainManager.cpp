@@ -12,7 +12,8 @@ namespace TDEngine::Inner {
 		constexpr sf::Uint8 PACKET_START = 3;
 		constexpr sf::Uint8 PACKET_UPGRADE = 4;
 		constexpr sf::Uint8 PACKET_SNAPSHOT = 5;
-		constexpr int SNAPSHOT_INTERVAL_MS = 80;
+		constexpr int SNAPSHOT_INTERVAL_MS = 30;
+		constexpr float CLIENT_INTERP_SPEED = 14.f;
 
 		int clampInt(int value, int minValue, int maxValue) {
 			return std::max(minValue, std::min(value, maxValue));
@@ -137,6 +138,7 @@ namespace TDEngine::Inner {
 
 	void MainManager::startNetworkClient() {
 		stopNetwork();
+        std::cout << "[INFO] Connecting to host" << std::endl;
 		networkRole = NetworkRole::CLIENT;
 		serverSocket = std::make_unique<sf::TcpSocket>();
 		serverSocket->setBlocking(true);
@@ -157,6 +159,7 @@ namespace TDEngine::Inner {
 		currentUpgradeOptions.clear();
 		networkStatus = "Connected. Waiting for host...";
 		state = AppState::NETWORK_MENU;
+        std::cout << "[INFO] Connected!" << std::endl;
 	}
 
 	std::string MainManager::getMapBackgroundImgPath(const std::string &mapName) {
@@ -575,11 +578,12 @@ void MainManager::sendSnapshotToClients() {
     packet << static_cast<sf::Uint32>(gameStatus->teams.size());
     for (const auto& team : gameStatus->teams) {
         packet << static_cast<sf::Uint32>(team->teamPlayers.size());
+		packet << static_cast<sf::Uint32>(team->currentHp);
+    	packet << team->getTeamName();
         for (const auto& player : team->teamPlayers) {
-            packet << static_cast<sf::Uint32>(player->currentHp)
-                   << static_cast<sf::Uint32>(player->currentCurrency)
+            packet << static_cast<sf::Uint32>(player->currentCurrency)
                    << player->getPlayerName()
-                   << static_cast<sf::Int32>(player->status);
+                   << player->status;
 
         }
     }
@@ -596,10 +600,9 @@ void MainManager::sendSnapshotToClients() {
 		}
 		else {
 			otherMapObjects.push_back(obj);
-			packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
-				   << obj->positionCoordinates.first << obj->positionCoordinates.second;
 		}
     }
+
     packet << static_cast<sf::Uint32>(otherMapObjects.size());
 	for (const auto& obj : otherMapObjects) {
 		packet << static_cast<sf::Int32>(obj->type) << obj->texturePath
@@ -678,18 +681,21 @@ void MainManager::processServerPacket(sf::Packet &packet) {
     packet >> teamCount;
     for (sf::Uint32 t = 0; t < teamCount; ++t) {
         sf::Uint32 playerCount = 0;
-        packet >> playerCount;
+    	sf::Uint32 hp;
+    	std::string teamName;
+        packet >> playerCount >> hp >> teamName;
         // Создаём временную команду (нужен конструктор)
-    	auto team = std::make_shared<EngineTeam>(Team(std::string()));
+    	auto team = std::make_shared<EngineTeam>(Team(teamName));
+    	team->currentHp = hp;
         for (sf::Uint32 p = 0; p < playerCount; ++p) {
-            sf::Uint32 hp, gold;
+            sf::Uint32  gold;
         	std::string name;
             sf::Int32 status;
-            packet >> hp >> gold >> name >> status;
-            auto player = std::make_shared<EnginePlayer>(Player(name, 0, 0));
-            player->currentHp = hp;
+            packet >> gold >> name >> status;
+            auto player = std::make_shared<EnginePlayer>(Player(name, 0));
             player->currentCurrency = gold;
             player->status = static_cast<EnginePlayer::Status>(status);
+        	player->team = team;
             team->teamPlayers.push_back(player);
         }
         newStatus->teams.push_back(team);
@@ -727,7 +733,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		for (sf::Uint32 j = 0; j < ownersCount; ++j) {
 			std::string ownerName;
 			packet >> ownerName;
-			auto player = std::make_shared<EnginePlayer>(Player(ownerName, 0, 0));
+			auto player = std::make_shared<EnginePlayer>(Player(ownerName, 0));
 			ownerPlayers.push_back(player);
 		}
 		auto towerObj = std::make_shared<TowerActions>(texturePath, std::pair<double, double>{x, y}, ownerPlayers, upgrades);
