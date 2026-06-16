@@ -1,5 +1,6 @@
 #pragma once
 #include "../../../../../editor/include/Entity/Player.h"
+#include "../AbilityActions.h"
 namespace TDEngine {
 	namespace Inner {
 		class EngineTeam;
@@ -11,6 +12,7 @@ namespace TDEngine {
 
 			double currentCurrency;
 			std::shared_ptr<EngineTeam> team;
+			std::vector<std::shared_ptr<AbilityActions>> abilities;
 			Status status;
 		};
 	} // Inner

@@ -5,7 +5,6 @@
 #include "EnemyEffectSample.h"
 namespace TDEngine {
 	namespace Inner {
-		class EnemyActions;
 		class EffectOnEnemy : public EnemyEffectSample{
 		public:
 			explicit EffectOnEnemy(EnemyEffectSample sample)

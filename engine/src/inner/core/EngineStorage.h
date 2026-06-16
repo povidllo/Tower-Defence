@@ -27,6 +27,7 @@ namespace TDEngine {
 
 			void reloadMapPlayers();
             void cleanMap();
+
             void addProjectile(const std::shared_ptr<Projectile> &projectile);
             void removeProjectile(const std::shared_ptr<Projectile> &projectile);
             void addTower(const std::shared_ptr<TowerActions> &tower);
@@ -41,10 +42,12 @@ namespace TDEngine {
         	void removeEffectOnTower(const std::shared_ptr<EffectOnTowerActions> &effect);
         	void addEffectCreator(const std::shared_ptr<EffectCreatorActions> &effectCreator);
         	void removeEffectCreator(const std::shared_ptr<EffectCreatorActions> &effectCreator);
+        	void addAbility(const std::shared_ptr<AbilityActions> &ability);
+        	void removeAbility(const std::shared_ptr<AbilityActions> &ability);
 
 
             std::vector<std::shared_ptr<Projectile>> activeProjectiles;
-            // std::vector<std::shared_ptr<AbilityActions>> activeAbilities;
+            std::vector<std::shared_ptr<AbilityActions>> activeAbilities;
             std::vector<std::shared_ptr<TowerActions>> activeTowers;
             std::vector<std::shared_ptr<EnemyActions>> activeEnemies;
             std::vector<std::shared_ptr<WaveActions>> activeWaves;

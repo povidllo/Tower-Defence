@@ -5,7 +5,6 @@
 #include "../TowerActions.h"
 namespace TDEngine {
 	namespace Inner {
-		class EnemyActions;
 		class EffectOnTower : public TowerEffectSample{
 		public:
 			explicit EffectOnTower(TowerEffectSample sample)

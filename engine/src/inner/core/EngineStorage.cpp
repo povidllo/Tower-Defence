@@ -13,7 +13,7 @@ namespace TDEngine {
             std::vector<std::shared_ptr<IActing>> actings;
 
             actings.insert(actings.end(), activeProjectiles.begin(), activeProjectiles.end());
-            // actings.insert(actings.end(), activeAbilities.begin(), activeAbilities.end());
+            actings.insert(actings.end(), activeAbilities.begin(), activeAbilities.end());
             actings.insert(actings.end(), activeTowers.begin(), activeTowers.end());
             actings.insert(actings.end(), activeEnemies.begin(), activeEnemies.end());
             actings.insert(actings.end(), activeWaves.begin(), activeWaves.end());
@@ -83,6 +83,21 @@ namespace TDEngine {
         			enginePlayer.status = EnginePlayer::PLAYING;
         			enginePlayer.team = engineTeam;
         			engineTeam->teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
+        			for (std::string abilityName : player.getAbilityNames()) {
+        				std::shared_ptr<AbilityActions> ability = nullptr;
+        				for (auto abilitySample : curProject->getAbilities()) {
+        					if (abilitySample->getName() == abilityName) {
+        						ability = std::make_shared<AbilityActions>(*abilitySample);
+        					}
+        				}
+        				if (ability == nullptr) {
+        					std::cout << "[ERR] Could not find ability " << abilityName << " for player " << player.getPlayerName() << std::endl;
+        				}
+        				else {
+        					enginePlayer.abilities.push_back(ability);
+        					addAbility(ability);
+        				}
+        			}
         		}
         		curGameStatus->teams.push_back(engineTeam);
         	}
@@ -239,6 +254,17 @@ namespace TDEngine {
         	auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
         	if (mapIt != curGameStatus->mapObjects.end()) {
         		curGameStatus->mapObjects.erase(mapIt);
+        	}
+        }
+
+    	void EngineStorage::addAbility(const std::shared_ptr<AbilityActions> &ability) {
+        	activeAbilities.push_back(ability);
+        }
+
+    	void EngineStorage::removeAbility(const std::shared_ptr<AbilityActions> &ability) {
+        	auto abilityIt = std::find(activeAbilities.begin(), activeAbilities.end(), ability);
+        	if (abilityIt != activeAbilities.end()) {
+        		activeAbilities.erase(abilityIt);
         	}
         }
     } // Inner

@@ -30,7 +30,7 @@ namespace TDEngine::Inner {
 		if (!storage.initialApplied) {
 			storage.target->storage.curDamage += storage.getStartDamageFlatImpact();
 			storage.target->storage.curDamage += storage.target->storage.getDamage() * (storage.getStartDamagePercentImpact() / 100.0);
-			storage.target->storage.curFireRate /= storage.getStartAttackSpeedPercentImpact() / 100.0;
+			storage.target->storage.curFireRate *= storage.getStartAttackSpeedPercentImpact() / 100.0;
 			storage.initialApplied = true;
 		}
 
@@ -40,7 +40,7 @@ namespace TDEngine::Inner {
 			while (storage.timeSinceLastPeriod >= storage.getPeriodSeconds()) {
 				storage.target->storage.curDamage += storage.getPeriodicDamageFlatImpact();
 				storage.target->storage.curDamage += storage.target->storage.getDamage() * (storage.getPeriodicDamagePercentImpact() / 100.0);
-				storage.target->storage.curFireRate /= storage.getPeriodicAttackSpeedPercentImpact()/100.0;
+				storage.target->storage.curFireRate *= storage.getPeriodicAttackSpeedPercentImpact()/100.0;
 				storage.timeSinceLastPeriod -= storage.getPeriodSeconds();
 				storage.periodsDone++;
 			}
@@ -55,11 +55,11 @@ namespace TDEngine::Inner {
 	void EffectOnTowerActions::end(std::shared_ptr<EngineStorage> engineStorage) {
 		storage.target->storage.curDamage -= storage.getStartDamageFlatImpact();
 		storage.target->storage.curDamage -= storage.target->storage.getDamage() * (storage.getStartDamagePercentImpact() / 100.0);
-		storage.target->storage.curFireRate *= storage.getStartAttackSpeedPercentImpact() / 100.0;
+		storage.target->storage.curFireRate /= storage.getStartAttackSpeedPercentImpact() / 100.0;
 		storage.target->storage.curDamage -= storage.periodsDone * storage.getPeriodicDamageFlatImpact();
 		storage.target->storage.curDamage -= storage.periodsDone * storage.target->storage.getDamage() * (storage.getPeriodicDamagePercentImpact() / 100.0);
 		for (int i = 0; i < storage.periodsDone; i++) {
-			storage.target->storage.curFireRate *= storage.getPeriodicAttackSpeedPercentImpact() / 100.0;
+			storage.target->storage.curFireRate /= storage.getPeriodicAttackSpeedPercentImpact() / 100.0;
 		}
 		applyEffects(storage.getEffectsAfterFinish(), engineStorage);
 		storage.isFinished = true;
