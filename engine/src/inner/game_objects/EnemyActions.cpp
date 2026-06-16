@@ -13,6 +13,7 @@ namespace TDEngine {
             storage.targetIndex = 0;
             storage.curSpeed = sample.getSpeed();
             storage.isAlive = true;
+            storage.initialActionsDone = false;
         	storage.associatedTeam = nullptr;
         }
     	EnemyActions::EnemyActions(std::string texturePath, std::pair<double, double> startPosition,
@@ -30,6 +31,14 @@ namespace TDEngine {
         			return;
         		}
 
+        		if (!storage.initialActionsDone) {
+        			for (std::string effectCreatorName : storage.getBaseEffectCreatorNames()) {
+        				auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
+							std::make_shared<EnemyActions>(*this));
+        				engineStorage->addEffectCreator(newEffectCreator);
+        			}
+        			storage.initialActionsDone = true;
+        		}
                 if (getDistanceTo(storage.associatedWave->getPath()[storage.targetIndex]) < 1e-5) {
                     if (storage.targetIndex + 1 == storage.associatedWave->getPath().size()) {
                         attack(engineStorage);
@@ -67,6 +76,11 @@ namespace TDEngine {
         		team->currentHp -= storage.getDamage();
         		std::cout << "[INFO] enemy dealt damage: " << storage.getDamage() << " to team : "<< team->getTeamName()
         		<<". New hp: " << team->currentHp << std::endl;
+        		for (std::string effectCreatorName : storage.getDamageDealtEffectCreatorNames()) {
+        			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
+						std::make_shared<EnemyActions>(*this));
+        			engineStorage->addEffectCreator(newEffectCreator);
+        		}
         		if (team->currentHp <= 0) {
         			for (auto player : team->teamPlayers) {
         				player->status = EnginePlayer::LOST;

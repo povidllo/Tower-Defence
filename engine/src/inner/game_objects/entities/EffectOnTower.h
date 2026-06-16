@@ -1,17 +1,17 @@
 #pragma once
 #include <memory>
 
-#include "../EnemyActions.h"
-#include "EnemyEffectSample.h"
+#include "../../../../../editor/include/Entity/TowerEffectSample.h"
+#include "../TowerActions.h"
 namespace TDEngine {
 	namespace Inner {
 		class EnemyActions;
-		class EffectOnEnemy : public EnemyEffectSample{
+		class EffectOnTower : public TowerEffectSample{
 		public:
-			explicit EffectOnEnemy(EnemyEffectSample sample)
-			: EnemyEffectSample(std::move(sample)) {}
+			explicit EffectOnTower(TowerEffectSample sample)
+			: TowerEffectSample(std::move(sample)) {}
 
-			std::shared_ptr<EnemyActions> target;
+			std::shared_ptr<TowerActions> target;
 			bool isFinished = false;
 			double elapsedTime = 0.0;      // seconds
 			double timeSinceLastPeriod = 0.0;

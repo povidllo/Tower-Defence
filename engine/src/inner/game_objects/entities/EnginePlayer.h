@@ -1,6 +1,5 @@
 #pragma once
 #include "../../../../../editor/include/Entity/Player.h"
-#include "EngineTeam.h"
 namespace TDEngine {
 	namespace Inner {
 		class EngineTeam;

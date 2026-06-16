@@ -18,6 +18,7 @@ namespace TDEngine {
             int targetIndex;
             double curSpeed;
             bool isAlive;
+        	bool initialActionsDone;
         	std::shared_ptr<EngineTeam> associatedTeam;
         	std::vector<std::shared_ptr<EnginePlayer>> lastHitPlayers;
         };

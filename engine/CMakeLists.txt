@@ -49,13 +49,6 @@ add_executable(engine
         src/display/MainManager.cpp
         src/display/MainManager.h
         src/display/TextureCache.h
-        src/inner/game_objects/samples/EffectSample.h
-        src/inner/game_objects/samples/EffectCreatorSample.h
-        src/inner/game_objects/samples/EffectSample.h
-        src/inner/game_objects/samples/EffectOnEnemySample.h
-        src/inner/game_objects/samples/EffectOnTowerSample.h
-        src/inner/game_objects/samples/EffectCreatorSample.h
-        src/inner/game_objects/samples/AbilitySample.h
         src/inner/game_objects/EffectOnEnemyActions.cpp
         src/inner/game_objects/EffectOnEnemyActions.h
         src/inner/game_objects/EffectOnTowerActions.cpp

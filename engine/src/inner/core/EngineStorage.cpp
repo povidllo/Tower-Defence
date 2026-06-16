@@ -19,6 +19,7 @@ namespace TDEngine {
             actings.insert(actings.end(), activeWaves.begin(), activeWaves.end());
             actings.insert(actings.end(), activeEffectCreators.begin(), activeEffectCreators.end());
             actings.insert(actings.end(), activeEnemyEffects.begin(), activeEnemyEffects.end());
+            actings.insert(actings.end(), activeTowerEffects.begin(), activeTowerEffects.end());
 
             return actings;
         }
@@ -119,6 +120,12 @@ namespace TDEngine {
         			removeEffectOnEnemy(effectPtr);
         		}
         	}
+        	for (int i = 0; i < activeTowerEffects.size(); i++) {
+        		auto effectPtr = activeTowerEffects[i];
+        		if (effectPtr->storage.isFinished) {
+        			removeEffectOnTower(effectPtr);
+        		}
+        	}
         	for (int i = 0; i < activeEffectCreators.size(); i++) {
         		auto effectCreatorPtr = activeEffectCreators[i];
         		if (effectCreatorPtr->storage.isFinished) {
@@ -203,6 +210,17 @@ namespace TDEngine {
         	auto effectIt = std::find(activeEnemyEffects.begin(), activeEnemyEffects.end(), effect);
         	if (effectIt != activeEnemyEffects.end()) {
         		activeEnemyEffects.erase(effectIt);
+        	}
+        }
+
+    	void EngineStorage::addEffectOnTower(const std::shared_ptr<EffectOnTowerActions> &effect) {
+        	activeTowerEffects.push_back(effect);
+        }
+
+    	void EngineStorage::removeEffectOnTower(const std::shared_ptr<EffectOnTowerActions> &effect) {
+        	auto effectIt = std::find(activeTowerEffects.begin(), activeTowerEffects.end(), effect);
+        	if (effectIt != activeTowerEffects.end()) {
+        		activeTowerEffects.erase(effectIt);
         	}
         }
 

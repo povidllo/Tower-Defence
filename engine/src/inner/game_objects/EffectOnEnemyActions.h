@@ -1,8 +1,8 @@
 #pragma once
-#include "IActing.h"
-#include "entities/EffectOnEnemy.h"
 #include <memory>
 #include "EnemyActions.h"
+#include "IActing.h"
+#include "entities/EffectOnEnemy.h"
 
 namespace TDEngine::Inner {
 	class EngineStorage;
@@ -10,11 +10,12 @@ namespace TDEngine::Inner {
 
 	class EffectOnEnemyActions : public IActing {
 	public:
-		EffectOnEnemyActions(EffectOnEnemySample sample, std::shared_ptr<EnemyActions> target);
+		EffectOnEnemyActions(EnemyEffectSample sample, std::shared_ptr<EnemyActions> target);
 		void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
-		void end();
+		void end(std::shared_ptr<EngineStorage> engineStorage);
+		void applyEffects(const std::vector<std::string>& effectNames,
+							  std::shared_ptr<EngineStorage> engineStorage);
 
 		EffectOnEnemy storage;
-		std::shared_ptr<EnemyActions> target;
 	};
 } // namespace TDEngine::Inner
