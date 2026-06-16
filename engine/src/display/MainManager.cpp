@@ -637,6 +637,16 @@ void MainManager::sendSnapshotToClients() {
             packet << static_cast<sf::Uint32>(player->currentCurrency)
                    << player->getPlayerName()
                    << player->status;
+        	packet << static_cast<sf::Uint32>(player->abilities.size());
+        	for (const auto& ability : player->abilities) {
+        		packet << ability->storage.getName()
+					   << static_cast<sf::Int32>(ability->storage.currentCharges)
+					   << static_cast<sf::Uint64>(ability->storage.timeAfterSingleRecharge)
+					   << static_cast<sf::Uint64>(ability->storage.timeAfterLastFullCharge)
+					   << ability->storage.getChargeCooldownSeconds()
+					   << ability->storage.getFullCooldownSeconds()
+					   << ability->storage.getTargetSelection();
+        	}
 
         }
     }
@@ -744,12 +754,38 @@ void MainManager::processServerPacket(sf::Packet &packet) {
             sf::Uint32  gold;
         	std::string name;
             sf::Int32 status;
-            packet >> gold >> name >> status;
-            auto player = std::make_shared<EnginePlayer>(Player(name, 0));
-            player->currentCurrency = gold;
-            player->status = static_cast<EnginePlayer::Status>(status);
+        	sf::Uint32 abilityCount;
+        	packet >> gold >> name >> status;
+
+        	auto player = std::make_shared<EnginePlayer>(Player(name, 0));
+        	player->currentCurrency = gold;
+        	player->status = static_cast<EnginePlayer::Status>(status);
         	player->team = team;
-            team->teamPlayers.push_back(player);
+        	team->teamPlayers.push_back(player);
+
+        	packet >> abilityCount;
+        	for (sf::Uint32 a = 0; a < abilityCount; ++a) {
+        		std::string name;
+        		sf::Int32 charges;
+        		sf::Uint64 timeAfterSingle, timeAfterFull;
+        		double chargeCooldown, fullCooldown;
+        		std::string targetSelection;
+        		packet >> name >> charges
+        		>> timeAfterSingle >> timeAfterFull
+					   >> chargeCooldown >> fullCooldown >> targetSelection;
+
+        		AbilitySample sample(name);
+        		sample.setChargeCooldownSeconds(chargeCooldown);
+        		sample.setFullCooldownSeconds(fullCooldown);
+        		sample.setTargetSelection(targetSelection);
+
+        		auto ability = std::make_shared<AbilityActions>(sample);
+        		ability->storage.currentCharges = charges;
+        		ability->storage.timeAfterSingleRecharge = timeAfterSingle;
+        		ability->storage.timeAfterLastFullCharge = timeAfterFull;
+
+        		player->abilities.push_back(ability);
+        	}
         }
         newStatus->teams.push_back(team);
     }
