@@ -8,8 +8,9 @@
 namespace TDEngine::Inner {
 
 	EffectOnTowerActions::EffectOnTowerActions(TowerEffectSample sample, std::shared_ptr<TowerActions> target)
-		: storage(std::move(sample)) {
-		storage.target = std::move(target);
+	: storage(std::move(sample)), MapObject(sample.getVisualTexturePath(),
+		target->positionCoordinates.first, target->positionCoordinates.second, MapObjectTypes::Effect) {
+		storage.target = target;
 		storage.isFinished = false;
 		storage.elapsedTime = 0.0;
 		storage.timeSinceLastPeriod = 0.0;
@@ -22,6 +23,9 @@ namespace TDEngine::Inner {
 			storage.isFinished = true;
 			return;
 		}
+
+		positionCoordinates.first = storage.target->positionCoordinates.first;
+		positionCoordinates.second = storage.target->positionCoordinates.second;
 
 		double dt = timePassedMillis / 1000.0;
 		storage.elapsedTime += dt;

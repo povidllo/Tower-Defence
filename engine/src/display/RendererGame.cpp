@@ -160,6 +160,7 @@ namespace TDEngine::Inner {
 			return;
 
 		for (const auto &obj: gameStat->mapObjects) {
+			if (obj->texturePath == "") continue;
 			const auto &texture = textureCache.getTexture(obj->texturePath);
 			spriteCache.setTexture(texture, true);
 

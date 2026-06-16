@@ -8,7 +8,7 @@ namespace TDEngine::Inner {
 	class EngineStorage;
 	class EnemyActions;
 
-	class EffectOnEnemyActions : public IActing {
+	class EffectOnEnemyActions : public IActing, public MapObject{
 	public:
 		EffectOnEnemyActions(EnemyEffectSample sample, std::shared_ptr<EnemyActions> target);
 		void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;

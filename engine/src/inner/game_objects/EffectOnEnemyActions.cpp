@@ -8,13 +8,18 @@
 namespace TDEngine::Inner {
 
 	EffectOnEnemyActions::EffectOnEnemyActions(EnemyEffectSample sample, std::shared_ptr<EnemyActions> target)
-		: storage(std::move(sample)) {
-		storage.target = std::move(target);
+		: storage(std::move(sample)), MapObject(sample.getVisualTexturePath(),
+		target->positionCoordinates.first, target->positionCoordinates.second, MapObjectTypes::Effect) {
+
+		storage.target = target;
 		storage.isFinished = false;
 		storage.elapsedTime = 0.0;
 		storage.timeSinceLastPeriod = 0.0;
 		storage.periodsDone = 0;
 		storage.initialApplied = false;
+
+		std::cout << "[INFO] Created enemy effect: " << sample.getName() << " on target with xy: "
+		<< target->positionCoordinates.first << " " << target->positionCoordinates.second << std::endl;
 	}
 
 	void EffectOnEnemyActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
@@ -22,6 +27,9 @@ namespace TDEngine::Inner {
 			storage.isFinished = true;
 			return;
 		}
+
+		positionCoordinates.first = storage.target->positionCoordinates.first;
+		positionCoordinates.second = storage.target->positionCoordinates.second;
 
 		double dt = timePassedMillis / 1000.0;
 		storage.elapsedTime += dt;

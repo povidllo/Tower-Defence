@@ -8,7 +8,7 @@ namespace TDEngine::Inner {
 	class EngineStorage;
 	class TowerActions;
 
-	class EffectOnTowerActions : public IActing {
+	class EffectOnTowerActions : public IActing, public MapObject {
 	public:
 		EffectOnTowerActions(TowerEffectSample sample, std::shared_ptr<TowerActions> target);
 		void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;

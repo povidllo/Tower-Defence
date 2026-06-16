@@ -219,6 +219,7 @@ namespace TDEngine {
 
     	void EngineStorage::addEffectOnEnemy(const std::shared_ptr<EffectOnEnemyActions> &effect) {
         	activeEnemyEffects.push_back(effect);
+        	curGameStatus->mapObjects.push_back(effect);
         }
 
     	void EngineStorage::removeEffectOnEnemy(const std::shared_ptr<EffectOnEnemyActions> &effect) {
@@ -226,16 +227,29 @@ namespace TDEngine {
         	if (effectIt != activeEnemyEffects.end()) {
         		activeEnemyEffects.erase(effectIt);
         	}
+
+        	std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(effect);
+        	auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
+        	if (mapIt != curGameStatus->mapObjects.end()) {
+        		curGameStatus->mapObjects.erase(mapIt);
+        	}
         }
 
     	void EngineStorage::addEffectOnTower(const std::shared_ptr<EffectOnTowerActions> &effect) {
         	activeTowerEffects.push_back(effect);
+        	curGameStatus->mapObjects.push_back(effect);
         }
 
     	void EngineStorage::removeEffectOnTower(const std::shared_ptr<EffectOnTowerActions> &effect) {
         	auto effectIt = std::find(activeTowerEffects.begin(), activeTowerEffects.end(), effect);
         	if (effectIt != activeTowerEffects.end()) {
         		activeTowerEffects.erase(effectIt);
+        	}
+
+        	std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(effect);
+        	auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
+        	if (mapIt != curGameStatus->mapObjects.end()) {
+        		curGameStatus->mapObjects.erase(mapIt);
         	}
         }
 
