@@ -300,103 +300,153 @@ namespace TDEngine::Inner {
 	}
 
 	void MainManager::handleGameClick(int mouseX, int mouseY) {
-		sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
+        sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
 
-		// 1. Проверка кликов по UI (Правая панель - Sidebar)
-		if (worldPos.x >= RendererGame::UI_SIDEBAR_X) {
-			if (selectedTower) {
-				for (const auto &option: currentUpgradeOptions) {
-					if (option.bounds.contains(worldPos)) {
-        				std::cout << "[INFO] Processing event: tower upgrade" << std::endl;
-						if (networkRole == NetworkRole::CLIENT) {
-							sendUpgradeRequest(selectedTower->positionCoordinates.first,
-											   selectedTower->positionCoordinates.second, option.name, localPlayerIndex);
-						} else {
-							applyUpgradeAt(selectedTower->positionCoordinates.first,
-										   selectedTower->positionCoordinates.second, option.name, localPlayerIndex);
-						}
-						selectedTower = nullptr;
-						currentUpgradeOptions.clear();
-						return;
-					}
-				}
-			}
-			return;
-		}
+        // ----- 1. Режим выбора цели для способности -----
+        if (isSelectingTarget) {
+            // Если клик по карте (не по правой панели и не по верхней панели)
+            if (worldPos.x < RendererGame::UI_SIDEBAR_X && worldPos.y > RendererGame::UI_TOP_BAR_HEIGHT) {
+                // Определяем локальные координаты на карте
+                sf::Vector2u bgSize =
+                    backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
+                sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+                float localX = worldPos.x - mapOffset.x;
+                float localY = worldPos.y - mapOffset.y;
 
-		// Если клик по верхней панели
-		if (worldPos.y <= RendererGame::UI_TOP_BAR_HEIGHT) {
-			return;
-		}
+                std::shared_ptr<MapObject> target = nullptr;
 
-		// 2. Проверка кликов по карте
-		sf::Vector2u bgSize =
-				backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
-		sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+                // Ищем объект под кликом
+                if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
+                    for (const auto &obj : gameStatus->mapObjects) {
+                        float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
+                        float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
+                        sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
+                        if (objBounds.contains(localX, localY)) {
+                            target = obj;
+                            break;
+                        }
+                    }
+                }
 
-		float localX = worldPos.x - mapOffset.x;
-		float localY = worldPos.y - mapOffset.y;
+                // Если объект не найден – создаём точку в клеточных координатах
+                if (!target) {
+                    double cellX = localX / RendererGame::TILE_SIZE;
+                    double cellY = localY / RendererGame::TILE_SIZE;
+                    target = std::make_shared<MapObject>("", cellX, cellY, MapObjectTypes::Point);
+                }
 
-		bool clickedOnTower = false;
+                auto player = getLocalPlayer();
+                if (player && selectedAbilityIndex >= 0 && selectedAbilityIndex < static_cast<int>(player->abilities.size())) {
+                    playerAction = std::make_shared<AbilityUseAction>(player, selectedAbilityIndex, target);
+                }
 
-		if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
-			for (const auto &obj: gameStatus->mapObjects) {
-				if (obj->type != MapObjectTypes::Tower)
-					continue;
+                isSelectingTarget = false;
+                selectedAbilityIndex = -1;
+            } else {
+                // Клик по UI – отменяем выбор цели
+                isSelectingTarget = false;
+                selectedAbilityIndex = -1;
+            }
+            return; // не обрабатываем другие клики
+        }
 
-				float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
-				float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
+        // ----- 2. Клик по правой панели (UI) -----
+        if (worldPos.x >= RendererGame::UI_SIDEBAR_X) {
+            // 2.1 Проверка клика по способностям
+            auto player = getLocalPlayer();
+            if (player) {
+                for (size_t i = 0; i < abilityButtonsBounds.size(); ++i) {
+                    if (abilityButtonsBounds[i].contains(worldPos)) {
+                        if (i >= player->abilities.size()) break;
+                        auto ability = player->abilities[i];
+                        if (ability->storage.currentCharges <= 0) {
+                            // Нет зарядов – игнорируем
+                            return;
+                        }
+                        std::string targetSelection = ability->storage.getTargetSelection();
+                        if (targetSelection == "none") {
+                            // Используем сразу без цели
+                            auto target = std::make_shared<MapObject>("", 0.0, 0.0, MapObjectTypes::Point);
+                            playerAction = std::make_shared<AbilityUseAction>(player, static_cast<int>(i), target);
+                        } else {
+                            // Входим в режим выбора цели
+                            isSelectingTarget = true;
+                            selectedAbilityIndex = static_cast<int>(i);
+                            std::cout << "[INFO] Select target for ability: " << ability->storage.getName() << std::endl;
+                        }
+                        return;
+                    }
+                }
+            }
 
-				sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
+            // 2.2 Проверка клика по улучшениям (если выбрана башня)
+            if (selectedTower) {
+                for (size_t i = 0; i < upgradeButtonsBounds.size(); ++i) {
+                    if (upgradeButtonsBounds[i].contains(worldPos)) {
+                        // Получаем имя улучшения из currentUpgradeOptions
+                        if (i < currentUpgradeOptions.size()) {
+                            std::string upgradeName = currentUpgradeOptions[i].name;
+                            // Применяем улучшение (как раньше)
+                            if (networkRole == NetworkRole::CLIENT) {
+                                sendUpgradeRequest(selectedTower->positionCoordinates.first,
+                                                   selectedTower->positionCoordinates.second,
+                                                   upgradeName, localPlayerIndex);
+                            } else {
+                                applyUpgradeAt(selectedTower->positionCoordinates.first,
+                                               selectedTower->positionCoordinates.second,
+                                               upgradeName, localPlayerIndex);
+                            }
+                            selectedTower = nullptr;
+                            currentUpgradeOptions.clear();
+                        }
+                        return;
+                    }
+                }
+            }
+            return; // клик по правой панели, но не по кнопкам – игнорируем
+        }
 
-				if (objBounds.contains(localX, localY)) {
-					// if (!canPlayerUseTower(getLocalPlayer(), std::static_pointer_cast<TowerActions>(obj))) {
-					// 	selectedTower = nullptr;
-					// 	currentUpgradeOptions.clear();
-					// 	return;
-					// }
-					selectedTower = obj;
-					clickedOnTower = true;
-					currentUpgradeOptions.clear();
+        // ----- 3. Клик по карте (выбор башни) -----
+        // Если клик по верхней панели – игнорируем
+        if (worldPos.y <= RendererGame::UI_TOP_BAR_HEIGHT) return;
 
-					int index = 0;
+        sf::Vector2u bgSize =
+            backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
+        sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+        float localX = worldPos.x - mapOffset.x;
+        float localY = worldPos.y - mapOffset.y;
 
-					// --- ИСПРАВЛЕНИЕ ЛОГИКИ РАЗМЕЩЕНИЯ КНОПОК ---
-					// Вычисляем ширину доступной области внутри сайдбара
-					float sidebarInnerWidth =
-							window.getSize().x - RendererGame::UI_SIDEBAR_X - (2 * RendererGame::UI_PADDING);
-
-					// Делаем кнопку почти во всю ширину сайдбара (с небольшими отступами)
-					float btnMarginX = 10.0f;
-					float btnWidth = sidebarInnerWidth - (2 * btnMarginX);
-					float btnHeight = 50.0f; // Фиксированная высота кнопки-карточки
-
-					float startX = RendererGame::UI_SIDEBAR_X + RendererGame::UI_PADDING + btnMarginX;
-					float startY = 80.0f; // Отступ сверху (под заголовком)
-
-					for (const auto &upgName: getUpgradeNamesForTower(obj)) {
-						for (const auto &towerConfig: project.getTowers()) {
-							if (towerConfig->getName() == upgName) {
-								float btnY = startY + (index * (btnHeight + 10.0f)); // 10.0f - отступ между кнопками
-
-								currentUpgradeOptions.push_back(
-										{&renderer.getTexture(towerConfig->getTowerTexturePath()), upgName,
-										 sf::FloatRect(startX, btnY, btnWidth, btnHeight)});
-								index++;
-								break;
-							}
-						}
-					}
-					return;
-				}
-			}
-		}
-
-		if (!clickedOnTower) {
-			selectedTower = nullptr;
-			currentUpgradeOptions.clear();
-		}
-	}
+        bool clickedOnTower = false;
+        if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
+            for (const auto &obj : gameStatus->mapObjects) {
+                if (obj->type != MapObjectTypes::Tower) continue;
+                float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
+                float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
+                sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
+                if (objBounds.contains(localX, localY)) {
+                    selectedTower = obj;
+                    clickedOnTower = true;
+                    // Формируем данные для улучшений (без вычисления bounds)
+                    currentUpgradeOptions.clear();
+                    for (const auto &upgName : getUpgradeNamesForTower(obj)) {
+                        for (const auto &towerConfig : project.getTowers()) {
+                            if (towerConfig->getName() == upgName) {
+                                currentUpgradeOptions.push_back(
+                                    {&renderer.getTexture(towerConfig->getTowerTexturePath()), upgName,
+                                     sf::FloatRect(0,0,0,0)}); // bounds будут перезаписаны в renderUI
+                                break;
+                            }
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        if (!clickedOnTower) {
+            selectedTower = nullptr;
+            currentUpgradeOptions.clear();
+        }
+    }
 
 	void MainManager::update(sf::Time dt) {
 		updateNetwork();
@@ -454,12 +504,15 @@ namespace TDEngine::Inner {
 		} else if (state == AppState::GAME) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer());
+			// Передаём векторы для заполнения bounds
+			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer(),
+							  abilityButtonsBounds, upgradeButtonsBounds);
 			window.display();
 		} else if (state == AppState::GAME_OVER) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer());
+			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer(),
+							  abilityButtonsBounds, upgradeButtonsBounds);
 			renderer.renderGameOver(wasVictory);
 			window.display();
 		}

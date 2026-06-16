@@ -13,6 +13,7 @@ namespace TDEngine {
 			int currentCharges;
             uint64_t timeAfterSingleRecharge;
             uint64_t timeAfterLastFullCharge;
+			std::shared_ptr<MapObject> target;
 		};
 	} // Inner
 } // TDEngine

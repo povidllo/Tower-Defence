@@ -8,10 +8,11 @@ namespace TDEngine::Inner {
 		storage.currentCharges = storage.getChargesCount();
 		storage.timeAfterLastFullCharge = 0;
 		storage.timeAfterSingleRecharge = 0;
+		storage.target = nullptr;
 	}
 
 	void AbilityActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
-		if (storage.currentCharges != storage.getChargesCount()) {
+		if (storage.currentCharges < storage.getChargesCount()) {
 			storage.timeAfterLastFullCharge += timePassedMillis;
 			storage.timeAfterSingleRecharge += timePassedMillis;
             uint64_t chargeCooldown = ceil(storage.getChargeCooldownSeconds() * 1000);
@@ -29,10 +30,12 @@ namespace TDEngine::Inner {
 				}
 			}
 		}
+		if (storage.target != nullptr && storage.currentCharges > 0) {
+			cast(engineStorage, storage.target);
+			storage.target = nullptr;
+		}
 	}
 	void AbilityActions::cast(std::shared_ptr<EngineStorage> engineStorage, std::shared_ptr<MapObject> target) {
-		if (storage.currentCharges <= 0) return;
-
 		for (std::string effectCreatorName : storage.getEffectCreatorsOnCast()) {
 			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage, target);
 			engineStorage->addEffectCreator(newEffectCreator);
