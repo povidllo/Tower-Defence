@@ -3,6 +3,13 @@
 #include "../../../../../editor//include/Entity/EffectCreatorSample.h"
 namespace TDEngine {
     namespace Inner {
+		enum class TowerBehaviourTypes { //Виды поведения башен при выборе целей атаки
+			//Соответственно самый ближний/дальний враги, враги с наименьшим/наибольшим количеством хп, враги с наибольшим числом соседей
+			Closest,
+			Farthest,
+			LowestHP,
+			HighestHP
+		 };
         class Tower : public TowerSample{
         public:
         	explicit Tower(TowerSample sample)
@@ -19,7 +26,11 @@ namespace TDEngine {
         	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
         	double curDamage;
         	double curFireRate;
+        	double curHp;
         	bool initialActionsDone;
+        	TowerBehaviourTypes behaviourType;
+        	std::shared_ptr<TowerSample> originSample;
+        	std::vector<std::shared_ptr<EnginePlayer>> originOwnerPlayers;
         };
     } // Inner
 } // TDEngine

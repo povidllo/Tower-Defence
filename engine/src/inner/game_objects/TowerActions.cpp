@@ -6,16 +6,20 @@
 
 namespace TDEngine {
 	namespace Inner {
-		TowerActions::TowerActions(TowerSample sample, std::pair<double, double> startPosition,
+		TowerActions::TowerActions(std::shared_ptr<TowerSample> sample, std::pair<double, double> startPosition,
 				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers)
-			: MapObject(sample.getTowerTexturePath(), startPosition.first, startPosition.second, MapObjectTypes::Tower),
-			storage(std::move(sample)) {
+			: MapObject(sample->getTowerTexturePath(), startPosition.first, startPosition.second, MapObjectTypes::Tower),
+			storage(*sample) {
 			storage.setUpgradingTo = std::nullopt;//storage.getUpgradeNames()[0];//
 			storage.timeAfterLastShot = UINT64_MAX;
 			storage.ownerPlayers = std::move(ownerPlayers);
 			storage.curFireRate = storage.getFireRate();
 			storage.curDamage = storage.getDamage();
 			storage.initialActionsDone = false;
+			storage.curHp = 100;
+			storage.behaviourType = TowerBehaviourTypes::Closest;
+			storage.originSample = sample;
+			storage.originOwnerPlayers = std::move(ownerPlayers);
 		}
 
 		TowerActions::TowerActions(std::string texturePath, std::pair<double, double> startPosition,
@@ -26,6 +30,13 @@ namespace TDEngine {
 		}
 
         void TowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
+			if (storage.curHp <= 0) {
+				resetTowerWithSample(storage.originSample, engineStorage);
+				storage.ownerPlayers.clear();
+				for (auto player : storage.originOwnerPlayers) {
+					storage.ownerPlayers.push_back(player);
+				}
+			}
             if (storage.setUpgradingTo.has_value() && storage.setUpgradingByPlayer != nullptr) {
                 upgradeTower(engineStorage);
             }
@@ -63,21 +74,55 @@ namespace TDEngine {
 
         std::shared_ptr<EnemyActions> TowerActions::findTarget(std::shared_ptr<EngineStorage> engineStorage) {
             std::shared_ptr<EnemyActions> ans = nullptr;
-            for (auto enemyPtr : engineStorage->activeEnemies) {
-                if ((ans == nullptr || getDistanceTo(enemyPtr) < getDistanceTo(ans))
-                	&& getDistanceTo(enemyPtr) <= storage.getFireDistance()) {
-                    ans = enemyPtr;
-                }
+			for (auto enemyPtr : engineStorage->activeEnemies) {
+				if (ans == nullptr && getDistanceTo(enemyPtr) <= storage.getFireDistance()) {
+					ans = enemyPtr;
+				}
+            	if (storage.behaviourType == TowerBehaviourTypes::Closest) {
+            		if (getDistanceTo(enemyPtr) <= storage.getFireDistance()
+            			&& getDistanceTo(enemyPtr) < getDistanceTo(ans)) {
+            			ans = enemyPtr;
+					}
+            	}
+            	else if (storage.behaviourType == TowerBehaviourTypes::Farthest) {
+            		if (getDistanceTo(enemyPtr) <= storage.getFireDistance()
+						&& getDistanceTo(enemyPtr) > getDistanceTo(ans)) {
+            			ans = enemyPtr;
+					}
+            	}
+            	else if (storage.behaviourType == TowerBehaviourTypes::LowestHP) {
+            		if (getDistanceTo(enemyPtr) <= storage.getFireDistance()
+						&& enemyPtr->storage.currentHP < ans->storage.currentHP) {
+            			ans = enemyPtr;
+					}
+            	}
+            	else if (storage.behaviourType == TowerBehaviourTypes::HighestHP) {
+            		if (getDistanceTo(enemyPtr) <= storage.getFireDistance()
+						&& enemyPtr->storage.currentHP > ans->storage.currentHP) {
+            			ans = enemyPtr;
+					}
+            	}
             }
             return ans;
         }
 
-        void TowerActions::setSample(std::shared_ptr<TowerSample> sample) {
+        void TowerActions::resetTowerWithSample(std::shared_ptr<TowerSample> sample, std::shared_ptr<EngineStorage> engineStorage) {
             storage = Tower(*sample);
         	texturePath = sample->getTowerTexturePath();
 			storage.curFireRate = storage.getFireRate();
 			storage.curDamage = storage.getDamage();
 			storage.initialActionsDone = false;
+			storage.timeAfterLastShot = 0;
+			for (auto effect : engineStorage->activeTowerEffects) {
+				if (effect->storage.target.get() == this) {
+					effect->storage.isFinished = true;
+				}
+			}
+			for (auto effectCreator : engineStorage->activeEffectCreators) {
+				if (effectCreator->storage.attachedObject.get() == this) {
+					effectCreator->storage.isFinished = true;
+				}
+			}
         }
 
         void TowerActions::upgradeTower(std::shared_ptr<EngineStorage> engineStorage) {
@@ -93,15 +138,9 @@ namespace TDEngine {
                 				std::cout << "[INFO] Upgrading tower" << std::endl;
             					storage.setUpgradingByPlayer->currentCurrency -= sample->getCost();
             					auto playerT = storage.setUpgradingByPlayer;
-            					setSample(sample);
+            					resetTowerWithSample(sample, engineStorage);
             					storage.ownerPlayers.clear();
             					storage.ownerPlayers.push_back(playerT);
-            					storage.timeAfterLastShot = 0;
-            					for (auto effect : engineStorage->activeTowerEffects) {
-            						if (effect->storage.target.get() == this) {
-            							effect->storage.isFinished = true;
-            						}
-            					}
             					return;
             				}
             			}
