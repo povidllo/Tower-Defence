@@ -1,6 +1,7 @@
 #include "EffectCreatorActions.h"
 
 #include <set>
+#include <utility>
 
 #include "../core/EngineStorage.h"
 #include "EnemyActions.h"
@@ -8,28 +9,10 @@
 
 namespace TDEngine::Inner {
 
-	EffectCreatorActions::EffectCreatorActions(EffectCreatorSample sample, std::shared_ptr<MapObject> attachedObject)
-	    : MapObject("", attachedObject->positionCoordinates, MapObjectTypes::EffectCreator), // type placeholder
-	      storage(std::move(sample)) {
-		storage.isFinished = false;
-		storage.initialApplied = false;
-		storage.elapsedTime = 0.0;
-		storage.timeSinceLastPeriod = 0.0;
-		if (storage.getAttachmentPreference() == "point") {
-			storage.attachedObject = std::make_shared<MapObject>
-				(MapObject("", attachedObject->positionCoordinates, MapObjectTypes::Point));
-		}
-		else {
-			storage.attachedObject = attachedObject;
-		}
-
-		std::cout << "[INFO] Createt EC: " << sample.getName() << " on target with xy: "
-		<< attachedObject->positionCoordinates.first << " " << attachedObject->positionCoordinates.second << std::endl;
-	}
-
 	EffectCreatorActions::EffectCreatorActions(std::string sampleName, std::shared_ptr<EngineStorage> engineStorage,
-		std::shared_ptr<MapObject> attachedObject) :
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::shared_ptr<MapObject> attachedObject) :
 		MapObject("", attachedObject->positionCoordinates, MapObjectTypes::EffectCreator), storage(*findSample(sampleName, engineStorage)) {
+		storage.ownerPlayers = std::move(ownerPlayers);
 		storage.isFinished = false;
 		storage.initialApplied = false;
 		storage.elapsedTime = 0.0;
@@ -38,7 +21,12 @@ namespace TDEngine::Inner {
 			storage.attachedObject = std::make_shared<MapObject>(
 					MapObject("", attachedObject->positionCoordinates, MapObjectTypes::Point));
 		} else {
-			storage.attachedObject = attachedObject;
+			if (attachedObject->type != MapObjectTypes::Point) {
+				storage.attachedObject = attachedObject;
+			}
+			else {
+				storage.attachedObject = findClosestTargetEnemy(engineStorage, attachedObject);
+			}
 		}
 
 		std::cout << "[INFO] Createt EC: " << sampleName << " on target with xy: "
@@ -51,6 +39,22 @@ namespace TDEngine::Inner {
 			}
 		}
 		return nullptr;
+	}
+
+	std::shared_ptr<MapObject> EffectCreatorActions::findClosestTargetEnemy(std::shared_ptr<EngineStorage> engineStorage,
+		std::shared_ptr<MapObject> attachedObject) {
+		std::shared_ptr<MapObject> closestTarget = nullptr;
+		for (auto enemy : engineStorage->activeEnemies) {
+			if (enemy->storage.isAlive && (closestTarget == nullptr ||
+				attachedObject->getDistanceTo(enemy) < attachedObject->getDistanceTo(closestTarget))) {
+				closestTarget = enemy;
+			}
+		}
+
+		if (closestTarget != nullptr) {
+			return closestTarget;
+		}
+		return attachedObject;
 	}
 
 	void EffectCreatorActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
@@ -94,6 +98,7 @@ namespace TDEngine::Inner {
 	void EffectCreatorActions::applyEffects(const std::vector<std::string>& effectNames,
 							  std::shared_ptr<EngineStorage> engineStorage) {
 	std::cout << "[INFO] Trying to create effects by : " << storage.getName() << std::endl;
+	std::cout << "[INFO] Trying to create effects owned : " << storage.ownerPlayers.size() << std::endl;
 	std::set<std::string> effectsNamesSet;
 	for (auto name : effectNames) {
 		effectsNamesSet.insert(name);
@@ -113,6 +118,8 @@ namespace TDEngine::Inner {
 		}
 	}
 
+	std::cout << "[INFO] Found effects amount " << enemyEffects.size() << " " << towerEffects.size() << std::endl;
+
 	if (!enemyEffects.empty()) {
 		for (const auto& target : getTargetEnemiesInRadius(engineStorage)) {
 			for (auto effectSample : enemyEffects) {
@@ -122,12 +129,13 @@ namespace TDEngine::Inner {
 						if (effect->storage.target.get() == target.get()
 							&& effect->storage.getName() == effectSample->getName()) {
 							b = true;
+							std::cout << "[INFO] stackable flag " << std::endl;
 							break;
 						}
 					}
 					if (b) continue;
 				}
-				auto newEffect = std::make_shared<EffectOnEnemyActions>(*effectSample, target);
+				auto newEffect = std::make_shared<EffectOnEnemyActions>(*effectSample, storage.ownerPlayers, target);
 				engineStorage->addEffectOnEnemy(newEffect);
 			}
 		}
@@ -146,7 +154,7 @@ namespace TDEngine::Inner {
 					}
 					if (b) continue;
 				}
-				auto newEffect = std::make_shared<EffectOnTowerActions>(*effectSample, target);
+				auto newEffect = std::make_shared<EffectOnTowerActions>(*effectSample, storage.ownerPlayers, target);
 				engineStorage->addEffectOnTower(newEffect);
 			}
 		}
@@ -154,6 +162,7 @@ namespace TDEngine::Inner {
 }
 
 	std::vector<std::shared_ptr<EnemyActions>> EffectCreatorActions::getTargetEnemiesInRadius(std::shared_ptr<EngineStorage> engineStorage) {
+	std::cout << "[INFO] Trying to find enemies for ec : " << storage.getName() << std::endl;
 	std::vector<std::shared_ptr<EnemyActions>> result;
 	if (storage.getRadius() <= 0.0) {
 		if (storage.attachedObject->type == MapObjectTypes::Enemy) { // Or else nothing happens
@@ -183,6 +192,7 @@ namespace TDEngine::Inner {
 }
 
 std::vector<std::shared_ptr<TowerActions>> EffectCreatorActions::getTargetTowersInRadius(std::shared_ptr<EngineStorage> engineStorage) {
+	std::cout << "[INFO] Trying to find towers for ec : " << storage.getName() << std::endl;
 	std::vector<std::shared_ptr<TowerActions>> result;
 	if (storage.getRadius() <= 0.0) {
 		if (storage.attachedObject->type == MapObjectTypes::Tower) { // Or else nothing happens

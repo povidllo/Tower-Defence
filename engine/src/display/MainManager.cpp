@@ -779,7 +779,7 @@ void MainManager::processServerPacket(sf::Packet &packet) {
         		sample.setFullCooldownSeconds(fullCooldown);
         		sample.setTargetSelection(targetSelection);
 
-        		auto ability = std::make_shared<AbilityActions>(sample);
+        		auto ability = std::make_shared<AbilityActions>(sample, player);
         		ability->storage.currentCharges = charges;
         		ability->storage.timeAfterSingleRecharge = timeAfterSingle;
         		ability->storage.timeAfterLastFullCharge = timeAfterFull;

@@ -1,16 +1,18 @@
 #include "EffectOnEnemyActions.h"
 
 #include <set>
+#include <utility>
 
 #include "../core/EngineStorage.h"
 #include "EnemyActions.h"
 
 namespace TDEngine::Inner {
 
-	EffectOnEnemyActions::EffectOnEnemyActions(EnemyEffectSample sample, std::shared_ptr<EnemyActions> target)
+	EffectOnEnemyActions::EffectOnEnemyActions(EnemyEffectSample sample,
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::shared_ptr<EnemyActions> target)
 		: storage(std::move(sample)), MapObject(sample.getVisualTexturePath(),
 		target->positionCoordinates.first, target->positionCoordinates.second, MapObjectTypes::Effect) {
-
+		storage.ownerPlayers = std::move(ownerPlayers);
 		storage.target = target;
 		storage.isFinished = false;
 		storage.elapsedTime = 0.0;
@@ -36,6 +38,9 @@ namespace TDEngine::Inner {
 
 		// Apply initial effect once
 		if (!storage.initialApplied) {
+			if (storage.getStartHealthImpact() < 0) {
+				storage.target->storage.lastHitPlayers = std::move(storage.ownerPlayers);
+			}
 			storage.target->storage.currentHP += storage.getStartHealthImpact();
 			storage.target->storage.curSpeed += storage.target->storage.getSpeed() * (storage.getStartSpeedImpactPercent() / 100.0);
 			storage.initialApplied = true;
@@ -45,6 +50,9 @@ namespace TDEngine::Inner {
 		if (storage.getPeriodSeconds() > 0.0) {
 			storage.timeSinceLastPeriod += dt;
 			while (storage.timeSinceLastPeriod >= storage.getPeriodSeconds()) {
+				if (storage.getPeriodicHealthImpact() < 0) {
+					storage.target->storage.lastHitPlayers = std::move(storage.ownerPlayers);
+				}
 				storage.target->storage.currentHP += storage.getPeriodicHealthImpact();
 				storage.target->storage.curSpeed += storage.target->storage.getSpeed() * (storage.getStartSpeedImpactPercent() / 100.0);
 				storage.timeSinceLastPeriod -= storage.getPeriodSeconds();
@@ -83,7 +91,7 @@ namespace TDEngine::Inner {
 
 		if (!enemyEffects.empty()) {
 			for (auto effectSample : enemyEffects) {
-				auto newEffect = std::make_shared<EffectOnEnemyActions>(*effectSample, storage.target);
+				auto newEffect = std::make_shared<EffectOnEnemyActions>(*effectSample, storage.ownerPlayers, storage.target);
 				engineStorage->addEffectOnEnemy(newEffect);
 			}
 		}

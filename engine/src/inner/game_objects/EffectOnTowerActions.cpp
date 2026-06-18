@@ -1,15 +1,18 @@
 #include "EffectOnTowerActions.h"
 
 #include <set>
+#include <utility>
 
 #include "../core/EngineStorage.h"
 #include "TowerActions.h"
 
 namespace TDEngine::Inner {
 
-	EffectOnTowerActions::EffectOnTowerActions(TowerEffectSample sample, std::shared_ptr<TowerActions> target)
+	EffectOnTowerActions::EffectOnTowerActions(TowerEffectSample sample,
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::shared_ptr<TowerActions> target)
 	: storage(std::move(sample)), MapObject(sample.getVisualTexturePath(),
 		target->positionCoordinates.first, target->positionCoordinates.second, MapObjectTypes::Effect) {
+		storage.ownerPlayers = std::move(ownerPlayers);
 		storage.target = target;
 		storage.isFinished = false;
 		storage.elapsedTime = 0.0;
@@ -87,7 +90,7 @@ namespace TDEngine::Inner {
 
 		if (!towerEffects.empty()) {
 			for (auto effectSample : towerEffects) {
-				auto newEffect = std::make_shared<EffectOnTowerActions>(*effectSample, storage.target);
+				auto newEffect = std::make_shared<EffectOnTowerActions>(*effectSample, storage.ownerPlayers, storage.target);
 				engineStorage->addEffectOnTower(newEffect);
 			}
 		}

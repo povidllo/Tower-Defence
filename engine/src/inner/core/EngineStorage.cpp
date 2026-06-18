@@ -78,26 +78,29 @@ namespace TDEngine {
         		std::shared_ptr<EngineTeam> engineTeam = std::make_shared<EngineTeam>(EngineTeam(*team));
         		engineTeam->currentHp = engineTeam->getHp();
         		for (const auto& player : team->getPlayers()) {
-        			EnginePlayer enginePlayer(player);
-        			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
-        			enginePlayer.status = EnginePlayer::PLAYING;
-        			enginePlayer.team = engineTeam;
-        			engineTeam->teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
+        			std::shared_ptr<EnginePlayer> enginePlayer = std::make_shared<EnginePlayer>(player);
+        			enginePlayer->currentCurrency = enginePlayer->getStartCurrency();
+        			enginePlayer->status = EnginePlayer::PLAYING;
+        			enginePlayer->team = engineTeam;
         			for (std::string abilityName : player.getAbilityNames()) {
         				std::shared_ptr<AbilityActions> ability = nullptr;
         				for (auto abilitySample : curProject->getAbilities()) {
         					if (abilitySample->getName() == abilityName) {
-        						ability = std::make_shared<AbilityActions>(*abilitySample);
+        						ability = std::make_shared<AbilityActions>(*abilitySample, enginePlayer);
         					}
         				}
         				if (ability == nullptr) {
         					std::cout << "[ERR] Could not find ability " << abilityName << " for player " << player.getPlayerName() << std::endl;
         				}
         				else {
-        					enginePlayer.abilities.push_back(ability);
+        					enginePlayer->abilities.push_back(ability);
         					addAbility(ability);
         				}
         			}
+        			std::cout << "[INFO] Added player " << enginePlayer->getPlayerName()
+        				<< "with abilities amount: " << enginePlayer->abilities.size()
+        				<< " for team " << engineTeam->getTeamName() << std::endl;
+        			engineTeam->teamPlayers.push_back(enginePlayer);
         		}
         		curGameStatus->teams.push_back(engineTeam);
         	}

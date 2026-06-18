@@ -11,6 +11,7 @@ namespace TDEngine {
 			: TowerEffectSample(std::move(sample)) {}
 
 			std::shared_ptr<TowerActions> target;
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
 			bool isFinished = false;
 			double elapsedTime = 0.0;      // seconds
 			double timeSinceLastPeriod = 0.0;

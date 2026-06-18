@@ -11,6 +11,7 @@ namespace TDEngine {
 			: EnemyEffectSample(std::move(sample)) {}
 
 			std::shared_ptr<EnemyActions> target;
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
 			bool isFinished = false;
 			double elapsedTime = 0.0;      // seconds
 			double timeSinceLastPeriod = 0.0;

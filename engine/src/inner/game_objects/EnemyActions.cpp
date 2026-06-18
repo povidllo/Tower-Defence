@@ -34,7 +34,7 @@ namespace TDEngine {
         		if (!storage.initialActionsDone) {
         			for (std::string effectCreatorName : storage.getBaseEffectCreatorNames()) {
         				auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-							std::make_shared<EnemyActions>(*this));
+							storage.associatedTeam->teamPlayers, std::make_shared<EnemyActions>(*this));
         				engineStorage->addEffectCreator(newEffectCreator);
         			}
         			storage.initialActionsDone = true;
@@ -78,7 +78,7 @@ namespace TDEngine {
         		<<". New hp: " << team->currentHp << std::endl;
         		for (std::string effectCreatorName : storage.getDamageDealtEffectCreatorNames()) {
         			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-						std::make_shared<EnemyActions>(*this));
+						storage.associatedTeam->teamPlayers, std::make_shared<EnemyActions>(*this));
         			engineStorage->addEffectCreator(newEffectCreator);
         		}
         		if (team->currentHp <= 0) {

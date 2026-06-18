@@ -14,8 +14,10 @@ namespace TDEngine::Inner {
 
 	class EffectCreatorActions : public IActing, public MapObject {
 	public:
-		EffectCreatorActions(EffectCreatorSample sample, std::shared_ptr<MapObject> attachedObject);
-		EffectCreatorActions(std::string sampleName, std::shared_ptr<EngineStorage> engineStorage, std::shared_ptr<MapObject> attachedObject);
+		EffectCreatorActions(std::string sampleName, std::shared_ptr<EngineStorage> engineStorage,
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers,  std::shared_ptr<MapObject> attachedObject);
+		std::shared_ptr<MapObject> findClosestTargetEnemy(std::shared_ptr<EngineStorage> engine_storage,
+			std::shared_ptr<MapObject> attachedObject);
 		void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
 		void applyEffects(const std::vector<std::string>& effectNames,
 						  std::shared_ptr<EngineStorage> engineStorage);

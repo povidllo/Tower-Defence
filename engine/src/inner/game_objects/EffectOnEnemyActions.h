@@ -10,7 +10,8 @@ namespace TDEngine::Inner {
 
 	class EffectOnEnemyActions : public IActing, public MapObject{
 	public:
-		EffectOnEnemyActions(EnemyEffectSample sample, std::shared_ptr<EnemyActions> target);
+		EffectOnEnemyActions(EnemyEffectSample sample,
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::shared_ptr<EnemyActions> target);
 		void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
 		void end(std::shared_ptr<EngineStorage> engineStorage);
 		void applyEffects(const std::vector<std::string>& effectNames,

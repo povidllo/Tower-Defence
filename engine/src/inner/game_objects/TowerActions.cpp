@@ -33,7 +33,7 @@ namespace TDEngine {
             	if (!storage.initialActionsDone) {
             		for (std::string effectCreatorName : storage.getBaseEffectCreatorNames()) {
             			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-            				std::make_shared<TowerActions>(*this));
+            				storage.ownerPlayers, std::make_shared<TowerActions>(*this));
             			engineStorage->addEffectCreator(newEffectCreator);
             		}
             		storage.initialActionsDone = true;

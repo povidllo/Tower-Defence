@@ -275,63 +275,61 @@ namespace TDEngine::Inner {
         upgradeBounds.clear();
 
         // --- 2.1 Abilities ---
-        if (currentPlayer) {
-            const auto& abilities = currentPlayer->abilities;
-            for (size_t i = 0; i < abilities.size(); ++i) {
-                auto& ability = abilities[i];
-                float iconX = sideX + UI_PADDING + 10.0f;
-                float iconY = currentY;
-                float iconSize = ABILITY_ICON_SIZE;
+		if (currentPlayer) {
+		    const auto& abilities = currentPlayer->abilities;
+		    for (size_t i = 0; i < abilities.size(); ++i) {
+		        auto& ability = abilities[i];
+		        float iconX = sideX + UI_PADDING + 10.0f;
+		        float iconY = currentY;
+		        float iconSize = ABILITY_ICON_SIZE;
 
-                // Цвет фона: если есть заряды – синий, иначе серый
-                sf::Color fillColor = (ability->storage.currentCharges > 0) ? sf::Color(70, 130, 180) : sf::Color(80, 80, 80);
-                drawRoundedBox(iconX, iconY, iconSize, iconSize, fillColor, sf::Color(120, 120, 130), "");
+		        // Цвет фона: если есть заряды – синий, иначе серый
+		        sf::Color fillColor = (ability->storage.currentCharges > 0) ? sf::Color(70, 130, 180) : sf::Color(80, 80, 80);
 
-                // Если зарядов 0 – показываем время до следующего заряда (в секундах, округление вверх)
-                if (ability->storage.currentCharges == 0 && fontLoaded) {
-                    double chargeCooldown = ability->storage.getChargeCooldownSeconds();
-                    double fullCooldown = ability->storage.getFullCooldownSeconds();
-                    double timeAfterSingle = ability->storage.timeAfterSingleRecharge / 1000.0;
-                    double timeAfterFull = ability->storage.timeAfterLastFullCharge / 1000.0;
+		        // Рисуем простой прямоугольник вместо drawRoundedBox
+		        sf::RectangleShape rect(sf::Vector2f(iconSize, iconSize));
+		        rect.setPosition(iconX, iconY);
+		        rect.setFillColor(fillColor);
+		        rect.setOutlineColor(sf::Color(120, 120, 130));
+		        rect.setOutlineThickness(1.0f);
+		        window.draw(rect);
 
-                    double chargeRemain = chargeCooldown - timeAfterSingle;
-                    double fullRemain = fullCooldown - timeAfterFull;
-                    if (chargeRemain < 0) chargeRemain = 0;
-                    if (fullRemain < 0) fullRemain = 0;
-                    double minRemain = std::min(chargeRemain, fullRemain);
-                    int seconds = static_cast<int>(std::ceil(minRemain));
+		        // Если зарядов 0 – показываем время до следующего заряда (в секундах, округление вверх)
+		        if (ability->storage.currentCharges == 0 && fontLoaded) {
+		        	double cooldown = ability->getClosestCooldown() / 1000.0;
+		            int seconds = static_cast<int>(std::ceil(cooldown));
 
-                    textCache.setFont(font);
-                    textCache.setString(std::to_string(seconds));
-                    textCache.setCharacterSize(24);
-                    textCache.setFillColor(sf::Color::White);
-                    textCache.setStyle(sf::Text::Bold);
-                    sf::FloatRect textRect = textCache.getLocalBounds();
-                    textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-                    textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize / 2.0f);
-                    window.draw(textCache);
-                }
+		            textCache.setFont(font);
+		            textCache.setString(std::to_string(seconds));
+		            textCache.setCharacterSize(24);
+		            textCache.setFillColor(sf::Color::White);
+		            textCache.setStyle(sf::Text::Bold);
+		            sf::FloatRect textRect = textCache.getLocalBounds();
+		            textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+		            textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize / 2.0f);
+		            window.draw(textCache);
+		        }
 
-                // Имя способности под иконкой
-                if (fontLoaded) {
-                    textCache.setFont(font);
-                    textCache.setString(ability->storage.getName());
-                    textCache.setCharacterSize(12);
-                    textCache.setFillColor(sf::Color::White);
-                    textCache.setStyle(sf::Text::Regular);
-                    sf::FloatRect textRect = textCache.getLocalBounds();
-                    textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top);
-                    textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize + 2.0f);
-                    window.draw(textCache);
-                }
+		        // Имя способности под иконкой
+		        if (fontLoaded) {
+		            textCache.setFont(font);
+		            textCache.setString(ability->storage.getName());
+		            textCache.setCharacterSize(12);
+		            textCache.setFillColor(sf::Color::White);
+		            textCache.setStyle(sf::Text::Regular);
+		            sf::FloatRect textRect = textCache.getLocalBounds();
+		            textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top);
+		            textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize + 2.0f);
+		            window.draw(textCache);
+		        }
 
-                // Сохраняем область клика
-                abilityBounds.push_back(sf::FloatRect(iconX, iconY, iconSize, iconSize));
+		        // Сохраняем область клика
+		        abilityBounds.push_back(sf::FloatRect(iconX, iconY, iconSize, iconSize));
 
-                // Сдвигаем вниз
-                currentY += iconSize + ABILITY_TEXT_HEIGHT + ABILITY_SPACING;
-            }
-        }
+		        // Сдвигаем вниз
+		        currentY += iconSize + ABILITY_TEXT_HEIGHT + ABILITY_SPACING;
+		    }
+		}
 
         // --- 2.2 Upgrades (если есть) ---
         if (!upgradeOptions.empty()) {

@@ -29,13 +29,13 @@ namespace TDEngine {
             target->storage.currentHP -= damage;
         	target->storage.lastHitPlayers = std::move(ownerPlayers);
         	for (std::string effectCreatorName : effectCreatorsOnHitNames) {
-        		auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage, target);
+        		auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage, ownerPlayers, target);
         		engineStorage->addEffectCreator(newEffectCreator);
         	}
 
         	for (std::string effectCreatorName : target->storage.getDamageTakenEffectCreatorNames()) {
         		auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-					std::make_shared<EnemyActions>(*target));
+					ownerPlayers, std::make_shared<EnemyActions>(*target));
         		engineStorage->addEffectCreator(newEffectCreator);
         	}
         	isActive = false;
