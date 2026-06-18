@@ -13,7 +13,7 @@ namespace TDEngine::Inner {
 		constexpr sf::Uint8 PACKET_SNAPSHOT = 4;
 		constexpr sf::Uint8 PACKET_UPGRADE = 5;
 		constexpr sf::Uint8 PACKET_BEHAVIOUR = 6;
-		constexpr sf::Uint8 PACKET_ABILITY = 6;
+		constexpr sf::Uint8 PACKET_ABILITY = 7;
 		constexpr int SNAPSHOT_INTERVAL_MS = 30;
 		constexpr float CLIENT_INTERP_SPEED = 14.f;
 
@@ -314,32 +314,18 @@ namespace TDEngine::Inner {
 	            float localX = worldPos.x - mapOffset.x;
 	            float localY = worldPos.y - mapOffset.y;
 
-	            std::shared_ptr<MapObject> target = nullptr;
+	        	double cellX = localX / RendererGame::TILE_SIZE;
+	        	double cellY = localY / RendererGame::TILE_SIZE;
+	            std::cout << "[INFO] Selected target for ability: " << cellX << " " << cellY << std::endl;
 
-	            // Ищем объект под кликом
-	            if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
-	                for (const auto &obj : gameStatus->mapObjects) {
-	                    float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
-	                    float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
-	                    sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
-	                    if (objBounds.contains(localX, localY)) {
-	                        target = obj;
-	                        break;
-	                    }
-	                }
-	            }
-
-	            // Если объект не найден – создаём точку в клеточных координатах
-	            if (!target) {
-	                double cellX = localX / RendererGame::TILE_SIZE;
-	                double cellY = localY / RendererGame::TILE_SIZE;
-	                target = std::make_shared<MapObject>("", cellX, cellY, MapObjectTypes::Point);
-	            }
-
-	            auto player = getLocalPlayer();
-	            if (player && selectedAbilityIndex >= 0 && selectedAbilityIndex < static_cast<int>(player->abilities.size())) {
-	                playerAction = std::make_shared<AbilityUseAction>(player, selectedAbilityIndex, target);
-	            }
+	        	auto player = getLocalPlayer();
+	        	if (networkRole == NetworkRole::CLIENT) {
+	        		sendAbilityUseRequest(cellX, cellY,
+									   selectedAbilityIndex, localPlayerIndex);
+	        	} else {
+	        		useAbilityAt(cellX, cellY,
+								   selectedAbilityIndex, localPlayerIndex);
+	        	}
 
 	            isSelectingTarget = false;
 	            selectedAbilityIndex = -1;
@@ -367,9 +353,13 @@ namespace TDEngine::Inner {
 	                    }
 	                    std::string targetSelection = ability->storage.getTargetSelection();
 	                    if (targetSelection == "none") {
-	                        // Используем сразу без цели
-	                        auto target = std::make_shared<MapObject>("", 0.0, 0.0, MapObjectTypes::Point);
-	                        playerAction = std::make_shared<AbilityUseAction>(player, static_cast<int>(i), target);
+	                    	if (networkRole == NetworkRole::CLIENT) {
+	                    		sendAbilityUseRequest(0.0, 0.0,
+												   static_cast<int>(i), localPlayerIndex);
+	                    	} else {
+	                    		useAbilityAt(0.0, 0.0,
+											   static_cast<int>(i), localPlayerIndex);
+	                    	}
 	                    } else {
 	                        // Входим в режим выбора цели
 	                        isSelectingTarget = true;
@@ -764,6 +754,14 @@ void MainManager::sendSnapshotToClients() {
 			std::cout << "[INFO] Server processing behaviour change for: " << client.playerIndex;
 			changeBehaviourAt(x, y, behaviorName, client.playerIndex);
 		}
+		else if (type == PACKET_ABILITY) {
+			double x = 0.0;
+			double y = 0.0;
+			int abilityIndex;
+			packet >> x >> y >> abilityIndex;
+			std::cout << "[INFO] Server processing ability use for: " << client.playerIndex;
+			useAbilityAt(x, y, abilityIndex, client.playerIndex);
+		}
 	}
 
 void MainManager::processServerPacket(sf::Packet &packet) {
@@ -950,6 +948,21 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		else if (behaviourTypeName == "Highest HP") newBehaviour = TowerBehaviourTypes::HighestHP;
 		else return;
 		playerAction = std::make_shared<TowerBehaviourChangeAction>(tower, newBehaviour);
+	}
+
+	void MainManager::sendAbilityUseRequest(double x, double y, const int abilityIndex, int playerIndex) {
+		if (!serverSocket) {
+			return;
+		}
+		sf::Packet packet;
+		packet << PACKET_ABILITY << x << y << abilityIndex << playerIndex;
+		serverSocket->send(packet);
+	}
+	void MainManager::useAbilityAt(double x, double y, const int abilityIndex, int playerIndex) {
+		std::shared_ptr<MapObject> target = std::make_shared<MapObject>("", x, y, MapObjectTypes::Point);
+
+		auto player = engine.getAllPlayers()[playerIndex];
+		playerAction = std::make_shared<AbilityUseAction>(player, abilityIndex, target);
 	}
 
 	std::shared_ptr<TowerActions> MainManager::findTowerAt(double x, double y) {

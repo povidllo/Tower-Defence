@@ -61,6 +61,8 @@ namespace TDEngine::Inner {
 		void applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex);
 		void sendChangeBehaviourRequest(double x, double y, const std::string &behaviourTypeName, int playerIndex);
 		void changeBehaviourAt(double x, double y, const std::string &behaviourTypeName, int playerIndex);
+		void sendAbilityUseRequest(double x, double y, const int abilityIndex, int playerIndex);
+		void useAbilityAt(double x, double y, const int abilityIndex, int playerIndex);
 		std::shared_ptr<TowerActions> findTowerAt(double x, double y);
 		std::vector<std::string> getUpgradeNamesForTower(const std::shared_ptr<MapObject> &tower) const;
 		bool canPlayerUseTower(std::shared_ptr<EnginePlayer> player, const std::shared_ptr<TowerActions> &tower);
