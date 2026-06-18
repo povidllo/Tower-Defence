@@ -1,9 +1,12 @@
 #include "AbilityEditor.h"
 
 #include <algorithm>
+#include <QDir>
+#include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
 
+#include "TextureUtils.h"
 #include "ui_AbilityEditor.h"
 
 AbilityEditor::AbilityEditor(const std::shared_ptr<AbilityController> &abilityController, QWidget *parent)
@@ -17,6 +20,7 @@ AbilityEditor::AbilityEditor(const std::shared_ptr<AbilityController> &abilityCo
 	connect(ui->saveButton, &QPushButton::clicked, this, &AbilityEditor::onSaveAbilityClicked);
 	connect(ui->addEffectCreatorButton, &QPushButton::clicked, this, &AbilityEditor::onAddEffectCreatorClicked);
 	connect(ui->removeEffectCreatorButton, &QPushButton::clicked, this, &AbilityEditor::onRemoveEffectCreatorClicked);
+	connect(ui->browseIconButton, &QPushButton::clicked, this, &AbilityEditor::onBrowseIconClicked);
 
 	updateAbilityList();
 	setRightPanelVisible(false);
@@ -160,6 +164,7 @@ void AbilityEditor::loadAbilityToForm(const std::shared_ptr<AbilitySample> &abil
 
 	ui->editorTitle->setText("Editing: " + QString::fromStdString(ability->getName()));
 	ui->nameEdit->setText(QString::fromStdString(ability->getName()));
+	ui->iconPathEdit->setText(QString::fromStdString(ability->getIconPath()));
 	const int targetIndex = ui->targetSelectionCombo->findData(QString::fromStdString(ability->getTargetSelection()));
 	ui->targetSelectionCombo->setCurrentIndex(targetIndex >= 0 ? targetIndex : 0);
 	ui->chargesSpin->setValue(ability->getChargesCount());
@@ -170,10 +175,20 @@ void AbilityEditor::loadAbilityToForm(const std::shared_ptr<AbilitySample> &abil
 
 void AbilityEditor::saveFormToAbility(const std::shared_ptr<AbilitySample> &ability) const {
 	ability->setName(ui->nameEdit->text().toStdString());
+	ability->setIconPath(ui->iconPathEdit->text().toStdString());
 	ability->setTargetSelection(ui->targetSelectionCombo->currentData().toString().toStdString());
 	ability->setChargesCount(ui->chargesSpin->value());
 	ability->setChargeCooldownSeconds(ui->chargeCooldownSpin->value());
 	ability->setFullCooldownSeconds(ui->fullCooldownSpin->value());
+}
+
+void AbilityEditor::onBrowseIconClicked() {
+	QString filePath = QFileDialog::getOpenFileName(this, "Choose Ability Icon", QDir::currentPath());
+	if (filePath.isEmpty()) {
+		return;
+	}
+	filePath = TextureUtils::returnRelativeOrAbsolutePath(filePath);
+	ui->iconPathEdit->setText(filePath);
 }
 
 void AbilityEditor::setRightPanelVisible(const bool visible) const {

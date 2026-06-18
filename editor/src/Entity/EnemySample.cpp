@@ -65,7 +65,8 @@ EnemySample::json EnemySample::toJson() const {
 		{"enemyTexturePath", enemyTexturePath},
 		{"baseEffectCreators", stringVectorToJson(baseEffectCreators)},
 		{"damageTakenEffectCreators", stringVectorToJson(damageTakenEffectCreators)},
-		{"damageDealtEffectCreators", stringVectorToJson(damageDealtEffectCreators)}
+		{"damageDealtEffectCreators", stringVectorToJson(damageDealtEffectCreators)},
+		{"onDeathEffectCreators", stringVectorToJson(onDeathEffectCreators)}
 	};
 }
 
@@ -81,6 +82,7 @@ void EnemySample::fromJson(const json &j) {
 	loadStringVector(j, "baseEffectCreators", baseEffectCreators);
 	loadStringVector(j, "damageTakenEffectCreators", damageTakenEffectCreators);
 	loadStringVector(j, "damageDealtEffectCreators", damageDealtEffectCreators);
+	loadStringVector(j, "onDeathEffectCreators", onDeathEffectCreators);
 }
 
 std::string EnemySample::getName() const {
@@ -175,14 +177,28 @@ bool EnemySample::removeDamageDealtEffectCreator(const std::string &name) {
 	return removeValue(damageDealtEffectCreators, name);
 }
 
+std::vector<std::string> EnemySample::getOnDeathEffectCreatorNames() const {
+	return onDeathEffectCreators;
+}
+
+void EnemySample::addOnDeathEffectCreator(const std::string &name) {
+	addUnique(onDeathEffectCreators, name);
+}
+
+bool EnemySample::removeOnDeathEffectCreator(const std::string &name) {
+	return removeValue(onDeathEffectCreators, name);
+}
+
 void EnemySample::renameEffectCreatorReference(const std::string &oldName, const std::string &newName) {
 	renameValue(baseEffectCreators, oldName, newName);
 	renameValue(damageTakenEffectCreators, oldName, newName);
 	renameValue(damageDealtEffectCreators, oldName, newName);
+	renameValue(onDeathEffectCreators, oldName, newName);
 }
 
 void EnemySample::removeEffectCreatorReference(const std::string &name) {
 	removeValue(baseEffectCreators, name);
 	removeValue(damageTakenEffectCreators, name);
 	removeValue(damageDealtEffectCreators, name);
+	removeValue(onDeathEffectCreators, name);
 }

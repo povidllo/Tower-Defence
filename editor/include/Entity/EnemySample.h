@@ -64,6 +64,12 @@ public:
 
 	bool removeDamageDealtEffectCreator(const std::string &name);
 
+	std::vector<std::string> getOnDeathEffectCreatorNames() const;
+
+	void addOnDeathEffectCreator(const std::string &name);
+
+	bool removeOnDeathEffectCreator(const std::string &name);
+
 	void renameEffectCreatorReference(const std::string &oldName, const std::string &newName);
 
 	void removeEffectCreatorReference(const std::string &name);
@@ -79,6 +85,7 @@ private:
 	std::vector<std::string> baseEffectCreators;
 	std::vector<std::string> damageTakenEffectCreators;
 	std::vector<std::string> damageDealtEffectCreators;
+	std::vector<std::string> onDeathEffectCreators;
 };
 
 #endif //TOWERDEFENCE_ENEMYSAMPLE_H

@@ -9,6 +9,8 @@ TowerEffectSample::TowerEffectSample(const json &j) : EffectSample("", Kind::Tow
 
 TowerEffectSample::json TowerEffectSample::toJson() const {
 	json j = writeCommonFields();
+	j["startHealthImpact"] = startHealthImpact;
+	j["periodicHealthImpact"] = periodicHealthImpact;
 	j["startDamageFlatImpact"] = startDamageFlatImpact;
 	j["startDamagePercentImpact"] = startDamagePercentImpact;
 	j["startAttackSpeedPercentImpact"] = startAttackSpeedPercentImpact;
@@ -20,12 +22,30 @@ TowerEffectSample::json TowerEffectSample::toJson() const {
 
 void TowerEffectSample::fromJson(const json &j) {
 	readCommonFields(j);
+	startHealthImpact = j.value("startHealthImpact", startHealthImpact);
+	periodicHealthImpact = j.value("periodicHealthImpact", periodicHealthImpact);
 	startDamageFlatImpact = j.value("startDamageFlatImpact", startDamageFlatImpact);
 	startDamagePercentImpact = j.value("startDamagePercentImpact", startDamagePercentImpact);
 	startAttackSpeedPercentImpact = j.value("startAttackSpeedPercentImpact", startAttackSpeedPercentImpact);
 	periodicDamageFlatImpact = j.value("periodicDamageFlatImpact", periodicDamageFlatImpact);
 	periodicDamagePercentImpact = j.value("periodicDamagePercentImpact", periodicDamagePercentImpact);
 	periodicAttackSpeedPercentImpact = j.value("periodicAttackSpeedPercentImpact", periodicAttackSpeedPercentImpact);
+}
+
+int TowerEffectSample::getStartHealthImpact() const {
+	return startHealthImpact;
+}
+
+void TowerEffectSample::setStartHealthImpact(const int value) {
+	startHealthImpact = value;
+}
+
+int TowerEffectSample::getPeriodicHealthImpact() const {
+	return periodicHealthImpact;
+}
+
+void TowerEffectSample::setPeriodicHealthImpact(const int value) {
+	periodicHealthImpact = value;
 }
 
 int TowerEffectSample::getStartDamageFlatImpact() const {

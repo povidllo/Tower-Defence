@@ -50,9 +50,14 @@ public:
 
 	void setFullCooldownSeconds(double value);
 
+	[[nodiscard]] const std::string &getIconPath() const;
+
+	void setIconPath(std::string path);
+
 private:
 	std::string name;
 	std::vector<std::string> effectCreatorsOnCast;
+	std::string iconPath;
 	std::string targetSelection{"none"};
 	int chargesCount{1};
 	double chargeCooldownSeconds{0};

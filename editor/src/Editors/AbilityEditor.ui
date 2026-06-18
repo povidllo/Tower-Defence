@@ -29,14 +29,21 @@
         <layout class="QFormLayout" name="propertiesForm">
          <item row="0" column="0"><widget class="QLabel" name="nameLabel"><property name="text"><string>Name:</string></property></widget></item>
          <item row="0" column="1"><widget class="QLineEdit" name="nameEdit"/></item>
-         <item row="1" column="0"><widget class="QLabel" name="targetSelectionLabel"><property name="text"><string>Target selection:</string></property></widget></item>
-         <item row="1" column="1"><widget class="QComboBox" name="targetSelectionCombo"/></item>
-         <item row="2" column="0"><widget class="QLabel" name="chargesLabel"><property name="text"><string>Charges:</string></property></widget></item>
-         <item row="2" column="1"><widget class="QSpinBox" name="chargesSpin"/></item>
-         <item row="3" column="0"><widget class="QLabel" name="chargeCooldownLabel"><property name="text"><string>Charge cooldown seconds:</string></property></widget></item>
-         <item row="3" column="1"><widget class="QDoubleSpinBox" name="chargeCooldownSpin"/></item>
-         <item row="4" column="0"><widget class="QLabel" name="fullCooldownLabel"><property name="text"><string>Full cooldown seconds:</string></property></widget></item>
-         <item row="4" column="1"><widget class="QDoubleSpinBox" name="fullCooldownSpin"/></item>
+          <item row="1" column="0"><widget class="QLabel" name="iconPathLabel"><property name="text"><string>Icon path:</string></property></widget></item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="iconPathLayout">
+            <item><widget class="QLineEdit" name="iconPathEdit"/></item>
+            <item><widget class="QPushButton" name="browseIconButton"><property name="text"><string>Browse...</string></property></widget></item>
+           </layout>
+          </item>
+          <item row="2" column="0"><widget class="QLabel" name="targetSelectionLabel"><property name="text"><string>Target selection:</string></property></widget></item>
+          <item row="2" column="1"><widget class="QComboBox" name="targetSelectionCombo"/></item>
+          <item row="3" column="0"><widget class="QLabel" name="chargesLabel"><property name="text"><string>Charges:</string></property></widget></item>
+          <item row="3" column="1"><widget class="QSpinBox" name="chargesSpin"/></item>
+          <item row="4" column="0"><widget class="QLabel" name="chargeCooldownLabel"><property name="text"><string>Charge cooldown seconds:</string></property></widget></item>
+          <item row="4" column="1"><widget class="QDoubleSpinBox" name="chargeCooldownSpin"/></item>
+          <item row="5" column="0"><widget class="QLabel" name="fullCooldownLabel"><property name="text"><string>Full cooldown seconds:</string></property></widget></item>
+          <item row="5" column="1"><widget class="QDoubleSpinBox" name="fullCooldownSpin"/></item>
         </layout>
        </item>
        <item>

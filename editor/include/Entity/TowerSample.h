@@ -82,14 +82,16 @@ public:
 
 	void setFireDistance(const double fireDistance);
 
-	/** Non-empty: map spot stores only this template name in JSON; stats come from project tower. */
 	[[nodiscard]] const std::string &getTowerTemplateName() const { return towerTemplateName; }
 
 	void setTowerTemplateName(std::string templateName) { towerTemplateName = std::move(templateName); }
 
 	[[nodiscard]] bool isMapSpotReference() const { return !towerTemplateName.empty(); }
 
-	/** Copies combat/visual fields from template; keeps instance name, position, towerTemplateName. */
+	[[nodiscard]] double getStartHP() const;
+
+	void setStartHP(double hp);
+
 	void applyTemplate(const TowerSample &src);
 
 	const std::vector<std::string> &getBelongs() const;
@@ -106,6 +108,7 @@ public:
 
 private:
 	std::string name;
+	double startHP{0};
 	double damage{0};
 	double fireRate{0};
 	double cost{0};

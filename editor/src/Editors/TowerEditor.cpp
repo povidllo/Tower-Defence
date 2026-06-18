@@ -156,7 +156,7 @@ void TowerEditor::onDeleteButtonClicked() {
 }
 
 void TowerEditor::onChooseTextureButtonClicked() {
-	QString filePath = QFileDialog::getOpenFileName(this, "Choose Texture", QDir::currentPath(), ".png");
+	QString filePath = QFileDialog::getOpenFileName(this, "Choose Texture", QDir::currentPath());
 
 	if (filePath.isEmpty()) {
 		return;

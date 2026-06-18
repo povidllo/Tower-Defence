@@ -68,6 +68,7 @@ TowerSample::json TowerSample::toJson() const {
 		return j;
 	}
 	json j = {{"name", name},
+			{"startHP", startHP},
 			{"damage", damage},
 			{"fireRate", fireRate},
 			{"cost", cost},
@@ -100,6 +101,7 @@ void TowerSample::fromJson(const json &j) {
 
 	towerTemplateName.clear();
 	name = j.value("name", name);
+	startHP = j.value("startHP", startHP);
 	damage = j.value("damage", damage);
 	fireRate = j.value("fireRate", fireRate);
 	towerTexturePath = j.value("towerTexturePath", towerTexturePath);
@@ -144,6 +146,10 @@ bool TowerSample::belongsTo(const std::string &ownerId) const {
 std::string TowerSample::getName() { return name; }
 
 void TowerSample::setName(const std::string &n) { name = n; }
+
+double TowerSample::getStartHP() const { return startHP; }
+
+void TowerSample::setStartHP(const double hp) { startHP = hp; }
 
 double TowerSample::getDamage() const { return damage; }
 
@@ -219,6 +225,7 @@ double TowerSample::getFireDistance() const { return fireDistance; }
 void TowerSample::setFireDistance(const double fireDistance) { this->fireDistance = fireDistance; }
 
 void TowerSample::applyTemplate(const TowerSample &src) {
+	startHP = src.getStartHP();
 	damage = src.getDamage();
 	fireRate = src.getFireRate();
 	cost = src.getCost();
