@@ -10,6 +10,7 @@
 #include "../inner/core/Engine.h"
 #include "../inner/game_objects/MapObject.h"
 #include "../inner/player_actions/TowerUpgradeAction.h"
+#include "../inner/player_actions/AbilityUseAction.h"
 #include "Project.h"
 #include "RendererGame.h"
 
@@ -74,8 +75,14 @@ namespace TDEngine::Inner {
 
 		std::shared_ptr<GameStatus> gameStatus;
 		sf::Sprite backgroundSprite;
-		std::shared_ptr<TowerUpgradeAction> playerAction;
+		std::shared_ptr<IPlayerAction> playerAction;
 		std::shared_ptr<MapObject> selectedTower;
+
+		bool isSelectingTarget = false;
+		int selectedAbilityIndex = -1;
+		std::vector<sf::FloatRect> abilityButtonsBounds;
+		std::vector<sf::FloatRect> upgradeButtonsBounds;
+		// currentUpgradeOptions теперь только данные (bounds будут перезаписаны в renderUI)
 		std::vector<UpgradeOption> currentUpgradeOptions;
 
 		bool wasVictory = false;

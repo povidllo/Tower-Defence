@@ -1,6 +1,5 @@
 #pragma once
 #include "../../../../editor/include/Entity/EnemySample.h"
-#include "EffectOnEnemyActions.h"
 #include "IActing.h"
 #include "MapObject.h"
 #include "entities/Enemy.h"

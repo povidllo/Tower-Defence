@@ -1,17 +1,27 @@
 #include "EffectOnEnemyActions.h"
-#include "EnemyActions.h"
+
+#include <set>
+#include <utility>
+
 #include "../core/EngineStorage.h"
+#include "EnemyActions.h"
 
 namespace TDEngine::Inner {
 
-	EffectOnEnemyActions::EffectOnEnemyActions(EffectOnEnemySample sample, std::shared_ptr<EnemyActions> target)
-		: storage(std::move(sample)) {
-		storage.target = std::move(target);
+	EffectOnEnemyActions::EffectOnEnemyActions(EnemyEffectSample sample,
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::shared_ptr<EnemyActions> target)
+		: storage(std::move(sample)), MapObject(sample.getVisualTexturePath(),
+		target->positionCoordinates.first, target->positionCoordinates.second, MapObjectTypes::Effect) {
+		storage.ownerPlayers = std::move(ownerPlayers);
+		storage.target = target;
 		storage.isFinished = false;
 		storage.elapsedTime = 0.0;
 		storage.timeSinceLastPeriod = 0.0;
 		storage.periodsDone = 0;
 		storage.initialApplied = false;
+
+		std::cout << "[INFO] Created enemy effect: " << sample.getName() << " on target with xy: "
+		<< target->positionCoordinates.first << " " << target->positionCoordinates.second << std::endl;
 	}
 
 	void EffectOnEnemyActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
@@ -20,40 +30,71 @@ namespace TDEngine::Inner {
 			return;
 		}
 
+		positionCoordinates.first = storage.target->positionCoordinates.first;
+		positionCoordinates.second = storage.target->positionCoordinates.second;
+
 		double dt = timePassedMillis / 1000.0;
 		storage.elapsedTime += dt;
 
 		// Apply initial effect once
 		if (!storage.initialApplied) {
-			storage.target->storage.currentHP += storage.initialHealth;
-			storage.target->storage.curSpeed -= storage.target->storage.getSpeed() * (storage.initialSpeedPercent / 100.0);
+			if (storage.getStartHealthImpact() < 0) {
+				storage.target->storage.lastHitPlayers = std::move(storage.ownerPlayers);
+			}
+			storage.target->storage.currentHP += storage.getStartHealthImpact();
+			storage.target->storage.curSpeed += storage.target->storage.getSpeed() * (storage.getStartSpeedImpactPercent() / 100.0);
 			storage.initialApplied = true;
 		}
 
 		// Periodic effect
-		if (storage.period > 0.0) {
+		if (storage.getPeriodSeconds() > 0.0) {
 			storage.timeSinceLastPeriod += dt;
-			while (storage.timeSinceLastPeriod >= storage.period) {
-				storage.target->storage.currentHP += storage.periodicHealth;
-				storage.target->storage.curSpeed -= storage.target->storage.getSpeed() * (storage.periodicSpeedPercent / 100.0);
-				storage.timeSinceLastPeriod -= storage.period;
+			while (storage.timeSinceLastPeriod >= storage.getPeriodSeconds()) {
+				if (storage.getPeriodicHealthImpact() < 0) {
+					storage.target->storage.lastHitPlayers = std::move(storage.ownerPlayers);
+				}
+				storage.target->storage.currentHP += storage.getPeriodicHealthImpact();
+				storage.target->storage.curSpeed += storage.target->storage.getSpeed() * (storage.getStartSpeedImpactPercent() / 100.0);
+				storage.timeSinceLastPeriod -= storage.getPeriodSeconds();
 				storage.periodsDone++;
 			}
 		}
 
 		// Check duration
-		if (storage.elapsedTime >= storage.duration) {
-			end();
+		if (storage.elapsedTime >= storage.getDurationSeconds()) {
+			end(engineStorage);
 		}
 	}
 
-	void EffectOnEnemyActions::end() {
-		storage.target->storage.curSpeed += storage.target->storage.getSpeed() * (storage.initialSpeedPercent / 100.0);
-		storage.target->storage.curSpeed += storage.periodsDone * storage.target->storage.getSpeed() * (storage.periodicSpeedPercent / 100.0);
-		// Apply on-end effects (create new effect actions)
-		// for (const auto& effectName : storage.onEndEffects) {
-		// }
+	void EffectOnEnemyActions::end(std::shared_ptr<EngineStorage> engineStorage) {
+		storage.target->storage.curSpeed -= storage.target->storage.getSpeed() * (storage.getStartSpeedImpactPercent() / 100.0);
+		storage.target->storage.curSpeed -= storage.periodsDone * storage.target->storage.getSpeed() * (storage.getPeriodicSpeedImpactPercent() / 100.0);
+		applyEffects(storage.getEffectsAfterFinish(), engineStorage);
 		storage.isFinished = true;
+	}
+	void EffectOnEnemyActions::applyEffects(const std::vector<std::string>& effectNames,
+							  std::shared_ptr<EngineStorage> engineStorage) {
+		std::set<std::string> effectsNamesSet;
+		for (auto name : effectNames) {
+			effectsNamesSet.insert(name);
+		}
+
+		std::vector<std::shared_ptr<EnemyEffectSample>> enemyEffects;
+
+		for (const auto& effectSample : engineStorage->curProject->getEffects()) {
+			if (effectsNamesSet.count(effectSample->getName()) > 0) {
+				if (effectSample->getKind() == EffectSample::Kind::Enemy) {
+					enemyEffects.push_back(std::static_pointer_cast<EnemyEffectSample> (effectSample));
+				}
+			}
+		}
+
+		if (!enemyEffects.empty()) {
+			for (auto effectSample : enemyEffects) {
+				auto newEffect = std::make_shared<EffectOnEnemyActions>(*effectSample, storage.ownerPlayers, storage.target);
+				engineStorage->addEffectOnEnemy(newEffect);
+			}
+		}
 	}
 
 } // namespace TDEngine::Inner

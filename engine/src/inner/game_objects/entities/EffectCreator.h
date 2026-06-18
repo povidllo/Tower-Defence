@@ -1,7 +1,9 @@
 #pragma once
 #include <memory>
-#include "../samples/EffectCreatorSample.h"
+
+#include "../../editor/include/Entity/EffectCreatorSample.h"
 #include "../MapObject.h"
+#include "EnginePlayer.h"
 namespace TDEngine {
 	namespace Inner {
 		class EffectCreator : public EffectCreatorSample{
@@ -11,8 +13,10 @@ namespace TDEngine {
 
 			std::shared_ptr<MapObject> attachedObject;
 			bool isFinished = false;
+			bool initialApplied = false;
 			double elapsedTime = 0.0;
 			double timeSinceLastPeriod = 0.0;
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
 		};
 	} // Inner
 } // TDEngine

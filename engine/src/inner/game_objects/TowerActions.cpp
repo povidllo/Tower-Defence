@@ -13,9 +13,11 @@ namespace TDEngine {
 			storage.setUpgradingTo = std::nullopt;//storage.getUpgradeNames()[0];//
 			storage.timeAfterLastShot = UINT64_MAX;
 			storage.ownerPlayers = std::move(ownerPlayers);
-
-			// storage.effectCreatorsOnHit.push_back(createTestEffectCreatorSample());
+			storage.curFireRate = storage.getFireRate();
+			storage.curDamage = storage.getDamage();
+			storage.initialActionsDone = false;
 		}
+
 		TowerActions::TowerActions(std::string texturePath, std::pair<double, double> startPosition,
 				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::vector<std::string> upgrades)
 			: MapObject(std::move(texturePath), startPosition.first, startPosition.second, MapObjectTypes::Tower),
@@ -28,6 +30,14 @@ namespace TDEngine {
                 upgradeTower(engineStorage);
             }
             else {
+            	if (!storage.initialActionsDone) {
+            		for (std::string effectCreatorName : storage.getBaseEffectCreatorNames()) {
+            			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
+            				storage.ownerPlayers, std::make_shared<TowerActions>(*this));
+            			engineStorage->addEffectCreator(newEffectCreator);
+            		}
+            		storage.initialActionsDone = true;
+            	}
             	if (storage.getFireRate() > 0) {
             		uint64_t timeBetweenShots = ceil(1000.0 / storage.getFireRate());
             		if (storage.timeAfterLastShot < timeBetweenShots) {
@@ -45,7 +55,7 @@ namespace TDEngine {
 
         void TowerActions::attack(std::shared_ptr<EnemyActions> enemy, std::shared_ptr<EngineStorage> engineStorage) {
             Projectile newProjectile = Projectile(storage.getProjectileSpeed(), storage.getDamage(), enemy,
-            	positionCoordinates, storage.getProjectileTexturePath(), storage.effectCreatorsOnHit,
+            	positionCoordinates, storage.getProjectileTexturePath(), storage.getAttackEffectCreatorNames(),
             	storage.ownerPlayers);
             engineStorage->addProjectile(std::make_shared<Projectile>(newProjectile));
             storage.timeAfterLastShot = 0;
@@ -65,7 +75,9 @@ namespace TDEngine {
         void TowerActions::setSample(std::shared_ptr<TowerSample> sample) {
             storage = Tower(*sample);
         	texturePath = sample->getTowerTexturePath();
-        	// storage.effectCreatorsOnHit.push_back(createTestEffectCreatorSample());
+			storage.curFireRate = storage.getFireRate();
+			storage.curDamage = storage.getDamage();
+			storage.initialActionsDone = false;
         }
 
         void TowerActions::upgradeTower(std::shared_ptr<EngineStorage> engineStorage) {
@@ -85,6 +97,11 @@ namespace TDEngine {
             					storage.ownerPlayers.clear();
             					storage.ownerPlayers.push_back(playerT);
             					storage.timeAfterLastShot = 0;
+            					for (auto effect : engineStorage->activeTowerEffects) {
+            						if (effect->storage.target.get() == this) {
+            							effect->storage.isFinished = true;
+            						}
+            					}
             					return;
             				}
             			}
@@ -93,27 +110,6 @@ namespace TDEngine {
 			}
     		storage.setUpgradingTo.reset();
     		storage.setUpgradingByPlayer = nullptr;
-        }
-
-    	EffectCreatorSample TowerActions::createTestEffectCreatorSample() {
-
-        	EffectOnEnemySample effectSample;
-        	effectSample.duration = 3;
-        	effectSample.period = 0.5;
-        	effectSample.canStack = true;
-        	effectSample.periodicHealth = -10;
-        	effectSample.initialHealth = 0;
-        	effectSample.initialSpeedPercent = 20;
-        	effectSample.periodicSpeedPercent = 0;
-
-        	EffectCreatorSample effectCreator;
-        	effectCreator.initialEnemyEffects.push_back(effectSample);
-        	effectCreator.radius = 0;
-        	effectCreator.duration = 0;
-        	effectCreator.period = 0;
-        	effectCreator.attachment = EffectAttachment::MapObject;
-        	effectCreator.targetType = EffectTargetType::Enemies;
-        	return  effectCreator;
         }
 
     	bool TowerActions::checkOwnership(std::shared_ptr<EnginePlayer> player) {

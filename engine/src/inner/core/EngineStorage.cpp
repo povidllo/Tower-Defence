@@ -13,12 +13,13 @@ namespace TDEngine {
             std::vector<std::shared_ptr<IActing>> actings;
 
             actings.insert(actings.end(), activeProjectiles.begin(), activeProjectiles.end());
-            // actings.insert(actings.end(), activeAbilities.begin(), activeAbilities.end());
+            actings.insert(actings.end(), activeAbilities.begin(), activeAbilities.end());
             actings.insert(actings.end(), activeTowers.begin(), activeTowers.end());
             actings.insert(actings.end(), activeEnemies.begin(), activeEnemies.end());
             actings.insert(actings.end(), activeWaves.begin(), activeWaves.end());
             actings.insert(actings.end(), activeEffectCreators.begin(), activeEffectCreators.end());
             actings.insert(actings.end(), activeEnemyEffects.begin(), activeEnemyEffects.end());
+            actings.insert(actings.end(), activeTowerEffects.begin(), activeTowerEffects.end());
 
             return actings;
         }
@@ -77,11 +78,29 @@ namespace TDEngine {
         		std::shared_ptr<EngineTeam> engineTeam = std::make_shared<EngineTeam>(EngineTeam(*team));
         		engineTeam->currentHp = engineTeam->getHp();
         		for (const auto& player : team->getPlayers()) {
-        			EnginePlayer enginePlayer(player);
-        			enginePlayer.currentCurrency = enginePlayer.getStartCurrency();
-        			enginePlayer.status = EnginePlayer::PLAYING;
-        			enginePlayer.team = engineTeam;
-        			engineTeam->teamPlayers.push_back(std::make_shared<EnginePlayer>(enginePlayer));
+        			std::shared_ptr<EnginePlayer> enginePlayer = std::make_shared<EnginePlayer>(player);
+        			enginePlayer->currentCurrency = enginePlayer->getStartCurrency();
+        			enginePlayer->status = EnginePlayer::PLAYING;
+        			enginePlayer->team = engineTeam;
+        			for (std::string abilityName : player.getAbilityNames()) {
+        				std::shared_ptr<AbilityActions> ability = nullptr;
+        				for (auto abilitySample : curProject->getAbilities()) {
+        					if (abilitySample->getName() == abilityName) {
+        						ability = std::make_shared<AbilityActions>(*abilitySample, enginePlayer);
+        					}
+        				}
+        				if (ability == nullptr) {
+        					std::cout << "[ERR] Could not find ability " << abilityName << " for player " << player.getPlayerName() << std::endl;
+        				}
+        				else {
+        					enginePlayer->abilities.push_back(ability);
+        					addAbility(ability);
+        				}
+        			}
+        			std::cout << "[INFO] Added player " << enginePlayer->getPlayerName()
+        				<< "with abilities amount: " << enginePlayer->abilities.size()
+        				<< " for team " << engineTeam->getTeamName() << std::endl;
+        			engineTeam->teamPlayers.push_back(enginePlayer);
         		}
         		curGameStatus->teams.push_back(engineTeam);
         	}
@@ -117,6 +136,12 @@ namespace TDEngine {
         		auto effectPtr = activeEnemyEffects[i];
         		if (effectPtr->storage.isFinished) {
         			removeEffectOnEnemy(effectPtr);
+        		}
+        	}
+        	for (int i = 0; i < activeTowerEffects.size(); i++) {
+        		auto effectPtr = activeTowerEffects[i];
+        		if (effectPtr->storage.isFinished) {
+        			removeEffectOnTower(effectPtr);
         		}
         	}
         	for (int i = 0; i < activeEffectCreators.size(); i++) {
@@ -197,12 +222,37 @@ namespace TDEngine {
 
     	void EngineStorage::addEffectOnEnemy(const std::shared_ptr<EffectOnEnemyActions> &effect) {
         	activeEnemyEffects.push_back(effect);
+        	curGameStatus->mapObjects.push_back(effect);
         }
 
     	void EngineStorage::removeEffectOnEnemy(const std::shared_ptr<EffectOnEnemyActions> &effect) {
         	auto effectIt = std::find(activeEnemyEffects.begin(), activeEnemyEffects.end(), effect);
         	if (effectIt != activeEnemyEffects.end()) {
         		activeEnemyEffects.erase(effectIt);
+        	}
+
+        	std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(effect);
+        	auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
+        	if (mapIt != curGameStatus->mapObjects.end()) {
+        		curGameStatus->mapObjects.erase(mapIt);
+        	}
+        }
+
+    	void EngineStorage::addEffectOnTower(const std::shared_ptr<EffectOnTowerActions> &effect) {
+        	activeTowerEffects.push_back(effect);
+        	curGameStatus->mapObjects.push_back(effect);
+        }
+
+    	void EngineStorage::removeEffectOnTower(const std::shared_ptr<EffectOnTowerActions> &effect) {
+        	auto effectIt = std::find(activeTowerEffects.begin(), activeTowerEffects.end(), effect);
+        	if (effectIt != activeTowerEffects.end()) {
+        		activeTowerEffects.erase(effectIt);
+        	}
+
+        	std::shared_ptr<MapObject> mapObj = std::dynamic_pointer_cast<MapObject>(effect);
+        	auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
+        	if (mapIt != curGameStatus->mapObjects.end()) {
+        		curGameStatus->mapObjects.erase(mapIt);
         	}
         }
 
@@ -221,6 +271,17 @@ namespace TDEngine {
         	auto mapIt = std::find(curGameStatus->mapObjects.begin(), curGameStatus->mapObjects.end(), mapObj);
         	if (mapIt != curGameStatus->mapObjects.end()) {
         		curGameStatus->mapObjects.erase(mapIt);
+        	}
+        }
+
+    	void EngineStorage::addAbility(const std::shared_ptr<AbilityActions> &ability) {
+        	activeAbilities.push_back(ability);
+        }
+
+    	void EngineStorage::removeAbility(const std::shared_ptr<AbilityActions> &ability) {
+        	auto abilityIt = std::find(activeAbilities.begin(), activeAbilities.end(), ability);
+        	if (abilityIt != activeAbilities.end()) {
+        		activeAbilities.erase(abilityIt);
         	}
         }
     } // Inner
