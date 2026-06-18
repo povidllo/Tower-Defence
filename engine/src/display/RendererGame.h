@@ -16,6 +16,11 @@ namespace TDEngine::Inner {
 		sf::FloatRect bounds;
 	};
 
+	struct BehaviourOption {
+		std::string name;
+		sf::FloatRect bounds;
+	};
+
 	struct MenuButton {
 		std::string text;
 		sf::FloatRect bounds;
@@ -42,9 +47,11 @@ namespace TDEngine::Inner {
 		void renderScene(const std::shared_ptr<GameStatus> &gameStat, const sf::Sprite &background);
 		void renderUI(const std::shared_ptr<GameStatus> &gameStat,
 					  const std::vector<UpgradeOption> &upgradeOptions,
+					  const std::vector<BehaviourOption> &behaviourOptions,
 					  std::shared_ptr<EnginePlayer> currentPlayer,
 					  std::vector<sf::FloatRect>& abilityBounds,
-					  std::vector<sf::FloatRect>& upgradeBounds);
+					  std::vector<sf::FloatRect>& upgradeBounds,
+					  std::vector<sf::FloatRect>& behaviourBounds);
 		void renderGameOver(bool victory);
 		void renderMenu(const std::vector<MenuButton> &buttons, const std::string &title = "SELECT MAP",
 						const std::string &subtitle = "");

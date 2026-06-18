@@ -59,6 +59,8 @@ add_executable(engine
         src/inner/game_objects/entities/EffectCreator.h
         src/inner/game_objects/entities/EngineTeam.h
         src/inner/game_objects/entities/EnginePlayer.h
+        src/inner/player_actions/TowerBehaviourChangeAction.cpp
+        src/inner/player_actions/TowerBehaviourChangeAction.h
 )
 
 target_compile_options(engine PRIVATE -include valarray)

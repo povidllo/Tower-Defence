@@ -10,8 +10,10 @@ namespace TDEngine::Inner {
 		constexpr sf::Uint8 PACKET_JOIN = 1;
 		constexpr sf::Uint8 PACKET_WELCOME = 2;
 		constexpr sf::Uint8 PACKET_START = 3;
-		constexpr sf::Uint8 PACKET_UPGRADE = 4;
-		constexpr sf::Uint8 PACKET_SNAPSHOT = 5;
+		constexpr sf::Uint8 PACKET_SNAPSHOT = 4;
+		constexpr sf::Uint8 PACKET_UPGRADE = 5;
+		constexpr sf::Uint8 PACKET_BEHAVIOUR = 6;
+		constexpr sf::Uint8 PACKET_ABILITY = 6;
 		constexpr int SNAPSHOT_INTERVAL_MS = 30;
 		constexpr float CLIENT_INTERP_SPEED = 14.f;
 
@@ -300,153 +302,183 @@ namespace TDEngine::Inner {
 	}
 
 	void MainManager::handleGameClick(int mouseX, int mouseY) {
-        sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
+	    sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
 
-        // ----- 1. Режим выбора цели для способности -----
-        if (isSelectingTarget) {
-            // Если клик по карте (не по правой панели и не по верхней панели)
-            if (worldPos.x < RendererGame::UI_SIDEBAR_X && worldPos.y > RendererGame::UI_TOP_BAR_HEIGHT) {
-                // Определяем локальные координаты на карте
-                sf::Vector2u bgSize =
-                    backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
-                sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
-                float localX = worldPos.x - mapOffset.x;
-                float localY = worldPos.y - mapOffset.y;
+	    // ----- 1. Режим выбора цели для способности -----
+	    if (isSelectingTarget) {
+	        // Если клик по карте (не по правой панели и не по верхней панели)
+	        if (worldPos.x < RendererGame::UI_SIDEBAR_X && worldPos.y > RendererGame::UI_TOP_BAR_HEIGHT) {
+	            sf::Vector2u bgSize =
+	                backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
+	            sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+	            float localX = worldPos.x - mapOffset.x;
+	            float localY = worldPos.y - mapOffset.y;
 
-                std::shared_ptr<MapObject> target = nullptr;
+	            std::shared_ptr<MapObject> target = nullptr;
 
-                // Ищем объект под кликом
-                if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
-                    for (const auto &obj : gameStatus->mapObjects) {
-                        float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
-                        float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
-                        sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
-                        if (objBounds.contains(localX, localY)) {
-                            target = obj;
-                            break;
-                        }
-                    }
-                }
+	            // Ищем объект под кликом
+	            if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
+	                for (const auto &obj : gameStatus->mapObjects) {
+	                    float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
+	                    float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
+	                    sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
+	                    if (objBounds.contains(localX, localY)) {
+	                        target = obj;
+	                        break;
+	                    }
+	                }
+	            }
 
-                // Если объект не найден – создаём точку в клеточных координатах
-                if (!target) {
-                    double cellX = localX / RendererGame::TILE_SIZE;
-                    double cellY = localY / RendererGame::TILE_SIZE;
-                    target = std::make_shared<MapObject>("", cellX, cellY, MapObjectTypes::Point);
-                }
+	            // Если объект не найден – создаём точку в клеточных координатах
+	            if (!target) {
+	                double cellX = localX / RendererGame::TILE_SIZE;
+	                double cellY = localY / RendererGame::TILE_SIZE;
+	                target = std::make_shared<MapObject>("", cellX, cellY, MapObjectTypes::Point);
+	            }
 
-                auto player = getLocalPlayer();
-                if (player && selectedAbilityIndex >= 0 && selectedAbilityIndex < static_cast<int>(player->abilities.size())) {
-                    playerAction = std::make_shared<AbilityUseAction>(player, selectedAbilityIndex, target);
-                }
+	            auto player = getLocalPlayer();
+	            if (player && selectedAbilityIndex >= 0 && selectedAbilityIndex < static_cast<int>(player->abilities.size())) {
+	                playerAction = std::make_shared<AbilityUseAction>(player, selectedAbilityIndex, target);
+	            }
 
-                isSelectingTarget = false;
-                selectedAbilityIndex = -1;
-            } else {
-                // Клик по UI – отменяем выбор цели
-                isSelectingTarget = false;
-                selectedAbilityIndex = -1;
-            }
-            return; // не обрабатываем другие клики
-        }
+	            isSelectingTarget = false;
+	            selectedAbilityIndex = -1;
+	        } else {
+	            // Клик по UI – отменяем выбор цели
+	            isSelectingTarget = false;
+	            selectedAbilityIndex = -1;
+	        }
+	        return;
+	    }
 
-        // ----- 2. Клик по правой панели (UI) -----
-        if (worldPos.x >= RendererGame::UI_SIDEBAR_X) {
-            // 2.1 Проверка клика по способностям
-            auto player = getLocalPlayer();
-            if (player) {
-                for (size_t i = 0; i < abilityButtonsBounds.size(); ++i) {
-                    if (abilityButtonsBounds[i].contains(worldPos)) {
-                        if (i >= player->abilities.size()) break;
-                        auto ability = player->abilities[i];
-                        if (ability->storage.currentCharges <= 0) {
-                            // Нет зарядов – игнорируем
-                            return;
-                        }
-                        std::string targetSelection = ability->storage.getTargetSelection();
-                        if (targetSelection == "none") {
-                            // Используем сразу без цели
-                            auto target = std::make_shared<MapObject>("", 0.0, 0.0, MapObjectTypes::Point);
-                            playerAction = std::make_shared<AbilityUseAction>(player, static_cast<int>(i), target);
-                        } else {
-                            // Входим в режим выбора цели
-                            isSelectingTarget = true;
-                            selectedAbilityIndex = static_cast<int>(i);
-                            std::cout << "[INFO] Select target for ability: " << ability->storage.getName() << std::endl;
-                        }
-                        return;
-                    }
-                }
-            }
+	    // ----- 2. Клик по правой панели (UI) -----
+	    if (worldPos.x >= RendererGame::UI_SIDEBAR_X) {
+	        auto player = getLocalPlayer();
 
-            // 2.2 Проверка клика по улучшениям (если выбрана башня)
-            if (selectedTower) {
-                for (size_t i = 0; i < upgradeButtonsBounds.size(); ++i) {
-                    if (upgradeButtonsBounds[i].contains(worldPos)) {
-                        // Получаем имя улучшения из currentUpgradeOptions
-                        if (i < currentUpgradeOptions.size()) {
-                            std::string upgradeName = currentUpgradeOptions[i].name;
-                            // Применяем улучшение (как раньше)
-                            if (networkRole == NetworkRole::CLIENT) {
-                                sendUpgradeRequest(selectedTower->positionCoordinates.first,
-                                                   selectedTower->positionCoordinates.second,
-                                                   upgradeName, localPlayerIndex);
-                            } else {
-                                applyUpgradeAt(selectedTower->positionCoordinates.first,
-                                               selectedTower->positionCoordinates.second,
-                                               upgradeName, localPlayerIndex);
-                            }
-                            selectedTower = nullptr;
-                            currentUpgradeOptions.clear();
-                        }
-                        return;
-                    }
-                }
-            }
-            return; // клик по правой панели, но не по кнопкам – игнорируем
-        }
+	        // 2.1 Способности
+	        if (player) {
+	            for (size_t i = 0; i < abilityButtonsBounds.size(); ++i) {
+	                if (abilityButtonsBounds[i].contains(worldPos)) {
+	                    if (i >= player->abilities.size()) break;
+	                    auto ability = player->abilities[i];
+	                    if (ability->storage.currentCharges <= 0) {
+	                        // Нет зарядов – игнорируем
+	                        return;
+	                    }
+	                    std::string targetSelection = ability->storage.getTargetSelection();
+	                    if (targetSelection == "none") {
+	                        // Используем сразу без цели
+	                        auto target = std::make_shared<MapObject>("", 0.0, 0.0, MapObjectTypes::Point);
+	                        playerAction = std::make_shared<AbilityUseAction>(player, static_cast<int>(i), target);
+	                    } else {
+	                        // Входим в режим выбора цели
+	                        isSelectingTarget = true;
+	                        selectedAbilityIndex = static_cast<int>(i);
+	                        std::cout << "[INFO] Select target for ability: " << ability->storage.getName() << std::endl;
+	                    }
+	                    return;
+	                }
+	            }
+	        }
 
-        // ----- 3. Клик по карте (выбор башни) -----
-        // Если клик по верхней панели – игнорируем
-        if (worldPos.y <= RendererGame::UI_TOP_BAR_HEIGHT) return;
+	        // 2.2 Поведения
+	        if (selectedTower) {
+	            for (size_t i = 0; i < behaviourButtonsBounds.size(); ++i) {
+	                if (behaviourButtonsBounds[i].contains(worldPos)) {
+	                    if (i < currentBehaviourOptions.size()) {
+	                    	std::string name = currentBehaviourOptions[i].name;
+	                    	if (networkRole == NetworkRole::CLIENT) {
+	                    		sendChangeBehaviourRequest(selectedTower->positionCoordinates.first,
+												   selectedTower->positionCoordinates.second,
+												   name, localPlayerIndex);
+	                    	} else {
+	                    		changeBehaviourAt(selectedTower->positionCoordinates.first,
+											   selectedTower->positionCoordinates.second,
+											   name, localPlayerIndex);
+	                    	}
 
-        sf::Vector2u bgSize =
-            backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
-        sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
-        float localX = worldPos.x - mapOffset.x;
-        float localY = worldPos.y - mapOffset.y;
+	                        selectedTower = nullptr;
+	                        currentUpgradeOptions.clear();
+	                        currentBehaviourOptions.clear();
+	                    }
+	                    return;
+	                }
+	            }
+	        }
 
-        bool clickedOnTower = false;
-        if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
-            for (const auto &obj : gameStatus->mapObjects) {
-                if (obj->type != MapObjectTypes::Tower) continue;
-                float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
-                float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
-                sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
-                if (objBounds.contains(localX, localY)) {
-                    selectedTower = obj;
-                    clickedOnTower = true;
-                    // Формируем данные для улучшений (без вычисления bounds)
-                    currentUpgradeOptions.clear();
-                    for (const auto &upgName : getUpgradeNamesForTower(obj)) {
-                        for (const auto &towerConfig : project.getTowers()) {
-                            if (towerConfig->getName() == upgName) {
-                                currentUpgradeOptions.push_back(
-                                    {&renderer.getTexture(towerConfig->getTowerTexturePath()), upgName,
-                                     sf::FloatRect(0,0,0,0)}); // bounds будут перезаписаны в renderUI
-                                break;
-                            }
-                        }
-                    }
-                    return;
-                }
-            }
-        }
-        if (!clickedOnTower) {
-            selectedTower = nullptr;
-            currentUpgradeOptions.clear();
-        }
-    }
+	        // 2.3 Улучшения
+	        if (selectedTower) {
+	            for (size_t i = 0; i < upgradeButtonsBounds.size(); ++i) {
+	                if (upgradeButtonsBounds[i].contains(worldPos)) {
+	                    if (i < currentUpgradeOptions.size()) {
+	                        std::string upgradeName = currentUpgradeOptions[i].name;
+	                        if (networkRole == NetworkRole::CLIENT) {
+	                            sendUpgradeRequest(selectedTower->positionCoordinates.first,
+	                                               selectedTower->positionCoordinates.second,
+	                                               upgradeName, localPlayerIndex);
+	                        } else {
+	                            applyUpgradeAt(selectedTower->positionCoordinates.first,
+	                                           selectedTower->positionCoordinates.second,
+	                                           upgradeName, localPlayerIndex);
+	                        }
+	                        selectedTower = nullptr;
+	                        currentUpgradeOptions.clear();
+	                        currentBehaviourOptions.clear();
+	                    }
+	                    return;
+	                }
+	            }
+	        }
+	        return;
+	    }
+
+	    // ----- 3. Клик по карте (выбор башни) -----
+	    if (worldPos.y <= RendererGame::UI_TOP_BAR_HEIGHT) return;
+
+	    sf::Vector2u bgSize = backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
+	    sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+	    float localX = worldPos.x - mapOffset.x;
+	    float localY = worldPos.y - mapOffset.y;
+
+	    bool clickedOnTower = false;
+	    if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
+	        for (const auto &obj : gameStatus->mapObjects) {
+	            if (obj->type != MapObjectTypes::Tower) continue;
+	            float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
+	            float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
+	            sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
+	            if (objBounds.contains(localX, localY)) {
+	                selectedTower = obj;
+	                clickedOnTower = true;
+
+	                // Очищаем старые опции
+	                currentUpgradeOptions.clear();
+	                currentBehaviourOptions.clear();
+
+	                // Заполняем улучшения
+	                for (const auto &upgName : getUpgradeNamesForTower(obj)) {
+	                    for (const auto &towerConfig : project.getTowers()) {
+	                        if (towerConfig->getName() == upgName) {
+	                            currentUpgradeOptions.push_back(
+	                                {&renderer.getTexture(towerConfig->getTowerTexturePath()), upgName,
+	                                 sf::FloatRect(0,0,0,0)});
+	                            break;
+	                        }
+	                    }
+	                }
+
+	                // Заполняем поведения
+	                currentBehaviourOptions = getBehaviourOptionsForTower(obj);
+	                return;
+	            }
+	        }
+	    }
+	    if (!clickedOnTower) {
+	        selectedTower = nullptr;
+	        currentUpgradeOptions.clear();
+	        currentBehaviourOptions.clear();
+	    }
+	}
 
 	void MainManager::update(sf::Time dt) {
 		updateNetwork();
@@ -504,15 +536,24 @@ namespace TDEngine::Inner {
 		} else if (state == AppState::GAME) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			// Передаём векторы для заполнения bounds
-			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer(),
-							  abilityButtonsBounds, upgradeButtonsBounds);
+			renderer.renderUI(gameStatus,
+							  currentUpgradeOptions,
+							  currentBehaviourOptions,
+							  getLocalPlayer(),
+							  abilityButtonsBounds,
+							  upgradeButtonsBounds,
+							  behaviourButtonsBounds);
 			window.display();
 		} else if (state == AppState::GAME_OVER) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer(),
-							  abilityButtonsBounds, upgradeButtonsBounds);
+			renderer.renderUI(gameStatus,
+							  currentUpgradeOptions,
+							  currentBehaviourOptions,
+							  getLocalPlayer(),
+							  abilityButtonsBounds,
+							  upgradeButtonsBounds,
+							  behaviourButtonsBounds);
 			renderer.renderGameOver(wasVictory);
 			window.display();
 		}
@@ -715,6 +756,14 @@ void MainManager::sendSnapshotToClients() {
 			std::cout << "[INFO] Server processing tower upgrade for: " << client.playerIndex;
 			applyUpgradeAt(x, y, upgradeName, client.playerIndex);
 		}
+		else if (type == PACKET_BEHAVIOUR) {
+			double x = 0.0;
+			double y = 0.0;
+			std::string behaviorName;
+			packet >> x >> y >> behaviorName;
+			std::cout << "[INFO] Server processing behaviour change for: " << client.playerIndex;
+			changeBehaviourAt(x, y, behaviorName, client.playerIndex);
+		}
 	}
 
 void MainManager::processServerPacket(sf::Packet &packet) {
@@ -875,6 +924,34 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		playerAction = std::make_shared<TowerUpgradeAction>(upgradeName, tower, player);
 	}
 
+	void MainManager::sendChangeBehaviourRequest(double x, double y, const std::string &behaviourTypeName, int playerIndex) {
+		if (!serverSocket) {
+			return;
+		}
+		sf::Packet packet;
+		packet << PACKET_BEHAVIOUR << x << y << behaviourTypeName << playerIndex;
+		serverSocket->send(packet);
+	}
+	void MainManager::changeBehaviourAt(double x, double y, const std::string &behaviourTypeName, int playerIndex) {
+		const auto tower = findTowerAt(x, y);
+		if (!tower || playerIndex >= engine.getAllPlayers().size()) {
+			return;
+		}
+
+		const auto player = engine.getAllPlayers()[playerIndex];
+		if (!canPlayerUseTower(player, tower)) {
+			return;
+		}
+
+		TowerBehaviourTypes newBehaviour;
+		if (behaviourTypeName == "Closest") newBehaviour = TowerBehaviourTypes::Closest;
+		else if (behaviourTypeName == "Farthest") newBehaviour = TowerBehaviourTypes::Farthest;
+		else if (behaviourTypeName == "Lowest HP") newBehaviour = TowerBehaviourTypes::LowestHP;
+		else if (behaviourTypeName == "Highest HP") newBehaviour = TowerBehaviourTypes::HighestHP;
+		else return;
+		playerAction = std::make_shared<TowerBehaviourChangeAction>(tower, newBehaviour);
+	}
+
 	std::shared_ptr<TowerActions> MainManager::findTowerAt(double x, double y) {
 		if (!gameStatus) {
 			return nullptr;
@@ -950,5 +1027,15 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 			}
 		}
 		return players;
+	}
+
+	std::vector<BehaviourOption> MainManager::getBehaviourOptionsForTower(const std::shared_ptr<MapObject>& tower) {
+		// Можно возвращать все 4 варианта, или исключать текущее поведение
+		std::vector<BehaviourOption> options;
+		options.push_back({"Closest", {}});
+		options.push_back({"Farthest", {}});
+		options.push_back({"Lowest HP", {}});
+		options.push_back({"Highest HP", {}});
+		return options;
 	}
 } // namespace TDEngine::Inner
