@@ -35,13 +35,13 @@ namespace TDEngine {
         }
 
     	void Engine::initMap() {
-        	storage->curWave = 0;
-	        // storage->activeAbilities.clear();
+	        storage->activeAbilities.clear();
         	storage->activeEnemies.clear();
         	storage->activeProjectiles.clear();
         	storage->activeTowers.clear();
         	storage->activeWaves.clear();
         	storage->activeEnemyEffects.clear();
+        	storage->activeTowerEffects.clear();
         	storage->activeEffectCreators.clear();
         	storage->curGameStatus->mapObjects.clear();
         	storage->curGameStatus->teams.clear();
@@ -55,8 +55,10 @@ namespace TDEngine {
         			TowerActions(tower, {tower->getX(), tower->getY()}, storage->resolveSpotOwnerPlayers(*tower))));
         	}
 
-        	if (!storage->curMap->getWaves().empty()) {
-        		storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
+        	for (auto waveChain : storage->curMap->getStartWaves()) {
+        		if (waveChain->getChain().size() > 0) {
+        			storage->addWave(std::make_shared<WaveActions>(waveChain->getChain()[0], waveChain, 0, storage));
+        		}
         	}
         }
 

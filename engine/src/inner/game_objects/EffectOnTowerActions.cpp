@@ -35,6 +35,7 @@ namespace TDEngine::Inner {
 
 		// Apply initial effect once
 		if (!storage.initialApplied) {
+			storage.target->storage.curHp += storage.getStartHealthImpact();
 			storage.target->storage.curDamage += storage.getStartDamageFlatImpact();
 			storage.target->storage.curDamage += storage.target->storage.getDamage() * (storage.getStartDamagePercentImpact() / 100.0);
 			storage.target->storage.curFireRate *= storage.getStartAttackSpeedPercentImpact() / 100.0;
@@ -45,6 +46,7 @@ namespace TDEngine::Inner {
 		if (storage.getPeriodSeconds() > 0.0) {
 			storage.timeSinceLastPeriod += dt;
 			while (storage.timeSinceLastPeriod >= storage.getPeriodSeconds()) {
+				storage.target->storage.curHp += storage.getPeriodicHealthImpact();
 				storage.target->storage.curDamage += storage.getPeriodicDamageFlatImpact();
 				storage.target->storage.curDamage += storage.target->storage.getDamage() * (storage.getPeriodicDamagePercentImpact() / 100.0);
 				storage.target->storage.curFireRate *= storage.getPeriodicAttackSpeedPercentImpact()/100.0;

@@ -176,16 +176,19 @@ namespace TDEngine::Inner {
 	for (auto& enemy : engineStorage->activeEnemies) {
 		double dist = getDistanceTo(enemy);
 		if (dist <= storage.getRadius()) {
-			if ((storage.getTargetRelation() == "enemies")) {
-				if (enemy->storage.associatedTeam != storage.ownerPlayers[0]->team) {
-					result.push_back(enemy);
+			if (storage.ownerPlayers.size() > 0) {
+				if ((storage.getTargetRelation() == "enemies")) {
+					if (enemy->storage.associatedTeam != storage.ownerPlayers[0]->team) {
+						result.push_back(enemy);
+					}
+				}
+				else {
+					if (enemy->storage.associatedTeam == storage.ownerPlayers[0]->team) {
+						result.push_back(enemy);
+					}
 				}
 			}
-			else {
-				if (enemy->storage.associatedTeam == storage.ownerPlayers[0]->team) {
-					result.push_back(enemy);
-				}
-			}
+			else result.push_back(enemy);
 		}
 	}
 	return result;
@@ -204,16 +207,19 @@ std::vector<std::shared_ptr<TowerActions>> EffectCreatorActions::getTargetTowers
 	for (auto& tower : engineStorage->activeTowers) {
 		double dist = getDistanceTo(tower);
 		if (dist <= storage.getRadius()) {
-			if ((storage.getTargetRelation() == "enemies")) {
-				if (tower->storage.ownerPlayers[0]->team != storage.ownerPlayers[0]->team) {
-					result.push_back(tower);
+			if (storage.ownerPlayers.size() > 0) {
+				if ((storage.getTargetRelation() == "enemies")) {
+					if (tower->storage.ownerPlayers[0]->team != storage.ownerPlayers[0]->team) {
+						result.push_back(tower);
+					}
+				}
+				else {
+					if (tower->storage.ownerPlayers[0]->team == storage.ownerPlayers[0]->team) {
+						result.push_back(tower);
+					}
 				}
 			}
-			else {
-				if (tower->storage.ownerPlayers[0]->team == storage.ownerPlayers[0]->team) {
-					result.push_back(tower);
-				}
-			}
+			else result.push_back(tower);
 		}
 	}
 	return result;

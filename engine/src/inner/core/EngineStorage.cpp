@@ -5,7 +5,7 @@ namespace TDEngine {
         //Эту функцию необходимо реализовать с использованием нормального mapSample
         EngineStorage::EngineStorage(std::shared_ptr<Project> project)
             : curGameStatus(std::make_shared<GameStatus>(GameStatus())), curMap(nullptr),
-    		curProject(project), curWave(0)
+    		curProject(project)
         {
         }
 

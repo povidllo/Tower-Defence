@@ -58,7 +58,6 @@ namespace TDEngine {
             std::shared_ptr<Project> curProject;
 
             std::shared_ptr<Map> curMap;
-        	int curWave;
 
         };
     } // Inner

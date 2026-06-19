@@ -1,8 +1,10 @@
 #include "EnemyActions.h"
+
+#include <utility>
 #include "../core/EngineStorage.h"
 namespace TDEngine {
     namespace Inner {
-        EnemyActions::EnemyActions(EnemySample sample, std::shared_ptr<Wave> wave)
+        EnemyActions::EnemyActions(EnemySample sample, std::shared_ptr<Wave> wave, std::shared_ptr<EngineTeam> team)
             : MapObject(sample.getEnemyTexturePath(),
             	wave->getPath()[0].first, wave->getPath()[0].second, MapObjectTypes::Enemy),
     	storage(std::move(sample))
@@ -14,7 +16,7 @@ namespace TDEngine {
             storage.curSpeed = sample.getSpeed();
             storage.isAlive = true;
             storage.initialActionsDone = false;
-        	storage.associatedTeam = nullptr;
+        	storage.associatedTeam = team;
         }
     	EnemyActions::EnemyActions(std::string texturePath, std::pair<double, double> startPosition,
     		double currentHp, double maxHp) : MapObject(texturePath,
@@ -69,6 +71,14 @@ namespace TDEngine {
         		}
         	}
 
+        	std::vector<std::shared_ptr<EnginePlayer>> emptyVector;
+        	for (std::string effectCreatorName : storage.getOnDeathEffectCreatorNames()) {
+        		auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
+						(storage.associatedTeam != nullptr? storage.associatedTeam->teamPlayers : emptyVector),
+						std::make_shared<MapObject>("",
+							positionCoordinates.first, positionCoordinates.second, MapObjectTypes::Point));
+        		engineStorage->addEffectCreator(newEffectCreator);
+        	}
         }
 
         void EnemyActions::attack(std::shared_ptr<EngineStorage> engineStorage) {
@@ -76,9 +86,12 @@ namespace TDEngine {
         		team->currentHp -= storage.getDamage();
         		std::cout << "[INFO] enemy dealt damage: " << storage.getDamage() << " to team : "<< team->getTeamName()
         		<<". New hp: " << team->currentHp << std::endl;
+        		std::vector<std::shared_ptr<EnginePlayer>> emptyVector;
         		for (std::string effectCreatorName : storage.getDamageDealtEffectCreatorNames()) {
         			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-						storage.associatedTeam->teamPlayers, std::make_shared<EnemyActions>(*this));
+						(storage.associatedTeam != nullptr? storage.associatedTeam->teamPlayers : emptyVector),
+						std::make_shared<MapObject>("",
+							positionCoordinates.first, positionCoordinates.second, MapObjectTypes::Point));
         			engineStorage->addEffectCreator(newEffectCreator);
         		}
         		if (team->currentHp <= 0) {

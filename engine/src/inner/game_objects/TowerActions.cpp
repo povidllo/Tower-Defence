@@ -16,7 +16,7 @@ namespace TDEngine {
 			storage.curFireRate = storage.getFireRate();
 			storage.curDamage = storage.getDamage();
 			storage.initialActionsDone = false;
-			storage.curHp = 100;
+			// storage.curHp = sample->getStartHP();
 			storage.behaviourType = TowerBehaviourTypes::Closest;
 			storage.originSample = sample;
 			storage.originOwnerPlayers = std::move(ownerPlayers);
@@ -111,6 +111,7 @@ namespace TDEngine {
         	texturePath = sample->getTowerTexturePath();
 			storage.curFireRate = storage.getFireRate();
 			storage.curDamage = storage.getDamage();
+			storage.curHp = sample->getStartHP();
 			storage.initialActionsDone = false;
 			storage.timeAfterLastShot = 0;
 			for (auto effect : engineStorage->activeTowerEffects) {
