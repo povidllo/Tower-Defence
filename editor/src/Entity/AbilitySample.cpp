@@ -50,6 +50,7 @@ AbilitySample::AbilitySample(const json &j) {
 AbilitySample::json AbilitySample::toJson() const {
 	return {
 		{"name", name},
+		{"iconPath", iconPath},
 		{"effectCreatorsOnCast", stringVectorToJson(effectCreatorsOnCast)},
 		{"targetSelection", targetSelection},
 		{"chargesCount", chargesCount},
@@ -60,6 +61,7 @@ AbilitySample::json AbilitySample::toJson() const {
 
 void AbilitySample::fromJson(const json &j) {
 	name = j.value("name", name);
+	iconPath = j.value("iconPath", iconPath);
 	if (j.contains("effectCreatorsOnCast")) {
 		effectCreatorsOnCast = stringVectorFromJson(j["effectCreatorsOnCast"]);
 	}
@@ -138,4 +140,12 @@ double AbilitySample::getFullCooldownSeconds() const {
 
 void AbilitySample::setFullCooldownSeconds(const double value) {
 	fullCooldownSeconds = std::max(0.0, value);
+}
+
+const std::string &AbilitySample::getIconPath() const {
+	return iconPath;
+}
+
+void AbilitySample::setIconPath(std::string path) {
+	iconPath = std::move(path);
 }

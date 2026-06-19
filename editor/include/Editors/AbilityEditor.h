@@ -35,6 +35,8 @@ private slots:
 
 	void onRemoveEffectCreatorClicked();
 
+	void onBrowseIconClicked();
+
 private:
 	Ui::AbilityEditor *ui;
 	std::shared_ptr<AbilityController> abilityController;

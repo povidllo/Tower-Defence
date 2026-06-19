@@ -13,6 +13,14 @@ public:
 
 	void fromJson(const json &j) override;
 
+	[[nodiscard]] int getStartHealthImpact() const;
+
+	void setStartHealthImpact(int value);
+
+	[[nodiscard]] int getPeriodicHealthImpact() const;
+
+	void setPeriodicHealthImpact(int value);
+
 	[[nodiscard]] int getStartDamageFlatImpact() const;
 
 	void setStartDamageFlatImpact(int value);
@@ -38,6 +46,8 @@ public:
 	void setPeriodicAttackSpeedPercentImpact(int value);
 
 private:
+	int startHealthImpact{0};
+	int periodicHealthImpact{0};
 	int startDamageFlatImpact{0};
 	int startDamagePercentImpact{0};
 	int startAttackSpeedPercentImpact{0};

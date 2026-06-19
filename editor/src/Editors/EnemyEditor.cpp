@@ -158,7 +158,7 @@ void EnemyEditor::onDeleteButtonClicked() {
 }
 
 void EnemyEditor::onChooseTextureButtonClicked() {
-	QString filePath = QFileDialog::getOpenFileName(this, "Choose Texture", QDir::currentPath(), ".png");
+	QString filePath = QFileDialog::getOpenFileName(this, "Choose Texture", QDir::currentPath());
 
 	if (filePath.isEmpty()) {
 		return;

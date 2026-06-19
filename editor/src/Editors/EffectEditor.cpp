@@ -135,7 +135,7 @@ void EffectEditor::onSaveEffectClicked() {
 }
 
 void EffectEditor::onChooseTextureClicked() {
-	QString filePath = QFileDialog::getOpenFileName(this, "Choose Effect Texture", QDir::currentPath(), "*.png");
+	QString filePath = QFileDialog::getOpenFileName(this, "Choose Effect Texture", QDir::currentPath());
 	if (filePath.isEmpty()) {
 		return;
 	}

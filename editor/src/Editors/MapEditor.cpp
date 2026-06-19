@@ -230,7 +230,7 @@ void MapEditor::onModeItemClicked(const QListWidgetItem *item) {
 }
 
 void MapEditor::onAddTextureButtonClicked() {
-	QString filePath = QFileDialog::getOpenFileName(this, tr("Add Texture"), QDir::currentPath(), ".png");
+	QString filePath = QFileDialog::getOpenFileName(this, tr("Add Texture"), QDir::currentPath());
 
 	if (filePath.isEmpty()) {
 		return;
