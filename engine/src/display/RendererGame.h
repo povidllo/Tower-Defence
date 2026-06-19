@@ -16,6 +16,11 @@ namespace TDEngine::Inner {
 		sf::FloatRect bounds;
 	};
 
+	struct BehaviourOption {
+		std::string name;
+		sf::FloatRect bounds;
+	};
+
 	struct MenuButton {
 		std::string text;
 		sf::FloatRect bounds;
@@ -32,11 +37,21 @@ namespace TDEngine::Inner {
 		static constexpr float UI_PADDING = 10.0f;
 		static constexpr float CORNER_RADIUS = 15.0f;
 
+		static constexpr float ABILITY_ICON_SIZE = 48.0f;
+		static constexpr float ABILITY_SPACING = 8.0f;
+		static constexpr float ABILITY_TEXT_HEIGHT = 18.0f;
+		static constexpr float SECTION_HEADER_HEIGHT = 30.0f;
+
 		explicit RendererGame(sf::RenderWindow &window);
 
 		void renderScene(const std::shared_ptr<GameStatus> &gameStat, const sf::Sprite &background);
-		void renderUI(const std::shared_ptr<GameStatus> &gameStat, const std::vector<UpgradeOption> &upgradeOptions,
-			std::shared_ptr<EnginePlayer> currentPlayer);
+		void renderUI(const std::shared_ptr<GameStatus> &gameStat,
+					  const std::vector<UpgradeOption> &upgradeOptions,
+					  const std::vector<BehaviourOption> &behaviourOptions,
+					  std::shared_ptr<EnginePlayer> currentPlayer,
+					  std::vector<sf::FloatRect>& abilityBounds,
+					  std::vector<sf::FloatRect>& upgradeBounds,
+					  std::vector<sf::FloatRect>& behaviourBounds);
 		void renderGameOver(bool victory);
 		void renderMenu(const std::vector<MenuButton> &buttons, const std::string &title = "SELECT MAP",
 						const std::string &subtitle = "");

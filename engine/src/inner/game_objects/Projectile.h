@@ -2,7 +2,7 @@
 #include "EnemyActions.h"
 #include "IActing.h"
 #include "MapObject.h"
-#include "samples/EffectCreatorSample.h"
+#include "../../../editor/include/Entity/EffectCreatorSample.h"
 
 namespace TDEngine {
     namespace Inner {
@@ -10,7 +10,7 @@ namespace TDEngine {
         public:
             Projectile(double moveSpeed, double damage,
             std::shared_ptr<EnemyActions> target, std::pair<double, double> positionCoordinates,
-            std::string texturePath, std::vector<EffectCreatorSample> effectCreatorsOnHit,
+            std::string texturePath, std::vector<std::string> effectCreatorsOnHit,
 				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers);
             void act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) override;
             std::shared_ptr<EnemyActions> target;
@@ -22,7 +22,7 @@ namespace TDEngine {
 
             double moveSpeed;
             double damage;
-        	std::vector<EffectCreatorSample> effectCreatorsOnHit;
+        	std::vector<std::string> effectCreatorsOnHitNames;
         	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers;
         };
     } // Inner

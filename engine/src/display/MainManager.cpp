@@ -10,8 +10,10 @@ namespace TDEngine::Inner {
 		constexpr sf::Uint8 PACKET_JOIN = 1;
 		constexpr sf::Uint8 PACKET_WELCOME = 2;
 		constexpr sf::Uint8 PACKET_START = 3;
-		constexpr sf::Uint8 PACKET_UPGRADE = 4;
-		constexpr sf::Uint8 PACKET_SNAPSHOT = 5;
+		constexpr sf::Uint8 PACKET_SNAPSHOT = 4;
+		constexpr sf::Uint8 PACKET_UPGRADE = 5;
+		constexpr sf::Uint8 PACKET_BEHAVIOUR = 6;
+		constexpr sf::Uint8 PACKET_ABILITY = 7;
 		constexpr int SNAPSHOT_INTERVAL_MS = 30;
 		constexpr float CLIENT_INTERP_SPEED = 14.f;
 
@@ -300,102 +302,172 @@ namespace TDEngine::Inner {
 	}
 
 	void MainManager::handleGameClick(int mouseX, int mouseY) {
-		sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
+	    sf::Vector2f worldPos = window.mapPixelToCoords({mouseX, mouseY});
 
-		// 1. Проверка кликов по UI (Правая панель - Sidebar)
-		if (worldPos.x >= RendererGame::UI_SIDEBAR_X) {
-			if (selectedTower) {
-				for (const auto &option: currentUpgradeOptions) {
-					if (option.bounds.contains(worldPos)) {
-        				std::cout << "[INFO] Processing event: tower upgrade" << std::endl;
-						if (networkRole == NetworkRole::CLIENT) {
-							sendUpgradeRequest(selectedTower->positionCoordinates.first,
-											   selectedTower->positionCoordinates.second, option.name, localPlayerIndex);
-						} else {
-							applyUpgradeAt(selectedTower->positionCoordinates.first,
-										   selectedTower->positionCoordinates.second, option.name, localPlayerIndex);
-						}
-						selectedTower = nullptr;
-						currentUpgradeOptions.clear();
-						return;
-					}
-				}
-			}
-			return;
-		}
+	    // ----- 1. Режим выбора цели для способности -----
+	    if (isSelectingTarget) {
+	        // Если клик по карте (не по правой панели и не по верхней панели)
+	        if (worldPos.x < RendererGame::UI_SIDEBAR_X && worldPos.y > RendererGame::UI_TOP_BAR_HEIGHT) {
+	            sf::Vector2u bgSize =
+	                backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
+	            sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+	            float localX = worldPos.x - mapOffset.x;
+	            float localY = worldPos.y - mapOffset.y;
 
-		// Если клик по верхней панели
-		if (worldPos.y <= RendererGame::UI_TOP_BAR_HEIGHT) {
-			return;
-		}
+	        	double cellX = localX / RendererGame::TILE_SIZE;
+	        	double cellY = localY / RendererGame::TILE_SIZE;
+	            std::cout << "[INFO] Selected target for ability: " << cellX << " " << cellY << std::endl;
 
-		// 2. Проверка кликов по карте
-		sf::Vector2u bgSize =
-				backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
-		sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+	        	auto player = getLocalPlayer();
+	        	if (networkRole == NetworkRole::CLIENT) {
+	        		sendAbilityUseRequest(cellX, cellY,
+									   selectedAbilityIndex, localPlayerIndex);
+	        	} else {
+	        		useAbilityAt(cellX, cellY,
+								   selectedAbilityIndex, localPlayerIndex);
+	        	}
 
-		float localX = worldPos.x - mapOffset.x;
-		float localY = worldPos.y - mapOffset.y;
+	            isSelectingTarget = false;
+	            selectedAbilityIndex = -1;
+	        } else {
+	            // Клик по UI – отменяем выбор цели
+	            isSelectingTarget = false;
+	            selectedAbilityIndex = -1;
+	        }
+	        return;
+	    }
 
-		bool clickedOnTower = false;
+	    // ----- 2. Клик по правой панели (UI) -----
+	    if (worldPos.x >= RendererGame::UI_SIDEBAR_X) {
+	        auto player = getLocalPlayer();
 
-		if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
-			for (const auto &obj: gameStatus->mapObjects) {
-				if (obj->type != MapObjectTypes::Tower)
-					continue;
+	        // 2.1 Способности
+	        if (player) {
+	            for (size_t i = 0; i < abilityButtonsBounds.size(); ++i) {
+	                if (abilityButtonsBounds[i].contains(worldPos)) {
+	                    if (i >= player->abilities.size()) break;
+	                    auto ability = player->abilities[i];
+	                    if (ability->storage.currentCharges <= 0) {
+	                        // Нет зарядов – игнорируем
+	                        return;
+	                    }
+	                    std::string targetSelection = ability->storage.getTargetSelection();
+	                    if (targetSelection == "none") {
+	                    	if (networkRole == NetworkRole::CLIENT) {
+	                    		sendAbilityUseRequest(0.0, 0.0,
+												   static_cast<int>(i), localPlayerIndex);
+	                    	} else {
+	                    		useAbilityAt(0.0, 0.0,
+											   static_cast<int>(i), localPlayerIndex);
+	                    	}
+	                    } else {
+	                        // Входим в режим выбора цели
+	                        isSelectingTarget = true;
+	                        selectedAbilityIndex = static_cast<int>(i);
+	                        std::cout << "[INFO] Select target for ability: " << ability->storage.getName() << std::endl;
+	                    }
+	                    return;
+	                }
+	            }
+	        }
 
-				float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
-				float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
+	        // 2.2 Поведения
+	        if (selectedTower) {
+	            for (size_t i = 0; i < behaviourButtonsBounds.size(); ++i) {
+	                if (behaviourButtonsBounds[i].contains(worldPos)) {
+	                    if (i < currentBehaviourOptions.size()) {
+	                    	std::string name = currentBehaviourOptions[i].name;
+	                    	if (networkRole == NetworkRole::CLIENT) {
+	                    		sendChangeBehaviourRequest(selectedTower->positionCoordinates.first,
+												   selectedTower->positionCoordinates.second,
+												   name, localPlayerIndex);
+	                    	} else {
+	                    		changeBehaviourAt(selectedTower->positionCoordinates.first,
+											   selectedTower->positionCoordinates.second,
+											   name, localPlayerIndex);
+	                    	}
 
-				sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
+	                        selectedTower = nullptr;
+	                        currentUpgradeOptions.clear();
+	                        currentBehaviourOptions.clear();
+	                    }
+	                    return;
+	                }
+	            }
+	        }
 
-				if (objBounds.contains(localX, localY)) {
-					// if (!canPlayerUseTower(getLocalPlayer(), std::static_pointer_cast<TowerActions>(obj))) {
-					// 	selectedTower = nullptr;
-					// 	currentUpgradeOptions.clear();
-					// 	return;
-					// }
-					selectedTower = obj;
-					clickedOnTower = true;
-					currentUpgradeOptions.clear();
+	        // 2.3 Улучшения
+	        if (selectedTower) {
+	            for (size_t i = 0; i < upgradeButtonsBounds.size(); ++i) {
+	                if (upgradeButtonsBounds[i].contains(worldPos)) {
+	                    if (i < currentUpgradeOptions.size()) {
+	                        std::string upgradeName = currentUpgradeOptions[i].name;
+	                        if (networkRole == NetworkRole::CLIENT) {
+	                            sendUpgradeRequest(selectedTower->positionCoordinates.first,
+	                                               selectedTower->positionCoordinates.second,
+	                                               upgradeName, localPlayerIndex);
+	                        } else {
+	                            applyUpgradeAt(selectedTower->positionCoordinates.first,
+	                                           selectedTower->positionCoordinates.second,
+	                                           upgradeName, localPlayerIndex);
+	                        }
+	                        selectedTower = nullptr;
+	                        currentUpgradeOptions.clear();
+	                        currentBehaviourOptions.clear();
+	                    }
+	                    return;
+	                }
+	            }
+	        }
+	        return;
+	    }
 
-					int index = 0;
+	    // ----- 3. Клик по карте (выбор башни) -----
+	    if (worldPos.y <= RendererGame::UI_TOP_BAR_HEIGHT) return;
 
-					// --- ИСПРАВЛЕНИЕ ЛОГИКИ РАЗМЕЩЕНИЯ КНОПОК ---
-					// Вычисляем ширину доступной области внутри сайдбара
-					float sidebarInnerWidth =
-							window.getSize().x - RendererGame::UI_SIDEBAR_X - (2 * RendererGame::UI_PADDING);
+	    sf::Vector2u bgSize = backgroundSprite.getTexture() ? backgroundSprite.getTexture()->getSize() : sf::Vector2u(0, 0);
+	    sf::Vector2f mapOffset = RendererGame::getMapOffset(window.getSize(), bgSize);
+	    float localX = worldPos.x - mapOffset.x;
+	    float localY = worldPos.y - mapOffset.y;
 
-					// Делаем кнопку почти во всю ширину сайдбара (с небольшими отступами)
-					float btnMarginX = 10.0f;
-					float btnWidth = sidebarInnerWidth - (2 * btnMarginX);
-					float btnHeight = 50.0f; // Фиксированная высота кнопки-карточки
+	    bool clickedOnTower = false;
+	    if (localX >= 0 && localY >= 0 && localX <= bgSize.x && localY <= bgSize.y) {
+	        for (const auto &obj : gameStatus->mapObjects) {
+	            if (obj->type != MapObjectTypes::Tower) continue;
+	            float objX = static_cast<float>(obj->positionCoordinates.first) * RendererGame::TILE_SIZE;
+	            float objY = static_cast<float>(obj->positionCoordinates.second) * RendererGame::TILE_SIZE;
+	            sf::FloatRect objBounds(objX, objY, RendererGame::TILE_SIZE, RendererGame::TILE_SIZE);
+	            if (objBounds.contains(localX, localY)) {
+	                selectedTower = obj;
+	                clickedOnTower = true;
 
-					float startX = RendererGame::UI_SIDEBAR_X + RendererGame::UI_PADDING + btnMarginX;
-					float startY = 80.0f; // Отступ сверху (под заголовком)
+	                // Очищаем старые опции
+	                currentUpgradeOptions.clear();
+	                currentBehaviourOptions.clear();
 
-					for (const auto &upgName: getUpgradeNamesForTower(obj)) {
-						for (const auto &towerConfig: project.getTowers()) {
-							if (towerConfig->getName() == upgName) {
-								float btnY = startY + (index * (btnHeight + 10.0f)); // 10.0f - отступ между кнопками
+	                // Заполняем улучшения
+	                for (const auto &upgName : getUpgradeNamesForTower(obj)) {
+	                    for (const auto &towerConfig : project.getTowers()) {
+	                        if (towerConfig->getName() == upgName) {
+	                            currentUpgradeOptions.push_back(
+	                                {&renderer.getTexture(towerConfig->getTowerTexturePath()), upgName,
+	                                 sf::FloatRect(0,0,0,0)});
+	                            break;
+	                        }
+	                    }
+	                }
 
-								currentUpgradeOptions.push_back(
-										{&renderer.getTexture(towerConfig->getTowerTexturePath()), upgName,
-										 sf::FloatRect(startX, btnY, btnWidth, btnHeight)});
-								index++;
-								break;
-							}
-						}
-					}
-					return;
-				}
-			}
-		}
-
-		if (!clickedOnTower) {
-			selectedTower = nullptr;
-			currentUpgradeOptions.clear();
-		}
+	                // Заполняем поведения
+	                currentBehaviourOptions = getBehaviourOptionsForTower(obj);
+	                return;
+	            }
+	        }
+	    }
+	    if (!clickedOnTower) {
+	        selectedTower = nullptr;
+	        currentUpgradeOptions.clear();
+	        currentBehaviourOptions.clear();
+	    }
 	}
 
 	void MainManager::update(sf::Time dt) {
@@ -454,12 +526,24 @@ namespace TDEngine::Inner {
 		} else if (state == AppState::GAME) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer());
+			renderer.renderUI(gameStatus,
+							  currentUpgradeOptions,
+							  currentBehaviourOptions,
+							  getLocalPlayer(),
+							  abilityButtonsBounds,
+							  upgradeButtonsBounds,
+							  behaviourButtonsBounds);
 			window.display();
 		} else if (state == AppState::GAME_OVER) {
 			window.clear(sf::Color(20, 20, 25));
 			renderer.renderScene(gameStatus, backgroundSprite);
-			renderer.renderUI(gameStatus, currentUpgradeOptions, getLocalPlayer());
+			renderer.renderUI(gameStatus,
+							  currentUpgradeOptions,
+							  currentBehaviourOptions,
+							  getLocalPlayer(),
+							  abilityButtonsBounds,
+							  upgradeButtonsBounds,
+							  behaviourButtonsBounds);
 			renderer.renderGameOver(wasVictory);
 			window.display();
 		}
@@ -584,6 +668,16 @@ void MainManager::sendSnapshotToClients() {
             packet << static_cast<sf::Uint32>(player->currentCurrency)
                    << player->getPlayerName()
                    << player->status;
+        	packet << static_cast<sf::Uint32>(player->abilities.size());
+        	for (const auto& ability : player->abilities) {
+        		packet << ability->storage.getName()
+					   << static_cast<sf::Int32>(ability->storage.currentCharges)
+					   << static_cast<sf::Uint64>(ability->storage.timeAfterSingleRecharge)
+					   << static_cast<sf::Uint64>(ability->storage.timeAfterLastFullCharge)
+					   << ability->storage.getChargeCooldownSeconds()
+					   << ability->storage.getFullCooldownSeconds()
+					   << ability->storage.getTargetSelection();
+        	}
 
         }
     }
@@ -652,6 +746,22 @@ void MainManager::sendSnapshotToClients() {
 			std::cout << "[INFO] Server processing tower upgrade for: " << client.playerIndex;
 			applyUpgradeAt(x, y, upgradeName, client.playerIndex);
 		}
+		else if (type == PACKET_BEHAVIOUR) {
+			double x = 0.0;
+			double y = 0.0;
+			std::string behaviorName;
+			packet >> x >> y >> behaviorName;
+			std::cout << "[INFO] Server processing behaviour change for: " << client.playerIndex;
+			changeBehaviourAt(x, y, behaviorName, client.playerIndex);
+		}
+		else if (type == PACKET_ABILITY) {
+			double x = 0.0;
+			double y = 0.0;
+			int abilityIndex;
+			packet >> x >> y >> abilityIndex;
+			std::cout << "[INFO] Server processing ability use for: " << client.playerIndex;
+			useAbilityAt(x, y, abilityIndex, client.playerIndex);
+		}
 	}
 
 void MainManager::processServerPacket(sf::Packet &packet) {
@@ -691,12 +801,38 @@ void MainManager::processServerPacket(sf::Packet &packet) {
             sf::Uint32  gold;
         	std::string name;
             sf::Int32 status;
-            packet >> gold >> name >> status;
-            auto player = std::make_shared<EnginePlayer>(Player(name, 0));
-            player->currentCurrency = gold;
-            player->status = static_cast<EnginePlayer::Status>(status);
+        	sf::Uint32 abilityCount;
+        	packet >> gold >> name >> status;
+
+        	auto player = std::make_shared<EnginePlayer>(Player(name, 0));
+        	player->currentCurrency = gold;
+        	player->status = static_cast<EnginePlayer::Status>(status);
         	player->team = team;
-            team->teamPlayers.push_back(player);
+        	team->teamPlayers.push_back(player);
+
+        	packet >> abilityCount;
+        	for (sf::Uint32 a = 0; a < abilityCount; ++a) {
+        		std::string name;
+        		sf::Int32 charges;
+        		sf::Uint64 timeAfterSingle, timeAfterFull;
+        		double chargeCooldown, fullCooldown;
+        		std::string targetSelection;
+        		packet >> name >> charges
+        		>> timeAfterSingle >> timeAfterFull
+					   >> chargeCooldown >> fullCooldown >> targetSelection;
+
+        		AbilitySample sample(name);
+        		sample.setChargeCooldownSeconds(chargeCooldown);
+        		sample.setFullCooldownSeconds(fullCooldown);
+        		sample.setTargetSelection(targetSelection);
+
+        		auto ability = std::make_shared<AbilityActions>(sample, player);
+        		ability->storage.currentCharges = charges;
+        		ability->storage.timeAfterSingleRecharge = timeAfterSingle;
+        		ability->storage.timeAfterLastFullCharge = timeAfterFull;
+
+        		player->abilities.push_back(ability);
+        	}
         }
         newStatus->teams.push_back(team);
     }
@@ -786,6 +922,49 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 		playerAction = std::make_shared<TowerUpgradeAction>(upgradeName, tower, player);
 	}
 
+	void MainManager::sendChangeBehaviourRequest(double x, double y, const std::string &behaviourTypeName, int playerIndex) {
+		if (!serverSocket) {
+			return;
+		}
+		sf::Packet packet;
+		packet << PACKET_BEHAVIOUR << x << y << behaviourTypeName << playerIndex;
+		serverSocket->send(packet);
+	}
+	void MainManager::changeBehaviourAt(double x, double y, const std::string &behaviourTypeName, int playerIndex) {
+		const auto tower = findTowerAt(x, y);
+		if (!tower || playerIndex >= engine.getAllPlayers().size()) {
+			return;
+		}
+
+		const auto player = engine.getAllPlayers()[playerIndex];
+		if (!canPlayerUseTower(player, tower)) {
+			return;
+		}
+
+		TowerBehaviourTypes newBehaviour;
+		if (behaviourTypeName == "Closest") newBehaviour = TowerBehaviourTypes::Closest;
+		else if (behaviourTypeName == "Farthest") newBehaviour = TowerBehaviourTypes::Farthest;
+		else if (behaviourTypeName == "Lowest HP") newBehaviour = TowerBehaviourTypes::LowestHP;
+		else if (behaviourTypeName == "Highest HP") newBehaviour = TowerBehaviourTypes::HighestHP;
+		else return;
+		playerAction = std::make_shared<TowerBehaviourChangeAction>(tower, newBehaviour);
+	}
+
+	void MainManager::sendAbilityUseRequest(double x, double y, const int abilityIndex, int playerIndex) {
+		if (!serverSocket) {
+			return;
+		}
+		sf::Packet packet;
+		packet << PACKET_ABILITY << x << y << abilityIndex << playerIndex;
+		serverSocket->send(packet);
+	}
+	void MainManager::useAbilityAt(double x, double y, const int abilityIndex, int playerIndex) {
+		std::shared_ptr<MapObject> target = std::make_shared<MapObject>("", x, y, MapObjectTypes::Point);
+
+		auto player = engine.getAllPlayers()[playerIndex];
+		playerAction = std::make_shared<AbilityUseAction>(player, abilityIndex, target);
+	}
+
 	std::shared_ptr<TowerActions> MainManager::findTowerAt(double x, double y) {
 		if (!gameStatus) {
 			return nullptr;
@@ -861,5 +1040,15 @@ void MainManager::processServerPacket(sf::Packet &packet) {
 			}
 		}
 		return players;
+	}
+
+	std::vector<BehaviourOption> MainManager::getBehaviourOptionsForTower(const std::shared_ptr<MapObject>& tower) {
+		// Можно возвращать все 4 варианта, или исключать текущее поведение
+		std::vector<BehaviourOption> options;
+		options.push_back({"Closest", {}});
+		options.push_back({"Farthest", {}});
+		options.push_back({"Lowest HP", {}});
+		options.push_back({"Highest HP", {}});
+		return options;
 	}
 } // namespace TDEngine::Inner

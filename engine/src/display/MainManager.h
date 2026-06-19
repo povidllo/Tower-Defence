@@ -10,6 +10,8 @@
 #include "../inner/core/Engine.h"
 #include "../inner/game_objects/MapObject.h"
 #include "../inner/player_actions/TowerUpgradeAction.h"
+#include "../inner/player_actions/AbilityUseAction.h"
+#include "../inner/player_actions/TowerBehaviourChangeAction.h"
 #include "Project.h"
 #include "RendererGame.h"
 
@@ -57,6 +59,10 @@ namespace TDEngine::Inner {
 		void processServerPacket(sf::Packet &packet);
 		void sendUpgradeRequest(double x, double y, const std::string &upgradeName, int playerIndex);
 		void applyUpgradeAt(double x, double y, const std::string &upgradeName, int playerIndex);
+		void sendChangeBehaviourRequest(double x, double y, const std::string &behaviourTypeName, int playerIndex);
+		void changeBehaviourAt(double x, double y, const std::string &behaviourTypeName, int playerIndex);
+		void sendAbilityUseRequest(double x, double y, const int abilityIndex, int playerIndex);
+		void useAbilityAt(double x, double y, const int abilityIndex, int playerIndex);
 		std::shared_ptr<TowerActions> findTowerAt(double x, double y);
 		std::vector<std::string> getUpgradeNamesForTower(const std::shared_ptr<MapObject> &tower) const;
 		bool canPlayerUseTower(std::shared_ptr<EnginePlayer> player, const std::shared_ptr<TowerActions> &tower);
@@ -65,6 +71,7 @@ namespace TDEngine::Inner {
 		void updateNetworkSettingsForSelectedMap();
 		std::shared_ptr<EnginePlayer> getLocalPlayer();
 		std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
+        std::vector<BehaviourOption> getBehaviourOptionsForTower(const std::shared_ptr<MapObject>& tower);
 
 		sf::RenderWindow window;
 		Project &project;
@@ -74,9 +81,18 @@ namespace TDEngine::Inner {
 
 		std::shared_ptr<GameStatus> gameStatus;
 		sf::Sprite backgroundSprite;
-		std::shared_ptr<TowerUpgradeAction> playerAction;
+		std::shared_ptr<IPlayerAction> playerAction;
 		std::shared_ptr<MapObject> selectedTower;
+
+		bool isSelectingTarget = false;
+		int selectedAbilityIndex = -1;
+		std::vector<sf::FloatRect> abilityButtonsBounds;
+		std::vector<sf::FloatRect> upgradeButtonsBounds;
+		// currentUpgradeOptions теперь только данные (bounds будут перезаписаны в renderUI)
 		std::vector<UpgradeOption> currentUpgradeOptions;
+
+		std::vector<BehaviourOption> currentBehaviourOptions;
+		std::vector<sf::FloatRect> behaviourButtonsBounds;
 
 		bool wasVictory = false;
 

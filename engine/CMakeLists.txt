@@ -49,13 +49,6 @@ add_executable(engine
         src/display/MainManager.cpp
         src/display/MainManager.h
         src/display/TextureCache.h
-        src/inner/game_objects/samples/EffectSample.h
-        src/inner/game_objects/samples/EffectCreatorSample.h
-        src/inner/game_objects/samples/EffectSample.h
-        src/inner/game_objects/samples/EffectOnEnemySample.h
-        src/inner/game_objects/samples/EffectOnTowerSample.h
-        src/inner/game_objects/samples/EffectCreatorSample.h
-        src/inner/game_objects/samples/AbilitySample.h
         src/inner/game_objects/EffectOnEnemyActions.cpp
         src/inner/game_objects/EffectOnEnemyActions.h
         src/inner/game_objects/EffectOnTowerActions.cpp
@@ -66,6 +59,8 @@ add_executable(engine
         src/inner/game_objects/entities/EffectCreator.h
         src/inner/game_objects/entities/EngineTeam.h
         src/inner/game_objects/entities/EnginePlayer.h
+        src/inner/player_actions/TowerBehaviourChangeAction.cpp
+        src/inner/player_actions/TowerBehaviourChangeAction.h
 )
 
 target_compile_options(engine PRIVATE -include valarray)

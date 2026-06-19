@@ -1,61 +1,98 @@
-// #include "EffectOnTowerActions.h"
-// #include "TowerActions.h"
-// #include "../core/EngineStorage.h"
-//
-// namespace TDEngine::Inner {
-//
-// EffectOnTowerActions::EffectOnTowerActions(EffectOnTowerSample sample, std::shared_ptr<TowerActions> target)
-//     : storage(std::move(sample)), target(std::move(target)) {
-//     originalDamage = target->storage.getDamage();
-//     originalFireRate = target->storage.getFireRate();
-// }
-//
-// void EffectOnTowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
-//     if (isFinished){ //|| !target->storage.isAlive()) {
-//         //isFinished = true;
-//         return;
-//     }
-//
-//     double dt = timePassedMillis / 1000.0;
-//     elapsedTime += dt;
-//
-//     if (!initialApplied) {
-//         double dmgAbs = storage.initialDamageAbsolute;
-//         double dmgPerc = storage.initialDamagePercent;
-//         double newDamage = originalDamage + dmgAbs;
-//         newDamage += originalDamage * dmgPerc;
-//         target->storage.setDamage(newDamage);
-//
-//         double newFireRate = originalFireRate * (1.0 + storage.initialAttackSpeedPercent / 100.0);
-//         target->storage.setFireRate(newFireRate);
-//
-//         initialApplied = true;
-//     }
-//
-//     if (storage.period > 0.0) {
-//         timeSinceLastPeriod += dt;
-//         while (timeSinceLastPeriod >= storage.period) {
-//             double dmgAbs = storage.periodicDamageAbsolute;
-//             double dmgPerc = storage.periodicDamagePercent;
-//             double newDamage = target->storage.getDamage() + dmgAbs;
-//             newDamage += target->storage.getDamage() * dmgPerc;
-//             target->storage.setDamage(newDamage);
-//
-//             double newFireRate = target->storage.getFireRate() * (1.0 + storage.periodicAttackSpeedPercent / 100.0);
-//             target->storage.setFireRate(newFireRate);
-//
-//             timeSinceLastPeriod -= storage.period;
-//         }
-//     }
-//
-//     if (storage.duration > 0.0 && elapsedTime >= storage.duration) {
-//         // Revert to original stats (or remove effect completely)
-//         // For simplicity, we set back to original, but in real stacking scenario need more logic.
-//         target->storage.setDamage(originalDamage);
-//         target->storage.setFireRate(originalFireRate);
-//         // Apply on-end effects similarly
-//         isFinished = true;
-//     }
-// }
-//
-// } // namespace TDEngine::Inner
+#include "EffectOnTowerActions.h"
+
+#include <set>
+#include <utility>
+
+#include "../core/EngineStorage.h"
+#include "TowerActions.h"
+
+namespace TDEngine::Inner {
+
+	EffectOnTowerActions::EffectOnTowerActions(TowerEffectSample sample,
+        	std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers, std::shared_ptr<TowerActions> target)
+	: storage(std::move(sample)), MapObject(sample.getVisualTexturePath(),
+		target->positionCoordinates.first, target->positionCoordinates.second, MapObjectTypes::Effect) {
+		storage.ownerPlayers = std::move(ownerPlayers);
+		storage.target = target;
+		storage.isFinished = false;
+		storage.elapsedTime = 0.0;
+		storage.timeSinceLastPeriod = 0.0;
+		storage.periodsDone = 0;
+		storage.initialApplied = false;
+	}
+
+	void EffectOnTowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
+		if (storage.isFinished) {
+			storage.isFinished = true;
+			return;
+		}
+
+		positionCoordinates.first = storage.target->positionCoordinates.first;
+		positionCoordinates.second = storage.target->positionCoordinates.second;
+
+		double dt = timePassedMillis / 1000.0;
+		storage.elapsedTime += dt;
+
+		// Apply initial effect once
+		if (!storage.initialApplied) {
+			storage.target->storage.curDamage += storage.getStartDamageFlatImpact();
+			storage.target->storage.curDamage += storage.target->storage.getDamage() * (storage.getStartDamagePercentImpact() / 100.0);
+			storage.target->storage.curFireRate *= storage.getStartAttackSpeedPercentImpact() / 100.0;
+			storage.initialApplied = true;
+		}
+
+		// Periodic effect
+		if (storage.getPeriodSeconds() > 0.0) {
+			storage.timeSinceLastPeriod += dt;
+			while (storage.timeSinceLastPeriod >= storage.getPeriodSeconds()) {
+				storage.target->storage.curDamage += storage.getPeriodicDamageFlatImpact();
+				storage.target->storage.curDamage += storage.target->storage.getDamage() * (storage.getPeriodicDamagePercentImpact() / 100.0);
+				storage.target->storage.curFireRate *= storage.getPeriodicAttackSpeedPercentImpact()/100.0;
+				storage.timeSinceLastPeriod -= storage.getPeriodSeconds();
+				storage.periodsDone++;
+			}
+		}
+
+		// Check duration
+		if (storage.elapsedTime >= storage.getDurationSeconds()) {
+			end(engineStorage);
+		}
+	}
+
+	void EffectOnTowerActions::end(std::shared_ptr<EngineStorage> engineStorage) {
+		storage.target->storage.curDamage -= storage.getStartDamageFlatImpact();
+		storage.target->storage.curDamage -= storage.target->storage.getDamage() * (storage.getStartDamagePercentImpact() / 100.0);
+		storage.target->storage.curFireRate /= storage.getStartAttackSpeedPercentImpact() / 100.0;
+		storage.target->storage.curDamage -= storage.periodsDone * storage.getPeriodicDamageFlatImpact();
+		storage.target->storage.curDamage -= storage.periodsDone * storage.target->storage.getDamage() * (storage.getPeriodicDamagePercentImpact() / 100.0);
+		for (int i = 0; i < storage.periodsDone; i++) {
+			storage.target->storage.curFireRate /= storage.getPeriodicAttackSpeedPercentImpact() / 100.0;
+		}
+		applyEffects(storage.getEffectsAfterFinish(), engineStorage);
+		storage.isFinished = true;
+	}
+	void EffectOnTowerActions::applyEffects(const std::vector<std::string>& effectNames,
+							  std::shared_ptr<EngineStorage> engineStorage) {
+		std::set<std::string> effectsNamesSet;
+		for (auto name : effectNames) {
+			effectsNamesSet.insert(name);
+		}
+
+		std::vector<std::shared_ptr<TowerEffectSample>> towerEffects;
+
+		for (const auto& effectSample : engineStorage->curProject->getEffects()) {
+			if (effectsNamesSet.count(effectSample->getName()) > 0) {
+				if (effectSample->getKind() == EffectSample::Kind::Tower) {
+					towerEffects.push_back(std::static_pointer_cast<TowerEffectSample> (effectSample));
+				}
+			}
+		}
+
+		if (!towerEffects.empty()) {
+			for (auto effectSample : towerEffects) {
+				auto newEffect = std::make_shared<EffectOnTowerActions>(*effectSample, storage.ownerPlayers, storage.target);
+				engineStorage->addEffectOnTower(newEffect);
+			}
+		}
+	}
+} // namespace TDEngine::Inner

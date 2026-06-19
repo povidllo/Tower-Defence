@@ -160,6 +160,7 @@ namespace TDEngine::Inner {
 			return;
 
 		for (const auto &obj: gameStat->mapObjects) {
+			if (obj->texturePath == "") continue;
 			const auto &texture = textureCache.getTexture(obj->texturePath);
 			spriteCache.setTexture(texture, true);
 
@@ -221,97 +222,210 @@ namespace TDEngine::Inner {
 	}
 
 	void RendererGame::renderUI(const std::shared_ptr<GameStatus> &gameStat,
-								const std::vector<UpgradeOption> &upgradeOptions,
-								std::shared_ptr<EnginePlayer> currentPlayer) {
-		window.setView(window.getDefaultView());
-		if (!gameStat)
-			return;
+	                            const std::vector<UpgradeOption> &upgradeOptions,
+	                            const std::vector<BehaviourOption> &behaviourOptions,
+	                            std::shared_ptr<EnginePlayer> currentPlayer,
+	                            std::vector<sf::FloatRect>& abilityBounds,
+	                            std::vector<sf::FloatRect>& upgradeBounds,
+	                            std::vector<sf::FloatRect>& behaviourBounds) {
+	    window.setView(window.getDefaultView());
+	    if (!gameStat) return;
 
-		float winW = static_cast<float>(window.getSize().x);
-		float winH = static_cast<float>(window.getSize().y);
+	    float winW = static_cast<float>(window.getSize().x);
+	    float winH = static_cast<float>(window.getSize().y);
 
-		// --- 1. Top Status Bar ---
-		float statX = UI_PADDING;
-		float statY = UI_PADDING;
-		float statW = UI_SIDEBAR_X - 2 * UI_PADDING;
-		float statH = UI_TOP_BAR_HEIGHT - 2 * UI_PADDING;
+	    // --- 1. Top Status Bar (без изменений) ---
+	    float statX = UI_PADDING;
+	    float statY = UI_PADDING;
+	    float statW = UI_SIDEBAR_X - 2 * UI_PADDING;
+	    float statH = UI_TOP_BAR_HEIGHT - 2 * UI_PADDING;
+	    drawRoundedBox(statX, statY, statW, statH, sf::Color(40, 42, 48), sf::Color(100, 100, 120));
 
-		drawRoundedBox(statX, statY, statW, statH, sf::Color(40, 42, 48), sf::Color(100, 100, 120));
+	    if (fontLoaded && currentPlayer) {
+	        textCache.setFont(font);
+	        textCache.setCharacterSize(22);
+	        textCache.setStyle(sf::Text::Bold);
 
-		if (fontLoaded) {
-			textCache.setFont(font);
-			textCache.setCharacterSize(22);
-			textCache.setStyle(sf::Text::Bold);
+	        textCache.setString("HP: " + std::to_string(currentPlayer->team->currentHp));
+	        sf::FloatRect hpBounds = textCache.getLocalBounds();
+	        textCache.setOrigin(0, hpBounds.top + hpBounds.height / 2.0f);
+	        textCache.setPosition(statX + 20.f, statY + statH / 2.0f);
+	        textCache.setFillColor(sf::Color(235, 80, 80));
+	        window.draw(textCache);
 
-			textCache.setString("HP: " + std::to_string(currentPlayer->team->currentHp));
+	        float nextX = statX + 40.f + hpBounds.width + 20.0f;
+	        textCache.setString("Gold: " + std::to_string(currentPlayer->currentCurrency));
+	        sf::FloatRect goldBounds = textCache.getLocalBounds();
+	        textCache.setOrigin(0, goldBounds.top + goldBounds.height / 2.0f);
+	        textCache.setPosition(nextX, statY + statH / 2.0f);
+	        textCache.setFillColor(sf::Color(255, 215, 0));
+	        window.draw(textCache);
+	    }
 
-			sf::FloatRect hpBounds = textCache.getLocalBounds();
-			textCache.setOrigin(0, hpBounds.top + hpBounds.height / 2.0f);
-			textCache.setPosition(statX + 20.f, statY + statH / 2.0f);
+	    // --- 2. Right panel ---
+	    float sideX = UI_SIDEBAR_X + UI_PADDING;
+	    float sideY = UI_PADDING;
+	    float sideW = winW - UI_SIDEBAR_X - 2 * UI_PADDING;
+	    float sideH = winH - 2 * UI_PADDING;
 
-			textCache.setFillColor(sf::Color(235, 80, 80));
-			window.draw(textCache);
+	    drawRoundedBox(sideX, sideY, sideW, sideH, sf::Color(35, 37, 43), sf::Color(80, 80, 90), "ACTIONS");
 
-			float nextX = statX + 40.f + hpBounds.width + 20.0f;
-			textCache.setString("Gold: " + std::to_string(currentPlayer->currentCurrency));
+	    float currentY = sideY + UI_PADDING + SECTION_HEADER_HEIGHT;
 
-			sf::FloatRect goldBounds = textCache.getLocalBounds();
-			textCache.setOrigin(0, goldBounds.top + goldBounds.height / 2.0f);
-			textCache.setPosition(nextX, statY + statH / 2.0f);
+	    // Очищаем выходные векторы
+	    abilityBounds.clear();
+	    upgradeBounds.clear();
+	    behaviourBounds.clear();
 
-			textCache.setFillColor(sf::Color(255, 215, 0));
-			window.draw(textCache);
-		}
+	    // --- 2.1 Abilities (без изменений, использует прямоугольники) ---
+	    if (currentPlayer) {
+	        const auto& abilities = currentPlayer->abilities;
+	        for (size_t i = 0; i < abilities.size(); ++i) {
+	            auto& ability = abilities[i];
+	            float iconX = sideX + UI_PADDING + 10.0f;
+	            float iconY = currentY;
+	            float iconSize = ABILITY_ICON_SIZE;
 
-		float sideX = UI_SIDEBAR_X + UI_PADDING;
-		float sideY = UI_PADDING;
-		float sideW = winW - UI_SIDEBAR_X - 2 * UI_PADDING;
-		float sideH = winH - 2 * UI_PADDING;
+	            sf::Color fillColor = (ability->storage.currentCharges > 0) ? sf::Color(70, 130, 180) : sf::Color(80, 80, 80);
 
-		drawRoundedBox(sideX, sideY, sideW, sideH, sf::Color(35, 37, 43), sf::Color(80, 80, 90), "ACTIONS");
+	            sf::RectangleShape rect(sf::Vector2f(iconSize, iconSize));
+	            rect.setPosition(iconX, iconY);
+	            rect.setFillColor(fillColor);
+	            rect.setOutlineColor(sf::Color(120, 120, 130));
+	            rect.setOutlineThickness(1.0f);
+	            window.draw(rect);
 
-		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-		sf::Vector2f worldMouse = window.mapPixelToCoords(mousePos);
+	            if (ability->storage.currentCharges == 0 && fontLoaded) {
+	                double cooldown = ability->getClosestCooldown() / 1000.0;
+	                int seconds = static_cast<int>(std::ceil(cooldown));
 
-		for (const auto &opt: upgradeOptions) {
-			bool hover = opt.bounds.contains(worldMouse);
+	                textCache.setFont(font);
+	                textCache.setString(std::to_string(seconds));
+	                textCache.setCharacterSize(24);
+	                textCache.setFillColor(sf::Color::White);
+	                textCache.setStyle(sf::Text::Bold);
+	                sf::FloatRect textRect = textCache.getLocalBounds();
+	                textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	                textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize / 2.0f);
+	                window.draw(textCache);
+	            }
 
-			sf::Color bodyColor = hover ? sf::Color(70, 80, 100) : sf::Color(55, 55, 60);
-			sf::Color borderColor = hover ? sf::Color::White : sf::Color(120, 120, 130);
+	            if (fontLoaded) {
+	                textCache.setFont(font);
+	                textCache.setString(ability->storage.getName());
+	                textCache.setCharacterSize(12);
+	                textCache.setFillColor(sf::Color::White);
+	                textCache.setStyle(sf::Text::Regular);
+	                sf::FloatRect textRect = textCache.getLocalBounds();
+	                textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top);
+	                textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize + 2.0f);
+	                window.draw(textCache);
+	            }
 
-			drawRoundedBox(opt.bounds.left, opt.bounds.top, opt.bounds.width, opt.bounds.height, bodyColor, borderColor,
-						   "");
+	            abilityBounds.push_back(sf::FloatRect(iconX, iconY, iconSize, iconSize));
+	            currentY += iconSize + ABILITY_TEXT_HEIGHT + ABILITY_SPACING;
+	        }
+	    }
 
-			float paddingInside = 5.0f;
-			float iconSize = opt.bounds.height - (paddingInside * 2);
+	    // --- 2.2 Behaviour (новый раздел) ---
+	    if (!behaviourOptions.empty()) {
+	        if (fontLoaded) {
+	            textCache.setFont(font);
+	            textCache.setString("BEHAVIOUR");
+	            textCache.setCharacterSize(16);
+	            textCache.setFillColor(sf::Color(200, 200, 200));
+	            textCache.setStyle(sf::Text::Bold);
+	            sf::FloatRect textRect = textCache.getLocalBounds();
+	            textCache.setOrigin(0, textRect.top);
+	            textCache.setPosition(sideX + UI_PADDING + 10.0f, currentY + 5.0f);
+	            window.draw(textCache);
+	        }
+	        currentY += SECTION_HEADER_HEIGHT;
 
-			if (opt.texture) {
-				sf::Sprite icon(*opt.texture);
-				float scaleX = iconSize / opt.texture->getSize().x;
-				float scaleY = iconSize / opt.texture->getSize().y;
-				icon.setScale(scaleX, scaleY);
-				icon.setPosition(opt.bounds.left + paddingInside, opt.bounds.top + paddingInside);
-				window.draw(icon);
-			}
+	        for (const auto& opt : behaviourOptions) {
+	            float iconX = sideX + UI_PADDING + 10.0f;
+	            float iconY = currentY;
+	            float btnWidth = sideW - 2 * UI_PADDING - 20.0f;
+	            float btnHeight = 30.0f;
 
-			if (fontLoaded) {
-				textCache.setString(opt.name);
-				textCache.setCharacterSize(14);
-				textCache.setStyle(sf::Text::Regular);
-				textCache.setFillColor(sf::Color(220, 220, 220));
+	            sf::RectangleShape rect(sf::Vector2f(btnWidth, btnHeight));
+	            rect.setPosition(iconX, iconY);
+	            rect.setFillColor(sf::Color(60, 60, 70));
+	            rect.setOutlineColor(sf::Color(120, 120, 130));
+	            rect.setOutlineThickness(1.0f);
+	            window.draw(rect);
 
-				sf::FloatRect textBounds = textCache.getLocalBounds();
+	            if (fontLoaded) {
+	                textCache.setFont(font);
+	                textCache.setString(opt.name);
+	                textCache.setCharacterSize(14);
+	                textCache.setFillColor(sf::Color::White);
+	                sf::FloatRect textBounds = textCache.getLocalBounds();
+	                textCache.setOrigin(0, textBounds.top + textBounds.height / 2.0f);
+	                textCache.setPosition(iconX + 10.0f, iconY + btnHeight / 2.0f);
+	                window.draw(textCache);
+	            }
 
-				textCache.setOrigin(0, textBounds.top + textBounds.height / 2.0f);
+	            behaviourBounds.push_back(sf::FloatRect(iconX, iconY, btnWidth, btnHeight));
+	            currentY += btnHeight + 10.0f;
+	        }
+	    }
 
-				float textX = opt.bounds.left + paddingInside + iconSize + 10.0f;
-				float textY = opt.bounds.top + opt.bounds.height / 2.0f;
+	    // --- 2.3 Upgrades (без изменений, использует прямоугольники) ---
+	    if (!upgradeOptions.empty()) {
+	        if (fontLoaded) {
+	            textCache.setFont(font);
+	            textCache.setString("UPGRADES");
+	            textCache.setCharacterSize(16);
+	            textCache.setFillColor(sf::Color(200, 200, 200));
+	            textCache.setStyle(sf::Text::Bold);
+	            sf::FloatRect textRect = textCache.getLocalBounds();
+	            textCache.setOrigin(0, textRect.top);
+	            textCache.setPosition(sideX + UI_PADDING + 10.0f, currentY + 5.0f);
+	            window.draw(textCache);
+	        }
+	        currentY += SECTION_HEADER_HEIGHT;
 
-				textCache.setPosition(textX, textY);
-				window.draw(textCache);
-			}
-		}
+	        for (const auto& opt : upgradeOptions) {
+	            float iconX = sideX + UI_PADDING + 10.0f;
+	            float iconY = currentY;
+	            float iconSize = 40.0f;
+
+	            sf::RectangleShape rect(sf::Vector2f(iconSize, iconSize));
+	            rect.setPosition(iconX, iconY);
+	            rect.setFillColor(sf::Color(55, 55, 60));
+	            rect.setOutlineColor(sf::Color(120, 120, 130));
+	            rect.setOutlineThickness(1.0f);
+	            window.draw(rect);
+
+	            if (opt.texture) {
+	                sf::Sprite icon(*opt.texture);
+	                float scaleX = iconSize / opt.texture->getSize().x;
+	                float scaleY = iconSize / opt.texture->getSize().y;
+	                icon.setScale(scaleX, scaleY);
+	                icon.setPosition(iconX, iconY);
+	                window.draw(icon);
+	            }
+
+	            if (fontLoaded) {
+	                textCache.setFont(font);
+	                textCache.setString(opt.name);
+	                textCache.setCharacterSize(14);
+	                textCache.setFillColor(sf::Color(220, 220, 220));
+	                sf::FloatRect textBounds = textCache.getLocalBounds();
+	                textCache.setOrigin(0, textBounds.top + textBounds.height / 2.0f);
+	                float textX = iconX + iconSize + 10.0f;
+	                float textY = iconY + iconSize / 2.0f;
+	                textCache.setPosition(textX, textY);
+	                window.draw(textCache);
+	            }
+
+	            upgradeBounds.push_back(sf::FloatRect(iconX, iconY, iconSize, iconSize));
+	            currentY += iconSize + 10.0f;
+	        }
+	    }
 	}
+
 	void RendererGame::renderMenu(const std::vector<MenuButton> &buttons, const std::string &title,
 								  const std::string &subtitle) {
 		window.setView(window.getDefaultView());
