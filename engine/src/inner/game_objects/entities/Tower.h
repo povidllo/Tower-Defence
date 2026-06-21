@@ -3,6 +3,7 @@
 #include "../../../../../editor//include/Entity/EffectCreatorSample.h"
 namespace TDEngine {
     namespace Inner {
+		class TowerActions;
 		enum class TowerBehaviourTypes { //Виды поведения башен при выборе целей атаки
 			//Соответственно самый ближний/дальний враги, враги с наименьшим/наибольшим количеством хп, враги с наибольшим числом соседей
 			Closest,
@@ -31,6 +32,7 @@ namespace TDEngine {
         	TowerBehaviourTypes behaviourType;
         	std::shared_ptr<TowerSample> originSample;
         	std::vector<std::shared_ptr<EnginePlayer>> originOwnerPlayers;
+        	std::shared_ptr<TowerActions> self;
         };
     } // Inner
 } // TDEngine

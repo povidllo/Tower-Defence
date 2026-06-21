@@ -16,7 +16,7 @@ namespace TDEngine {
 			storage.curFireRate = storage.getFireRate();
 			storage.curDamage = storage.getDamage();
 			storage.initialActionsDone = false;
-			storage.curHp = 100;
+			storage.curHp = sample->getStartHP();
 			storage.behaviourType = TowerBehaviourTypes::Closest;
 			storage.originSample = sample;
 			storage.originOwnerPlayers = std::move(ownerPlayers);
@@ -43,14 +43,15 @@ namespace TDEngine {
             else {
             	if (!storage.initialActionsDone) {
             		for (std::string effectCreatorName : storage.getBaseEffectCreatorNames()) {
+            			std::cout << "[INFO] Tower spawns ec: " << effectCreatorName << std::endl;
             			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-            				storage.ownerPlayers, std::make_shared<TowerActions>(*this));
+            				storage.ownerPlayers, storage.self);
             			engineStorage->addEffectCreator(newEffectCreator);
             		}
             		storage.initialActionsDone = true;
             	}
-            	if (storage.getFireRate() > 0) {
-            		uint64_t timeBetweenShots = ceil(1000.0 / storage.getFireRate());
+            	if (storage.curFireRate > 0) {
+            		uint64_t timeBetweenShots = ceil(1000.0 / storage.curFireRate);
             		if (storage.timeAfterLastShot < timeBetweenShots) {
             			storage.timeAfterLastShot += timePassedMillis;
             		}
@@ -65,7 +66,7 @@ namespace TDEngine {
         }
 
         void TowerActions::attack(std::shared_ptr<EnemyActions> enemy, std::shared_ptr<EngineStorage> engineStorage) {
-            Projectile newProjectile = Projectile(storage.getProjectileSpeed(), storage.getDamage(), enemy,
+            Projectile newProjectile = Projectile(storage.getProjectileSpeed(), storage.curDamage, enemy,
             	positionCoordinates, storage.getProjectileTexturePath(), storage.getAttackEffectCreatorNames(),
             	storage.ownerPlayers);
             engineStorage->addProjectile(std::make_shared<Projectile>(newProjectile));
@@ -107,12 +108,15 @@ namespace TDEngine {
         }
 
         void TowerActions::resetTowerWithSample(std::shared_ptr<TowerSample> sample, std::shared_ptr<EngineStorage> engineStorage) {
+			std::shared_ptr<TowerActions> self = storage.self;
             storage = Tower(*sample);
         	texturePath = sample->getTowerTexturePath();
 			storage.curFireRate = storage.getFireRate();
 			storage.curDamage = storage.getDamage();
+			storage.curHp = sample->getStartHP();
 			storage.initialActionsDone = false;
 			storage.timeAfterLastShot = 0;
+			storage.self = self;
 			for (auto effect : engineStorage->activeTowerEffects) {
 				if (effect->storage.target.get() == this) {
 					effect->storage.isFinished = true;
@@ -141,6 +145,7 @@ namespace TDEngine {
             					resetTowerWithSample(sample, engineStorage);
             					storage.ownerPlayers.clear();
             					storage.ownerPlayers.push_back(playerT);
+                				std::cout << "[INFO] Tower upgraded to " << storage.getName() << std::endl;
             					return;
             				}
             			}

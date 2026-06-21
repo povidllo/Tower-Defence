@@ -6,7 +6,8 @@
 #include "Wave.h"
 namespace TDEngine {
     namespace Inner {
-        class Enemy : public EnemySample{
+		class EnemyActions;
+		class Enemy : public EnemySample{
         public:
         	explicit Enemy(EnemySample sample)
         	: EnemySample(std::move(sample)){}
@@ -21,6 +22,7 @@ namespace TDEngine {
         	bool initialActionsDone;
         	std::shared_ptr<EngineTeam> associatedTeam;
         	std::vector<std::shared_ptr<EnginePlayer>> lastHitPlayers;
+        	std::shared_ptr<EnemyActions> self;
         };
     } // Inner
 } // TDEngine

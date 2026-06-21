@@ -35,13 +35,13 @@ namespace TDEngine {
         }
 
     	void Engine::initMap() {
-        	storage->curWave = 0;
-	        // storage->activeAbilities.clear();
+	        storage->activeAbilities.clear();
         	storage->activeEnemies.clear();
         	storage->activeProjectiles.clear();
         	storage->activeTowers.clear();
         	storage->activeWaves.clear();
         	storage->activeEnemyEffects.clear();
+        	storage->activeTowerEffects.clear();
         	storage->activeEffectCreators.clear();
         	storage->curGameStatus->mapObjects.clear();
         	storage->curGameStatus->teams.clear();
@@ -55,8 +55,15 @@ namespace TDEngine {
         			TowerActions(tower, {tower->getX(), tower->getY()}, storage->resolveSpotOwnerPlayers(*tower))));
         	}
 
-        	if (!storage->curMap->getWaves().empty()) {
-        		storage->addWave(std::make_shared<WaveActions>(WaveActions(*(storage->curMap->getWaves()[0]))));
+        	for (auto waveChain : storage->curMap->getStartWaves()) {
+        		std::cout << "[INFO] Reading waveChain... " << std::endl;
+        		if (waveChain->getChain().size() > 0) {
+        			std::cout << "[INFO] Creating wave:" << waveChain->getChain()[0] << std::endl;
+        			storage->addWave(std::make_shared<WaveActions>(waveChain->getChain()[0], waveChain, 0, storage));
+        		}
+        		else {
+        			std::cout << "[INFO] Chain is empty! " << std::endl;
+        		}
         	}
         }
 

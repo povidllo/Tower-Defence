@@ -26,6 +26,7 @@ namespace TDEngine {
         }
 
         void Projectile::hit(std::shared_ptr<EngineStorage> engineStorage) {
+        	std::cout << "[INFO] Projectile dealt: " << damage << std::endl;
             target->storage.currentHP -= damage;
         	target->storage.lastHitPlayers = std::move(ownerPlayers);
         	for (std::string effectCreatorName : effectCreatorsOnHitNames) {
@@ -35,7 +36,7 @@ namespace TDEngine {
 
         	for (std::string effectCreatorName : target->storage.getDamageTakenEffectCreatorNames()) {
         		auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-					ownerPlayers, std::make_shared<EnemyActions>(*target));
+					ownerPlayers, target);
         		engineStorage->addEffectCreator(newEffectCreator);
         	}
         	isActive = false;

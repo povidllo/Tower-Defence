@@ -277,57 +277,73 @@ namespace TDEngine::Inner {
 	    upgradeBounds.clear();
 	    behaviourBounds.clear();
 
-	    // --- 2.1 Abilities (без изменений, использует прямоугольники) ---
-	    if (currentPlayer) {
-	        const auto& abilities = currentPlayer->abilities;
-	        for (size_t i = 0; i < abilities.size(); ++i) {
-	            auto& ability = abilities[i];
-	            float iconX = sideX + UI_PADDING + 10.0f;
-	            float iconY = currentY;
-	            float iconSize = ABILITY_ICON_SIZE;
+	    // --- 2.1 Abilities ---
+if (currentPlayer) {
+    const auto& abilities = currentPlayer->abilities;
+    for (size_t i = 0; i < abilities.size(); ++i) {
+        auto& ability = abilities[i];
+        float iconX = sideX + UI_PADDING + 10.0f;
+        float iconY = currentY;
+        float iconSize = ABILITY_ICON_SIZE;
 
-	            sf::Color fillColor = (ability->storage.currentCharges > 0) ? sf::Color(70, 130, 180) : sf::Color(80, 80, 80);
+        // 1. Всегда рисуем серый фон
+        sf::RectangleShape rect(sf::Vector2f(iconSize, iconSize));
+        rect.setPosition(iconX, iconY);
+        rect.setFillColor(sf::Color(80, 80, 80));    // серый, как при отсутствии зарядов
+        rect.setOutlineColor(sf::Color(120, 120, 130));
+        rect.setOutlineThickness(1.0f);
+        window.draw(rect);
 
-	            sf::RectangleShape rect(sf::Vector2f(iconSize, iconSize));
-	            rect.setPosition(iconX, iconY);
-	            rect.setFillColor(fillColor);
-	            rect.setOutlineColor(sf::Color(120, 120, 130));
-	            rect.setOutlineThickness(1.0f);
-	            window.draw(rect);
+        // 2. Рисуем иконку, если путь задан
+    	if (ability->storage.currentCharges > 0) {
+    		std::string iconPath = ability->storage.getIconPath();
+    		if (iconPath.empty()) {
+    			iconPath = "stub.jpg";
+    		}
+    		const sf::Texture& texture = getTexture(iconPath);
+    		sf::Sprite icon(texture);
+    		float scaleX = iconSize / texture.getSize().x;
+    		float scaleY = iconSize / texture.getSize().y;
+    		icon.setScale(scaleX, scaleY);
+    		icon.setPosition(iconX, iconY);
+    		window.draw(icon);
+    	}
 
-	            if (ability->storage.currentCharges == 0 && fontLoaded) {
-	                double cooldown = ability->getClosestCooldown() / 1000.0;
-	                int seconds = static_cast<int>(std::ceil(cooldown));
+        // 3. Если зарядов нет — показываем кулдаун поверх иконки
+        if (ability->storage.currentCharges == 0 && fontLoaded) {
+            double cooldown = ability->getClosestCooldown() / 1000.0;
+            int seconds = static_cast<int>(std::ceil(cooldown));
 
-	                textCache.setFont(font);
-	                textCache.setString(std::to_string(seconds));
-	                textCache.setCharacterSize(24);
-	                textCache.setFillColor(sf::Color::White);
-	                textCache.setStyle(sf::Text::Bold);
-	                sf::FloatRect textRect = textCache.getLocalBounds();
-	                textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-	                textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize / 2.0f);
-	                window.draw(textCache);
-	            }
+            textCache.setFont(font);
+            textCache.setString(std::to_string(seconds));
+            textCache.setCharacterSize(24);
+            textCache.setFillColor(sf::Color::White);
+            textCache.setStyle(sf::Text::Bold);
+            sf::FloatRect textRect = textCache.getLocalBounds();
+            textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+            textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize / 2.0f);
+            window.draw(textCache);
+        }
 
-	            if (fontLoaded) {
-	                textCache.setFont(font);
-	                textCache.setString(ability->storage.getName());
-	                textCache.setCharacterSize(12);
-	                textCache.setFillColor(sf::Color::White);
-	                textCache.setStyle(sf::Text::Regular);
-	                sf::FloatRect textRect = textCache.getLocalBounds();
-	                textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top);
-	                textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize + 2.0f);
-	                window.draw(textCache);
-	            }
+        // 4. Название способности под иконкой
+        if (fontLoaded) {
+            textCache.setFont(font);
+            textCache.setString(ability->storage.getName());
+            textCache.setCharacterSize(12);
+            textCache.setFillColor(sf::Color::White);
+            textCache.setStyle(sf::Text::Regular);
+            sf::FloatRect textRect = textCache.getLocalBounds();
+            textCache.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top);
+            textCache.setPosition(iconX + iconSize / 2.0f, iconY + iconSize + 2.0f);
+            window.draw(textCache);
+        }
 
-	            abilityBounds.push_back(sf::FloatRect(iconX, iconY, iconSize, iconSize));
-	            currentY += iconSize + ABILITY_TEXT_HEIGHT + ABILITY_SPACING;
-	        }
-	    }
+        abilityBounds.push_back(sf::FloatRect(iconX, iconY, iconSize, iconSize));
+        currentY += iconSize + ABILITY_TEXT_HEIGHT + ABILITY_SPACING;
+    }
+}
 
-	    // --- 2.2 Behaviour (новый раздел) ---
+	    // --- 2.2 Behaviour ---
 	    if (!behaviourOptions.empty()) {
 	        if (fontLoaded) {
 	            textCache.setFont(font);
