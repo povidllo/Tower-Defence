@@ -38,15 +38,19 @@ EnemyEditor::EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController
 	auto *baseLayout = new QVBoxLayout();
 	auto *damageTakenLayout = new QVBoxLayout();
 	auto *damageDealtLayout = new QVBoxLayout();
+	auto *onDeathLayout = new QVBoxLayout();
 	baseEffectCreatorList = new QListWidget(effectCreatorGroup);
 	damageTakenEffectCreatorList = new QListWidget(effectCreatorGroup);
 	damageDealtEffectCreatorList = new QListWidget(effectCreatorGroup);
+	onDeathEffectCreatorList = new QListWidget(effectCreatorGroup);
 	auto *addBaseButton = new QPushButton("Add base", effectCreatorGroup);
 	auto *removeBaseButton = new QPushButton("Remove base", effectCreatorGroup);
 	auto *addDamageTakenButton = new QPushButton("Add taken", effectCreatorGroup);
 	auto *removeDamageTakenButton = new QPushButton("Remove taken", effectCreatorGroup);
 	auto *addDamageDealtButton = new QPushButton("Add dealt", effectCreatorGroup);
 	auto *removeDamageDealtButton = new QPushButton("Remove dealt", effectCreatorGroup);
+	auto *addOnDeathButton = new QPushButton("Add death", effectCreatorGroup);
+	auto *removeOnDeathButton = new QPushButton("Remove death", effectCreatorGroup);
 	baseLayout->addWidget(new QLabel("On spawn", effectCreatorGroup));
 	baseLayout->addWidget(baseEffectCreatorList);
 	baseLayout->addWidget(addBaseButton);
@@ -59,9 +63,14 @@ EnemyEditor::EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController
 	damageDealtLayout->addWidget(damageDealtEffectCreatorList);
 	damageDealtLayout->addWidget(addDamageDealtButton);
 	damageDealtLayout->addWidget(removeDamageDealtButton);
+	onDeathLayout->addWidget(new QLabel("On death", effectCreatorGroup));
+	onDeathLayout->addWidget(onDeathEffectCreatorList);
+	onDeathLayout->addWidget(addOnDeathButton);
+	onDeathLayout->addWidget(removeOnDeathButton);
 	effectCreatorLayout->addLayout(baseLayout);
 	effectCreatorLayout->addLayout(damageTakenLayout);
 	effectCreatorLayout->addLayout(damageDealtLayout);
+	effectCreatorLayout->addLayout(onDeathLayout);
 	ui->editorLayout->addWidget(effectCreatorGroup);
 
 	connect(ui->addEnemyButton, &QPushButton::clicked, this, &EnemyEditor::addEnemy);
@@ -77,6 +86,9 @@ EnemyEditor::EnemyEditor(const std::shared_ptr<EnemyController> &EnemyController
 	connect(addDamageDealtButton, &QPushButton::clicked, this, &EnemyEditor::onAddDamageDealtEffectCreatorButtonClicked);
 	connect(removeDamageDealtButton, &QPushButton::clicked, this,
 			&EnemyEditor::onRemoveDamageDealtEffectCreatorButtonClicked);
+	connect(addOnDeathButton, &QPushButton::clicked, this, &EnemyEditor::onAddOnDeathEffectCreatorButtonClicked);
+	connect(removeOnDeathButton, &QPushButton::clicked, this,
+			&EnemyEditor::onRemoveOnDeathEffectCreatorButtonClicked);
 
 	updateEnemyList();
 	ui->enemyPreview->setVisible(false);
@@ -287,6 +299,40 @@ void EnemyEditor::onRemoveDamageDealtEffectCreatorButtonClicked() {
 	updateEffectCreatorLists();
 }
 
+void EnemyEditor::onAddOnDeathEffectCreatorButtonClicked() {
+	auto currentEnemy = enemyController->getCurrentEnemy();
+	if (!currentEnemy) {
+		return;
+	}
+
+	const auto availableNames = getAvailableNames(
+		enemyController->getEffectCreatorNames(),
+		currentEnemy->getOnDeathEffectCreatorNames()
+	);
+	if (availableNames.isEmpty()) {
+		QMessageBox::information(this, "No Effect Creators", "No available effect creators to add.");
+		return;
+	}
+
+	bool ok = false;
+	const auto selected = QInputDialog::getItem(this, tr("Add Effect Creator"), tr("Choose effect creator:"),
+												availableNames, 0, false, &ok);
+	if (ok && !selected.isEmpty()) {
+		currentEnemy->addOnDeathEffectCreator(selected.toStdString());
+		updateEffectCreatorLists();
+	}
+}
+
+void EnemyEditor::onRemoveOnDeathEffectCreatorButtonClicked() {
+	auto currentEnemy = enemyController->getCurrentEnemy();
+	auto *item = onDeathEffectCreatorList->currentItem();
+	if (!currentEnemy || !item) {
+		return;
+	}
+	currentEnemy->removeOnDeathEffectCreator(item->text().toStdString());
+	updateEffectCreatorLists();
+}
+
 void EnemyEditor::updateEnemyList() const {
 	qDebug() << "Enemy list updated";
 
@@ -301,11 +347,13 @@ void EnemyEditor::updateEffectCreatorLists() const {
 		baseEffectCreatorList->clear();
 		damageTakenEffectCreatorList->clear();
 		damageDealtEffectCreatorList->clear();
+		onDeathEffectCreatorList->clear();
 		return;
 	}
 	BaseEditor::fillListWidget(baseEffectCreatorList, currentEnemy->getBaseEffectCreatorNames());
 	BaseEditor::fillListWidget(damageTakenEffectCreatorList, currentEnemy->getDamageTakenEffectCreatorNames());
 	BaseEditor::fillListWidget(damageDealtEffectCreatorList, currentEnemy->getDamageDealtEffectCreatorNames());
+	BaseEditor::fillListWidget(onDeathEffectCreatorList, currentEnemy->getOnDeathEffectCreatorNames());
 }
 
 void EnemyEditor::fillPropertiesForm(const std::shared_ptr<EnemySample> &enemy) {

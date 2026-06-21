@@ -13,6 +13,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
+#include <QVBoxLayout>
 #include <algorithm>
 
 namespace {
@@ -1157,8 +1158,10 @@ void MapEditor::fillPropertiesForm() {
 			}
 
 			for (auto &player : team->getPlayers()) {
-				QString key = QString("%1_gold").arg(QString::fromStdString(player.getPlayerName()));
-				QString label = QString("%1 Gold:").arg(QString::fromStdString(player.getPlayerName()));
+				QString pName = QString::fromStdString(player.getPlayerName());
+
+				QString key = QString("%1_gold").arg(pName);
+				QString label = QString("%1 Gold:").arg(pName);
 				auto *spin = new QDoubleSpinBox(this);
 				spin->setRange(0.0, 100000.0);
 				spin->setDecimals(0);
@@ -1166,6 +1169,105 @@ void MapEditor::fillPropertiesForm() {
 
 				ui->propertiesForm->addRow(label, spin);
 				m_propertyEditors[key] = spin;
+
+				auto *abilityList = new QListWidget(this);
+				for (const auto &abilityName : player.getAbilityNames()) {
+					abilityList->addItem(QString::fromStdString(abilityName));
+				}
+
+				auto *addBtn = new QPushButton("+", this);
+				addBtn->setMaximumWidth(24);
+				auto *removeBtn = new QPushButton(QString::fromUtf8("\u2212"), this);
+				removeBtn->setMaximumWidth(24);
+
+				auto *btnLayout = new QHBoxLayout();
+				btnLayout->addWidget(addBtn);
+				btnLayout->addWidget(removeBtn);
+				btnLayout->addStretch();
+
+				auto *container = new QWidget(this);
+				auto *cl = new QVBoxLayout(container);
+				cl->setContentsMargins(0, 0, 0, 0);
+				cl->addWidget(abilityList);
+				cl->addLayout(btnLayout);
+
+				ui->propertiesForm->addRow(pName + " abilities:", container);
+				m_propertyEditors[pName + "_abilities"] = abilityList;
+
+				connect(addBtn, &QPushButton::clicked, this, [this, pName]() {
+					auto currentMap = mapController->getCurrentMap();
+					if (!currentMap) return;
+
+					Player *player = nullptr;
+					for (auto &team : currentMap->getTeams()) {
+						for (auto &p : team->getPlayers()) {
+							if (QString::fromStdString(p.getPlayerName()) == pName) {
+								player = &p;
+								break;
+							}
+						}
+						if (player) break;
+					}
+					if (!player) return;
+
+					auto projController = mapController->getProjectController();
+					auto &allAbilities = projController->getAbilities();
+					auto currentAbilities = player->getAbilityNames();
+
+					QStringList available;
+					for (const auto &ability : allAbilities) {
+						if (std::find(currentAbilities.begin(), currentAbilities.end(), ability->getName()) == currentAbilities.end()) {
+							available << QString::fromStdString(ability->getName());
+						}
+					}
+
+					if (available.isEmpty()) {
+						QMessageBox::information(this, "No abilities", "No available abilities to add.");
+						return;
+					}
+
+					bool ok = false;
+					auto selected = QInputDialog::getItem(this, "Add Ability", "Choose ability:", available, 0, false, &ok);
+					if (ok && !selected.isEmpty()) {
+						player->addAbility(selected.toStdString());
+						fillPropertiesForm();
+					}
+				});
+
+				connect(removeBtn, &QPushButton::clicked, this, [this, pName]() {
+					auto currentMap = mapController->getCurrentMap();
+					if (!currentMap) return;
+
+					Player *player = nullptr;
+					for (auto &team : currentMap->getTeams()) {
+						for (auto &p : team->getPlayers()) {
+							if (QString::fromStdString(p.getPlayerName()) == pName) {
+								player = &p;
+								break;
+							}
+						}
+						if (player) break;
+					}
+					if (!player) return;
+
+					auto currentAbilities = player->getAbilityNames();
+					if (currentAbilities.empty()) {
+						QMessageBox::information(this, "No abilities", "Player has no abilities to remove.");
+						return;
+					}
+
+					QStringList currentList;
+					for (const auto &a : currentAbilities) {
+						currentList << QString::fromStdString(a);
+					}
+
+					bool ok = false;
+					auto selected = QInputDialog::getItem(this, "Remove Ability", "Choose ability to remove:", currentList, 0, false, &ok);
+					if (ok && !selected.isEmpty()) {
+						player->removeAbility(selected.toStdString());
+						fillPropertiesForm();
+					}
+				});
 			}
 		}
 	} else {
@@ -1211,10 +1313,23 @@ void MapEditor::onSaveMapSettingsButtonClicked() {
 			}
 
 			for (auto &player : team->getPlayers()) {
-				QString goldKey = QString("%1_gold").arg(QString::fromStdString(player.getPlayerName()));
+				QString pName = QString::fromStdString(player.getPlayerName());
+
+				QString goldKey = pName + "_gold";
 				if (m_propertyEditors.contains(goldKey)) {
 					if (auto *spin = qobject_cast<QDoubleSpinBox *>(m_propertyEditors[goldKey])) {
 						player.setStartCurrency(spin->value());
+					}
+				}
+
+				QString abilitiesKey = pName + "_abilities";
+				if (m_propertyEditors.contains(abilitiesKey)) {
+					if (auto *list = qobject_cast<QListWidget *>(m_propertyEditors[abilitiesKey])) {
+						std::vector<std::string> abilityNames;
+						for (int i = 0; i < list->count(); ++i) {
+							abilityNames.push_back(list->item(i)->text().toStdString());
+						}
+						player.setAbilityNames(abilityNames);
 					}
 				}
 			}

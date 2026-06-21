@@ -47,6 +47,10 @@ private slots:
 
 	void onRemoveDamageDealtEffectCreatorButtonClicked();
 
+	void onAddOnDeathEffectCreatorButtonClicked();
+
+	void onRemoveOnDeathEffectCreatorButtonClicked();
+
 private:
 	Ui::EnemyEditor *ui;
 
@@ -64,6 +68,7 @@ private:
 	QListWidget *baseEffectCreatorList{};
 	QListWidget *damageTakenEffectCreatorList{};
 	QListWidget *damageDealtEffectCreatorList{};
+	QListWidget *onDeathEffectCreatorList{};
 };
 
 #endif // TOWERDEFENCE_ENEMYEDITOR_H
