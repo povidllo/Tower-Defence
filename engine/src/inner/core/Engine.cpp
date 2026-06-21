@@ -56,8 +56,13 @@ namespace TDEngine {
         	}
 
         	for (auto waveChain : storage->curMap->getStartWaves()) {
+        		std::cout << "[INFO] Reading waveChain... " << std::endl;
         		if (waveChain->getChain().size() > 0) {
+        			std::cout << "[INFO] Creating wave:" << waveChain->getChain()[0] << std::endl;
         			storage->addWave(std::make_shared<WaveActions>(waveChain->getChain()[0], waveChain, 0, storage));
+        		}
+        		else {
+        			std::cout << "[INFO] Chain is empty! " << std::endl;
         		}
         	}
         }

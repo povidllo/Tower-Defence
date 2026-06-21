@@ -128,7 +128,8 @@ namespace TDEngine {
         	}
         	for (int i = 0; i < activeWaves.size(); i++) {
         		auto wavePtr = activeWaves[i];
-        		if (wavePtr->storage.spawningIndex == wavePtr->storage.getEnemies().size()) {
+        		if (wavePtr->storage.spawningIndex == wavePtr->storage.getEnemies().size() + 1) {
+        			std::cout << "[INFO] Wave cleared" << std::endl;
         			removeWave(wavePtr);
         		}
         	}
@@ -174,6 +175,7 @@ namespace TDEngine {
         }
 
         void EngineStorage::addTower(const std::shared_ptr<TowerActions> &tower) {
+        	tower->storage.self = tower;
             activeTowers.push_back(tower);
             curGameStatus->mapObjects.push_back(tower);
 
@@ -193,6 +195,7 @@ namespace TDEngine {
         }
 
     	void EngineStorage::addEnemy(const std::shared_ptr<EnemyActions> &enemy) {
+        	enemy->storage.self = enemy;
         	activeEnemies.push_back(enemy);
         	curGameStatus->mapObjects.push_back(enemy);
         }

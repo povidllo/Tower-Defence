@@ -35,8 +35,10 @@ namespace TDEngine {
 
         		if (!storage.initialActionsDone) {
         			for (std::string effectCreatorName : storage.getBaseEffectCreatorNames()) {
+        				std::vector<std::shared_ptr<EnginePlayer>> emptyVector;
         				auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
-							storage.associatedTeam->teamPlayers, std::make_shared<EnemyActions>(*this));
+							(storage.associatedTeam != nullptr? storage.associatedTeam->teamPlayers : emptyVector),
+							storage.self);
         				engineStorage->addEffectCreator(newEffectCreator);
         			}
         			storage.initialActionsDone = true;
@@ -75,8 +77,7 @@ namespace TDEngine {
         	for (std::string effectCreatorName : storage.getOnDeathEffectCreatorNames()) {
         		auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
 						(storage.associatedTeam != nullptr? storage.associatedTeam->teamPlayers : emptyVector),
-						std::make_shared<MapObject>("",
-							positionCoordinates.first, positionCoordinates.second, MapObjectTypes::Point));
+						storage.self);
         		engineStorage->addEffectCreator(newEffectCreator);
         	}
         }
@@ -90,8 +91,7 @@ namespace TDEngine {
         		for (std::string effectCreatorName : storage.getDamageDealtEffectCreatorNames()) {
         			auto newEffectCreator = std::make_shared<EffectCreatorActions>(effectCreatorName, engineStorage,
 						(storage.associatedTeam != nullptr? storage.associatedTeam->teamPlayers : emptyVector),
-						std::make_shared<MapObject>("",
-							positionCoordinates.first, positionCoordinates.second, MapObjectTypes::Point));
+						storage.self);
         			engineStorage->addEffectCreator(newEffectCreator);
         		}
         		if (team->currentHp <= 0) {

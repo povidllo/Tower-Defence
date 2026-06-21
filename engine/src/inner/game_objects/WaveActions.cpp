@@ -18,19 +18,17 @@ namespace TDEngine {
         }
 
         void WaveActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
-        	if (storage.spawningIndex == storage.getEnemies().size()) return;
-        	if (storage.delayTime > 0) {
+        	if (storage.spawningIndex == storage.getEnemies().size() + 1) return;
+        	if (storage.delayTime > timePassedMillis) {
         		storage.delayTime -= timePassedMillis;
         		return;
         	}
-        	if (storage.spawningIndex == storage.getEnemies().size() - 1 &&
-				storage.enemiesSpawned == storage.getEnemies()[storage.spawningIndex].second) {
-        			if (storage.timeAfterLastSpawn >= storage.getTimeForWave() * 1000){
-        				summonNextWave(engineStorage);
-        			}
-        			else {
-        				storage.timeAfterLastSpawn += timePassedMillis;
-        			}
+        	else {
+        		storage.delayTime = 0;
+        	}
+
+        	if (storage.spawningIndex == storage.getEnemies().size()) {
+        		summonNextWave(engineStorage);
         		return;
 			}
             if (storage.timeAfterLastSpawn < storage.getEnemySpawnInterval() * 1000) {
@@ -47,6 +45,7 @@ namespace TDEngine {
 
         void WaveActions::spawnEnemy(std::shared_ptr<EngineStorage> engineStorage) {
             std::string enemyName = storage.getEnemies()[storage.spawningIndex].first;
+        	std::cout << "[INFO] Spawning enemy... " << enemyName << std::endl;
             for (auto enPtr : engineStorage->curProject->getEnemies()) {
                 if (enPtr->getName() == enemyName) {
                     EnemySample enemySample = EnemySample(*enPtr);
@@ -73,13 +72,15 @@ namespace TDEngine {
 
                     storage.enemiesSpawned++;
                     storage.timeAfterLastSpawn = 0;
-                    break;
+                    return;;
                 }
             }
+        	std::cout << "[INFO] Enemy not found! " << enemyName << std::endl;
         }
 
         void WaveActions::summonNextWave(std::shared_ptr<EngineStorage> engineStorage) {
-        	if (storage.chainIndex < storage.chain->getChain().size()) {
+        	std::cout << "[INFO] Summoning next wave (index, size): " << storage.chainIndex << " of " << storage.chain->getChain().size()  << std::endl;
+        	if (storage.chainIndex + 1 < storage.chain->getChain().size()) {
         		engineStorage->addWave(std::make_shared<WaveActions>
         			(storage.chain->getChain()[storage.chainIndex+1], storage.chain, storage.chainIndex+1, engineStorage));
         	}
@@ -92,6 +93,7 @@ namespace TDEngine {
         			return waveSample;
         		}
         	}
+        	std::cout << "[INFO] Wave sample not found:" << sampleName << std::endl;
         	return nullptr;
         }
 
