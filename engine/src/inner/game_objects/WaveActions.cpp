@@ -51,13 +51,10 @@ namespace TDEngine {
                     EnemySample enemySample = EnemySample(*enPtr);
                 	std::shared_ptr<EngineTeam> belongs = nullptr;
                 	for (auto team : engineStorage->curGameStatus->teams) {
-                		for (auto player : team->teamPlayers) {
-                			if (storage.getBelongs().size() > 0 && player->getPlayerName() == storage.getBelongs()[0]) {
-                				belongs = team;
-                				break;
-                			}
+                		if (storage.getBelongs().size() > 0 && team->getTeamName() == storage.getBelongs()[0]) {
+                			belongs = team;
+                			break;
                 		}
-                		if (belongs != nullptr) break;
                 	}
                     std::shared_ptr<EnemyActions> enemy = std::make_shared<EnemyActions>(enemySample, std::make_shared<Wave>(storage), belongs);
                     engineStorage->addEnemy(enemy);

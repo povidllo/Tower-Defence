@@ -103,6 +103,7 @@ namespace TDEngine {
         			engineTeam->teamPlayers.push_back(enginePlayer);
         		}
         		curGameStatus->teams.push_back(engineTeam);
+        		std::cout << "[INFO] Added team " << engineTeam->getTeamName() << std::endl;
         	}
 
         	std::cout << "[INFO] Loaded players amount: " << getAllPlayers().size() << std::endl;

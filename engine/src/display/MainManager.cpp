@@ -100,11 +100,17 @@ namespace TDEngine::Inner {
 		gameStatus = engine.startGame(mapName);
 		std::string bgPath = getMapBackgroundImgPath(mapName);
 		backgroundSprite.setTexture(renderer.getTexture(bgPath));
+		backgroundSprite.setScale(1.f, 1.f);
+		backgroundSprite.setTextureRect(sf::IntRect(0, 0,
+			static_cast<int>(backgroundSprite.getTexture()->getSize().x),
+			static_cast<int>(backgroundSprite.getTexture()->getSize().y)));
 		selectedTower = nullptr;
 		currentUpgradeOptions.clear();
 		playerAction = nullptr;
 		wasVictory = false;
 		state = AppState::GAME;
+
+
 	}
 
 	void MainManager::startNetworkHost(const std::string &mapName) {
@@ -131,6 +137,10 @@ namespace TDEngine::Inner {
 		gameStatus = engine.startGame(mapName);
 		std::string bgPath = getMapBackgroundImgPath(mapName);
 		backgroundSprite.setTexture(renderer.getTexture(bgPath));
+		backgroundSprite.setScale(1.f, 1.f);
+		backgroundSprite.setTextureRect(sf::IntRect(0, 0,
+			static_cast<int>(backgroundSprite.getTexture()->getSize().x),
+			static_cast<int>(backgroundSprite.getTexture()->getSize().y)));
 		selectedTower = nullptr;
 		currentUpgradeOptions.clear();
 		playerAction = nullptr;
@@ -190,12 +200,14 @@ namespace TDEngine::Inner {
 			update(dt);
 			render();
 		}
+		stopNetwork();
 	}
 
 	void MainManager::processEvents() {
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
+				stopNetwork();
 				window.close();
 			} else if (event.type == sf::Event::MouseButtonPressed) {
         		std::cout << "[INFO] Processing event: MouseButtonPressed" << std::endl;
@@ -676,7 +688,8 @@ void MainManager::sendSnapshotToClients() {
 					   << static_cast<sf::Uint64>(ability->storage.timeAfterLastFullCharge)
 					   << ability->storage.getChargeCooldownSeconds()
 					   << ability->storage.getFullCooldownSeconds()
-					   << ability->storage.getTargetSelection();
+					   << ability->storage.getTargetSelection()
+					   << ability->storage.getIconPath();
         	}
 
         }
@@ -817,14 +830,16 @@ void MainManager::processServerPacket(sf::Packet &packet) {
         		sf::Uint64 timeAfterSingle, timeAfterFull;
         		double chargeCooldown, fullCooldown;
         		std::string targetSelection;
+        		std::string iconPath;
         		packet >> name >> charges
         		>> timeAfterSingle >> timeAfterFull
-					   >> chargeCooldown >> fullCooldown >> targetSelection;
+					   >> chargeCooldown >> fullCooldown >> targetSelection >> iconPath;
 
         		AbilitySample sample(name);
         		sample.setChargeCooldownSeconds(chargeCooldown);
         		sample.setFullCooldownSeconds(fullCooldown);
         		sample.setTargetSelection(targetSelection);
+        		sample.setIconPath(iconPath);
 
         		auto ability = std::make_shared<AbilityActions>(sample, player);
         		ability->storage.currentCharges = charges;

@@ -10,7 +10,7 @@ namespace TDEngine {
 				std::vector<std::shared_ptr<EnginePlayer>> ownerPlayers)
 			: MapObject(sample->getTowerTexturePath(), startPosition.first, startPosition.second, MapObjectTypes::Tower),
 			storage(*sample) {
-			storage.setUpgradingTo = std::nullopt;//storage.getUpgradeNames()[0];//
+			storage.setUpgradingTo = std::nullopt;
 			storage.timeAfterLastShot = UINT64_MAX;
 			storage.ownerPlayers = std::move(ownerPlayers);
 			storage.curFireRate = storage.getFireRate();
@@ -19,7 +19,10 @@ namespace TDEngine {
 			storage.curHp = sample->getStartHP();
 			storage.behaviourType = TowerBehaviourTypes::Closest;
 			storage.originSample = sample;
-			storage.originOwnerPlayers = std::move(ownerPlayers);
+			storage.originOwnerPlayers;
+			for (auto player : storage.ownerPlayers) {
+				storage.originOwnerPlayers.push_back(player);
+			}
 		}
 
 		TowerActions::TowerActions(std::string texturePath, std::pair<double, double> startPosition,
@@ -31,6 +34,7 @@ namespace TDEngine {
 
         void TowerActions::act(uint64_t timePassedMillis, std::shared_ptr<EngineStorage> engineStorage) {
 			if (storage.curHp <= 0) {
+            	std::cout << "[INFO] Tower died: " << storage.getName() << std::endl;
 				resetTowerWithSample(storage.originSample, engineStorage);
 				storage.ownerPlayers.clear();
 				for (auto player : storage.originOwnerPlayers) {
@@ -109,6 +113,8 @@ namespace TDEngine {
 
         void TowerActions::resetTowerWithSample(std::shared_ptr<TowerSample> sample, std::shared_ptr<EngineStorage> engineStorage) {
 			std::shared_ptr<TowerActions> self = storage.self;
+			std::shared_ptr<TowerSample> origin = storage.originSample;
+			std::vector<std::shared_ptr<EnginePlayer>> originOwnerPlayers = storage.originOwnerPlayers;
             storage = Tower(*sample);
         	texturePath = sample->getTowerTexturePath();
 			storage.curFireRate = storage.getFireRate();
@@ -117,6 +123,8 @@ namespace TDEngine {
 			storage.initialActionsDone = false;
 			storage.timeAfterLastShot = 0;
 			storage.self = self;
+			storage.originSample = origin;
+			storage.originOwnerPlayers = originOwnerPlayers;
 			for (auto effect : engineStorage->activeTowerEffects) {
 				if (effect->storage.target.get() == this) {
 					effect->storage.isFinished = true;

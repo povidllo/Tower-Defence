@@ -31,7 +31,7 @@ namespace TDEngine::Inner {
 	public:
 		static constexpr float TILE_SIZE = 32.0f;
 
-		static constexpr float UI_SIDEBAR_X = 600.0f;
+		static constexpr float UI_SIDEBAR_X = 1200.0f;
 		static constexpr float UI_TOP_BAR_HEIGHT = 60.0f;
 
 		static constexpr float UI_PADDING = 10.0f;

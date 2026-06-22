@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	try {
 		Project proj(pJson);
 
-		TDEngine::Inner::MainManager mainManager(proj, 850, 600);
+		TDEngine::Inner::MainManager mainManager(proj, 1400, 600);
 		mainManager.run();
 	} catch (const std::exception &e) {
 		std::cerr << "[CRITICAL ERROR] " << e.what() << std::endl;

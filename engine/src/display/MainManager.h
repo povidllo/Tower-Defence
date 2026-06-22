@@ -30,6 +30,7 @@ namespace TDEngine::Inner {
 		MainManager(Project &proj, unsigned int width, unsigned int height);
 
 		void run();
+		~MainManager() { stopNetwork(); }
 
 	private:
 		void processEvents();
@@ -72,6 +73,7 @@ namespace TDEngine::Inner {
 		std::shared_ptr<EnginePlayer> getLocalPlayer();
 		std::vector<std::shared_ptr<EnginePlayer>> getAllPlayers();
         std::vector<BehaviourOption> getBehaviourOptionsForTower(const std::shared_ptr<MapObject>& tower);
+
 
 		sf::RenderWindow window;
 		Project &project;

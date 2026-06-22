@@ -68,10 +68,22 @@ namespace TDEngine {
         }
 
         void Engine::checkForVictory() {
-			if (storage->activeWaves.size() == 0 &&
-				storage->activeEnemies.size() == 0) {
+        	int teamLeft = 0;
+        	int teamTotal = 0;
+        	for (auto team : storage->curGameStatus->teams) {
+        		if (team->teamPlayers.size() > 0) {
+        			teamTotal++;
+        			if (team->teamPlayers[0]->status == EnginePlayer::PLAYING) {
+        				teamLeft++;
+        			}
+        		}
+        	}
+			if ((teamLeft == 1 && teamTotal > 1) || (storage->activeWaves.size() == 0 &&
+				storage->activeEnemies.size() == 0)) {
 				for (auto player : getAllPlayers()) {
-					player->status = EnginePlayer::WON;
+					if (player->status == EnginePlayer::PLAYING) {
+						player->status = EnginePlayer::WON;
+					}
 				}
 			}
         }
